@@ -18,6 +18,7 @@ import ProductVariantBuilder from "@/components/dashboard/Product/ProductVariant
 import ProductAsideSections from "@/components/dashboard/Product/ProductAsideSections";
 import Link from "next/link";
 import { uploadImageDirect, MAX_UPLOAD_BYTES } from "@/lib/uploadImage";
+import { hasPermission } from "@/lib/permissions";
 
 const DEFAULT_BADGE_OPTIONS = [
   {
@@ -163,6 +164,7 @@ function ImageDragGrid({ images, onReorder, onRemove }) {
 export default function ProductEdit({ productId }) {
   const router = useRouter();
   const { user, refreshUser } = useUser();
+  const canSeeBuyingPrice = hasPermission(user, "products.buying_price");
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
   const [product, setProduct] = useState({
@@ -851,13 +853,23 @@ export default function ProductEdit({ productId }) {
     return { count, avg };
   };
 
-  // Random date within the last ~180 days (YYYY-MM-DD) so admin-added reviews/FAQs
-  // look like they came from different customers at different times.
+  // Random past date (YYYY-MM-DD) picked from the current year back to 3 years
+  // ago (e.g. 2026, 2025, 2024, 2023) so admin-added reviews/FAQs look like
+  // they came from different customers at different times. Never in the future.
   const randomPastDateStr = () => {
-    const daysAgo = Math.floor(Math.random() * 180) + 1;
-    const d = new Date();
-    d.setDate(d.getDate() - daysAgo);
-    return d.toISOString().slice(0, 10);
+    const now = new Date();
+    const year = now.getFullYear() - Math.floor(Math.random() * 4);
+    const start = new Date(year, 0, 1).getTime();
+    const end =
+      year === now.getFullYear()
+        ? now.getTime()
+        : new Date(year, 11, 31, 23, 59, 59).getTime();
+    const d = new Date(start + Math.random() * (end - start));
+    return (
+      `${d.getFullYear()}-` +
+      `${String(d.getMonth() + 1).padStart(2, "0")}-` +
+      `${String(d.getDate()).padStart(2, "0")}`
+    );
   };
   // Convert a YYYY-MM-DD picker value to an ISO timestamp. Adds a random
   // time-of-day so entries on the same day still order naturally. Falls back to
@@ -1616,28 +1628,30 @@ export default function ProductEdit({ productId }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="mt-4 space-y-4">
-                <div>
-                  <label className={labelClass}>Buying Price</label>
-                  <input
-                    type="number"
-                    value={product.buyingPrice ?? ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        buyingPrice:
-                          e.target.value === ""
-                            ? undefined
-                            : Number(e.target.value),
-                      }))
-                    }
-                    className={inputClass}
-                    placeholder="0.00"
-                    step="0.01"
-                  />
-                  <p className="mt-1 text-xs text-gray-500">
-                    This is the buying price of the product.
-                  </p>
-                </div>
+                {canSeeBuyingPrice && (
+                  <div>
+                    <label className={labelClass}>Buying Price</label>
+                    <input
+                      type="number"
+                      value={product.buyingPrice ?? ""}
+                      onChange={(e) =>
+                        setProduct((p) => ({
+                          ...p,
+                          buyingPrice:
+                            e.target.value === ""
+                              ? undefined
+                              : Number(e.target.value),
+                        }))
+                      }
+                      className={inputClass}
+                      placeholder="0.00"
+                      step="0.01"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      This is the buying price of the product.
+                    </p>
+                  </div>
+                )}
                 <div>
                   <label className={labelClass}>Offer Price</label>
                   <input
@@ -1812,25 +1826,27 @@ export default function ProductEdit({ productId }) {
                 </div>
               </div>
               {/* Price */}
-              <div>
-                <label className={labelClass}>Buying Price</label>
-                <input
-                  type="number"
-                  value={product.buyingPrice ?? ""}
-                  onChange={(e) =>
-                    setProduct((p) => ({
-                      ...p,
-                      buyingPrice:
-                        e.target.value === ""
-                          ? undefined
-                          : Number(e.target.value),
-                    }))
-                  }
-                  className={inputClass}
-                  placeholder="0.00"
-                  step="0.01"
-                />
-              </div>
+              {canSeeBuyingPrice && (
+                <div>
+                  <label className={labelClass}>Buying Price</label>
+                  <input
+                    type="number"
+                    value={product.buyingPrice ?? ""}
+                    onChange={(e) =>
+                      setProduct((p) => ({
+                        ...p,
+                        buyingPrice:
+                          e.target.value === ""
+                            ? undefined
+                            : Number(e.target.value),
+                      }))
+                    }
+                    className={inputClass}
+                    placeholder="0.00"
+                    step="0.01"
+                  />
+                </div>
+              )}
               <div>
                 <label className={labelClass}>
                   Regular Price <span className="text-red-500">*</span>
