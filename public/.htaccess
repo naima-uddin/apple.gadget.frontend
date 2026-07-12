@@ -1,0 +1,96 @@
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Serve existing files and directories directly (JS, CSS, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # ── RSC / flight data payloads (.txt / .rsc) ───────────────────────────
+  # Next.js client-side navigation fetches "<path>.txt" (or "<path>/index.txt")
+  # for the React Server Component payload. For routes that aren't pre-built
+  # (or when the URL has no trailing slash so the file lives at /index.txt),
+  # that exact file does NOT exist. We must let it 404 cleanly here — if it
+  # instead fell through to the SPA-shell rewrite below it would return an
+  # HTML document, and the router would hang trying to parse HTML as flight
+  # data (the "click freezes the page" bug). A 404 makes the router fall back
+  # to a normal full-page navigation, which the rules below handle correctly.
+  # NOTE: this rule only fires for files that do NOT exist — real payloads
+  # (and robots.txt / sitemap files) are already served by the -f rule above.
+  RewriteRule \.(txt|rsc)$ - [R=404,L]
+
+  # ── Public dynamic routes ──────────────────────────────────────────────
+  # New products, blogs, categories added after build are served via
+  # the __placeholder__ shell; the client component reads the real ID from
+  # the URL via useUrlParam() (usePathname()-based — useParams() reflects
+  # the build-time placeholder, not the real URL) and fetches live data
+  # from the API.
+
+  RewriteRule ^product/([^/]+)/?$ /product/__placeholder__/index.html [L]
+  RewriteRule ^blog/([^/]+)/?$ /blog/__placeholder__/index.html [L]
+  RewriteRule ^category/([^/]+)/([^/]+)/?$ /category/__placeholder__/__placeholder__/index.html [L]
+  RewriteRule ^category/([^/]+)/?$ /category/__placeholder__/index.html [L]
+  RewriteRule ^barcode/([^/]+)/?$ /barcode/__placeholder__/index.html [L]
+  RewriteRule ^scan/([^/]+)/?$ /scan/__placeholder__/index.html [L]
+  RewriteRule ^tag/([^/]+)/?$ /tag/best-seller/index.html [L]
+  RewriteRule ^cart/shared/([^/]+)/?$ /cart/shared/__placeholder__/index.html [L]
+
+  # ── Dashboard dynamic routes ───────────────────────────────────────────
+  # Sub-routes first (more specific before less specific)
+  RewriteRule ^dashboard/orders/([^/]+)/invoice/?$ /dashboard/orders/__placeholder__/invoice/index.html [L]
+  RewriteRule ^dashboard/orders/([^/]+)/slip/?$ /dashboard/orders/__placeholder__/slip/index.html [L]
+  RewriteRule ^dashboard/orders/([^/]+)/?$ /dashboard/orders/__placeholder__/index.html [L]
+  RewriteRule ^dashboard/products/([^/]+)/?$ /dashboard/products/__placeholder__/index.html [L]
+  RewriteRule ^dashboard/blog/([^/]+)/?$ /dashboard/blog/__placeholder__/index.html [L]
+  RewriteRule ^dashboard/categories/([^/]+)/?$ /dashboard/categories/__placeholder__/index.html [L]
+  RewriteRule ^dashboard/customers/([^/]+)/profile/?$ /dashboard/customers/__placeholder__/profile/index.html [L]
+  RewriteRule ^dashboard/customers/([^/]+)/?$ /dashboard/customers/__placeholder__/index.html [L]
+  RewriteRule ^dashboard/authorized/([^/]+)/profile/?$ /dashboard/authorized/__placeholder__/profile/index.html [L]
+  RewriteRule ^dashboard/authorized/([^/]+)/?$ /dashboard/authorized/__placeholder__/index.html [L]
+  RewriteRule ^dashboard/customer-tags/([^/]+)/?$ /dashboard/customer-tags/__placeholder__/index.html [L]
+
+  # ── User dynamic routes ────────────────────────────────────────────────
+  RewriteRule ^user/orders/([^/]+)/invoice/?$ /user/orders/__placeholder__/invoice/index.html [L]
+
+  # Fallback for any remaining unknown routes
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json text/xml application/xml
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/json "access plus 0 seconds"
+  # RSC flight payloads are tied to the build id — never cache them, or a
+  # browser could soft-navigate using a stale payload after a redeploy and
+  # request JS chunks that no longer exist (broken/frozen navigation).
+  ExpiresByType text/plain "access plus 0 seconds"
+</IfModule>
+
+# Custom 404
+ErrorDocument 404 /404/index.html

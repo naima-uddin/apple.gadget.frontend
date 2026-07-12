@@ -1,0 +1,437 @@
+"use client";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import Link from "next/link";
+import WebsiteLogo from "@/components/ui/WebsiteLogo";
+import AuthModal from "@/components/auth/AuthModal";
+import { useUser } from "@/components/context/UserContext";
+import { useStoreSettings } from "@/components/context/StoreSettingsContext";
+import { useLanguage } from "@/components/context/LanguageContext";
+import Image from "next/image";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+
+function normalizeHref(href) {
+  if (!href) return "/";
+  if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("/")) return href;
+  return `/${href}`;
+}
+
+const VISIBLE_LINKS = 5;
+
+export default function Footer() {
+  const { user, refreshUser } = useUser();
+  const { storeName, footerInfo, socialLinks, footerLinks } = useStoreSettings();
+  const { t } = useLanguage();
+  const [email, setEmail] = useState("");
+  const [localToast, setLocalToast] = useState(null); // { type: 'success'|'error'|'warn', msg }
+  const [showAllQuick, setShowAllQuick] = useState(false);
+  const [showAllService, setShowAllService] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [toggling, setToggling] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const showToast = (type, msg) => {
+    setLocalToast({ type, msg });
+    setTimeout(() => setLocalToast(null), 3500);
+  };
+
+  // update subscribed state when user loads/changes
+  React.useEffect(() => {
+    setEmail(user?.email || "");
+    if (user?.newsletterSubscribed) {
+      setSubscribed(true);
+    } else {
+      setSubscribed(false);
+    }
+  }, [user]);
+
+  const handleToggleSubscription = async (e) => {
+    e.preventDefault();
+    if (!user) {
+      // show interactive toast with login button
+      toast(
+        (toastObj) => (
+          <span className="flex items-center gap-2">
+            {t("footer.login_to_subscribe")}{" "}
+            <button
+              onClick={() => {
+                toast.dismiss(toastObj.id);
+                setShowAuthModal(true);
+              }}
+              className="font-semibold text-pink-600 underline hover:text-pink-800"
+            >
+              {t("auth.login")}
+            </button>
+          </span>
+        ),
+        { icon: "🔒" },
+      );
+      return;
+    }
+
+    const enteredEmail = email.trim().toLowerCase();
+    const userEmail = (user.email || "").trim().toLowerCase();
+    if (!enteredEmail) {
+      showToast("error", "Please enter your email address.");
+      return;
+    }
+    if (enteredEmail !== userEmail) {
+      showToast(
+        "warn",
+        "To subscribe with a different email, please login with that email.",
+      );
+      return;
+    }
+
+    setToggling(true);
+    try {
+      const endpoint = subscribed
+        ? "/api/user/unsubscribe"
+        : "/api/user/subscribe";
+      const resp = await fetch(`${API}${endpoint}`, {
+        method: "POST",
+        credentials: "include",
+      });
+      const data = await resp.json();
+      if (!resp.ok) throw new Error(data.error || "Server error");
+      if (subscribed) {
+        showToast("success", "You have unsubscribed😥");
+        setSubscribed(false);
+      } else {
+        showToast("success", "You are now subscribed! 🎉");
+        setSubscribed(true);
+      }
+      setEmail(user.email || "");
+      refreshUser?.();
+    } catch (err) {
+      showToast("error", err.message || "Request failed.");
+    } finally {
+      setToggling(false);
+    }
+  };
+  return (
+    <>
+      <footer
+        role="contentinfo"
+        className="bg-[#FFF5ED] border-t border-black/6"
+      >
+        <div className="max-w-[1200px] mx-auto px-4 py-6 md:py-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-8">
+            {/* Brand */}
+            <div>
+              <div className="mb-3">
+                <WebsiteLogo />
+              </div>
+              <p className="text-sm text-[#202020] md:max-w-[260px]">
+                {storeName || "Our Store"} {t("footer.store_desc")}
+              </p>
+
+              {/* Contact info */}
+              <ul className="mt-4 space-y-1.5 text-sm text-[#202020]">
+                {footerInfo?.phone && (
+                  <li className="flex items-center gap-2">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.07 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 2.92 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <a
+                      href={`tel:${footerInfo.phone}`}
+                      className="hover:text-red-600"
+                    >
+                      {footerInfo.phone}
+                    </a>
+                  </li>
+                )}
+                {footerInfo?.email && (
+                  <li className="flex items-center gap-2">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                      <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    <a
+                      href={`mailto:${footerInfo.email}`}
+                      className="hover:text-red-600"
+                    >
+                      {footerInfo.email}
+                    </a>
+                  </li>
+                )}
+                {footerInfo?.address && (
+                  <li className="flex items-start gap-2">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="mt-0.5 shrink-0"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <span>{footerInfo.address}</span>
+                  </li>
+                )}
+              </ul>
+
+            </div>
+
+            {/* Newsletter — order-2 on mobile (after brand), order-last on desktop */}
+            <div className="order-2 md:order-last">
+              <h3 className="text-md font-semibold text-[#202020] mb-3">
+                {t("footer.newsletter_title")}
+              </h3>
+              <p className="text-sm text-[#202020] mb-3">
+                {t("footer.newsletter_desc")}
+              </p>
+              <form onSubmit={handleToggleSubscription} className="w-full">
+                <label htmlFor="newsletter" className="sr-only">
+                  Email address
+                </label>
+                <div className="relative">
+                  <input
+                    id="newsletter"
+                    type="email"
+                    placeholder={t("footer.email_placeholder")}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-2 pr-24 rounded-full border border-black/10 outline-none text-sm focus:ring-2 focus:ring-[#ac0ad1]"
+                    aria-label="Email address"
+                    disabled={subscribed || toggling}
+                    style={{ opacity: subscribed ? 0.6 : 1 }}
+                  />
+                  <button
+                    type="submit"
+                    aria-label={subscribed ? "Unsubscribe" : "Subscribe"}
+                    disabled={toggling}
+                    className={`absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-full text-xs text-white transition ${
+                      subscribed
+                        ? "bg-gray-400 hover:bg-gray-400"
+                        : "bg-rose-600 hover:bg-rose-700"
+                    }`}
+                  >
+                    {toggling
+                      ? subscribed
+                        ? t("footer.unsubscribing")
+                        : t("footer.subscribing")
+                      : subscribed
+                        ? t("footer.unsubscribe")
+                        : t("footer.subscribe")}
+                  </button>
+                </div>
+              </form>
+
+              {/* Social links */}
+              {(socialLinks?.facebook?.url || socialLinks?.instagram?.url || socialLinks?.twitter?.url || socialLinks?.tiktok?.url || socialLinks?.youtube?.url) && (
+                <div className="flex items-center gap-3 mt-4">
+                  {socialLinks?.facebook?.enabled !== false && socialLinks?.facebook?.url && (
+                    <a href={socialLinks.facebook.url} target="_blank" rel="noopener noreferrer" aria-label="Facebook" style={{ color: "#1877F2" }} className="transition-opacity hover:opacity-80">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18 2h-3a4 4 0 0 0-4 4v3H8v4h3v8h4v-8h3l1-4h-4V6a1 1 0 0 1 1-1h3z" />
+                      </svg>
+                    </a>
+                  )}
+                  {socialLinks?.instagram?.enabled !== false && socialLinks?.instagram?.url && (
+                    <a href={socialLinks.instagram.url} target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ color: "#E1306C" }} className="transition-opacity hover:opacity-80">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth="2.5" strokeLinecap="round" />
+                      </svg>
+                    </a>
+                  )}
+                  {socialLinks?.twitter?.enabled !== false && socialLinks?.twitter?.url && (
+                    <a href={socialLinks.twitter.url} target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" style={{ color: "#000000" }} className="transition-opacity hover:opacity-70">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L2.1 2.25h6.877l4.254 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                      </svg>
+                    </a>
+                  )}
+                  {socialLinks?.tiktok?.enabled !== false && socialLinks?.tiktok?.url && (
+                    <a href={socialLinks.tiktok.url} target="_blank" rel="noopener noreferrer" aria-label="TikTok" style={{ color: "#010101" }} className="transition-opacity hover:opacity-70">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-6.33 6.33 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V9.05a8.23 8.23 0 0 0 4.82 1.55V7.16a4.85 4.85 0 0 1-1.05-.47z" />
+                      </svg>
+                    </a>
+                  )}
+                  {socialLinks?.youtube?.enabled !== false && socialLinks?.youtube?.url && (
+                    <a href={socialLinks.youtube.url} target="_blank" rel="noopener noreferrer" aria-label="YouTube" style={{ color: "#FF0000" }} className="transition-opacity hover:opacity-80">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
+                        <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Quick Links + Customer Service — order-3 on mobile (2-col row), order-2 on desktop (individual cols) */}
+            <div className="order-3 md:order-2 col-span-1 md:col-span-2 grid grid-cols-2 gap-8">
+              {/* Quick Links */}
+              <div>
+                <h3 className="text-md font-semibold text-[#202020] mb-3">
+                  {t("footer.quick_links")}
+                </h3>
+                {(() => {
+                  const all = footerLinks?.quickLinks?.length
+                    ? footerLinks.quickLinks
+                    : [
+                        { label: t("footer.home"), href: "/" },
+                        { label: "Electronics", href: "/category/electronics/" },
+                        { label: "Gents", href: "/category/gents/" },
+                        { label: "Ladies", href: "/category/ladies/" },
+                        { label: t("footer.blog"), href: "/blog" },
+                      ];
+                  const visible = showAllQuick ? all : all.slice(0, VISIBLE_LINKS);
+                  const hasMore = all.length > VISIBLE_LINKS;
+                  return (
+                    <ul className="space-y-2 text-sm text-[#202020]">
+                      {visible.map((item, i) => (
+                        <li key={i}>
+                          <Link href={normalizeHref(item.href)} className="hover:text-red-600">
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                      {hasMore && (
+                        <li>
+                          <button
+                            onClick={() => setShowAllQuick((v) => !v)}
+                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 mt-1 transition-colors"
+                          >
+                            <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px] font-bold">
+                              {showAllQuick ? "−" : "+"}
+                            </span>
+                            {showAllQuick ? "less" : `${all.length - VISIBLE_LINKS} more`}
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  );
+                })()}
+              </div>
+
+              {/* Customer Service */}
+              <div>
+                <h3 className="text-md font-semibold text-[#202020] mb-3">
+                  {t("footer.customer_service")}
+                </h3>
+                {(() => {
+                  const all = footerLinks?.customerService?.length
+                    ? footerLinks.customerService
+                    : [
+                        { label: t("footer.shipping_returns"), href: "/shipping" },
+                        { label: t("footer.return_policy"), href: "/returns" },
+                        { label: t("footer.faq"), href: "/faq" },
+                        { label: t("footer.contact"), href: "/contact" },
+                        { label: t("footer.about"), href: "/about" },
+                      ];
+                  const visible = showAllService ? all : all.slice(0, VISIBLE_LINKS);
+                  const hasMore = all.length > VISIBLE_LINKS;
+                  return (
+                    <ul className="space-y-2 text-sm text-[#202020]">
+                      {visible.map((item, i) => (
+                        <li key={i}>
+                          <Link href={normalizeHref(item.href)} className="hover:text-red-600">
+                            {item.label}
+                          </Link>
+                        </li>
+                      ))}
+                      {hasMore && (
+                        <li>
+                          <button
+                            onClick={() => setShowAllService((v) => !v)}
+                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 mt-1 transition-colors"
+                          >
+                            <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px] font-bold">
+                              {showAllService ? "−" : "+"}
+                            </span>
+                            {showAllService ? "less" : `${all.length - VISIBLE_LINKS} more`}
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  );
+                })()}
+              </div>
+            </div>
+
+            {/* Pay with — mobile only (order-4, after quick links) */}
+            {/* <div className="order-4 md:hidden -mt-4">
+              <span className="text-md font-semibold text-[#202020]">
+                Pay with
+              </span>
+              <div className="flex items-center gap-2 mt-0">
+                <Image
+                  src="/pay_with.png"
+                  alt="Visa"
+                  width={62}
+                  height={26}
+                  className="w-62 h-26 object-contain"
+                />
+              </div>
+            </div> */}
+          </div>
+
+          <div className="mt-4 border-t border-black/6 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-[#202020]">
+            <p>
+              © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
+              {t("footer.rights")}
+            </p>
+            <div className="flex items-center gap-4">
+              <Link href="/privacy" className="hover:text-red-600">
+                {t("footer.privacy")}
+              </Link>
+              <Link href="/terms" className="hover:text-red-600">
+                {t("footer.terms")}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Subscribe toast */}
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      />
+
+      {localToast && (
+        <div
+          className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full text-sm font-medium shadow-lg text-white transition-all ${
+            localToast.type === "success"
+              ? "bg-green-600"
+              : localToast.type === "warn"
+                ? "bg-amber-500"
+                : "bg-red-600"
+          }`}
+        >
+          {localToast.msg}
+        </div>
+      )}
+    </>
+  );
+}
