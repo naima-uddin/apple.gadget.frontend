@@ -84,8 +84,8 @@ const Banner = () => {
           key={slide._id || current}
           className="banner-fade flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-4 md:gap-6 px-4 md:px-6 py-8 md:py-0 md:h-110"
         >
-          {/* Left text */}
-          <div className="banner-slide-left order-2 md:order-1 text-center md:text-left max-w-xs md:max-w-sm">
+          {/* Left text — nudged up so it clears the bottom arrows */}
+          <div className="banner-slide-left order-2 md:order-1 text-center md:text-left max-w-xs md:max-w-sm md:mb-24">
             {slide.badge && (
               <p className="text-sm md:text-base text-gray-500 mb-1">
                 {slide.badge}
@@ -135,11 +135,10 @@ const Banner = () => {
                   : "object-cover"
               }
             />
-
           </div>
 
-          {/* Right text */}
-          <div className="banner-slide-right order-3 text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end">
+          {/* Right text — nudged up so it clears the bottom arrows */}
+          <div className="banner-slide-right order-3 text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end md:mb-24">
             {slide.rightTitle && (
               <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3">
                 {slide.rightTitle}
@@ -159,7 +158,7 @@ const Banner = () => {
             <button
               onClick={() => go(-1)}
               aria-label="Previous slide"
-              className="absolute left-4 md:left-10 bottom-4 md:bottom-8 p-2 text-gray-800 hover:text-[#2563EB] hover:-translate-x-0.5 transition z-20"
+              className="absolute left-4 md:left-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#2563EB] hover:-translate-x-0.5 transition z-20"
             >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"
@@ -178,7 +177,7 @@ const Banner = () => {
             <button
               onClick={() => go(1)}
               aria-label="Next slide"
-              className="absolute right-4 md:right-10 bottom-4 md:bottom-8 p-2 text-gray-800 hover:text-[#2563EB] hover:translate-x-0.5 transition z-20"
+              className="absolute right-4 md:right-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#2563EB] hover:translate-x-0.5 transition z-20"
             >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"
