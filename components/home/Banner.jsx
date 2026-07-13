@@ -40,7 +40,7 @@ const Banner = () => {
     if (total <= 1) return;
     autoRef.current = setInterval(
       () => setCurrent((p) => (p + 1) % total),
-      5000,
+      7000,
     );
   }, [total]);
 
@@ -87,17 +87,17 @@ const Banner = () => {
           {/* Left text — nudged up so it clears the bottom arrows */}
           <div className="banner-slide-left text-center md:text-left max-w-xs md:max-w-sm md:mb-24">
             {slide.badge && (
-              <p className="text-sm md:text-base text-gray-500 mb-1">
+              <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] text-gray-400 mb-2.5">
                 {slide.badge}
               </p>
             )}
             {slide.title && (
-              <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-3">
+              <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 leading-[1.12] text-balance mb-4">
                 {slide.title}
               </h1>
             )}
             {slide.subtitle && (
-              <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-5">
+              <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-70 mx-auto md:mx-0">
                 {slide.subtitle}
               </p>
             )}
@@ -151,12 +151,12 @@ const Banner = () => {
           {/* Right text — nudged up so it clears the bottom arrows */}
           <div className="banner-slide-right text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end md:mb-24">
             {slide.rightTitle && (
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3">
+              <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-tight text-gray-900 leading-snug text-balance mb-3">
                 {slide.rightTitle}
               </h2>
             )}
             {slide.rightText && (
-              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+              <p className="text-sm text-gray-500 leading-relaxed max-w-70 mx-auto md:mx-0 md:ml-auto">
                 {slide.rightText}
               </p>
             )}
