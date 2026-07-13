@@ -56,7 +56,7 @@ const Banner = () => {
 
   // top-to-bottom fade: pure white under the navbar into soft gray at the base
   const BG_GRADIENT =
-    "linear-gradient(180deg, #FFFFFF 0%, #FEFDFF 20%, #FAFAFC 40%, #F1F0F5 60%, #EAE9EE 80%, #E7E6EB 100%)";
+    "linear-gradient(180deg, #FFFFFF 0%, #FEFDFF 20%, #FAFAFC 40%, #F1F0F5 60%, #EAE9EE 80%, #F3F2F9 100%)";
 
   const slide = slides[current] || slides[0];
   if (!slide)
@@ -72,15 +72,17 @@ const Banner = () => {
     slide.rightText;
 
   return (
-    <section style={{ background: BG_GRADIENT }}>
+    <section className="md:mb-12 lg:mb-14" style={{ background: BG_GRADIENT }}>
+      {/* overflow-x-clip: side texts can slide in without a horizontal scrollbar,
+          while the center image is free to hang below the banner's bottom edge */}
       <div
-        className="relative max-w-7xl mx-auto overflow-hidden"
+        className="relative max-w-7xl mx-auto overflow-x-clip"
         onMouseEnter={() => clearInterval(autoRef.current)}
         onMouseLeave={startAuto}
       >
         <div
           key={slide._id || current}
-          className="banner-fade flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-4 md:gap-6 px-10 md:px-16 py-8 md:py-0 md:h-110"
+          className="banner-fade flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-4 md:gap-6 px-4 md:px-6 py-8 md:py-0 md:h-110"
         >
           {/* Left text */}
           <div className="banner-slide-left order-2 md:order-1 text-center md:text-left max-w-xs md:max-w-sm">
@@ -109,10 +111,12 @@ const Banner = () => {
             )}
           </div>
 
-          {/* Center image */}
+          {/* Center image — hangs below the banner edge for a floating look */}
           <div
-            className={`order-1 md:order-2 relative w-full md:w-105 lg:w-120 h-55 sm:h-70 md:h-110 cursor-pointer  ${
-              hasSideText ? "" : "md:col-span-3 md:w-full"
+            className={`order-1 md:order-2 relative w-full md:w-105 lg:w-120 h-55 sm:h-70 md:h-110 cursor-pointer ${
+              hasSideText
+                ? "z-10 md:translate-y-14 lg:translate-y-16"
+                : "md:col-span-3 md:w-full"
             }`}
             onClick={() => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
@@ -125,7 +129,11 @@ const Banner = () => {
               priority
               quality={100}
               sizes="(max-width: 768px) 100vw, 500px"
-              className={hasSideText ? "object-contain" : "object-cover"}
+              className={
+                hasSideText
+                  ? "object-contain drop-shadow-[0_30px_35px_rgba(0,0,0,0.18)]"
+                  : "object-cover"
+              }
             />
           </div>
 
