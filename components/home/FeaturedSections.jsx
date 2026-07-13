@@ -146,7 +146,7 @@ export default function FeaturedSections() {
   if (!loaded || sections.length === 0) return null;
 
   return (
-    <section className="w-full py-6 space-y-10 bg-[#F5F6F7]">
+    <section className="w-full py-6 space-y-10 bg-[#F3F2F9]">
       {sections.map((sec) => (
         <div key={sec._id} className="max-w-7xl mx-auto px-2">
           {/* Section header */}

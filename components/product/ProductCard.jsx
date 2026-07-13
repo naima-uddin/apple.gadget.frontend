@@ -292,12 +292,12 @@ export default function ProductCard({
         </div>
 
         <div className="p-3 flex flex-col grow">
-          <p className="text-sm text-gray-600 mb-1 line-clamp-1">
-            {product.title || product.category}
-          </p>
-          <h3 className="text-sm font-semibold text-gray-900 mb-1 line-clamp-2">
-            {product.description || product.title}
+          <h3 className="text-sm font-semibold text-[#1F2937] mb-1 truncate">
+            {product.title || product.slug}
           </h3>
+          <p className="text-xs text-[#6B7280] mb-1 truncate">
+            {product.description || product.category}
+          </p>
 
           <div className="mb-1">
             <div className="flex items-center gap-2 flex-wrap">
@@ -372,15 +372,31 @@ export default function ProductCard({
               </button>
             </div>
           ) : (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                addToCart(product, 1);
-              }}
-              className="relative z-[2] w-full bg-[#5B21B6] text-white py-2 rounded-md font-medium hover:bg-[#4C1D95] transition mt-auto"
-            >
-              {t("home.add_to_cart")}
-            </button>
+            <div className="relative z-[2] mt-auto flex gap-1.5">
+              {/* Buy Now — transparent with violet outline, straight to checkout */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(product, 1, { silent: true });
+                  router.push("/checkout");
+                }}
+                className="flex-1 bg-transparent border border-[#5B21B6] text-[#5B21B6] py-2 rounded-md text-xs font-semibold hover:bg-violet-50 transition"
+              >
+                {t("product.buy_now")}
+              </button>
+              {/* Add — compact filled violet pill with cart icon */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addToCart(product, 1);
+                }}
+                className="shrink-0 flex items-center justify-center gap-1 bg-[#5B21B6] text-white px-3 py-2 rounded-md text-xs font-semibold hover:bg-[#4C1D95] transition"
+                title={t("home.add_to_cart")}
+              >
+                <FaShoppingCart className="w-3.5 h-3.5" />
+                {t("home.add")}
+              </button>
+            </div>
           )}
         </div>
       </div>

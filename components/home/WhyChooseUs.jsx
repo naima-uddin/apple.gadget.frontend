@@ -66,7 +66,7 @@ export default function WhyChooseUs() {
           {hasImage && (
             <div className="relative rounded-2xl overflow-hidden bg-[#F5F6F7] min-h-64 md:min-h-80">
               <Image
-                src="/whychoose.png"
+                src="/whychoose.jpg"
                 alt={t("home.why_choose_us")}
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
