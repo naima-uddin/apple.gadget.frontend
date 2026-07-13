@@ -1,82 +1,143 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useLanguage } from "@/components/context/LanguageContext";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const VISIBLE_FAQS = 4;
 
-// Cayenne-style "Why Choose Us" block: intro text + FAQ accordion.
-// FAQ items are managed in the dashboard under Policy Pages → FAQ.
+// Shown when no FAQ items are configured in dashboard → Policy Pages → FAQ
+const DEFAULT_FAQS = [
+  {
+    question: "Are all your products authentic?",
+    answer:
+      "Yes — every gadget we sell is 100% authentic and sourced from authorized distributors, with official warranty where applicable.",
+  },
+  {
+    question: "How fast is delivery?",
+    answer:
+      "Orders inside Dhaka are usually delivered within 24–48 hours, and nationwide delivery takes 2–4 business days.",
+  },
+  {
+    question: "Can I return or exchange a product?",
+    answer:
+      "Absolutely. You can return or exchange most items within 7 days of delivery as long as they are unused and in original packaging.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept cash on delivery, bKash, Nagad, and all major debit/credit cards through our secure checkout.",
+  },
+];
+
+// Cayenne-style "Why Choose Us": image on the left, intro + FAQ accordion on
+// the right. FAQ items come from dashboard → Policy Pages → FAQ; the image is
+// /whychoose.png in the frontend public folder (section adapts if it's absent).
 export default function WhyChooseUs() {
   const { t } = useLanguage();
-  const [faqs, setFaqs] = useState([]);
+  const [faqs, setFaqs] = useState(DEFAULT_FAQS);
   const [storeName, setStoreName] = useState("");
   const [openIndex, setOpenIndex] = useState(0);
+  const [hasImage, setHasImage] = useState(true);
 
   useEffect(() => {
     fetch(`${API}/api/admin/top-banner`)
       .then((r) => r.json())
       .then((d) => {
-        setFaqs((d.policyContent?.faq || []).slice(0, VISIBLE_FAQS));
+        const items = d.policyContent?.faq || [];
+        if (items.length > 0) setFaqs(items.slice(0, VISIBLE_FAQS));
         setStoreName(d.storeName || "");
       })
-      .catch(() => setFaqs([]));
+      .catch(() => {});
   }, []);
 
-  if (faqs.length === 0) return null;
-
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2">
-          {t("home.why_choose_us")}
-        </h2>
-        <p className="text-sm text-[#6B7280] leading-relaxed mb-6">
-          {t("home.why_choose_desc").replace(
-            "{store}",
-            storeName || "our store",
+    <section className="w-full bg-[#F5F6F7] py-10 md:py-14">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        {/* White card: image left, content right */}
+        <div
+          className={`bg-white border border-gray-100 rounded-3xl shadow-sm p-4 md:p-6 grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
+            hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
+          }`}
+        >
+          {/* Image */}
+          {hasImage && (
+            <div className="relative rounded-2xl overflow-hidden bg-[#F5F6F7] min-h-64 md:min-h-80">
+              <Image
+                src="/whychoose.png"
+                alt={t("home.why_choose_us")}
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover"
+                onError={() => setHasImage(false)}
+              />
+            </div>
           )}
-        </p>
 
-        <div className="divide-y divide-gray-200 border-t border-b border-gray-200">
-          {faqs.map((item, i) => {
-            const open = openIndex === i;
-            return (
-              <div key={i}>
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(open ? -1 : i)}
-                  className="w-full flex items-center justify-between gap-4 py-4 text-left"
-                  aria-expanded={open}
-                >
-                  <span className="text-sm md:text-base font-semibold text-[#1F2937]">
-                    {item.question}
-                  </span>
-                  <span
-                    className={`shrink-0 text-[#6B7280] text-xl leading-none transition-transform duration-200 ${
-                      open ? "rotate-45 text-[#5B21B6]" : ""
-                    }`}
-                  >
-                    +
-                  </span>
-                </button>
-                <div
-                  className={`grid transition-all duration-300 ${
-                    open
-                      ? "grid-rows-[1fr] opacity-100 pb-4"
-                      : "grid-rows-[0fr] opacity-0"
-                  }`}
-                >
-                  <div className="overflow-hidden">
-                    <p className="text-sm text-[#6B7280] leading-relaxed">
-                      {item.answer}
-                    </p>
+          {/* Text + accordion */}
+          <div className="md:py-2 md:pr-2">
+            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2">
+              {t("home.why_choose_us")}
+            </h2>
+            <p className="text-sm text-[#6B7280] leading-relaxed mb-5">
+              {t("home.why_choose_desc").replace(
+                "{store}",
+                storeName || "our store",
+              )}
+            </p>
+
+            <div className="divide-y divide-gray-200 border-t border-gray-200">
+              {faqs.map((item, i) => {
+                const open = openIndex === i;
+                return (
+                  <div key={i}>
+                    <button
+                      type="button"
+                      onClick={() => setOpenIndex(open ? -1 : i)}
+                      className="w-full flex items-center justify-between gap-4 py-4 text-left"
+                      aria-expanded={open}
+                    >
+                      <span className="text-sm md:text-base font-semibold text-[#1F2937]">
+                        {item.question}
+                      </span>
+                      <span
+                        className={`shrink-0 text-[#6B7280] text-xl leading-none transition-transform duration-200 ${
+                          open ? "rotate-45 text-[#5B21B6]" : ""
+                        }`}
+                      >
+                        +
+                      </span>
+                    </button>
+                    <div
+                      className={`grid transition-all duration-300 ${
+                        open
+                          ? "grid-rows-[1fr] opacity-100 pb-4"
+                          : "grid-rows-[0fr] opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="text-sm text-[#6B7280] leading-relaxed">
+                          {item.answer}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* About Us pill — bottom right, like the reference */}
+        <div className="flex justify-end mt-4">
+          <Link
+            href="/about"
+            className="bg-white border border-[#5B21B6] text-[#5B21B6] hover:bg-[#5B21B6] hover:text-white rounded-full px-5 py-2 text-xs font-semibold transition-colors shadow-sm"
+          >
+            {t("footer.about")}
+          </Link>
         </div>
       </div>
     </section>

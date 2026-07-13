@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 import Navbar from "@/components/layout/Navbar";
 import MegaMenuNavbar from "@/components/layout/MegaMenuNavbar";
+import Newsletter from "@/components/layout/Newsletter";
 import Footer from "@/components/layout/Footer";
 import { StoreSettingsProvider } from "@/components/context/StoreSettingsContext";
 
@@ -214,6 +215,7 @@ export default function LayoutWrapper({ children }) {
 
       {children}
 
+      {!hideNav && <Newsletter />}
       {!hideNav && <Footer />}
     </StoreSettingsProvider>
   );
