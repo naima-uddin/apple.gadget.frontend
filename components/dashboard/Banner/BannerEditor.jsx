@@ -220,7 +220,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Sound Max Pro"
+              placeholder="e.g. Sound *Max* Pro — *word* shows in purple"
               className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -250,7 +250,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
           <input
             value={rightTitle}
             onChange={(e) => setRightTitle(e.target.value)}
-            placeholder="e.g. Bass Blaster X7"
+            placeholder="e.g. Bass *Blaster* X7 — *word* shows in purple"
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

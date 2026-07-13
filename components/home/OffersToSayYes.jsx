@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
@@ -79,7 +80,7 @@ function OfferCard({ offer }) {
         className={`absolute -bottom-3 left-2/3 -translate-x-1/2 w-6 h-6 bg-white border-2 ${t.borderColor} rounded-full z-10`}
       />
       {/* Dashed divider — w-0.5 + -translate-x-1/2 centers the 2px line on the left-2/3 axis */}
-      <div className="absolute left-2/3 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-orange-300" />
+      <div className="absolute left-2/3 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-gray-300" />
       <div className="flex h-full">
         {/* Left 2/3 */}
         <div className="w-2/3 pr-4 flex flex-col justify-center">
@@ -162,24 +163,28 @@ export default function OffersToSayYes() {
   return (
     <div className="w-full max-w-7xl mx-auto px-3 md:px-6 lg:px-8 py-8">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
-          <span className="text-red-500">{t("offers.title_highlight")}</span>{" "}
-          <span className="font-normal">{t("offers.title_rest")}</span>
-        </h1>
-      </div>
+      <SectionHeader
+        title={
+          <>
+            <span className="text-[#5B21B6]">
+              {t("offers.title_highlight")}
+            </span>{" "}
+            {t("offers.title_rest")}
+          </>
+        }
+      />
 
       {/* ── Mobile slider: one card at a time (hidden on md+) ── */}
       <div className="relative md:hidden">
         <button
           onClick={prevMobile}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-red-600 transition"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#5B21B6] transition"
         >
           <FaChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextMobile}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-red-600 transition"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#5B21B6] transition"
         >
           <FaChevronRight className="w-4 h-4" />
         </button>
@@ -206,7 +211,7 @@ export default function OffersToSayYes() {
               onClick={() => setMobileIndex(index)}
               className={`h-2 rounded-full transition-all ${
                 index === mobileIndex
-                  ? "bg-red-600 w-8"
+                  ? "bg-[#5B21B6] w-8"
                   : "bg-gray-300 w-2 hover:bg-gray-400"
               }`}
               aria-label={`Go to offer ${index + 1}`}
@@ -219,13 +224,13 @@ export default function OffersToSayYes() {
       <div className="relative hidden md:block">
         <button
           onClick={prevSlide}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-red-600 transition"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#5B21B6] transition"
         >
           <FaChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-red-600 transition"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#5B21B6] transition"
         >
           <FaChevronRight className="w-4 h-4" />
         </button>
@@ -243,7 +248,7 @@ export default function OffersToSayYes() {
               onClick={() => setCurrentSlide(index)}
               className={`h-2 rounded-full transition-all ${
                 index === currentSlide
-                  ? "bg-red-600 w-8"
+                  ? "bg-[#5B21B6] w-8"
                   : "bg-gray-300 w-2 hover:bg-gray-400"
               }`}
               aria-label={`Go to slide ${index + 1}`}

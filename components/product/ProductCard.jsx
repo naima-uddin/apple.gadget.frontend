@@ -142,7 +142,7 @@ export default function ProductCard({
   return (
     <>
       <div
-        className="relative bg-white border border-[#F1E4D8] rounded-xl shadow-sm group hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer h-full"
+        className="relative bg-white border border-gray-100 rounded-2xl shadow-sm group hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer h-full"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -185,8 +185,8 @@ export default function ProductCard({
                   }}
                   className={`w-2 h-2 rounded-full transition-all duration-200 ${
                     idx === currentImageIndex
-                      ? "bg-red-600 w-4"
-                      : "bg-gray-600/90 hover:bg-red-600"
+                      ? "bg-[#5B21B6] w-4"
+                      : "bg-gray-600/90 hover:bg-[#5B21B6]"
                   }`}
                   aria-label={`View image ${idx + 1}`}
                 />
@@ -238,7 +238,7 @@ export default function ProductCard({
                 e.stopPropagation();
                 router.push(href);
               }}
-              className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 hover:text-white transition-colors"
+              className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#5B21B6] hover:text-white transition-colors"
             >
               <FaEye className="w-4 h-4" />
             </button>
@@ -248,7 +248,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   addToCart(product, 1);
                 }}
-                className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 hover:text-white transition-colors"
+                className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#5B21B6] hover:text-white transition-colors"
                 title="Add to cart"
               >
                 <FaShoppingCart className="w-4 h-4" />
@@ -264,7 +264,7 @@ export default function ProductCard({
                   addToWishlist(product);
                 }
               }}
-              className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 hover:text-white transition-colors"
+              className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#5B21B6] hover:text-white transition-colors"
               title="Add to wishlist"
             >
               <FaHeart className="w-4 h-4" />
@@ -301,7 +301,7 @@ export default function ProductCard({
 
           <div className="mb-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-lg font-bold text-red-600">
+              <span className="text-lg font-bold text-[#1F2937]">
                 ৳{price?.toLocaleString()}
               </span>
               {compareAt && compareAt > price && (
@@ -377,7 +377,7 @@ export default function ProductCard({
                 e.stopPropagation();
                 addToCart(product, 1);
               }}
-              className="relative z-[2] w-full bg-red-600 text-white py-2 rounded-md font-medium hover:bg-red-700 transition mt-auto"
+              className="relative z-[2] w-full bg-[#5B21B6] text-white py-2 rounded-md font-medium hover:bg-[#4C1D95] transition mt-auto"
             >
               {t("home.add_to_cart")}
             </button>

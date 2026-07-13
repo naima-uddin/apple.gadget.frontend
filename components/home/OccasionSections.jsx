@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
 // How many cards visible per breakpoint (used for step calculation)
 const VISIBLE = { default: 2, sm: 3, md: 4, lg: 5 };
@@ -75,7 +76,7 @@ function OccasionSlider({ section }) {
         <button
           onClick={prev}
           aria-label="Previous"
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-600 hover:border hover:border-red-600 transition-colors"
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-600 hover:border hover:border-[#5B21B6] transition-colors"
         >
           <svg
             className="w-4 h-4"
@@ -98,7 +99,7 @@ function OccasionSlider({ section }) {
         <button
           onClick={next}
           aria-label="Next"
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-600 hover:border hover:border-red-600 transition-colors"
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 w-9 h-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-gray-600 hover:border hover:border-[#5B21B6] transition-colors"
         >
           <svg
             className="w-4 h-4"
@@ -147,14 +148,14 @@ function OccasionSlider({ section }) {
                   </div>
 
                   {/* Subtitle — fixed height so all cards align */}
-                  <div className="px-3 py-2 flex-1 flex items-center justify-center bg-[#FFF5ED]">
-                    <p className="text-xs text-gray-500 text-center leading-relaxed line-clamp-2">
+                  <div className="px-3 py-2 flex-1 flex items-center justify-center bg-[#F5F6F7]">
+                    <p className="text-xs text-[#6B7280] text-center leading-relaxed line-clamp-2">
                       {card.subtitle || "\u00A0"}
                     </p>
                   </div>
 
                   {/* Label bar */}
-                  <div className="bg-[#FFE3CC] text-red-600 text-xs sm:text-sm font-semibold text-center py-2 px-2 truncate group-hover:bg-[#fed0ab] transition-colors flex-shrink-0">
+                  <div className="bg-violet-100 text-[#5B21B6] text-xs sm:text-sm font-semibold text-center py-2 px-2 truncate group-hover:bg-violet-200 transition-colors flex-shrink-0">
                     {card.label || "\u00A0"}
                   </div>
                 </div>
@@ -171,7 +172,7 @@ function OccasionSlider({ section }) {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`w-1.5 h-1.5 rounded-full transition-all ${i === current ? "bg-[#fd9d4f] w-4" : "bg-gray-300"}`}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${i === current ? "bg-[#5B21B6] w-4" : "bg-gray-300"}`}
             />
           ))}
         </div>
@@ -199,19 +200,17 @@ export default function OccasionSections() {
       {sections.map((section) => (
         <div key={section._id}>
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg md:text-3xl font-bold text-gray-900">
-              {lang === "bn" ? section.titleBn || section.title : section.title}
-            </h2>
-            {section.viewAllLink && section.viewAllLink !== "/" && (
-              <Link
-                href={section.viewAllLink}
-                className="text-md  text-rose-500 font-semibold hover:underline whitespace-nowrap"
-              >
-                {t("home.view_all")}
-              </Link>
-            )}
-          </div>
+          <SectionHeader
+            title={
+              lang === "bn" ? section.titleBn || section.title : section.title
+            }
+            seeMoreHref={
+              section.viewAllLink && section.viewAllLink !== "/"
+                ? section.viewAllLink
+                : undefined
+            }
+            seeMoreLabel={t("home.see_more")}
+          />
 
           <OccasionSlider section={section} />
         </div>

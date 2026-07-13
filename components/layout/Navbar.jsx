@@ -59,7 +59,7 @@ function ProfileMenu() {
       <div ref={ref} className="relative">
         <button
           onClick={handleProfileClick}
-          className="flex items-center gap-1.5 p-1 text-gray-800 hover:text-[#2563EB] transition-colors"
+          className="flex items-center gap-1.5 p-1 text-gray-800 hover:text-[#5B21B6] transition-colors"
           aria-label="Profile"
           title="Profile"
         >
@@ -75,7 +75,7 @@ function ProfileMenu() {
               onError={() => setImgError(true)}
             />
           ) : user && user.email ? (
-            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#2563EB] text-white text-xs font-semibold">
+            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#5B21B6] text-white text-xs font-semibold">
               {user.email.charAt(0).toUpperCase()}
             </span>
           ) : (
@@ -125,7 +125,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/profile"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -141,7 +141,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/wishlist"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -163,7 +163,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/orders"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -178,7 +178,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/address"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -201,7 +201,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/reviews"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -216,7 +216,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/rewards"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -231,7 +231,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/coupons"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -249,7 +249,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/cart"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -346,7 +346,7 @@ export default function Navbar() {
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setCatSidebarOpen((v) => !v)}
-            className="p-2 text-gray-800 hover:text-[#2563EB] lg:hidden"
+            className="p-2 text-gray-800 hover:text-[#5B21B6] lg:hidden"
             aria-label="Categories"
             title="Categories"
           >
@@ -383,8 +383,8 @@ export default function Navbar() {
                   href={link.href}
                   className={`flex items-center gap-1 text-sm font-medium transition-colors ${
                     isActive(link.href)
-                      ? "text-[#2563EB]"
-                      : "text-gray-800 hover:text-[#2563EB]"
+                      ? "text-[#5B21B6]"
+                      : "text-gray-800 hover:text-[#5B21B6]"
                   }`}
                 >
                   {link.label}
@@ -410,7 +410,7 @@ export default function Navbar() {
                       <Link
                         href="/products"
                         onClick={() => setShopOpen(false)}
-                        className="block px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-blue-50 hover:text-[#2563EB] transition-colors"
+                        className="block px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-violet-50 hover:text-[#5B21B6] transition-colors"
                       >
                         {t("nav.all_products")}
                       </Link>
@@ -423,7 +423,7 @@ export default function Navbar() {
                             key={c._id}
                             href={`/category/${slug}/`}
                             onClick={() => setShopOpen(false)}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#2563EB] transition-colors"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-[#5B21B6] transition-colors"
                           >
                             {lang === "bn" ? c.nameBn || c.name : c.name}
                           </Link>
@@ -439,8 +439,8 @@ export default function Navbar() {
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(link.href)
-                    ? "text-[#2563EB]"
-                    : "text-gray-800 hover:text-[#2563EB]"
+                    ? "text-[#5B21B6]"
+                    : "text-gray-800 hover:text-[#5B21B6]"
                 }`}
               >
                 {link.label}
@@ -454,7 +454,7 @@ export default function Navbar() {
           {/* Track order */}
           <Link
             href="/track-order"
-            className="hidden md:inline-flex p-2 text-gray-800 hover:text-[#2563EB] transition-colors"
+            className="hidden md:inline-flex p-2 text-gray-800 hover:text-[#5B21B6] transition-colors"
             title={t("nav.track_order")}
             aria-label={t("nav.track_order")}
           >
@@ -476,7 +476,7 @@ export default function Navbar() {
           <button
             ref={searchIconRef}
             onClick={() => setSearchOpen((v) => !v)}
-            className="p-2 text-gray-800 hover:text-[#2563EB] transition-colors"
+            className="p-2 text-gray-800 hover:text-[#5B21B6] transition-colors"
             aria-label="Search"
             title="Search"
           >
@@ -499,7 +499,7 @@ export default function Navbar() {
           {/* Cart */}
           <button
             onClick={toggleSidebar}
-            className="relative p-2 text-gray-800 hover:text-[#2563EB] transition-colors"
+            className="relative p-2 text-gray-800 hover:text-[#5B21B6] transition-colors"
             aria-label="Cart"
             title="Cart"
           >
@@ -519,7 +519,7 @@ export default function Navbar() {
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
             {getCartCount() > 0 && (
-              <span className="absolute top-0.5 right-0.5 inline-flex items-center justify-center px-1 text-[10px] font-bold leading-none text-white bg-[#2563EB] rounded-full min-w-4 h-4">
+              <span className="absolute top-0.5 right-0.5 inline-flex items-center justify-center px-1 text-[10px] font-bold leading-none text-white bg-[#5B21B6] rounded-full min-w-4 h-4">
                 {getCartCount()}
               </span>
             )}
@@ -590,7 +590,7 @@ export default function Navbar() {
             />
             <button
               type="button"
-              className="p-2 text-gray-800 hover:text-[#2563EB] shrink-0"
+              className="p-2 text-gray-800 hover:text-[#5B21B6] shrink-0"
               onClick={() => setSearchOpen(false)}
             >
               <svg

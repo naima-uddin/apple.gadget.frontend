@@ -54,6 +54,20 @@ const Banner = () => {
     startAuto();
   };
 
+  // words wrapped in *asterisks* render in the violet highlight color
+  const renderHighlight = (text) =>
+    String(text)
+      .split(/(\*[^*]+\*)/g)
+      .map((part, i) =>
+        part.startsWith("*") && part.endsWith("*") ? (
+          <span key={i} className="text-[#5B21B6]">
+            {part.slice(1, -1)}
+          </span>
+        ) : (
+          part
+        ),
+      );
+
   // top-to-bottom fade: pure white under the navbar into soft gray at the base
   const BG_GRADIENT =
     "linear-gradient(180deg, #FFFFFF 0%, #FEFDFF 20%, #FAFAFC 40%, #F1F0F5 60%, #EAE9EE 80%, #F3F2F9 100%)";
@@ -87,24 +101,24 @@ const Banner = () => {
           {/* Left text — nudged up so it clears the bottom arrows */}
           <div className="banner-slide-left text-center md:text-left max-w-xs md:max-w-sm md:mb-24">
             {slide.badge && (
-              <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] text-gray-400 mb-2.5">
+              <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] text-[#6B7280] mb-2.5">
                 {slide.badge}
               </p>
             )}
             {slide.title && (
-              <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight text-gray-900 leading-[1.12] text-balance mb-4">
-                {slide.title}
+              <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight text-[#1F2937] leading-[1.12] text-balance mb-4">
+                {renderHighlight(slide.title)}
               </h1>
             )}
             {slide.subtitle && (
-              <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-70 mx-auto md:mx-0">
+              <p className="text-sm text-[#6B7280] leading-relaxed mb-6 max-w-70 mx-auto md:mx-0">
                 {slide.subtitle}
               </p>
             )}
             {slide.buttonText && slide.buttonLink && (
               <Link
                 href={slide.buttonLink}
-                className="inline-block bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs md:text-sm font-semibold uppercase tracking-wider px-7 py-3 rounded-md transition"
+                className="inline-block bg-[#5B21B6] hover:bg-[#4C1D95] text-[#FFFFFF] text-xs md:text-sm font-semibold uppercase tracking-wider px-7 py-3 rounded-md transition"
               >
                 {slide.buttonText}
               </Link>
@@ -115,7 +129,7 @@ const Banner = () => {
           <div
             className={`relative w-full md:w-115 lg:w-130 xl:w-140 h-60 sm:h-75 md:h-130 lg:h-135 cursor-pointer ${
               hasSideText
-                ? "z-10 md:translate-y-4 lg:translate-y-6"
+                ? "z-10 md:translate-y-3 lg:translate-y-5"
                 : "md:col-span-3 md:w-full md:h-110"
             }`}
             onClick={() => {
@@ -129,7 +143,7 @@ const Banner = () => {
                 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-3/5 rounded-full blur-3xl"
                 style={{
                   background:
-                    "radial-gradient(closest-side, rgba(37,99,235,0.18), rgba(147,197,253,0.10) 55%, transparent 100%)",
+                    "radial-gradient(closest-side, rgba(91,33,182,0.16), rgba(196,181,253,0.10) 55%, transparent 100%)",
                 }}
               />
             )}
@@ -151,12 +165,12 @@ const Banner = () => {
           {/* Right text — nudged up so it clears the bottom arrows */}
           <div className="banner-slide-right text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end md:mb-24">
             {slide.rightTitle && (
-              <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-tight text-gray-900 leading-snug text-balance mb-3">
-                {slide.rightTitle}
+              <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-tight text-[#1F2937] leading-snug text-balance mb-3">
+                {renderHighlight(slide.rightTitle)}
               </h2>
             )}
             {slide.rightText && (
-              <p className="text-sm text-gray-500 leading-relaxed max-w-70 mx-auto md:mx-0 md:ml-auto">
+              <p className="text-sm text-[#6B7280] leading-relaxed max-w-70 mx-auto md:mx-0 md:ml-auto">
                 {slide.rightText}
               </p>
             )}
@@ -169,7 +183,7 @@ const Banner = () => {
             <button
               onClick={() => go(-1)}
               aria-label="Previous slide"
-              className="absolute left-4 md:left-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#2563EB] hover:-translate-x-0.5 transition z-20"
+              className="absolute left-4 md:left-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#5B21B6] hover:-translate-x-0.5 transition z-20"
             >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"
@@ -188,7 +202,7 @@ const Banner = () => {
             <button
               onClick={() => go(1)}
               aria-label="Next slide"
-              className="absolute right-4 md:right-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#2563EB] hover:translate-x-0.5 transition z-20"
+              className="absolute right-4 md:right-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#5B21B6] hover:translate-x-0.5 transition z-20"
             >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"

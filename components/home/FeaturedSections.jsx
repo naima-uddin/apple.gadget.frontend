@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import ProductCard from "@/components/product/ProductCard";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
 // Returns how many cards fit at the current viewport width
 function useVisibleCount() {
@@ -64,7 +65,7 @@ function FeaturedSlider({ products }) {
       {maxIndex > 0 && (
         <button
           onClick={() => go(-1)}
-          className="absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-rose-600 hover:text-white transition sm:-translate-x-4"
+          className="absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#5B21B6] hover:text-white transition sm:-translate-x-4"
           aria-label="Previous"
         >
           ‹
@@ -98,7 +99,7 @@ function FeaturedSlider({ products }) {
       {maxIndex > 0 && (
         <button
           onClick={() => go(1)}
-          className="absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-rose-600 hover:text-white transition sm:translate-x-4"
+          className="absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#5B21B6] hover:text-white transition sm:translate-x-4"
           aria-label="Next"
         >
           ›
@@ -115,7 +116,7 @@ function FeaturedSlider({ products }) {
                 setCurrentIndex(i);
                 startAuto();
               }}
-              className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? "bg-rose-600 w-4" : "bg-gray-300"}`}
+              className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? "bg-[#5B21B6] w-4" : "bg-gray-300"}`}
             />
           ))}
         </div>
@@ -145,23 +146,19 @@ export default function FeaturedSections() {
   if (!loaded || sections.length === 0) return null;
 
   return (
-    <section className="w-full py-6 space-y-10 bg-[#FFF5ED]">
+    <section className="w-full py-6 space-y-10 bg-[#F5F6F7]">
       {sections.map((sec) => (
         <div key={sec._id} className="max-w-7xl mx-auto px-2">
           {/* Section header */}
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg md:text-3xl font-bold text-gray-800">
-              {lang === "bn" ? sec.titleBn || sec.title : sec.title}
-            </h2>
-            {sec.viewAllLink && sec.viewAllLink !== "/" && (
-              <a
-                href={sec.viewAllLink}
-                className="text-md  text-rose-500 font-semibold hover:underline whitespace-nowrap"
-              >
-                {t("home.view_all")}
-              </a>
-            )}
-          </div>
+          <SectionHeader
+            title={lang === "bn" ? sec.titleBn || sec.title : sec.title}
+            seeMoreHref={
+              sec.viewAllLink && sec.viewAllLink !== "/"
+                ? sec.viewAllLink
+                : undefined
+            }
+            seeMoreLabel={t("home.see_more")}
+          />
           {/* Product slider */}
           <FeaturedSlider products={sec.products} />
         </div>

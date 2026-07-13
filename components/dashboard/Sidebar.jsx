@@ -296,8 +296,6 @@ const SECTIONS = [
     icon: SECTION_ICONS.content,
     permissionKey: "content",
     matchPrefixes: [
-      "/dashboard/occasions",
-      "/dashboard/promo-strip",
       "/dashboard/featured",
       "/dashboard/banners",
       "/dashboard/promo-panels",
@@ -321,22 +319,8 @@ const SECTIONS = [
         permissionKey: "content.banners",
       },
       {
-        key: "promo-strip",
-        label: "Promo Strip",
-        href: "/dashboard/promo-strip",
-        icon: "M4 7h16M4 12h16M4 17h16",
-        permissionKey: "content.promo",
-      },
-      {
-        key: "occasions",
-        label: "Occasions",
-        href: "/dashboard/occasions",
-        icon: "M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z",
-        permissionKey: "content.promo",
-      },
-      {
         key: "promo-panels",
-        label: "Promo Panels Banner",
+        label: "CTA / Promo Panel",
         href: "/dashboard/promo-panels",
         icon: "M3 3h8v8H3z M13 3h8v4h-8V3z M13 10h8v4h-8v-4z M3 14h8v7H3v-7z",
         permissionKey: "content.promo",

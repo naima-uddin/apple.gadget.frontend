@@ -59,7 +59,7 @@ export default function Footer() {
                 toast.dismiss(toastObj.id);
                 setShowAuthModal(true);
               }}
-              className="font-semibold text-pink-600 underline hover:text-pink-800"
+              className="font-semibold text-[#5B21B6] underline hover:text-[#4C1D95]"
             >
               {t("auth.login")}
             </button>
@@ -114,7 +114,7 @@ export default function Footer() {
     <>
       <footer
         role="contentinfo"
-        className="bg-[#FFF5ED] border-t border-black/6"
+        className="bg-white border-t border-gray-100"
       >
         <div className="max-w-[1200px] mx-auto px-4 py-6 md:py-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-5 md:gap-8">
@@ -123,12 +123,12 @@ export default function Footer() {
               <div className="mb-3">
                 <WebsiteLogo />
               </div>
-              <p className="text-sm text-[#202020] md:max-w-[260px]">
+              <p className="text-sm text-[#6B7280] md:max-w-[260px]">
                 {storeName || "Our Store"} {t("footer.store_desc")}
               </p>
 
               {/* Contact info */}
-              <ul className="mt-4 space-y-1.5 text-sm text-[#202020]">
+              <ul className="mt-4 space-y-1.5 text-sm text-[#6B7280]">
                 {footerInfo?.phone && (
                   <li className="flex items-center gap-2">
                     <svg
@@ -145,7 +145,7 @@ export default function Footer() {
                     </svg>
                     <a
                       href={`tel:${footerInfo.phone}`}
-                      className="hover:text-red-600"
+                      className="hover:text-[#5B21B6]"
                     >
                       {footerInfo.phone}
                     </a>
@@ -168,7 +168,7 @@ export default function Footer() {
                     </svg>
                     <a
                       href={`mailto:${footerInfo.email}`}
-                      className="hover:text-red-600"
+                      className="hover:text-[#5B21B6]"
                     >
                       {footerInfo.email}
                     </a>
@@ -199,10 +199,10 @@ export default function Footer() {
 
             {/* Newsletter — order-2 on mobile (after brand), order-last on desktop */}
             <div className="order-2 md:order-last">
-              <h3 className="text-md font-semibold text-[#202020] mb-3">
+              <h3 className="text-md font-semibold text-[#1F2937] mb-3">
                 {t("footer.newsletter_title")}
               </h3>
-              <p className="text-sm text-[#202020] mb-3">
+              <p className="text-sm text-[#6B7280] mb-3">
                 {t("footer.newsletter_desc")}
               </p>
               <form onSubmit={handleToggleSubscription} className="w-full">
@@ -216,7 +216,7 @@ export default function Footer() {
                     placeholder={t("footer.email_placeholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 pr-24 rounded-full border border-black/10 outline-none text-sm focus:ring-2 focus:ring-[#ac0ad1]"
+                    className="w-full px-4 py-2 pr-24 rounded-full border border-black/10 outline-none text-sm focus:ring-2 focus:ring-[#5B21B6]"
                     aria-label="Email address"
                     disabled={subscribed || toggling}
                     style={{ opacity: subscribed ? 0.6 : 1 }}
@@ -228,7 +228,7 @@ export default function Footer() {
                     className={`absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-full text-xs text-white transition ${
                       subscribed
                         ? "bg-gray-400 hover:bg-gray-400"
-                        : "bg-rose-600 hover:bg-rose-700"
+                        : "bg-[#5B21B6] hover:bg-[#4C1D95]"
                     }`}
                   >
                     {toggling
@@ -291,7 +291,7 @@ export default function Footer() {
             <div className="order-3 md:order-2 col-span-1 md:col-span-2 grid grid-cols-2 gap-8">
               {/* Quick Links */}
               <div>
-                <h3 className="text-md font-semibold text-[#202020] mb-3">
+                <h3 className="text-md font-semibold text-[#1F2937] mb-3">
                   {t("footer.quick_links")}
                 </h3>
                 {(() => {
@@ -307,10 +307,10 @@ export default function Footer() {
                   const visible = showAllQuick ? all : all.slice(0, VISIBLE_LINKS);
                   const hasMore = all.length > VISIBLE_LINKS;
                   return (
-                    <ul className="space-y-2 text-sm text-[#202020]">
+                    <ul className="space-y-2 text-sm text-[#6B7280]">
                       {visible.map((item, i) => (
                         <li key={i}>
-                          <Link href={normalizeHref(item.href)} className="hover:text-red-600">
+                          <Link href={normalizeHref(item.href)} className="hover:text-[#5B21B6]">
                             {item.label}
                           </Link>
                         </li>
@@ -319,7 +319,7 @@ export default function Footer() {
                         <li>
                           <button
                             onClick={() => setShowAllQuick((v) => !v)}
-                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 mt-1 transition-colors"
+                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-[#5B21B6] mt-1 transition-colors"
                           >
                             <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px] font-bold">
                               {showAllQuick ? "−" : "+"}
@@ -335,7 +335,7 @@ export default function Footer() {
 
               {/* Customer Service */}
               <div>
-                <h3 className="text-md font-semibold text-[#202020] mb-3">
+                <h3 className="text-md font-semibold text-[#1F2937] mb-3">
                   {t("footer.customer_service")}
                 </h3>
                 {(() => {
@@ -351,10 +351,10 @@ export default function Footer() {
                   const visible = showAllService ? all : all.slice(0, VISIBLE_LINKS);
                   const hasMore = all.length > VISIBLE_LINKS;
                   return (
-                    <ul className="space-y-2 text-sm text-[#202020]">
+                    <ul className="space-y-2 text-sm text-[#6B7280]">
                       {visible.map((item, i) => (
                         <li key={i}>
-                          <Link href={normalizeHref(item.href)} className="hover:text-red-600">
+                          <Link href={normalizeHref(item.href)} className="hover:text-[#5B21B6]">
                             {item.label}
                           </Link>
                         </li>
@@ -363,7 +363,7 @@ export default function Footer() {
                         <li>
                           <button
                             onClick={() => setShowAllService((v) => !v)}
-                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 mt-1 transition-colors"
+                            className="flex items-center gap-1 text-xs text-gray-400 hover:text-[#5B21B6] mt-1 transition-colors"
                           >
                             <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px] font-bold">
                               {showAllService ? "−" : "+"}
@@ -380,7 +380,7 @@ export default function Footer() {
 
             {/* Pay with — mobile only (order-4, after quick links) */}
             {/* <div className="order-4 md:hidden -mt-4">
-              <span className="text-md font-semibold text-[#202020]">
+              <span className="text-md font-semibold text-[#1F2937]">
                 Pay with
               </span>
               <div className="flex items-center gap-2 mt-0">
@@ -395,16 +395,16 @@ export default function Footer() {
             </div> */}
           </div>
 
-          <div className="mt-4 border-t border-black/6 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-[#202020]">
+          <div className="mt-4 border-t border-black/6 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-[#6B7280]">
             <p>
               © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
               {t("footer.rights")}
             </p>
             <div className="flex items-center gap-4">
-              <Link href="/privacy" className="hover:text-red-600">
+              <Link href="/privacy" className="hover:text-[#5B21B6]">
                 {t("footer.privacy")}
               </Link>
-              <Link href="/terms" className="hover:text-red-600">
+              <Link href="/terms" className="hover:text-[#5B21B6]">
                 {t("footer.terms")}
               </Link>
             </div>

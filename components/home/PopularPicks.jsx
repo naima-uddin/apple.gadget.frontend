@@ -9,9 +9,9 @@ import { useUser } from "@/components/context/UserContext";
 import AuthModal from "@/components/auth/AuthModal";
 import Skeleton from "@/components/ui/Skeleton";
 import WaitlistModal from "@/components/cart/WaitlistModal";
-import Link from "next/link";
 import { getDisplayPrice } from "@/lib/pricing";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
 export default function PopularPicks() {
   const router = useRouter();
@@ -226,27 +226,18 @@ export default function PopularPicks() {
 
   return (
     <>
-      <section className="w-full bg-[#FFF5ED] ">
+      <section className="w-full bg-white">
         <div
           className="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8"
           onMouseEnter={stopAutoSlide}
           onMouseLeave={startAutoSlide}
         >
           {/* Header */}
-          <div className="flex items-center justify-between gap-3 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-3 h-3 bg-red-600 rounded-full"></div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                {t("home.popular_picks")}
-              </h1>
-            </div>
-            <Link
-              href="/tag/popular-pics/"
-              className="text-md text-rose-500 font-semibold hover:underline whitespace-nowrap"
-            >
-              {t("home.view_all")}
-            </Link>
-          </div>
+          <SectionHeader
+            title={t("home.popular_picks")}
+            seeMoreHref="/tag/popular-pics/"
+            seeMoreLabel={t("home.see_more")}
+          />
 
           {/* Carousel Container with Left Panel */}
           <div className="relative flex gap-6 items-stretch">
@@ -272,7 +263,7 @@ export default function PopularPicks() {
 
                   <div className="absolute inset-0 z-10 p-4 text-center flex flex-col justify-end">
                     {activePromoPanel.title && (
-                      <h2 className="text-xl font-bold text-orange-600 mb-1">
+                      <h2 className="text-xl font-bold text-[#5B21B6] mb-1">
                         {activePromoPanel.title}
                       </h2>
                     )}
@@ -280,7 +271,7 @@ export default function PopularPicks() {
                       activePromoPanel.buttonLink && (
                         <a
                           href={activePromoPanel.buttonLink}
-                          className="promo-view-all relative inline-block overflow-hidden px-6 py-1.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition font-medium self-center"
+                          className="promo-view-all relative inline-block overflow-hidden px-6 py-1.5 bg-[#5B21B6] text-white rounded-md hover:bg-[#4C1D95] transition font-medium self-center"
                         >
                           <span className="relative z-10">
                             {activePromoPanel.buttonText}
@@ -327,7 +318,7 @@ export default function PopularPicks() {
               {/* Navigation Buttons */}
               <button
                 onClick={() => prevSlide(true)}
-                className="absolute left-1 sm:-left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-red-600 transition-shadow"
+                className="absolute left-1 sm:-left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#5B21B6] transition-shadow"
               >
                 <svg
                   className="w-4 h-4 text-gray-700"
@@ -346,7 +337,7 @@ export default function PopularPicks() {
 
               <button
                 onClick={() => nextSlide(true)}
-                className="absolute right-1 sm:-right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-red-600 transition-shadow"
+                className="absolute right-1 sm:-right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#5B21B6] transition-shadow"
               >
                 <svg
                   className="w-4 h-4 text-gray-700"
@@ -373,7 +364,7 @@ export default function PopularPicks() {
                       .map((_, i) => (
                         <div
                           key={i}
-                          className="bg-white border border-[#F1E4D8] rounded-xl shadow-sm overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full"
+                          className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full"
                         >
                           <Skeleton className="w-full h-full" />
                         </div>
@@ -385,7 +376,7 @@ export default function PopularPicks() {
                         onMouseEnter={() => setHoveredId(product.id)}
                         onMouseLeave={() => setHoveredId(null)}
                         onMouseDown={() => setHoveredId(product.id)}
-                        className="bg-white border border-[#F1E4D8] rounded-xl shadow-sm overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col"
+                        className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col"
                       >
                         {/* Product Image Container */}
                         <div className="relative bg-white  rounded-xl p-1 h-54 flex items-center justify-center overflow-hidden">
@@ -484,7 +475,7 @@ export default function PopularPicks() {
                                 e.stopPropagation();
                                 router.push(`/product/${product.id}/`);
                               }}
-                              className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 hover:text-white transition-colors"
+                              className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#5B21B6] hover:text-white transition-colors"
                               title="View"
                             >
                               <FaEye className="w-4 h-4" />
@@ -495,7 +486,7 @@ export default function PopularPicks() {
                                   e.stopPropagation();
                                   addToCart(product, 1);
                                 }}
-                                className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 hover:text-white transition-colors"
+                                className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#5B21B6] hover:text-white transition-colors"
                                 title="Add to cart"
                               >
                                 <FaShoppingCart className="w-4 h-4" />
@@ -511,7 +502,7 @@ export default function PopularPicks() {
                                   addToWishlist(product);
                                 }
                               }}
-                              className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-red-600 hover:text-white transition-colors"
+                              className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#5B21B6] hover:text-white transition-colors"
                               title="Add to wishlist"
                             >
                               <FaHeart className="w-4 h-4" />
@@ -543,7 +534,7 @@ export default function PopularPicks() {
                                   aria-label={`View image ${i + 1}`}
                                   className={`h-2 rounded-full transition-all ${
                                     (activeImageIndex[product.id] ?? 0) === i
-                                      ? "w-4 bg-red-600"
+                                      ? "w-4 bg-[#5B21B6]"
                                       : "w-2 bg-gray-300 hover:bg-gray-400"
                                   }`}
                                 />
@@ -554,15 +545,15 @@ export default function PopularPicks() {
 
                         {/* Product Info */}
                         <div className="px-4 py-2 relative flex-1">
-                          <p className="text-sm text-gray-600 mb-1">
+                          <p className="text-sm text-[#6B7280] mb-1">
                             {product.title}
                           </p>
-                          <h3 className="text-base font-semibold text-gray-900 mb-1 line-clamp-2">
+                          <h3 className="text-base font-semibold text-[#1F2937] mb-1 line-clamp-2">
                             {product.subtitle}
                           </h3>
                           {/* Price */}
                           <div className="mb-2 flex items-baseline gap-2 flex-wrap">
-                            <span className="text-lg font-bold text-red-600">
+                            <span className="text-lg font-bold text-[#1F2937]">
                               ৳{product.price?.toLocaleString()}
                             </span>
                             {product.compareAtPrice &&
@@ -645,7 +636,7 @@ export default function PopularPicks() {
                                 e.stopPropagation();
                                 addToCart(product, 1);
                               }}
-                              className="absolute bottom-4 left-4 right-4 bg-red-600 text-white py-2 rounded-md font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-700"
+                              className="absolute bottom-4 left-4 right-4 bg-[#5B21B6] text-white py-2 rounded-md font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#4C1D95]"
                             >
                               {t("home.add_to_cart")}
                             </button>

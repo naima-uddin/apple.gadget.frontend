@@ -16,6 +16,7 @@ import AuthModal from "@/components/auth/AuthModal";
 import WaitlistModal from "@/components/cart/WaitlistModal";
 import { getDisplayPrice } from "@/lib/pricing";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
 export default function DealsOfDay() {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -161,7 +162,7 @@ export default function DealsOfDay() {
         {[...Array(5)].map((_, i) => (
           <span
             key={i}
-            className={`${i < rating ? "text-red-500" : "text-gray-300"}`}
+            className={`${i < rating ? "text-yellow-400" : "text-gray-300"}`}
           >
             ★
           </span>
@@ -190,17 +191,12 @@ export default function DealsOfDay() {
   return (
     <div className="w-full max-w-7xl mx-auto px-2 md:px-4 lg:px-6 py-8">
       {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-3 h-3 bg-red-600 rounded-full shrink-0"></div>
-        <h1 className="text-xl md:text-3xl font-bold text-gray-900">
-          {t("home.deal_of_day")}
-        </h1>
-      </div>
+      <SectionHeader title={t("home.deal_of_day")} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Product Section - Left Side */}
         <div className="lg:col-span-9">
-          <div className="border-2 border-red-500 rounded-lg p-2 md:p-4 bg-linear-to-br from-white to-[#FFF5ED] h-full">
+          <div className="border border-gray-100 rounded-2xl p-2 md:p-4 bg-linear-to-br from-white to-[#F5F6F7] h-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Product Image Section */}
               <div>
@@ -229,9 +225,9 @@ export default function DealsOfDay() {
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`border-2 rounded-lg p-1 hover:border-red-500 transition ${
+                      className={`border-2 rounded-lg p-1 hover:border-[#5B21B6] transition ${
                         selectedImage === index
-                          ? "border-red-500"
+                          ? "border-[#5B21B6]"
                           : "border-gray-300"
                       }`}
                     >
@@ -264,13 +260,13 @@ export default function DealsOfDay() {
                 </div>
 
                 {/* Product Title */}
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 md:mb-4">
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2 md:mb-4">
                   {mainProduct?.title || "Deal Product"}
                 </h2>
 
                 {/* Price */}
                 <div className="flex items-center gap-3 mb-2 md:mb-4">
-                  <span className="text-2xl md:text-3xl font-bold text-red-600">
+                  <span className="text-2xl md:text-3xl font-bold text-[#5B21B6]">
                     {mainProduct?.price ? `৳${mainProduct.price}` : "-"}
                   </span>
                   {mainProduct?.compareAtPrice && (
@@ -299,7 +295,7 @@ export default function DealsOfDay() {
                 {/* Progress Bar */}
                 <div className="w-full bg-gray-200 rounded-full h-2 mb-3 md:mb-6">
                   <div
-                    className="bg-red-600 h-2 rounded-full"
+                    className="bg-[#5B21B6] h-2 rounded-full"
                     style={{ width: "30%" }}
                   ></div>
                 </div>
@@ -355,7 +351,7 @@ export default function DealsOfDay() {
                       onClick={() => {
                         if (mainProduct) addToCart(mainProduct, 1);
                       }}
-                      className="flex-1 bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition"
+                      className="flex-1 bg-[#5B21B6] text-white py-3 rounded-lg font-semibold hover:bg-[#4C1D95] transition"
                     >
                       Add To Cart
                     </button>
@@ -369,11 +365,11 @@ export default function DealsOfDay() {
                         addToWishlist(mainProduct);
                       }
                     }}
-                    className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-red-500 hover:text-red-500 transition"
+                    className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#5B21B6] hover:text-[#5B21B6] transition"
                   >
                     <FaHeart />
                   </button>
-                  <button className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-red-500 hover:text-red-500 transition">
+                  <button className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#5B21B6] hover:text-[#5B21B6] transition">
                     <FaShuffle />
                   </button>
                 </div>
@@ -385,21 +381,21 @@ export default function DealsOfDay() {
         {/* Bestseller Sidebar - Right Side */}
         <div className="lg:col-span-3">
           <div className="flex flex-col h-full">
-            <div className="bg-red-600 text-white rounded-t-lg p-4">
+            <div className="bg-[#5B21B6] text-white rounded-t-lg p-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold">Bestseller product</h3>
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleSidebarScroll("up")}
                     disabled={sidebarScroll === 0}
-                    className="w-7 h-7 bg-white text-red-600 rounded flex items-center justify-center hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-7 h-7 bg-white text-[#5B21B6] rounded flex items-center justify-center hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <FaChevronUp />
                   </button>
                   <button
                     onClick={() => handleSidebarScroll("down")}
                     disabled={sidebarScroll >= bestsellerProducts.length - 4}
-                    className="w-7 h-7 bg-white text-red-600 rounded flex items-center justify-center hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-7 h-7 bg-white text-[#5B21B6] rounded flex items-center justify-center hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <FaChevronDown />
                   </button>
@@ -429,7 +425,7 @@ export default function DealsOfDay() {
                     <div className="flex items-center gap-1 mb-1 text-sm">
                       {renderStars(product.rating)}
                     </div>
-                    <p className="text-red-600 font-bold">৳{product.price}</p>
+                    <p className="text-[#5B21B6] font-bold">৳{product.price}</p>
                   </div>
                 </div>
               ))}
