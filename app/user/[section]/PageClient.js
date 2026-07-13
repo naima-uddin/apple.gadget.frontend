@@ -1458,7 +1458,7 @@ export default function UserSectionPage() {
       if (selectedImageFile) {
         // Upload the avatar straight to Cloudinary (bypasses Vercel's 4.5MB body
         // cap; anything up to 10MB works) and send just the resulting URL.
-        const asset = await uploadUserImage(selectedImageFile, "Pickob/profiles");
+        const asset = await uploadUserImage(selectedImageFile, "appleProduct/profiles");
         formData.append("imageUrl", asset.url);
         if (asset.public_id) formData.append("imagePublicId", asset.public_id);
       }

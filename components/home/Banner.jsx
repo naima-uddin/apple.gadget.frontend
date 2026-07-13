@@ -4,17 +4,18 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import CategorySidebar from "./CategorySidebar";
 
 const FALLBACK = [
   {
     _id: "fallback-1",
     image: { url: "/banner/Oven_Big_banner_1.jpg" },
+    badge: "",
     title: "",
     subtitle: "",
     buttonText: "",
     buttonLink: "/",
-    badge: "",
+    rightTitle: "",
+    rightText: "",
   },
 ];
 
@@ -39,7 +40,7 @@ const Banner = () => {
     if (total <= 1) return;
     autoRef.current = setInterval(
       () => setCurrent((p) => (p + 1) % total),
-      4000,
+      5000,
     );
   }, [total]);
 
@@ -53,135 +54,206 @@ const Banner = () => {
     startAuto();
   };
 
+  // top-to-bottom fade: pure white under the navbar into soft gray at the base
+  const BG_GRADIENT =
+    "linear-gradient(180deg, #FFFFFF 0%, #FEFDFF 20%, #FAFAFC 40%, #F1F0F5 60%, #EAE9EE 80%, #E7E6EB 100%)";
+
   const slide = slides[current] || slides[0];
+  if (!slide)
+    return (
+      <section className="h-75 md:h-110" style={{ background: BG_GRADIENT }} />
+    );
+
+  const hasSideText =
+    slide.badge ||
+    slide.title ||
+    slide.subtitle ||
+    slide.rightTitle ||
+    slide.rightText;
 
   return (
-    <section className="bg-[#FFF5ED] ">
-      <div className="relative flex flex-col md:flex-row md:items-start max-w-7xl mx-auto  md:h-[396px]">
-        {/* Sidebar (desktop only) */}
-        <div className="hidden md:block md:w-[240px] min-w-[200px] overflow-visible z-20 relative md:h-full">
-          <CategorySidebar />
-        </div>
+    <section style={{ background: BG_GRADIENT }}>
+      <div
+        className="relative max-w-7xl mx-auto overflow-hidden"
+        onMouseEnter={() => clearInterval(autoRef.current)}
+        onMouseLeave={startAuto}
+      >
+        <div
+          key={slide._id || current}
+          className="banner-fade flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-4 md:gap-6 px-10 md:px-16 py-8 md:py-0 md:h-110"
+        >
+          {/* Left text */}
+          <div className="banner-slide-left order-2 md:order-1 text-center md:text-left max-w-xs md:max-w-sm">
+            {slide.badge && (
+              <p className="text-sm md:text-base text-gray-500 mb-1">
+                {slide.badge}
+              </p>
+            )}
+            {slide.title && (
+              <h1 className="text-3xl md:text-5xl font-bold text-gray-900 leading-tight mb-3">
+                {slide.title}
+              </h1>
+            )}
+            {slide.subtitle && (
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-5">
+                {slide.subtitle}
+              </p>
+            )}
+            {slide.buttonText && slide.buttonLink && (
+              <Link
+                href={slide.buttonLink}
+                className="inline-block bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs md:text-sm font-semibold uppercase tracking-wider px-7 py-3 rounded-md transition"
+              >
+                {slide.buttonText}
+              </Link>
+            )}
+          </div>
 
-        {/* Banner Section */}
-        <div className="flex-1 flex flex-col gap-4 px-2 md:px-4 ">
+          {/* Center image */}
           <div
-            className="relative mt-1 mb-1 aspect-5/2 sm:aspect-auto sm:h-58.5 md:h-97 rounded-2xl overflow-hidden w-full mx-auto cursor-pointer"
-            onMouseEnter={() => clearInterval(autoRef.current)}
-            onMouseLeave={startAuto}
+            className={`order-1 md:order-2 relative w-full md:w-105 lg:w-120 h-55 sm:h-70 md:h-110 cursor-pointer ${
+              hasSideText ? "" : "md:col-span-3 md:w-full"
+            }`}
             onClick={() => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
             }}
           >
-            {slide && (
-              <Image
-                key={slide._id || current}
-                src={slide.image?.url || "/assets/placeholder.svg"}
-                alt={slide.title || "Banner"}
-                fill
-                priority
-                quality={100}
-                sizes="100vw"
-                className="object-cover transition-opacity duration-500"
-              />
-            )}
+            <Image
+              src={slide.image?.url || "/assets/placeholder.svg"}
+              alt={slide.title || "Banner"}
+              fill
+              priority
+              quality={100}
+              sizes="(max-width: 768px) 100vw, 480px"
+              className={hasSideText ? "object-contain" : "object-cover"}
+            />
+          </div>
 
-            {/* Overlay content */}
-            {(slide?.title || slide?.badge || slide?.buttonText) && (
-              <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-14 bg-gradient-to-r from-black/40 via-black/10 to-transparent">
-                {slide.badge && (
-                  <span className="inline-block  text-white text-lg font-bold  rounded-full w-fit mb-2">
-                    {slide.badge}
-                  </span>
-                )}
-                {slide.title && (
-                  <h2 className="text-white text-xl md:text-3xl font-bold drop-shadow mb-1">
-                    {slide.title}
-                  </h2>
-                )}
-                {slide.subtitle && (
-                  <p className="text-white/90 text-sm md:text-base mb-4 drop-shadow">
-                    {slide.subtitle}
-                  </p>
-                )}
-                {slide.buttonText && slide.buttonLink && (
-                  <Link
-                    href={slide.buttonLink}
-                    className="inline-block bg-white text-gray-900 font-semibold text-sm px-5 py-2 rounded-full hover:bg-gray-100 transition w-fit"
-                  >
-                    {slide.buttonText}
-                  </Link>
-                )}
-              </div>
+          {/* Right text */}
+          <div className="banner-slide-right order-3 text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end">
+            {slide.rightTitle && (
+              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3">
+                {slide.rightTitle}
+              </h2>
             )}
-
-            {/* Prev / Next arrows */}
-            {total > 1 && (
-              <>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    go(-1);
-                  }}
-                  className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 w-7 h-7 md:w-9 md:h-9 bg-white/75 hover:bg-white rounded-full flex items-center justify-center shadow-md text-gray-700 backdrop-blur-sm transition z-10"
-                >
-                  <svg
-                    className="w-3.5 h-3.5 md:w-4 md:h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    go(1);
-                  }}
-                  className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 w-7 h-7 md:w-9 md:h-9 bg-white/75 hover:bg-white rounded-full flex items-center justify-center shadow-md text-gray-700 backdrop-blur-sm transition z-10"
-                >
-                  <svg
-                    className="w-3.5 h-3.5 md:w-4 md:h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2.5}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
-
-            {/* Dots */}
-            {total > 1 && (
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrent(i);
-                      startAuto();
-                    }}
-                    className={`h-1.5 rounded-full transition-all ${i === current ? "bg-white w-5" : "bg-white/50 w-1.5"}`}
-                  />
-                ))}
-              </div>
+            {slide.rightText && (
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                {slide.rightText}
+              </p>
             )}
           </div>
         </div>
+
+        {/* Prev / Next arrows */}
+        {total > 1 && (
+          <>
+            <button
+              onClick={() => go(-1)}
+              aria-label="Previous slide"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-gray-700 hover:bg-white hover:shadow-md transition z-10"
+            >
+              <svg
+                className="w-4 h-4 md:w-5 md:h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => go(1)}
+              aria-label="Next slide"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-gray-700 hover:bg-white hover:shadow-md transition z-10"
+            >
+              <svg
+                className="w-4 h-4 md:w-5 md:h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </>
+        )}
+
+        {/* Dots */}
+        {total > 1 && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            {slides.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => {
+                  setCurrent(i);
+                  startAuto();
+                }}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === current ? "bg-[#2563EB] w-5" : "bg-gray-300 w-1.5"
+                }`}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
+      <style jsx>{`
+        .banner-fade {
+          animation: bannerFade 0.5s ease;
+        }
+        .banner-slide-left {
+          animation: bannerSlideLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        .banner-slide-right {
+          animation: bannerSlideRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes bannerFade {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @keyframes bannerSlideLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-60px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes bannerSlideRight {
+          from {
+            opacity: 0;
+            transform: translateX(60px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .banner-fade,
+          .banner-slide-left,
+          .banner-slide-right {
+            animation: none;
+          }
+        }
+      `}</style>
     </section>
   );
 };

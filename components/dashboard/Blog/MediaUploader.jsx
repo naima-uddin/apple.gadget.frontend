@@ -6,7 +6,7 @@ import { uploadAdminImage } from "@/lib/uploadImage";
 
 export default function MediaUploader({
   onUploadComplete,
-  folder = "Pickob/blog/images",
+  folder = "appleProduct/blog/images",
   accept = "image/*,video/*",
   multiple = true,
   label = "Upload Media",

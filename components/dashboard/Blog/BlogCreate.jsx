@@ -134,7 +134,7 @@ export default function BlogCreate() {
 
   const insertImageFile = async (file) => {
     if (!file) return;
-    const b = await uploadAdminImage(file, "Pickob/blog/images");
+    const b = await uploadAdminImage(file, "appleProduct/blog/images");
     const url = b.asset.url;
     exec("insertImage", url);
     setTimeout(() => {
@@ -270,7 +270,7 @@ export default function BlogCreate() {
         <h3 className="text-sm font-semibold mb-3">Featured Image</h3>
         <MediaUploader
           onUploadComplete={handleFeaturedImageUpload}
-          folder="Pickob/blog/images"
+          folder="appleProduct/blog/images"
           accept="image/*"
           multiple={false}
           label="Upload Featured Image"
@@ -457,7 +457,7 @@ export default function BlogCreate() {
         <h3 className="text-sm font-semibold mb-3">Additional Images</h3>
         <MediaUploader
           onUploadComplete={handleAdditionalImagesUpload}
-          folder="Pickob/blog/images"
+          folder="appleProduct/blog/images"
           accept="image/*"
           multiple={true}
           label="Upload Additional Images"
@@ -470,7 +470,7 @@ export default function BlogCreate() {
         <h3 className="text-sm font-semibold mb-3">Videos</h3>
         <MediaUploader
           onUploadComplete={handleVideosUpload}
-          folder="Pickob/blog/videos"
+          folder="appleProduct/blog/videos"
           accept="video/*"
           multiple={true}
           label="Upload Videos"

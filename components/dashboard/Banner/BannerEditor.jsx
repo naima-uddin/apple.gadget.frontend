@@ -11,9 +11,11 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
   const [image, setImage] = useState({ url: "", public_id: "" });
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [buttonText, setButtonText] = useState("Order Now");
+  const [buttonText, setButtonText] = useState("Shop Now");
   const [buttonLink, setButtonLink] = useState("/");
   const [badge, setBadge] = useState("");
+  const [rightTitle, setRightTitle] = useState("");
+  const [rightText, setRightText] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -31,9 +33,11 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         setImage(s.image || { url: "", public_id: "" });
         setTitle(s.title || "");
         setSubtitle(s.subtitle || "");
-        setButtonText(s.buttonText || "Order Now");
+        setButtonText(s.buttonText || "Shop Now");
         setButtonLink(s.buttonLink || "/");
         setBadge(s.badge || "");
+        setRightTitle(s.rightTitle || "");
+        setRightText(s.rightText || "");
         setIsActive(s.isActive !== false);
       })
       .catch((err) => alert("Failed to load: " + err.message))
@@ -46,7 +50,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
     setImage({ url: preview, public_id: "", __uploading: true });
     setUploading(true);
     try {
-      const data = await uploadAdminImage(file, "Pickob/banners");
+      const data = await uploadAdminImage(file, "appleProduct/banners");
       setImage({ url: data.asset.url, public_id: data.asset.public_id });
     } catch (err) {
       alert("Image upload failed: " + err.message);
@@ -70,6 +74,8 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         buttonText,
         buttonLink,
         badge,
+        rightTitle,
+        rightText,
         isActive,
       };
       const url = isEdit
@@ -134,7 +140,8 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
               </svg>
               <span className="text-sm">Click to upload banner image</span>
               <span className="text-xs text-gray-300">
-                Recommended: 1600 × 600 px
+                Recommended: transparent PNG product image (shown in the middle
+                of the banner)
               </span>
             </div>
           )}
@@ -189,42 +196,75 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         onClose={() => setShowPicker(false)}
       />
 
-      {/* Text fields */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Title
-          </label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. 35% Cashback !!"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+      {/* Left side text fields */}
+      <div className="border border-gray-200 rounded-xl p-4 space-y-4">
+        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
+          Left Side Text
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Small Tagline (above title)
+            </label>
+            <input
+              value={badge}
+              onChange={(e) => setBadge(e.target.value)}
+              placeholder="e.g. Feel the Music with"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Title (big)
+            </label>
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Sound Max Pro"
+              className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Badge Text
+            Description
           </label>
           <input
-            value={badge}
-            onChange={(e) => setBadge(e.target.value)}
-            placeholder="e.g. FREE DELIVERY"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+            placeholder="e.g. Welcome to the world of high-fidelity headphones."
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Subtitle
-        </label>
-        <input
-          value={subtitle}
-          onChange={(e) => setSubtitle(e.target.value)}
-          placeholder="e.g. Start your daily shopping diversity!"
-          className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
+      {/* Right side text fields */}
+      <div className="border border-gray-200 rounded-xl p-4 space-y-4">
+        <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
+          Right Side Text
+        </h3>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Title (big)
+          </label>
+          <input
+            value={rightTitle}
+            onChange={(e) => setRightTitle(e.target.value)}
+            placeholder="e.g. Bass Blaster X7"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Description
+          </label>
+          <input
+            value={rightText}
+            onChange={(e) => setRightText(e.target.value)}
+            placeholder="e.g. Gaming headphones with thunderous bass and noise cancellation."
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -235,7 +275,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
           <input
             value={buttonText}
             onChange={(e) => setButtonText(e.target.value)}
-            placeholder="Order Now"
+            placeholder="Shop Now"
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

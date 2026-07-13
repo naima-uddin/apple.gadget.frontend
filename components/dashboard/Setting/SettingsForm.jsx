@@ -57,8 +57,8 @@ export default function SettingsForm() {
   const [logoStatus, setLogoStatus] = useState("");
   const [migrating, setMigrating] = useState(false);
   const [migrateResult, setMigrateResult] = useState(null);
-  const [migrateFrom, setMigrateFrom] = useState("SmartBuyBD");
-  const [migrateTo, setMigrateTo] = useState("Pickob");
+  const [migrateFrom, setMigrateFrom] = useState("Pickob");
+  const [migrateTo, setMigrateTo] = useState("appleProduct");
 
   useEffect(() => {
     if (!user) refreshUser();
@@ -118,7 +118,7 @@ export default function SettingsForm() {
     if (!file) return;
     setLogoUploading(true);
     try {
-      const b = await uploadAdminImage(file, "Pickob/settings");
+      const b = await uploadAdminImage(file, "appleProduct/settings");
       const asset = b.asset || {};
       setSettings((s) => ({ ...s, websiteLogo: asset }));
       await saveLogo(asset);
@@ -247,7 +247,7 @@ export default function SettingsForm() {
                 setSettings((s) => ({ ...s, cloudinaryFolder: e.target.value }))
               }
               className={INPUT}
-              placeholder="Pickob/products"
+              placeholder="appleProduct/products"
             />
           </Field>
         </div>
@@ -605,7 +605,7 @@ export default function SettingsForm() {
               value={migrateFrom}
               onChange={(e) => setMigrateFrom(e.target.value)}
               className="border border-amber-300 rounded-lg px-3 py-1.5 text-sm w-36 focus:outline-none focus:ring-2 focus:ring-amber-300"
-              placeholder="SmartBuyBD"
+              placeholder="Pickob"
             />
           </div>
           <div>
@@ -616,7 +616,7 @@ export default function SettingsForm() {
               value={migrateTo}
               onChange={(e) => setMigrateTo(e.target.value)}
               className="border border-amber-300 rounded-lg px-3 py-1.5 text-sm w-36 focus:outline-none focus:ring-2 focus:ring-amber-300"
-              placeholder="Pickob"
+              placeholder="appleProduct"
             />
           </div>
           <button

@@ -790,7 +790,7 @@ export default function ProductEdit({ productId }) {
     }));
 
     try {
-      const asset = await uploadImageDirect(file, "Pickob/products");
+      const asset = await uploadImageDirect(file, "appleProduct/products");
 
       setProduct((p) => {
         const imgs = (p.images || []).map((img) => {

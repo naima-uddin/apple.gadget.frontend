@@ -8,10 +8,11 @@ import AuthModal from "@/components/auth/AuthModal";
 // Simple profile menu that uses UserContext so UI updates immediately on auth changes
 import { useUser } from "@/components/context/UserContext";
 import { useCart } from "@/components/context/CartContext";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import SearchBox from "@/components/ui/SearchBox";
 import CategorySidebar from "../home/CategorySidebar";
 import { useLanguage } from "@/components/context/LanguageContext";
+import { useCategories } from "@/components/context/CategoryContext";
 
 function ProfileMenu() {
   const { user, setUser, refreshUser } = useUser();
@@ -58,7 +59,7 @@ function ProfileMenu() {
       <div ref={ref} className="relative">
         <button
           onClick={handleProfileClick}
-          className="w-8 h-8 p-1 rounded-full border border-[#f2b7ff] text-[#202020] hover:text-[#ac0ad1] flex items-center justify-center overflow-hidden bg-white"
+          className="flex items-center gap-1.5 p-1 text-gray-800 hover:text-[#2563EB] transition-colors"
           aria-label="Profile"
           title="Profile"
         >
@@ -74,7 +75,7 @@ function ProfileMenu() {
               onError={() => setImgError(true)}
             />
           ) : user && user.email ? (
-            <span className="text-sm font-semibold text-gray-700">
+            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#2563EB] text-white text-xs font-semibold">
               {user.email.charAt(0).toUpperCase()}
             </span>
           ) : (
@@ -124,7 +125,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/profile"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -140,7 +141,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/wishlist"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -162,7 +163,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/orders"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -177,7 +178,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/address"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -200,7 +201,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/reviews"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -215,7 +216,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/rewards"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -230,7 +231,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/coupons"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -248,7 +249,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/cart"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-[#fff0f7] transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-blue-50 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -300,49 +301,52 @@ function ProfileMenu() {
 }
 
 export default function Navbar() {
-  const { getCartCount, getWishlistCount, toggleSidebar } = useCart();
-  const { user } = useUser();
-  const { lang, setLang, t } = useLanguage();
-  const router = useRouter();
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [redirectWishlistOnLogin, setRedirectWishlistOnLogin] = useState(false);
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false); // mobile-only
+  const { getCartCount, toggleSidebar } = useCart();
+  const { lang, t } = useLanguage();
+  const { categories } = useCategories();
+  const pathname = usePathname() || "/";
+  const [searchOpen, setSearchOpen] = useState(false);
   const [catSidebarOpen, setCatSidebarOpen] = useState(false);
-  const mobileSearchRef = useRef(null);
+  const [shopOpen, setShopOpen] = useState(false);
+  const searchRef = useRef(null);
   const searchIconRef = useRef(null);
 
+  // close search overlay when clicking outside
   React.useEffect(() => {
-    if (user && redirectWishlistOnLogin) {
-      router.push("/user/wishlist");
-      setRedirectWishlistOnLogin(false);
-    }
-  }, [user, redirectWishlistOnLogin, router]);
-
-  // close mobile search when clicking outside or on empty space
-  React.useEffect(() => {
-    if (!mobileSearchOpen) return;
+    if (!searchOpen) return;
     function handleDocumentClick(e) {
       if (
-        mobileSearchRef.current &&
-        !mobileSearchRef.current.contains(e.target) &&
+        searchRef.current &&
+        !searchRef.current.contains(e.target) &&
         searchIconRef.current &&
         !searchIconRef.current.contains(e.target)
       ) {
-        setMobileSearchOpen(false);
+        setSearchOpen(false);
       }
     }
     document.addEventListener("click", handleDocumentClick);
     return () => document.removeEventListener("click", handleDocumentClick);
-  }, [mobileSearchOpen]);
+  }, [searchOpen]);
+
+  const navLinks = [
+    { href: "/", label: t("nav.home") },
+    { href: "/products", label: t("nav.shop"), dropdown: true },
+    { href: "/about", label: t("nav.about") },
+    { href: "/blog", label: t("nav.news") },
+    { href: "/contact", label: t("nav.contact") },
+  ];
+
+  const isActive = (href) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="relative bg-[#fffaf6] z-50">
-      <div className="flex items-center gap-2 sm:gap-4 justify-between max-w-7xl px-1 md:px-2 lg:px-3 mx-auto py-1.5 md:py-2 bg-transparent">
-        <div className="flex items-center gap-2">
-          {/* hamburger menu */}
+    <header className="relative bg-white z-50 ">
+      <div className="flex items-center justify-between max-w-7xl md:px-3  lg:px-4 mx-auto h-14 md:h-16">
+        {/* Left: hamburger (mobile) + logo */}
+        <div className="flex items-center gap-1.5">
           <button
             onClick={() => setCatSidebarOpen((v) => !v)}
-            className="p-2 text-[#202020] hover:text-[#ac0ad1]"
+            className="p-2 text-gray-800 hover:text-[#2563EB] lg:hidden"
             aria-label="Categories"
             title="Categories"
           >
@@ -365,54 +369,114 @@ export default function Navbar() {
           <WebsiteLogo />
         </div>
 
-        {/* Desktop search */}
-        <div className="flex-1 flex justify-center">
-          <SearchBox className="hidden md:block w-full max-w-105" />
-        </div>
+        {/* Center: nav links (desktop) */}
+        <nav className="hidden lg:flex items-center gap-8">
+          {navLinks.map((link) =>
+            link.dropdown ? (
+              <div
+                key={link.href}
+                className="relative"
+                onMouseEnter={() => setShopOpen(true)}
+                onMouseLeave={() => setShopOpen(false)}
+              >
+                <Link
+                  href={link.href}
+                  className={`flex items-center gap-1 text-sm font-medium transition-colors ${
+                    isActive(link.href)
+                      ? "text-[#2563EB]"
+                      : "text-gray-800 hover:text-[#2563EB]"
+                  }`}
+                >
+                  {link.label}
+                  <svg
+                    className={`w-3.5 h-3.5 transition-transform ${shopOpen ? "rotate-180" : ""}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </Link>
 
-        <div className="flex items-center gap-0.5 md:gap-1">
-          {/* Language toggle — compact on mobile, full labels on sm+ */}
-          <div className="flex items-center bg-gray-100 rounded-full p-0.5 mr-1">
-            <button
-              onClick={() => setLang("en")}
-              className={`px-1.5 sm:px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang === "en" ? "bg-green-500 text-white shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-            >
-              <span className="hidden sm:inline">ENG</span>
-              <span className="sm:hidden">EN</span>
-            </button>
-            <button
-              onClick={() => setLang("bn")}
-              className={`px-1.5 sm:px-3 py-1 rounded-full text-xs font-semibold transition-all ${lang === "bn" ? "bg-green-500 text-white shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-            >
-              <span className="hidden sm:inline">বাংলা</span>
-              <span className="sm:hidden">বাং</span>
-            </button>
-          </div>
+                {/* Shop dropdown */}
+                {shopOpen && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50">
+                    <div className="w-56 bg-white border border-gray-100 rounded-xl shadow-lg py-2">
+                      <Link
+                        href="/products"
+                        onClick={() => setShopOpen(false)}
+                        className="block px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-blue-50 hover:text-[#2563EB] transition-colors"
+                      >
+                        {t("nav.all_products")}
+                      </Link>
+                      <div className="my-1 border-t border-gray-100" />
+                      {(categories || []).slice(0, 10).map((c) => {
+                        const slug =
+                          c.slug || (c.name || "").replace(/\s+/g, "-");
+                        return (
+                          <Link
+                            key={c._id}
+                            href={`/category/${slug}/`}
+                            onClick={() => setShopOpen(false)}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-[#2563EB] transition-colors"
+                          >
+                            {lang === "bn" ? c.nameBn || c.name : c.name}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-medium transition-colors ${
+                  isActive(link.href)
+                    ? "text-[#2563EB]"
+                    : "text-gray-800 hover:text-[#2563EB]"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ),
+          )}
+        </nav>
 
+        {/* Right: actions */}
+        <div className="flex items-center gap-0 md:gap-0.5">
+          {/* Track order */}
           <Link
             href="/track-order"
-            className="hidden md:inline-flex items-center gap-1.5 p-2 sm:px-3 sm:py-1.5 text-sm font-medium text-[#202020] hover:text-rose-600 sm:border sm:border-gray-200 sm:rounded-lg sm:hover:border-rose-200 transition mr-1"
+            className="hidden md:inline-flex p-2 text-gray-800 hover:text-[#2563EB] transition-colors"
             title={t("nav.track_order")}
+            aria-label={t("nav.track_order")}
           >
             <svg
-              className="w-4 h-4"
+              className="w-5 h-5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
               <circle cx="12" cy="10" r="3" />
             </svg>
-            <span className="hidden sm:inline">{t("nav.track_order")}</span>
           </Link>
-          {/* mobile search icon, only visible below md */}
+
+          {/* Search icon */}
           <button
             ref={searchIconRef}
-            onClick={() => setMobileSearchOpen(true)}
-            className="p-1 text-[#202020] hover:text-rose-600 md:hidden "
+            onClick={() => setSearchOpen((v) => !v)}
+            className="p-2 text-gray-800 hover:text-[#2563EB] transition-colors"
             aria-label="Search"
             title="Search"
           >
@@ -431,47 +495,16 @@ export default function Navbar() {
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </button>
-          <button
-            onClick={() => {
-              if (!user) {
-                setRedirectWishlistOnLogin(true);
-                setShowAuthModal(true);
-              } else {
-                router.push("/user/wishlist");
-              }
-            }}
-            className="relative hidden md:flex p-1 text-[#202020] hover:text-rose-600 group"
-            aria-label="Wishlist"
-            title="Wishlist"
-          >
-            <svg
-              className="stroke-current transition-colors duration-200 group-hover:stroke-rose-600"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 6.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21l8.8-9.3a5 5 0 0 0 0-7.1z" />
-            </svg>
-            {getWishlistCount() > 0 && (
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
-                {getWishlistCount()}
-              </span>
-            )}
-          </button>
 
+          {/* Cart */}
           <button
             onClick={toggleSidebar}
-            className="relative p-2 text-[#202020] hover:text-rose-600 group"
+            className="relative p-2 text-gray-800 hover:text-[#2563EB] transition-colors"
             aria-label="Cart"
             title="Cart"
           >
             <svg
-              className="stroke-current transition-colors duration-200 group-hover:stroke-rose-600"
+              className="stroke-current"
               width="20"
               height="20"
               viewBox="0 0 24 24"
@@ -486,11 +519,13 @@ export default function Navbar() {
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
             {getCartCount() > 0 && (
-              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+              <span className="absolute top-0.5 right-0.5 inline-flex items-center justify-center px-1 text-[10px] font-bold leading-none text-white bg-[#2563EB] rounded-full min-w-4 h-4">
                 {getCartCount()}
               </span>
             )}
           </button>
+
+          {/* Divider */}
 
           {/* Profile dropdown */}
           <div className="relative">
@@ -499,7 +534,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* category sidebar overlay */}
+      {/* category sidebar overlay (mobile hamburger) */}
       {catSidebarOpen && (
         <div className="fixed top-14 left-0 md:-left-14 right-0 bottom-0 z-40">
           {/* Backdrop — clicking closes */}
@@ -541,22 +576,22 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* mobile search overlay */}
-      {mobileSearchOpen && (
+      {/* search overlay (all breakpoints) */}
+      {searchOpen && (
         <div
-          ref={mobileSearchRef}
-          className="absolute top-full left-0 w-full bg-white p-2 z-50 shadow-md"
+          ref={searchRef}
+          className="absolute top-full left-0 w-full bg-white p-2 z-50 shadow-md border-t border-gray-100"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 max-w-2xl mx-auto">
             <SearchBox
               className="flex-1"
-              onClose={() => setMobileSearchOpen(false)}
+              onClose={() => setSearchOpen(false)}
               autoFocus
             />
             <button
               type="button"
-              className="p-2 text-[#202020] hover:text-[#ac0ad1] shrink-0"
-              onClick={() => setMobileSearchOpen(false)}
+              className="p-2 text-gray-800 hover:text-[#2563EB] shrink-0"
+              onClick={() => setSearchOpen(false)}
             >
               <svg
                 width="20"
@@ -574,13 +609,6 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-      )}
-
-      {showAuthModal && (
-        <AuthModal
-          isOpen={showAuthModal}
-          onClose={() => setShowAuthModal(false)}
-        />
       )}
     </header>
   );

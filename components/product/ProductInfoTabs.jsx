@@ -120,7 +120,7 @@ export default function ProductInfoTabs({ product }) {
       // Upload each image straight to Cloudinary (bypasses Vercel's 4.5MB body
       // cap; anything up to 10MB works). The helper enforces the 10MB limit.
       const assets = await Promise.all(
-        selected.map((f) => uploadUserImage(f, "Pickob/reviews")),
+        selected.map((f) => uploadUserImage(f, "appleProduct/reviews")),
       );
       const urls = assets.map((a) => a.url).filter(Boolean);
       setReviewImages((prev) => [...prev, ...urls].slice(0, 4));

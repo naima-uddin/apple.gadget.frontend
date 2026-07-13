@@ -85,7 +85,7 @@ export default function OccasionEditor({
     });
 
     try {
-      const body = await uploadAdminImage(file, "Pickob/occasions");
+      const body = await uploadAdminImage(file, "appleProduct/occasions");
       updateCard(idx, "image", {
         url: body.asset.url,
         public_id: body.asset.public_id,

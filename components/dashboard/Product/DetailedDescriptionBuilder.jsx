@@ -15,7 +15,7 @@ const normalizeBlocks = (value) => {
 };
 
 async function uploadFile(file) {
-  return uploadImageDirect(file, "Pickob/products");
+  return uploadImageDirect(file, "appleProduct/products");
 }
 
 /* ── Single image slot ── */

@@ -135,7 +135,7 @@ export default function CategoryEdit({ categoryId }) {
     }));
 
     try {
-      const body = await uploadAdminImage(file, "Pickob/categories");
+      const body = await uploadAdminImage(file, "appleProduct/categories");
       const asset = {
         public_id: body.asset.public_id,
         url: body.asset.url,

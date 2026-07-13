@@ -46,7 +46,7 @@ export default function PopupManager() {
     setImage({ url: preview, public_id: "", __uploading: true });
     setUploading(true);
     try {
-      const data = await uploadAdminImage(file, "Pickob/popups");
+      const data = await uploadAdminImage(file, "appleProduct/popups");
       setImage({ url: data.asset.url, public_id: data.asset.public_id });
     } catch (err) {
       alert("Image upload failed: " + err.message);

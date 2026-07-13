@@ -276,7 +276,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
     ]);
 
     try {
-      const body = await uploadAdminImage(file, "Pickob/categories");
+      const body = await uploadAdminImage(file, "appleProduct/categories");
 
       const asset = {
         public_id: body.asset.public_id,
@@ -473,7 +473,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
     }
 
     try {
-      const body = await uploadAdminImage(file, "Pickob/categories");
+      const body = await uploadAdminImage(file, "appleProduct/categories");
 
       const asset = {
         public_id: body.asset.public_id,
