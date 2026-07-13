@@ -136,55 +136,6 @@ const Banner = () => {
               }
             />
 
-            {/* Prev / Next arrows — hug the image sides */}
-            {total > 1 && (
-              <>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    go(-1);
-                  }}
-                  aria-label="Previous slide"
-                  className="absolute -left-2 md:-left-8 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 flex items-center justify-center   text-gray-700  hover:text-white transition z-20"
-                >
-                  <svg
-                    className="w-4 h-4 md:w-5 md:h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 19l-7-7 7-7"
-                    />
-                  </svg>
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    go(1);
-                  }}
-                  aria-label="Next slide"
-                  className="absolute -right-2 md:-right-8 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 flex items-center justify-center  text-gray-700  hover:text-white transition z-20"
-                >
-                  <svg
-                    className="w-4 h-4 md:w-5 md:h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </button>
-              </>
-            )}
           </div>
 
           {/* Right text */}
@@ -201,6 +152,50 @@ const Banner = () => {
             )}
           </div>
         </div>
+
+        {/* Prev / Next arrows — minimal chevrons at the bottom corners */}
+        {total > 1 && (
+          <>
+            <button
+              onClick={() => go(-1)}
+              aria-label="Previous slide"
+              className="absolute left-4 md:left-10 bottom-4 md:bottom-8 p-2 text-gray-800 hover:text-[#2563EB] hover:-translate-x-0.5 transition z-20"
+            >
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => go(1)}
+              aria-label="Next slide"
+              className="absolute right-4 md:right-10 bottom-4 md:bottom-8 p-2 text-gray-800 hover:text-[#2563EB] hover:translate-x-0.5 transition z-20"
+            >
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </>
+        )}
       </div>
 
       <style jsx>{`
