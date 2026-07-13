@@ -113,10 +113,10 @@ const Banner = () => {
 
           {/* Center image — hangs below the banner edge for a floating look */}
           <div
-            className={`order-1 md:order-2 relative w-full md:w-105 lg:w-120 h-55 sm:h-70 md:h-110 cursor-pointer ${
+            className={`order-1 md:order-2 relative w-full md:w-115 lg:w-130 xl:w-140 h-60 sm:h-75 md:h-130 lg:h-135 cursor-pointer ${
               hasSideText
-                ? "z-10 md:translate-y-14 lg:translate-y-16"
-                : "md:col-span-3 md:w-full"
+                ? "z-10 md:translate-y-4 lg:translate-y-6"
+                : "md:col-span-3 md:w-full md:h-110"
             }`}
             onClick={() => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
@@ -128,13 +128,63 @@ const Banner = () => {
               fill
               priority
               quality={100}
-              sizes="(max-width: 768px) 100vw, 500px"
+              sizes="(max-width: 768px) 100vw, 540px"
               className={
                 hasSideText
                   ? "object-contain drop-shadow-[0_30px_35px_rgba(0,0,0,0.18)]"
                   : "object-cover"
               }
             />
+
+            {/* Prev / Next arrows — hug the image sides */}
+            {total > 1 && (
+              <>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    go(-1);
+                  }}
+                  aria-label="Previous slide"
+                  className="absolute -left-2 md:-left-8 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 flex items-center justify-center   text-gray-700  hover:text-white transition z-20"
+                >
+                  <svg
+                    className="w-4 h-4 md:w-5 md:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    go(1);
+                  }}
+                  aria-label="Next slide"
+                  className="absolute -right-2 md:-right-8 top-1/2 -translate-y-1/2 w-9 h-9 md:w-11 md:h-11 flex items-center justify-center  text-gray-700  hover:text-white transition z-20"
+                >
+                  <svg
+                    className="w-4 h-4 md:w-5 md:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </>
+            )}
           </div>
 
           {/* Right text */}
@@ -151,69 +201,6 @@ const Banner = () => {
             )}
           </div>
         </div>
-
-        {/* Prev / Next arrows */}
-        {total > 1 && (
-          <>
-            <button
-              onClick={() => go(-1)}
-              aria-label="Previous slide"
-              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-gray-700 hover:bg-white hover:shadow-md transition z-10"
-            >
-              <svg
-                className="w-4 h-4 md:w-5 md:h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => go(1)}
-              aria-label="Next slide"
-              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 flex items-center justify-center rounded-full text-gray-700 hover:bg-white hover:shadow-md transition z-10"
-            >
-              <svg
-                className="w-4 h-4 md:w-5 md:h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </>
-        )}
-
-        {/* Dots */}
-        {total > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                aria-label={`Go to slide ${i + 1}`}
-                onClick={() => {
-                  setCurrent(i);
-                  startAuto();
-                }}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === current ? "bg-[#2563EB] w-5" : "bg-gray-300 w-1.5"
-                }`}
-              />
-            ))}
-          </div>
-        )}
       </div>
 
       <style jsx>{`
