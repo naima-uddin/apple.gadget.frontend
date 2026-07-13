@@ -127,7 +127,7 @@ const Banner = () => {
 
           {/* Center image — hangs below the banner edge for a floating look */}
           <div
-            className={`relative w-full md:w-115 lg:w-130 xl:w-140 h-60 sm:h-75 md:h-130 lg:h-135 cursor-pointer ${
+            className={`relative w-full md:w-105 lg:w-120 xl:w-130 h-60 sm:h-75 md:h-120 lg:h-125 cursor-pointer ${
               hasSideText
                 ? "z-10 md:translate-y-3 lg:translate-y-5"
                 : "md:col-span-3 md:w-full md:h-110"
