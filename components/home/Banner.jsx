@@ -124,7 +124,7 @@ const Banner = () => {
               fill
               priority
               quality={100}
-              sizes="(max-width: 768px) 100vw, 480px"
+              sizes="(max-width: 768px) 100vw, 500px"
               className={hasSideText ? "object-contain" : "object-cover"}
             />
           </div>
