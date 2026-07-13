@@ -55,10 +55,6 @@ export default function SettingsForm() {
   const [logoUploading, setLogoUploading] = useState(false);
   const [showLogoPicker, setShowLogoPicker] = useState(false);
   const [logoStatus, setLogoStatus] = useState("");
-  const [migrating, setMigrating] = useState(false);
-  const [migrateResult, setMigrateResult] = useState(null);
-  const [migrateFrom, setMigrateFrom] = useState("Pickob");
-  const [migrateTo, setMigrateTo] = useState("appleProduct");
 
   useEffect(() => {
     if (!user) refreshUser();
@@ -586,111 +582,6 @@ export default function SettingsForm() {
           })}
         </div>
       </Section>
-
-      {/* ── Cloudinary Migration ────────────────────────────────── */}
-      <div className="border border-amber-200 bg-amber-50 rounded-xl p-5">
-        <h3 className="font-semibold text-amber-800 text-sm mb-1">
-          Cloudinary Folder Migration
-        </h3>
-        <p className="text-xs text-amber-700 mb-4">
-          পুরনো Cloudinary folder-এর সব image নতুন folder-এ move করবে এবং
-          database-এর সব URL update করবে।
-        </p>
-        <div className="flex flex-wrap gap-3 items-end mb-4">
-          <div>
-            <label className="block text-xs font-medium text-amber-800 mb-1">
-              From (পুরনো folder)
-            </label>
-            <input
-              value={migrateFrom}
-              onChange={(e) => setMigrateFrom(e.target.value)}
-              className="border border-amber-300 rounded-lg px-3 py-1.5 text-sm w-36 focus:outline-none focus:ring-2 focus:ring-amber-300"
-              placeholder="Pickob"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-amber-800 mb-1">
-              To (নতুন folder)
-            </label>
-            <input
-              value={migrateTo}
-              onChange={(e) => setMigrateTo(e.target.value)}
-              className="border border-amber-300 rounded-lg px-3 py-1.5 text-sm w-36 focus:outline-none focus:ring-2 focus:ring-amber-300"
-              placeholder="appleProduct"
-            />
-          </div>
-          <button
-            disabled={
-              migrating ||
-              !migrateFrom ||
-              !migrateTo ||
-              migrateFrom === migrateTo
-            }
-            onClick={async () => {
-              if (
-                !window.confirm(
-                  `Cloudinary-তে "${migrateFrom}" → "${migrateTo}" migrate করবে?\nDB-র সব image URL update হবে। Continue?`,
-                )
-              )
-                return;
-              setMigrating(true);
-              setMigrateResult(null);
-              try {
-                const r = await fetch(
-                  `${API}/api/admin/migrate-cloudinary-folder`,
-                  {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body: JSON.stringify({ from: migrateFrom, to: migrateTo }),
-                  },
-                );
-                const b = await r.json();
-                setMigrateResult(b);
-              } catch (e) {
-                setMigrateResult({ error: e.message });
-              } finally {
-                setMigrating(false);
-              }
-            }}
-            className="px-4 py-2 bg-amber-600 text-white text-sm rounded-lg hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-          >
-            {migrating ? "Migrating…" : "Start Migration"}
-          </button>
-        </div>
-
-        {migrateResult && (
-          <div
-            className={`rounded-lg p-3 text-xs font-mono ${migrateResult.ok ? "bg-green-50 border border-green-200 text-green-800" : "bg-red-50 border border-red-200 text-red-800"}`}
-          >
-            {migrateResult.ok ? (
-              <>
-                <div className="font-bold text-green-700 mb-2">
-                  Migration সফল!
-                </div>
-                <div>
-                  Cloudinary renamed:{" "}
-                  <b>{migrateResult.log?.cloudinary?.renamed}</b> | skipped:{" "}
-                  {migrateResult.log?.cloudinary?.skipped}
-                </div>
-                {migrateResult.log?.cloudinary?.errors?.length > 0 && (
-                  <div className="text-red-600 mt-1">
-                    Errors: {migrateResult.log.cloudinary.errors.join(", ")}
-                  </div>
-                )}
-                <div className="mt-2">DB updated:</div>
-                {Object.entries(migrateResult.log?.db || {}).map(([k, v]) => (
-                  <div key={k}>
-                    &nbsp;&nbsp;{k}: <b>{v}</b> records
-                  </div>
-                ))}
-              </>
-            ) : (
-              <div>Error: {migrateResult.error}</div>
-            )}
-          </div>
-        )}
-      </div>
 
       <MediaPicker
         open={showLogoPicker}

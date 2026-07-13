@@ -111,7 +111,7 @@ const Banner = () => {
 
           {/* Center image */}
           <div
-            className={`order-1 md:order-2 relative w-full md:w-105 lg:w-120 h-55 sm:h-70 md:h-110 cursor-pointer ${
+            className={`order-1 md:order-2 relative w-full md:w-105 lg:w-120 h-55 sm:h-70 md:h-110 cursor-pointer  ${
               hasSideText ? "" : "md:col-span-3 md:w-full"
             }`}
             onClick={() => {
