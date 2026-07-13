@@ -85,7 +85,7 @@ const Banner = () => {
           className="banner-fade flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-4 md:gap-6 px-4 md:px-6 py-8 md:py-0 md:h-110"
         >
           {/* Left text — nudged up so it clears the bottom arrows */}
-          <div className="banner-slide-left order-2 md:order-1 text-center md:text-left max-w-xs md:max-w-sm md:mb-24">
+          <div className="banner-slide-left text-center md:text-left max-w-xs md:max-w-sm md:mb-24">
             {slide.badge && (
               <p className="text-sm md:text-base text-gray-500 mb-1">
                 {slide.badge}
@@ -113,7 +113,7 @@ const Banner = () => {
 
           {/* Center image — hangs below the banner edge for a floating look */}
           <div
-            className={`order-1 md:order-2 relative w-full md:w-115 lg:w-130 xl:w-140 h-60 sm:h-75 md:h-130 lg:h-135 cursor-pointer ${
+            className={`relative w-full md:w-115 lg:w-130 xl:w-140 h-60 sm:h-75 md:h-130 lg:h-135 cursor-pointer ${
               hasSideText
                 ? "z-10 md:translate-y-4 lg:translate-y-6"
                 : "md:col-span-3 md:w-full md:h-110"
@@ -122,6 +122,17 @@ const Banner = () => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
             }}
           >
+            {/* Soft glow halo behind the product image */}
+            {hasSideText && (
+              <div
+                aria-hidden="true"
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-3/5 rounded-full blur-3xl"
+                style={{
+                  background:
+                    "radial-gradient(closest-side, rgba(37,99,235,0.18), rgba(147,197,253,0.10) 55%, transparent 100%)",
+                }}
+              />
+            )}
             <Image
               src={slide.image?.url || "/assets/placeholder.svg"}
               alt={slide.title || "Banner"}
@@ -131,14 +142,14 @@ const Banner = () => {
               sizes="(max-width: 768px) 100vw, 540px"
               className={
                 hasSideText
-                  ? "object-contain drop-shadow-[0_30px_35px_rgba(0,0,0,0.18)]"
+                  ? "banner-image object-contain drop-shadow-[0_35px_40px_rgba(15,23,42,0.30)]"
                   : "object-cover"
               }
             />
           </div>
 
           {/* Right text — nudged up so it clears the bottom arrows */}
-          <div className="banner-slide-right order-3 text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end md:mb-24">
+          <div className="banner-slide-right text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end md:mb-24">
             {slide.rightTitle && (
               <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-3">
                 {slide.rightTitle}
@@ -197,15 +208,23 @@ const Banner = () => {
         )}
       </div>
 
-      <style jsx>{`
+      <style jsx global>{`
         .banner-fade {
           animation: bannerFade 0.5s ease;
         }
         .banner-slide-left {
-          animation: bannerSlideLeft 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+          animation: bannerSlideLeft 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s
+            both;
         }
         .banner-slide-right {
-          animation: bannerSlideRight 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+          animation: bannerSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s
+            both;
+        }
+        /* image pops in first, then keeps gently floating */
+        .banner-image {
+          animation:
+            bannerImageIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
+            bannerFloat 5s ease-in-out 1s infinite alternate;
         }
         @keyframes bannerFade {
           from {
@@ -218,7 +237,7 @@ const Banner = () => {
         @keyframes bannerSlideLeft {
           from {
             opacity: 0;
-            transform: translateX(-60px);
+            transform: translateX(-70px);
           }
           to {
             opacity: 1;
@@ -228,17 +247,36 @@ const Banner = () => {
         @keyframes bannerSlideRight {
           from {
             opacity: 0;
-            transform: translateX(60px);
+            transform: translateX(70px);
           }
           to {
             opacity: 1;
             transform: translateX(0);
           }
         }
+        @keyframes bannerImageIn {
+          from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.92);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+        @keyframes bannerFloat {
+          from {
+            transform: translateY(0);
+          }
+          to {
+            transform: translateY(-10px);
+          }
+        }
         @media (prefers-reduced-motion: reduce) {
           .banner-fade,
           .banner-slide-left,
-          .banner-slide-right {
+          .banner-slide-right,
+          .banner-image {
             animation: none;
           }
         }
