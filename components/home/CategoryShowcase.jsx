@@ -12,7 +12,7 @@ function Tile({ tile, big = false, className = "" }) {
   return (
     <Link
       href={tile.href || "/"}
-      className={`group relative bg-[#F5F6F7] rounded-2xl overflow-hidden ${
+      className={`group relative bg-[#F5F6F7]  overflow-hidden ${
         big ? "min-h-64 sm:min-h-80 md:min-h-100" : "h-32 sm:h-40 md:h-48"
       } ${className}`}
     >
@@ -75,7 +75,7 @@ export default function CategoryShowcase() {
         </h2>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         <Tile
           tile={leftBig}
           big
