@@ -291,43 +291,35 @@ export default function ProductCard({
           </div>
         </div>
 
-        <div className="p-3 flex flex-col grow">
-          <h3 className="text-sm font-semibold text-[#1F2937] mb-1 truncate">
+        <div className="p-3 pt-2.5 flex flex-col grow">
+          <h3 className="text-sm font-semibold text-[#1F2937] mb-0.5 truncate">
             {product.title || product.slug}
           </h3>
-          <p className="text-xs text-[#6B7280] mb-1 truncate">
-            {product.description || product.category}
-          </p>
+          {product.description && (
+            <p className="text-xs text-[#6B7280] mb-1 truncate">
+              {product.description}
+            </p>
+          )}
 
-          <div className="mb-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-lg font-bold text-[#1F2937]">
+          {/* Price + swatches on one tight row */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-baseline gap-1.5 min-w-0">
+              <span className="text-base font-bold text-[#1F2937] whitespace-nowrap">
                 ৳{price?.toLocaleString()}
               </span>
               {compareAt && compareAt > price && (
-                <span className="text-sm text-gray-500 line-through">
+                <span className="text-xs text-gray-400 line-through whitespace-nowrap">
                   ৳{compareAt?.toLocaleString()}
                 </span>
               )}
-              {Number(product.rewardPoints) > 0 && (
-                <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-300 to-yellow-500 text-amber-900 text-[8px] font-bold px-1.5 py-0.5 rounded-full">
-                  <FaStar className="w-2 h-2 text-red-700" />
-                  {product.rewardPoints} points
-                </span>
-              )}
             </div>
-            {product.freeShipping && (
-              <p className="text-xs font-semibold text-green-700 mt-0.5">
-                {t("home.free_shipping")}
-              </p>
-            )}
             {/* Color swatches - extracted from variants */}
             {(() => {
               const variantColors = getVariantColors(product);
               if (variantColors.length === 0) return null;
               return (
-                <div className="flex flex-wrap gap-1 mt-1.5">
-                  {variantColors.slice(0, 5).map((c, i) => {
+                <div className="flex items-center gap-1 shrink-0">
+                  {variantColors.slice(0, 4).map((c, i) => {
                     const hex = c.hex?.trim()
                       ? c.hex.startsWith("#")
                         ? c.hex
@@ -337,19 +329,32 @@ export default function ProductCard({
                       <span
                         key={i}
                         title={c.name}
-                        className="w-4 h-4 rounded-full inline-block border border-gray-200"
+                        className="w-3.5 h-3.5 rounded-full inline-block border border-gray-200"
                         style={{ backgroundColor: hex }}
                       />
                     );
                   })}
-                  {variantColors.length > 5 && (
+                  {variantColors.length > 4 && (
                     <span className="text-[10px] text-gray-400 leading-4">
-                      +{variantColors.length - 5}
+                      +{variantColors.length - 4}
                     </span>
                   )}
                 </div>
               );
             })()}
+          </div>
+          <div className="flex items-center gap-2">
+            {product.freeShipping && (
+              <p className="text-[11px] font-semibold text-green-700">
+                {t("home.free_shipping")}
+              </p>
+            )}
+            {Number(product.rewardPoints) > 0 && (
+              <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-300 to-yellow-500 text-amber-900 text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+                <FaStar className="w-2 h-2 text-red-700" />
+                {product.rewardPoints} points
+              </span>
+            )}
           </div>
 
           {isOutOfStock ? (
