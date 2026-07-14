@@ -55,16 +55,16 @@ export default function WhyChooseUs() {
 
   return (
     <section className="w-full bg-[#F5F6F7] py-10 md:py-14">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* White card: image left, content right */}
         <div
-          className={`bg-white border border-gray-100 rounded-3xl shadow-sm p-4 md:p-6 grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
+          className={`bg-white border border-gray-100 rounded-3xl shadow-sm grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
             hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
           }`}
         >
           {/* Image */}
           {hasImage && (
-            <div className="relative rounded-2xl overflow-hidden bg-[#F5F6F7] min-h-64 md:min-h-80">
+            <div className="relative rounded-l-2xl  overflow-hidden bg-[#F5F6F7] min-h-64 md:min-h-80 ">
               <Image
                 src="/whychoose.jpg"
                 alt={t("home.why_choose_us")}
@@ -77,7 +77,7 @@ export default function WhyChooseUs() {
           )}
 
           {/* Text + accordion */}
-          <div className="md:py-2 md:pr-2">
+          <div className=" p-2 md:p-4 mr-2">
             <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2">
               {t("home.why_choose_us")}
             </h2>
