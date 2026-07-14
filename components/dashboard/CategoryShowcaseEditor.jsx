@@ -339,6 +339,18 @@ export default function CategoryShowcaseEditor() {
       <p className="text-xs text-gray-400">
         Note: saving requires the main admin account (settings permission).
       </p>
+
+      <MediaPicker
+        open={pickerIdx !== null}
+        onSelect={(asset) => {
+          if (pickerIdx !== null)
+            patchTile(pickerIdx, {
+              image: { url: asset.url, public_id: asset.public_id },
+            });
+          setPickerIdx(null);
+        }}
+        onClose={() => setPickerIdx(null)}
+      />
     </div>
   );
 }

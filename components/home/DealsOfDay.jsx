@@ -47,7 +47,7 @@ export default function DealsOfDay() {
     const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
     const fetchData = async () => {
       try {
-        // First try settings-based deal of day, then fall back to badge
+        // Deal of the Day is chosen from the dashboard (Setting.dealOfDayProductId)
         let deal = null;
         try {
           const settingResp = await fetch(`${API}/api/deal-of-day`);
@@ -55,14 +55,6 @@ export default function DealsOfDay() {
           deal = settingJson.product || null;
         } catch {
           /* ignore */
-        }
-
-        if (!deal) {
-          const dealResp = await fetch(
-            `${API}/api/products?badge=deals_of_the_day&limit=1`,
-          );
-          const dealJson = await dealResp.json();
-          deal = (dealJson.items || [])[0] || null;
         }
 
         if (deal) {

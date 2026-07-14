@@ -300,6 +300,7 @@ const SECTIONS = [
       "/dashboard/banners",
       "/dashboard/promo-panels",
       "/dashboard/category-showcase",
+      "/dashboard/deal-of-day",
       "/dashboard/popup",
       "/dashboard/blog",
       "/dashboard/media",
@@ -331,6 +332,13 @@ const SECTIONS = [
         label: "Category Showcase",
         href: "/dashboard/category-showcase",
         icon: "M3 3h5v18H3V3z M10 3h4v8h-4V3z M16 3h5v18h-5V3z M10 13h4v8h-4v-8z",
+        permissionKey: "content.promo",
+      },
+      {
+        key: "deal-of-day",
+        label: "Deal of the Day",
+        href: "/dashboard/deal-of-day",
+        icon: "M12 8V4l8 8-8 8v-4H4V8h8z",
         permissionKey: "content.promo",
       },
       {
