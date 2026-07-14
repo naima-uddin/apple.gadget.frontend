@@ -101,15 +101,20 @@ export default function Newsletter() {
 
   return (
     <>
-      <section className=" relative w-full overflow-hidden bg-[#F5F6F7]">
+      {/* sm+: band height follows the photo's real aspect ratio (1983×501), so
+          it always fits edge-to-edge at any screen width; mobile: height from
+          content padding on a clean gray bg */}
+      <section className="max-w-7xl mx-auto relative w-full overflow-hidden bg-[#F5F6F7] sm:aspect-1983/501">
         <Image
           src="/newsletter.png"
           alt=""
           fill
           sizes="100vw"
-          className="object-cover object-center"
+          className="hidden sm:block object-cover object-center"
         />
-        <div className="relative z-10 max-w-xl mx-auto text-center px-6 py-34 md:py-40">
+        {/* soft veil on mid-size screens so the centered text stays readable */}
+        <div className="hidden sm:block lg:hidden absolute inset-0 bg-white/40" />
+        <div className="relative z-10 h-full max-w-xl mx-auto flex flex-col items-center justify-center text-center px-5 sm:px-6 py-14 sm:py-0">
           <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1F2937] mb-2">
             {t("newsletter.title")}
           </h2>
@@ -118,7 +123,7 @@ export default function Newsletter() {
           </p>
           <form
             onSubmit={handleToggleSubscription}
-            className="flex items-center gap-2 border-b border-gray-400/70 pb-1.5 max-w-md mx-auto"
+            className="flex items-center gap-2 border-b border-gray-400/70 pb-1.5 w-full max-w-md mx-auto"
           >
             <svg
               className="w-4 h-4 shrink-0 text-gray-500"
@@ -150,7 +155,7 @@ export default function Newsletter() {
               type="submit"
               aria-label={subscribed ? "Unsubscribe" : "Subscribe"}
               disabled={toggling}
-              className={`shrink-0 px-5 py-2 rounded-md text-xs font-semibold text-white transition ${
+              className={`shrink-0 px-4 sm:px-5 py-2 rounded-md text-xs font-semibold text-white whitespace-nowrap transition ${
                 subscribed
                   ? "bg-gray-400 hover:bg-gray-400"
                   : "bg-[#5B21B6] hover:bg-[#4C1D95]"
