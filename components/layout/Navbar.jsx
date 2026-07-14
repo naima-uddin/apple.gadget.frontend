@@ -340,7 +340,7 @@ export default function Navbar() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="relative bg-white z-50 ">
+    <header className="relative bg-white z-50 work-sans">
       <div className="flex items-center justify-between max-w-7xl md:px-3  lg:px-4 mx-auto h-14 md:h-16">
         {/* Left: hamburger (mobile) + logo */}
         <div className="flex items-center gap-1.5">

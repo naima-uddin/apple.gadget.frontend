@@ -117,7 +117,7 @@ export default function CategoryShowcase() {
 
         {/* dots */}
         {total > 1 && (
-          <div className="flex justify-center items-center gap-2.5 mt-8">
+          <div className="flex justify-center items-center gap-2.5 mt-3 bg-[#faebfd] py-1.5 px-6 rounded-full w-fit mx-auto">
             {pages.map((_, i) => (
               <button
                 key={i}
