@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import {
   FaHeart,
-  FaShuffle,
+  FaCartShopping,
   FaChevronUp,
   FaChevronDown,
   FaBell,
@@ -188,7 +188,7 @@ export default function DealsOfDay() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Main Product Section - Left Side */}
         <div className="lg:col-span-9">
-          <div className="border border-gray-100 rounded-2xl p-2 md:p-4 bg-linear-to-br from-white to-[#F5F6F7] h-full">
+          <div className="border border-gray-100 rounded-2xl p-2 md:p-4 bg-linear-to-br from-[#fefeff] to-[#f6f1fc] h-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Product Image Section */}
               <div>
@@ -341,11 +341,14 @@ export default function DealsOfDay() {
                   ) : (
                     <button
                       onClick={() => {
-                        if (mainProduct) addToCart(mainProduct, 1);
+                        if (mainProduct) {
+                          addToCart(mainProduct, 1, { silent: true });
+                          router.push("/checkout");
+                        }
                       }}
                       className="flex-1 bg-[#eadffc] text-black py-3 rounded-lg font-semibold hover:bg-[#4C1D95] hover:text-white transition"
                     >
-                      Add To Cart
+                      {t("product.buy_now")}
                     </button>
                   )}
                   <button
@@ -361,8 +364,13 @@ export default function DealsOfDay() {
                   >
                     <FaHeart />
                   </button>
-                  <button className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#5B21B6] hover:text-[#5B21B6] transition">
-                    <FaShuffle />
+                  <button
+                    onClick={() => {
+                      if (mainProduct) addToCart(mainProduct, 1);
+                    }}
+                    className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#5B21B6] hover:text-[#5B21B6] transition"
+                  >
+                    <FaCartShopping />
                   </button>
                 </div>
               </div>
@@ -371,9 +379,9 @@ export default function DealsOfDay() {
         </div>
 
         {/* Bestseller Sidebar - Right Side */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 bg-linear-to-b from-[#fefeff] to-[#f6f5f7]">
           <div className="flex flex-col h-full">
-            <div className="bg-[#5B21B6] text-white rounded-t-lg p-4">
+            <div className="bg-[#883ffd] text-white rounded-t-lg p-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold">Bestseller product</h3>
                 <div className="flex gap-2">
