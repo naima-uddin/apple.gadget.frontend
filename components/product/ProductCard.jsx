@@ -24,7 +24,7 @@ import Skeleton from "@/components/ui/Skeleton";
 
 export default function ProductCard({
   product,
-  imageWidth = 300,
+  imageWidth = 350,
   imageHeight = 200,
   imageQuality = 100,
   showActionsOnHover = true,

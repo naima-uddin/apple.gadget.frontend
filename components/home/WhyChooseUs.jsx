@@ -26,9 +26,9 @@ const DEFAULT_FAQS = [
       "Absolutely. You can return or exchange most items within 7 days of delivery as long as they are unused and in original packaging.",
   },
   {
-    question: "What payment methods do you accept?",
+    question: "Is there a return policy?",
     answer:
-      "We accept cash on delivery, bKash, Nagad, and all major debit/credit cards through our secure checkout.",
+      "Yes, we have a clear return policy. Please refer to our Returns & Refunds page for detailed information on how to initiate a return or exchange.",
   },
 ];
 
