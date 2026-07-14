@@ -128,7 +128,7 @@ export default function CategoryShowcase() {
                 }}
                 className={`rounded-full transition-all duration-300 ${
                   i === current
-                    ? "w-3 h-3 border-2 border-[#1F2937] bg-white ring-2 ring-white"
+                    ? "w-3 h-3 border-1 border-[#ca63fa] bg-white ring-2 ring-white"
                     : "w-2 h-2 bg-gray-400 hover:bg-[#5B21B6]"
                 }`}
               />
