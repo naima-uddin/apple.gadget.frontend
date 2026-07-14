@@ -104,13 +104,13 @@ export default function Newsletter() {
       {/* sm+: band height follows the photo's real aspect ratio (1983×501), so
           it always fits edge-to-edge at any screen width; mobile: height from
           content padding on a clean gray bg */}
-      <section className="max-w-7xl mx-auto relative w-full overflow-hidden bg-[#F5F6F7] sm:aspect-1983/501 mb-10 rounded-2xl px-2 md:px-4 lg:px-6">
+      <section className="max-w-7xl mx-auto relative w-full overflow-hidden bg-[#F5F6F7] sm:aspect-1983/501 mb-10 shadow-lg rounded-2xl px-2 md:px-4 lg:px-6">
         <Image
           src="/newsletter.png"
           alt=""
           fill
           sizes="100vw"
-          className="hidden sm:block object-cover object-center"
+          className="hidden sm:block object-cover object-center  "
         />
         {/* soft veil on mid-size screens so the centered text stays readable */}
         <div className="hidden sm:block lg:hidden absolute inset-0 bg-white/40" />
