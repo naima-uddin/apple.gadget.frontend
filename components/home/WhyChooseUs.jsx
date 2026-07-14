@@ -54,11 +54,11 @@ export default function WhyChooseUs() {
   }, []);
 
   return (
-    <section className="w-full bg-[#F5F6F7] py-10 md:py-14">
+    <section className="w-full py-10 md:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* White card: image left, content right */}
         <div
-          className={`bg-white border border-gray-100 rounded-3xl shadow-sm grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
+          className={`bg-white border border-gray-100 rounded-3xl shadow-lg grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
             hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
           }`}
         >
