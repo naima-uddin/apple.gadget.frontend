@@ -343,7 +343,7 @@ export default function DealsOfDay() {
                       onClick={() => {
                         if (mainProduct) addToCart(mainProduct, 1);
                       }}
-                      className="flex-1 bg-[#5B21B6] text-white py-3 rounded-lg font-semibold hover:bg-[#4C1D95] transition"
+                      className="flex-1 bg-[#eadffc] text-black py-3 rounded-lg font-semibold hover:bg-[#4C1D95] hover:text-white transition"
                     >
                       Add To Cart
                     </button>
@@ -395,12 +395,12 @@ export default function DealsOfDay() {
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1 space-y-2 flex-1">
+            <div className="bg-white border border-gray-200 rounded-b-lg px-3 py-1 space-y-1 flex-1">
               {visibleBestsellers.map((product) => (
                 <div
                   key={product.id}
                   onClick={() => router.push(`/product/${product.id}/`)}
-                  className="flex gap-4 pb-4 border-b border-gray-200 last:border-b-0 cursor-pointer hover:bg-gray-50 transition"
+                  className="flex gap-4 pb-2 border-b border-gray-200 last:border-b-0 cursor-pointer hover:bg-gray-50 transition"
                 >
                   <Image
                     src={product.image}
@@ -410,11 +410,11 @@ export default function DealsOfDay() {
                     height={80}
                     className="w-20 h-20 object-contain bg-gray-50 rounded"
                   />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900 mb-1">
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-gray-900 mb-1 text-sm line-clamp-2">
                       {product.name}
                     </h4>
-                    <div className="flex items-center gap-1 mb-1 text-sm">
+                    <div className="flex items-center gap-1  text-sm">
                       {renderStars(product.rating)}
                     </div>
                     <p className="text-[#5B21B6] font-bold">৳{product.price}</p>
