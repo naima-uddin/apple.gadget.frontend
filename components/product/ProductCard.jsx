@@ -156,7 +156,7 @@ export default function ProductCard({
           <span className="sr-only">{product.title || product.slug}</span>
         </Link>
         <div className="relative bg-gray-50" style={{ height: imageHeight }}>
-          <div className="absolute inset-0 px-2 flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0  flex items-center justify-center overflow-hidden">
             <Image
               src={image}
               alt={product.title || product.slug}
