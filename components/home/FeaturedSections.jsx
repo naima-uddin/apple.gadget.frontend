@@ -146,21 +146,25 @@ export default function FeaturedSections() {
   if (!loaded || sections.length === 0) return null;
 
   return (
-    <section className="w-full py-6 space-y-10 bg-[#F3F2F9]">
+    // each dashboard section gets its own gray band; the white page background
+    // shows through the space between bands
+    <section className="w-full py-4 space-y-6 md:space-y-8 bg-white">
       {sections.map((sec) => (
-        <div key={sec._id} className="max-w-7xl mx-auto px-2">
-          {/* Section header */}
-          <SectionHeader
-            title={lang === "bn" ? sec.titleBn || sec.title : sec.title}
-            seeMoreHref={
-              sec.viewAllLink && sec.viewAllLink !== "/"
-                ? sec.viewAllLink
-                : undefined
-            }
-            seeMoreLabel={t("home.see_more")}
-          />
-          {/* Product slider */}
-          <FeaturedSlider products={sec.products} />
+        <div key={sec._id} className="w-full bg-[#F3F2F9] py-6 md:py-8">
+          <div className="max-w-7xl mx-auto px-2">
+            {/* Section header */}
+            <SectionHeader
+              title={lang === "bn" ? sec.titleBn || sec.title : sec.title}
+              seeMoreHref={
+                sec.viewAllLink && sec.viewAllLink !== "/"
+                  ? sec.viewAllLink
+                  : undefined
+              }
+              seeMoreLabel={t("home.see_more")}
+            />
+            {/* Product slider */}
+            <FeaturedSlider products={sec.products} />
+          </div>
         </div>
       ))}
     </section>

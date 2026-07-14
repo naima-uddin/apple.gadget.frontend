@@ -142,7 +142,7 @@ export default function ProductCard({
   return (
     <>
       <div
-        className="relative bg-white border border-gray-100 rounded-2xl shadow-sm group hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer h-full"
+        className="relative bg-white border border-gray-100 rounded-2xl shadow-sm group hover:shadow-lg hover:-translate-y-1 hover:border-violet-200 transition-all duration-300 flex flex-col cursor-pointer h-full"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -155,7 +155,10 @@ export default function ProductCard({
         >
           <span className="sr-only">{product.title || product.slug}</span>
         </Link>
-        <div className="relative bg-gray-50" style={{ height: imageHeight }}>
+        <div
+          className="relative bg-white rounded-t-2xl overflow-hidden border-b border-gray-100"
+          style={{ height: imageHeight }}
+        >
           <div className="absolute inset-0  flex items-center justify-center overflow-hidden">
             <Image
               src={image}
@@ -183,10 +186,10 @@ export default function ProductCard({
                     e.stopPropagation();
                     setCurrentImageIndex(idx);
                   }}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  className={`h-1.5 rounded-full transition-all duration-200 ${
                     idx === currentImageIndex
                       ? "bg-[#5B21B6] w-4"
-                      : "bg-gray-600/90 hover:bg-[#5B21B6]"
+                      : "bg-gray-300 w-1.5 hover:bg-[#5B21B6]"
                   }`}
                   aria-label={`View image ${idx + 1}`}
                 />
@@ -199,7 +202,7 @@ export default function ProductCard({
             {/* Discount badge — top left */}
             <div>
               {discountPct && (
-                <span className="bg-gradient-to-r from-rose-500 to-red-600 text-white text-[10px] font-bold px-1 py-0.5 rounded-sm leading-none">
+                <span className="bg-linear-to-r from-rose-500 to-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full leading-none shadow-sm">
                   -{discountPct}%
                 </span>
               )}
@@ -302,9 +305,9 @@ export default function ProductCard({
           )}
 
           {/* Price + swatches on one tight row */}
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2 mt-0.5">
             <div className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-base font-bold text-[#1F2937] whitespace-nowrap">
+              <span className="text-base font-bold text-[#5B21B6] whitespace-nowrap">
                 ৳{price?.toLocaleString()}
               </span>
               {compareAt && compareAt > price && (
@@ -358,7 +361,7 @@ export default function ProductCard({
           </div>
 
           {isOutOfStock ? (
-            <div className="relative z-[2] mt-auto flex gap-1.5">
+            <div className="relative z-2 mt-auto pt-2.5 flex gap-1.5">
               <button
                 disabled
                 className="bg-gray-100 text-red-500 py-2 px-2 rounded-md text-[10px] font-medium cursor-not-allowed whitespace-nowrap"
@@ -377,7 +380,7 @@ export default function ProductCard({
               </button>
             </div>
           ) : (
-            <div className="relative z-[2] mt-auto flex gap-1.5">
+            <div className="relative z-2 mt-auto pt-2.5 flex gap-1.5">
               {/* Buy Now — transparent with violet outline, straight to checkout */}
               <button
                 onClick={(e) => {
