@@ -388,21 +388,21 @@ export default function ProductCard({
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
-                className="flex-1 bg-transparent border border-[#5B21B6] text-[#5B21B6] py-1.5 rounded-md text-xs font-semibold hover:bg-violet-50 transition"
+                className="flex-1 bg-[#e5d7fa]   text-[#5B21B6] py-1.5 rounded-xl text-xs font-semibold hover:bg-[#b09ad1] transition cursor:pointer"
               >
                 {t("product.buy_now")}
               </button>
-              {/* Add — compact filled violet pill with cart icon */}
+              {/* Add to cart — icon-only violet button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   addToCart(product, 1);
                 }}
-                className="shrink-0 flex items-center justify-center gap-1 bg-[#5B21B6] text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-[#4C1D95] transition"
+                className="shrink-0 flex items-center justify-center bg-[#5B21B6] text-white px-3 py-1.5 rounded-full hover:bg-[#4C1D95] transition cursor:pointer"
                 title={t("home.add_to_cart")}
+                aria-label={t("home.add_to_cart")}
               >
-                <FaShoppingCart className="w-3.5 h-3.5" />
-                {t("home.add")}
+                <FaShoppingCart className="w-4 h-4" />
               </button>
             </div>
           )}

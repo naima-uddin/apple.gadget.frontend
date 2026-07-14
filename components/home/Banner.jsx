@@ -86,9 +86,8 @@ const Banner = () => {
     slide.rightText;
 
   return (
-    <section className="md:mb-12 lg:mb-14" style={{ background: BG_GRADIENT }}>
-      {/* overflow-x-clip: side texts can slide in without a horizontal scrollbar,
-          while the center image is free to hang below the banner's bottom edge */}
+    <section style={{ background: BG_GRADIENT }}>
+      {/* overflow-x-clip: side texts can slide in without a horizontal scrollbar */}
       <div
         className="relative max-w-7xl mx-auto overflow-x-clip"
         onMouseEnter={() => clearInterval(autoRef.current)}
@@ -125,12 +124,10 @@ const Banner = () => {
             )}
           </div>
 
-          {/* Center image — hangs below the banner edge for a floating look */}
+          {/* Center image — stays fully inside the banner band */}
           <div
-            className={`relative w-full md:w-105 lg:w-120 xl:w-130 h-60 sm:h-75 md:h-120 lg:h-125 cursor-pointer ${
-              hasSideText
-                ? "z-10 md:translate-y-3 lg:translate-y-5"
-                : "md:col-span-3 md:w-full md:h-110"
+            className={`relative w-full md:w-105 lg:w-120 xl:w-130 h-60 sm:h-75 md:h-100 lg:h-105 cursor-pointer ${
+              hasSideText ? "z-10" : "md:col-span-3 md:w-full md:h-110"
             }`}
             onClick={() => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
