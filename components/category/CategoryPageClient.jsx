@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/product/ProductCard";
 import ProductFilters from "@/components/product/ProductFilters";
@@ -8,7 +8,6 @@ import SortDropdown from "@/components/product/SortDropdown";
 import Link from "next/link";
 import { useUser } from "@/components/context/UserContext";
 import { useCategories } from "@/components/context/CategoryContext";
-import Image from "next/image";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
 
@@ -26,7 +25,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   const [category, setCategory] = useState(null);
   const [parentCategory, setParentCategory] = useState(null);
   const [subcategories, setSubcategories] = useState([]);
-  const [immediateChildren, setImmediateChildren] = useState([]);
   const [descendantMap, setDescendantMap] = useState(new Map());
   const [isSubcategoryPage, setIsSubcategoryPage] = useState(false);
   const [products, setProducts] = useState([]);
@@ -37,9 +35,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   const [loadingBestSelling, setLoadingBestSelling] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productsLoadedOnce, setProductsLoadedOnce] = useState(false);
-  const [showAllSubcategories, setShowAllSubcategories] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [subcategoryVisibleCount, setSubcategoryVisibleCount] = useState(8);
   const [isMobileView, setIsMobileView] = useState(false);
   const [bestSellingStartIndex, setBestSellingStartIndex] = useState(0);
   const [bestSellingPerView, setBestSellingPerView] = useState(1);
@@ -54,7 +50,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   useEffect(() => {
     const updateResponsiveState = () => {
       const width = window.innerWidth;
-      setSubcategoryVisibleCount(width >= 768 ? 12 : 8);
       setIsMobileView(width < 640);
 
       if (width >= 1280) setBestSellingPerView(5);
@@ -76,7 +71,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     setCurrentPage(1);
     setTotalProducts(0);
     setCategoryIdsParam("");
-    setShowAllSubcategories(false);
     setShowMobileFilters(false);
     setBestSellingStartIndex(0);
     setActiveFilters({
@@ -99,7 +93,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         if (!match) {
           setCategory({ name: slug, description: "" });
           setSubcategories([]);
-          setImmediateChildren([]);
           setDescendantMap(new Map());
           setProducts([]);
           setBestSelling([]);
@@ -111,10 +104,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         }
 
         setCategory(match);
-
-        // Get immediate children for round shape display
-        const immediateChildrenList = getSubcategories(match._id);
-        setImmediateChildren(immediateChildrenList);
 
         // Build flat descendant list with depth for filter sidebar
         const collectAllDescendants = (catId, depth = 0) => {
@@ -341,12 +330,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     loadProducts();
   }, [categoryIdsParam, currentPage, sortOption, activeFilters]);
 
-  const visibleSubcategories = useMemo(() => {
-    return showAllSubcategories
-      ? immediateChildren
-      : immediateChildren.slice(0, subcategoryVisibleCount);
-  }, [showAllSubcategories, immediateChildren, subcategoryVisibleCount]);
-
   const { user } = useUser();
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
   const maxBestSellingStart = Math.max(
@@ -407,59 +390,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           </p>
         </div>
 
-        {/* Subcategory circles - show at any level that has children */}
-        {immediateChildren.length > 0 && (
-          <>
-            <div className="grid grid-cols-4 md:grid-cols-6 gap-2 md:gap-4 justify-items-center ">
-              {visibleSubcategories.map((sub) => {
-                const sslug =
-                  sub.slug ||
-                  (sub.name || "").toLowerCase().replace(/\s+/g, "-");
-                return (
-                  <div
-                    key={sub._id}
-                    className="relative flex flex-col items-center w-full max-w-[92px] md:max-w-[110px]"
-                  >
-                    <Link
-                      href={`/category/${category.slug}/${sslug}/`}
-                      className="flex flex-col items-center group cursor-pointer w-full"
-                    >
-                      <div className="w-18 h-18 md:w-34 md:h-34 lg:w-38 lg:h-38 rounded-full bg-[#FFF5ED] border-4 border-white shadow-md flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform">
-                        <Image
-                          src={
-                            sub.images && sub.images[0] && sub.images[0].url
-                              ? sub.images[0].url
-                              : "/assets/placeholder.svg"
-                          }
-                          alt={sub.name}
-                          width={80}
-                          height={80}
-                          className="w-24 h-24 md:w-38 md:h-38 lg:w-42 lg:h-42 object-contain"
-                        />
-                      </div>
-                      <div className="mt-2 text-xs md:text-sm text-center font-medium text-gray-700 hover:text-rose-600 line-clamp-2">
-                        {sub.name}
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>
-
-            {immediateChildren.length > subcategoryVisibleCount && (
-              <div className="flex justify-center mb-8">
-                <button
-                  className="px-4 py-2  border border-b-red-600  rounded-md text-sm"
-                  onClick={() => setShowAllSubcategories((s) => !s)}
-                >
-                  {showAllSubcategories
-                    ? "Show less"
-                    : `+ Show all (${immediateChildren.length})`}
-                </button>
-              </div>
-            )}
-          </>
-        )}
+        {/* Subcategories are shown in the filter sidebar (ProductFilters), not here */}
 
         {/* Best Selling section sits full width above filter/product flex */}
         {(loadingBestSelling || bestSelling.length > 0) && (

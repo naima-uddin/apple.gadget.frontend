@@ -47,7 +47,7 @@ function ShowcasePage({ page, isActive }) {
   return (
     <div className="w-full shrink-0 px-0.5">
       {page.title && (
-        <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1F2937] text-center mb-6 work-sans">
+        <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] text-center mb-6 work-sans">
           {page.title}
         </h2>
       )}
@@ -59,7 +59,12 @@ function ShowcasePage({ page, isActive }) {
         key={isActive ? "active" : "idle"}
         className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-3 md:auto-rows-55 lg:auto-rows-62.5"
       >
-        <Tile tile={leftBig} big delay={0} className="col-span-2 md:row-span-2" />
+        <Tile
+          tile={leftBig}
+          big
+          delay={0}
+          className="col-span-2 md:row-span-2"
+        />
         <Tile tile={s1} delay={120} />
         <Tile tile={s2} delay={200} />
         <Tile

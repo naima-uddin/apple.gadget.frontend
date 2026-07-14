@@ -252,7 +252,7 @@ export default function DealsOfDay() {
                 </div>
 
                 {/* Product Title */}
-                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2 md:mb-4">
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2 md:mb-4 work-sans">
                   {mainProduct?.title || "Deal Product"}
                 </h2>
 

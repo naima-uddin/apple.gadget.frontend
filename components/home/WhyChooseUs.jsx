@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const VISIBLE_FAQS = 4;
@@ -56,6 +57,9 @@ export default function WhyChooseUs() {
   return (
     <section className="w-full py-10 md:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Section title — same style as the other homepage sections */}
+        <SectionHeader title={t("home.why_choose_us")} />
+
         {/* White card: image left, content right */}
         <div
           className={`bg-white border border-gray-100 rounded-3xl shadow- grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
@@ -78,9 +82,6 @@ export default function WhyChooseUs() {
 
           {/* Text + accordion */}
           <div className=" p-2 md:p-4 mr-2">
-            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2 work-sans">
-              {t("home.why_choose_us")}
-            </h2>
             <p className="text-sm text-[#6B7280] leading-relaxed mb-5">
               {t("home.why_choose_desc").replace(
                 "{store}",

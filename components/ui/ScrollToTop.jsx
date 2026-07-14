@@ -79,7 +79,7 @@ const ScrollToTop = () => {
             onClick={scrollToTop}
             className="relative flex items-center justify-center
                        w-8 h-8 rounded-full
-                       bg-gradient-to-br from-red-400 to-red-700
+                       bg-gradient-to-br from-[#5B21B6] to-[#4C1D95]
                        text-white shadow-2xl
                        hover:shadow-primary/30
                        transition-all duration-300
@@ -117,7 +117,7 @@ const ScrollToTop = () => {
             {/* Tooltip */}
             <div
               className="absolute right-full mr-2 px-2 py-1 
-                           bg-green-400 text-white text-xs rounded-lg 
+                           bg-white text-black text-xs rounded-lg 
                            opacity-0 group-hover:opacity-100 
                            transition-opacity duration-200 whitespace-nowrap"
             >

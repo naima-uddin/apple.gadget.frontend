@@ -6,6 +6,7 @@ import CategoryShowcase from "./CategoryShowcase";
 import WhyChooseUs from "./WhyChooseUs";
 import DealsOfDay from "./DealsOfDay";
 import CTASection from "./CTASection";
+import Newsletter from "@/components/layout/Newsletter";
 import AdSlot from "@/components/ui/AdSlot";
 
 export default function Home() {
@@ -19,6 +20,8 @@ export default function Home() {
       <WhyChooseUs />
       <DealsOfDay />
       <CTASection />
+      {/* newsletter band — homepage only, sits right above the footer */}
+      <Newsletter />
     </>
   );
 }
