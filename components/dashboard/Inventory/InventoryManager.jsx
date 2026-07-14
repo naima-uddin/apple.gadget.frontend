@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
+import NoProductsFound from "@/components/ui/NoProductsFound";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
@@ -399,9 +400,7 @@ export default function InventoryManager() {
             Loading inventory…
           </div>
         ) : items.length === 0 ? (
-          <div className="py-20 text-center text-gray-400 text-sm">
-            No products found.
-          </div>
+          <NoProductsFound compact />
         ) : (
           <div className="divide-y divide-gray-100">
             {items.map((product) => {

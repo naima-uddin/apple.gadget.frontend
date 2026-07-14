@@ -8,6 +8,7 @@ import SortDropdown from "@/components/product/SortDropdown";
 import Link from "next/link";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
+import NoProductsFound from "@/components/ui/NoProductsFound";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const PRODUCTS_PER_PAGE = 20;
@@ -269,9 +270,7 @@ export default function AllProductsClient() {
                   )}
                 </>
               ) : (
-                <div className="py-16 text-center text-gray-500">
-                  No products found.
-                </div>
+                <NoProductsFound />
               )}
 
               {!loadingProducts && totalPages > 1 && (

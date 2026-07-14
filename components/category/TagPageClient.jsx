@@ -8,6 +8,7 @@ import SortDropdown from "@/components/product/SortDropdown";
 import Link from "next/link";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
+import NoProductsFound from "@/components/ui/NoProductsFound";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
@@ -361,9 +362,9 @@ export default function TagPageClient({ slug }) {
             Loading products…
           </div>
         ) : products.length === 0 ? (
-          <div className="py-32 text-center text-gray-400 text-lg">
-            No {config.label} products right now. Check back soon!
-          </div>
+          <NoProductsFound
+            message={`No ${config.label} products right now. Check back soon!`}
+          />
         ) : (
           <div className="grid grid-cols-12 gap-6">
             {/* Mobile filter/sort bar */}

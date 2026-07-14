@@ -45,13 +45,21 @@ export default function ProductFilters({
   showSkincareFilters = false,
 }) {
   // ── derive brand options from products ───────────────────────────────
+  // Accumulate every brand ever seen: `products` is the server-filtered list,
+  // so after selecting a brand it only contains that brand — without this the
+  // other checkboxes would disappear from the sidebar.
+  const seenBrandsRef = useRef(new Map());
   const brandOptions = useMemo(() => {
-    const brandMap = new Map();
+    const seen = seenBrandsRef.current;
+    const counts = new Map();
     products.forEach(p => {
       if (!p.department) return;
-      brandMap.set(p.department, (brandMap.get(p.department) || 0) + 1);
+      counts.set(p.department, (counts.get(p.department) || 0) + 1);
     });
-    return Array.from(brandMap.entries())
+    counts.forEach((count, name) => {
+      seen.set(name, Math.max(seen.get(name) || 0, count));
+    });
+    return Array.from(seen.entries())
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
   }, [products]);

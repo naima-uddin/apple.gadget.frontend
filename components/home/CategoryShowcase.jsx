@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import SectionHeader from "./SectionHeader";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
@@ -46,11 +47,7 @@ function ShowcasePage({ page, isActive }) {
   const [leftBig, s1, s2, s3, s4, rightBig] = page.tiles;
   return (
     <div className="w-full shrink-0 px-0.5">
-      {page.title && (
-        <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] text-center mb-6 work-sans">
-          {page.title}
-        </h2>
-      )}
+      {page.title && <SectionHeader title={page.title} />}
       {/* md+: 6 columns — each big tile spans 2 (= the two middle smalls
           combined), two fixed rows so smalls are exactly half a big tile.
           key flips when this page becomes active → tiles replay their
@@ -118,7 +115,7 @@ export default function CategoryShowcase() {
       onMouseEnter={() => clearInterval(autoRef.current)}
       onMouseLeave={startAuto}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         {/* overflow clips at the content edge (inside the padding), so the
             next page can never peek through the side padding */}
         <div className="overflow-hidden">

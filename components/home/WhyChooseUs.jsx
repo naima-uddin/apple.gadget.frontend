@@ -55,7 +55,7 @@ export default function WhyChooseUs() {
   }, []);
 
   return (
-    <section className="w-full py-10 md:py-14">
+    <section className="w-full py-6 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section title — same style as the other homepage sections */}
         <SectionHeader title={t("home.why_choose_us")} />

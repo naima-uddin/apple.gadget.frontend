@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/product/ProductCard";
 import ProductFilters from "@/components/product/ProductFilters";
+import NoProductsFound from "@/components/ui/NoProductsFound";
 import SortDropdown from "@/components/product/SortDropdown";
 import Link from "next/link";
 import { getDisplayPrice } from "@/lib/pricing";
@@ -180,9 +181,7 @@ export default function SearchResultsClient() {
           Enter a search term to find products.
         </p>
       ) : allProducts.length === 0 ? (
-        <p className="text-center text-gray-500 py-24">
-          No products found for &ldquo;{query}&rdquo;.
-        </p>
+        <NoProductsFound message={`We couldn't find anything for "${query}".`} />
       ) : (
         <div className="flex gap-6">
           {/* Filters sidebar */}

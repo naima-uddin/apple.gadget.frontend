@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import NoProductsFound from "@/components/ui/NoProductsFound";
 import {
   BarChart,
   Bar,
@@ -855,9 +856,7 @@ export default function ProfitMarginManager() {
             Loading…
           </div>
         ) : items.length === 0 ? (
-          <div className="py-20 text-center text-gray-400 text-sm">
-            No products found.
-          </div>
+          <NoProductsFound compact />
         ) : (
           <div className="divide-y divide-gray-100">
             {items.map((product) => {

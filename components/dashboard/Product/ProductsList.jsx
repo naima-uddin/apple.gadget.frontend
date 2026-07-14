@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import NoProductsFound from "@/components/ui/NoProductsFound";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/components/context/UserContext";
 import {
@@ -575,11 +576,14 @@ export default function ProductsList() {
               })}
             </tbody>
           </table>
-          {items.length === 0 && (
-            <div className="text-center py-8 text-gray-500">
-              {viewTrash ? "Trash is empty" : "No products found"}
-            </div>
-          )}
+          {items.length === 0 &&
+            (viewTrash ? (
+              <div className="text-center py-8 text-gray-500">
+                Trash is empty
+              </div>
+            ) : (
+              <NoProductsFound compact />
+            ))}
         </div>
       )}
 
