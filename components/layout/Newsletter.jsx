@@ -115,7 +115,7 @@ export default function Newsletter() {
         {/* soft veil on mid-size screens so the centered text stays readable */}
         <div className="hidden sm:block lg:hidden absolute inset-0 bg-white/40" />
         <div className="relative z-10 h-full max-w-xl mx-auto flex flex-col items-center justify-center text-center px-5 sm:px-6 py-14 sm:py-0">
-          <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1F2937] mb-2">
+          <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1F2937] mb-2 work-sans">
             {t("newsletter.title")}
           </h2>
           <p className="text-sm md:text-base text-[#6B7280] mb-8">

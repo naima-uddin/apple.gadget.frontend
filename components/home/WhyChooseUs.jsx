@@ -78,7 +78,7 @@ export default function WhyChooseUs() {
 
           {/* Text + accordion */}
           <div className=" p-2 md:p-4 mr-2">
-            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2">
+            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2 work-sans">
               {t("home.why_choose_us")}
             </h2>
             <p className="text-sm text-[#6B7280] leading-relaxed mb-5">

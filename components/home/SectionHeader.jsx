@@ -21,7 +21,7 @@ export default function SectionHeader({
 
   return (
     <div className={`flex items-center gap-3 md:gap-4 mb-6 ${className}`}>
-      <h2 className="shrink-0 text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] text-left">
+      <h2 className="shrink-0 text-lg sm:text-xl md:text-2xl  tracking-tight text-[#1F2937] text-left work-sans">
         {title}
       </h2>
       <div className="flex-1 h-px bg-gray-200" />

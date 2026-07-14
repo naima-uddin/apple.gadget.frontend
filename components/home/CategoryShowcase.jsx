@@ -44,7 +44,7 @@ function ShowcasePage({ page }) {
   return (
     <div className="w-full shrink-0 px-0.5">
       {page.title && (
-        <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1F2937] text-center mb-6">
+        <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1F2937] text-center mb-6 work-sans">
           {page.title}
         </h2>
       )}
