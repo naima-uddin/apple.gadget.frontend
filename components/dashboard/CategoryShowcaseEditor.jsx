@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import MediaPicker from "@/components/dashboard/MediaPicker";
 import { uploadAdminImage } from "@/lib/uploadImage";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
@@ -20,15 +21,26 @@ const EMPTY_TILE = () => ({
   link: "/",
 });
 
-// Admin editor for the homepage bento "Category Showcase" section.
-// Each of the 6 slots takes an uploaded image, a label, and a link; the
-// bento layout itself is fixed (big + 4 small + big). Live preview below.
+const EMPTY_PAGE = () => ({
+  title: "",
+  tiles: Array.from({ length: 6 }, EMPTY_TILE),
+});
+
+const normalizePage = (p) => ({
+  title: p?.title || "",
+  tiles: Array.from({ length: 6 }, (_, i) => p?.tiles?.[i] || EMPTY_TILE()),
+});
+
+// Admin editor for the homepage bento "Category Showcase" slider.
+// Multiple pages, each with 6 slots (image + label + link); the bento layout
+// is fixed (big + 4 small + big). Live preview per page.
 export default function CategoryShowcaseEditor() {
-  const [title, setTitle] = useState("Shop by Category");
-  const [tiles, setTiles] = useState(Array.from({ length: 6 }, EMPTY_TILE));
+  const [pages, setPages] = useState([EMPTY_PAGE()]);
+  const [active, setActive] = useState(0);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploadingIdx, setUploadingIdx] = useState(null);
+  const [pickerIdx, setPickerIdx] = useState(null); // which slot the media library is open for
   const [message, setMessage] = useState(null);
   const fileRefs = useRef([]);
 
@@ -36,43 +48,44 @@ export default function CategoryShowcaseEditor() {
     fetch(`${API}/api/category-showcase`)
       .then((r) => r.json())
       .then((cur) => {
-        if (cur.title) setTitle(cur.title);
-        if (cur.tiles?.length) {
-          setTiles(
-            Array.from(
-              { length: 6 },
-              (_, i) =>
-                cur.tiles[i] || EMPTY_TILE(),
-            ),
-          );
-        } else if (cur.categories?.length) {
-          // prefill from the legacy category-based config
-          setTiles(
-            Array.from({ length: 6 }, (_, i) => {
-              const c = cur.categories[i];
-              if (!c) return EMPTY_TILE();
-              return {
-                image: {
-                  url: (c.images && c.images[0] && c.images[0].url) || "",
-                  public_id: "",
-                },
-                label: c.name || "",
-                link: `/category/${c.slug || ""}/`,
-              };
-            }),
-          );
+        if (cur.pages?.length) {
+          setPages(cur.pages.map(normalizePage));
         }
       })
       .catch(() => setMessage({ type: "error", text: "Failed to load data" }))
       .finally(() => setLoading(false));
   }, []);
 
-  const patchTile = (i, patch) => {
-    setTiles((prev) => {
+  const page = pages[active] || EMPTY_PAGE();
+
+  const patchPage = (patch) => {
+    setPages((prev) => {
       const next = [...prev];
-      next[i] = { ...next[i], ...patch };
+      next[active] = { ...next[active], ...patch };
       return next;
     });
+  };
+
+  const patchTile = (i, patch) => {
+    setPages((prev) => {
+      const next = [...prev];
+      const tiles = [...next[active].tiles];
+      tiles[i] = { ...tiles[i], ...patch };
+      next[active] = { ...next[active], tiles };
+      return next;
+    });
+  };
+
+  const addPage = () => {
+    setPages((prev) => [...prev, EMPTY_PAGE()]);
+    setActive(pages.length);
+  };
+
+  const removePage = () => {
+    if (pages.length <= 1) return;
+    if (!confirm(`Delete Page ${active + 1}?`)) return;
+    setPages((prev) => prev.filter((_, i) => i !== active));
+    setActive((a) => Math.max(0, a - 1));
   };
 
   const handleImageUpload = async (i, file) => {
@@ -101,7 +114,7 @@ export default function CategoryShowcaseEditor() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ categoryShowcase: { title, tiles } }),
+        body: JSON.stringify({ categoryShowcase: { pages } }),
       });
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error || "Save failed");
@@ -117,7 +130,7 @@ export default function CategoryShowcaseEditor() {
     return <div className="py-16 text-center text-gray-400">Loading…</div>;
 
   const slotEditor = (i) => {
-    const tile = tiles[i];
+    const tile = page.tiles[i];
     return (
       <div
         key={i}
@@ -137,12 +150,10 @@ export default function CategoryShowcaseEditor() {
             <img
               src={tile.image.url}
               alt=""
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-xs text-gray-400">
-              Click to upload image
-            </span>
+            <span className="text-xs text-gray-400">Click to upload image</span>
           )}
           {uploadingIdx === i && (
             <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
@@ -161,15 +172,26 @@ export default function CategoryShowcaseEditor() {
           className="hidden"
           onChange={(e) => handleImageUpload(i, e.target.files[0])}
         />
-        {tile.image?.url && (
+        <div className="flex items-center gap-1.5 flex-wrap">
           <button
             type="button"
-            onClick={() => patchTile(i, { image: { url: "", public_id: "" } })}
-            className="text-[11px] px-2 py-1 border border-red-200 rounded text-red-500 hover:bg-red-50"
+            onClick={() => setPickerIdx(i)}
+            className="text-[11px] px-2 py-1 border border-gray-300 rounded text-gray-600 hover:bg-gray-50 flex items-center gap-1"
           >
-            Remove image
+            <span>🖼</span> Media Library
           </button>
-        )}
+          {tile.image?.url && (
+            <button
+              type="button"
+              onClick={() =>
+                patchTile(i, { image: { url: "", public_id: "" } })
+              }
+              className="text-[11px] px-2 py-1 border border-red-200 rounded text-red-500 hover:bg-red-50"
+            >
+              Remove image
+            </button>
+          )}
+        </div>
 
         <input
           value={tile.label}
@@ -192,20 +214,51 @@ export default function CategoryShowcaseEditor() {
       <div>
         <h2 className="text-2xl font-bold text-gray-800">Category Showcase</h2>
         <p className="text-sm text-gray-500 mt-1">
-          Homepage bento section (shown before &quot;Why Choose Us&quot;).
-          Upload an image, set a label and a link for each of the 6 tiles —
-          the layout is fixed: one big tile on each side, four small in the
-          middle. Transparent PNG images look best.
+          Homepage bento slider (shown before &quot;Why Choose Us&quot;). Add
+          one or more pages — each page has 6 tiles (image + label + link) in a
+          fixed layout: one big tile on each side, four small in the middle.
+          Multiple pages rotate as a slider with dots.
         </p>
+      </div>
+
+      {/* Page tabs */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {pages.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className={`px-4 py-1.5 rounded-full text-sm font-semibold transition ${
+              i === active
+                ? "bg-[#5B21B6] text-white"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
+          >
+            Page {i + 1}
+          </button>
+        ))}
+        <button
+          onClick={addPage}
+          className="px-4 py-1.5 rounded-full text-sm font-semibold border border-dashed border-[#5B21B6] text-[#5B21B6] hover:bg-violet-50 transition"
+        >
+          + Add Page
+        </button>
+        {pages.length > 1 && (
+          <button
+            onClick={removePage}
+            className="px-4 py-1.5 rounded-full text-sm font-semibold border border-red-200 text-red-500 hover:bg-red-50 transition"
+          >
+            Delete Page {active + 1}
+          </button>
+        )}
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
-          Section Title
+          Page Title
         </label>
         <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={page.title}
+          onChange={(e) => patchPage({ title: e.target.value })}
           placeholder="e.g. Shop by Category"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
         />
@@ -213,34 +266,33 @@ export default function CategoryShowcaseEditor() {
 
       {/* Slot editors */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {tiles.map((_, i) => slotEditor(i))}
+        {page.tiles.map((_, i) => slotEditor(i))}
       </div>
 
-      {/* ── Live preview — exactly how the homepage renders it ── */}
+      {/* ── Live preview — exactly how the homepage renders this page ── */}
       <div>
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-3">
-          Live Preview
+          Live Preview — Page {active + 1}
         </h3>
         <div className="bg-white border border-gray-200 rounded-2xl p-4 md:p-6">
-          {title && (
+          {page.title && (
             <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] text-center mb-5">
-              {title}
+              {page.title}
             </h2>
           )}
-          <div className="grid grid-cols-4 gap-2 md:gap-3">
+          <div className="grid grid-cols-6 gap-2 md:gap-3 auto-rows-24 md:auto-rows-28">
             {[0, 1, 2, 5, 3, 4].map((slotIdx) => {
-              const tile = tiles[slotIdx];
-              const big = slotIdx === 0 || slotIdx === 5;
+              const tile = page.tiles[slotIdx];
               const placement =
                 slotIdx === 0
-                  ? "row-span-2"
+                  ? "col-span-2 row-span-2"
                   : slotIdx === 5
-                    ? "row-span-2 col-start-4 row-start-1"
+                    ? "col-span-2 row-span-2 col-start-5 row-start-1"
                     : "";
               return (
                 <div
                   key={slotIdx}
-                  className={`relative bg-[#F5F6F7] rounded-xl overflow-hidden flex items-center justify-center ${big ? "min-h-40 md:min-h-56" : "h-16 md:h-24"} ${placement}`}
+                  className={`relative bg-[#F5F6F7] rounded-lg overflow-hidden flex items-center justify-center ${placement}`}
                 >
                   {tile.image?.url ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -250,7 +302,7 @@ export default function CategoryShowcaseEditor() {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-[10px] text-gray-300">
+                    <span className="text-[10px] text-gray-300 text-center px-1">
                       {SLOT_LABELS[slotIdx]}
                     </span>
                   )}
@@ -282,7 +334,7 @@ export default function CategoryShowcaseEditor() {
         disabled={saving || uploadingIdx !== null}
         className="px-6 py-2 bg-[#5B21B6] text-white rounded-lg font-semibold hover:bg-[#4C1D95] disabled:opacity-50 transition"
       >
-        {saving ? "Saving…" : "Save Changes"}
+        {saving ? "Saving…" : "Save All Pages"}
       </button>
       <p className="text-xs text-gray-400">
         Note: saving requires the main admin account (settings permission).
