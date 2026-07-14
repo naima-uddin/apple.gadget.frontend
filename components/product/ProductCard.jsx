@@ -169,7 +169,7 @@ export default function ProductCard({
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/assets/placeholder.svg";
               }}
-              className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 cursor-pointer"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 cursor-pointer"
             />
           </div>
 
@@ -385,7 +385,7 @@ export default function ProductCard({
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
-                className="flex-1 bg-transparent border border-[#5B21B6] text-[#5B21B6] py-2 rounded-md text-xs font-semibold hover:bg-violet-50 transition"
+                className="flex-1 bg-transparent border border-[#5B21B6] text-[#5B21B6] py-1.5 rounded-md text-xs font-semibold hover:bg-violet-50 transition"
               >
                 {t("product.buy_now")}
               </button>
@@ -395,7 +395,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   addToCart(product, 1);
                 }}
-                className="shrink-0 flex items-center justify-center gap-1 bg-[#5B21B6] text-white px-3 py-2 rounded-md text-xs font-semibold hover:bg-[#4C1D95] transition"
+                className="shrink-0 flex items-center justify-center gap-1 bg-[#5B21B6] text-white px-3 py-1.5 rounded-md text-xs font-semibold hover:bg-[#4C1D95] transition"
                 title={t("home.add_to_cart")}
               >
                 <FaShoppingCart className="w-3.5 h-3.5" />
