@@ -299,6 +299,7 @@ const SECTIONS = [
       "/dashboard/featured",
       "/dashboard/banners",
       "/dashboard/promo-panels",
+      "/dashboard/category-showcase",
       "/dashboard/popup",
       "/dashboard/blog",
       "/dashboard/media",
@@ -323,6 +324,13 @@ const SECTIONS = [
         label: "CTA / Promo Panel",
         href: "/dashboard/promo-panels",
         icon: "M3 3h8v8H3z M13 3h8v4h-8V3z M13 10h8v4h-8v-4z M3 14h8v7H3v-7z",
+        permissionKey: "content.promo",
+      },
+      {
+        key: "category-showcase",
+        label: "Category Showcase",
+        href: "/dashboard/category-showcase",
+        icon: "M3 3h5v18H3V3z M10 3h4v8h-4V3z M16 3h5v18h-5V3z M10 13h4v8h-4v-8z",
         permissionKey: "content.promo",
       },
       {
