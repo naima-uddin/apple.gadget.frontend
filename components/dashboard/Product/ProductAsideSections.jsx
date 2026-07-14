@@ -40,8 +40,9 @@ export default function ProductAsideSections({
   const generateSku = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const rand = (n) =>
-      Array.from({ length: n }, () =>
-        chars[Math.floor(Math.random() * chars.length)],
+      Array.from(
+        { length: n },
+        () => chars[Math.floor(Math.random() * chars.length)],
       ).join("");
     const date = new Date();
     const ymd =
@@ -428,7 +429,9 @@ export default function ProductAsideSections({
             </div>
           )}
           <div>
-            <label className={labelClass}>Selling Price <span className="text-red-500">*</span></label>
+            <label className={labelClass}>
+              Selling Price <span className="text-red-500">*</span>
+            </label>
             <input
               type="number"
               value={product.price ?? ""}
@@ -444,7 +447,8 @@ export default function ProductAsideSections({
               step="0.01"
             />
             <p className="mt-1 text-xs text-gray-500">
-              Customer pays this price. Always fill this — offer বা no offer সবসময় এটা দিতে হবে।
+              Customer pays this price. Always fill this — offer বা no offer
+              সবসময় এটা দিতে হবে।
             </p>
           </div>
           <div>
@@ -464,7 +468,8 @@ export default function ProductAsideSections({
               step="0.01"
             />
             <p className="mt-1 text-xs text-gray-500">
-              Discount না থাকলে খালি রাখুন। এটা Selling Price-এর চেয়ে বেশি হলে frontend-এ কাটা দাম ও % discount দেখাবে।
+              Discount না থাকলে খালি রাখুন। এটা Selling Price-এর চেয়ে বেশি হলে
+              frontend-এ কাটা দাম ও % discount দেখাবে।
             </p>
           </div>
           <div>
@@ -570,42 +575,43 @@ export default function ProductAsideSections({
               min="0"
               value={product.lowStockThreshold ?? 5}
               onChange={(e) =>
-                setProduct((p) => ({ ...p, lowStockThreshold: Math.max(0, Number(e.target.value)) }))
+                setProduct((p) => ({
+                  ...p,
+                  lowStockThreshold: Math.max(0, Number(e.target.value)),
+                }))
               }
               className={inputClass}
               placeholder="5"
             />
-            <p className="mt-1 text-xs text-gray-400">Show "Low Stock" warning below this quantity</p>
+            <p className="mt-1 text-xs text-gray-400">
+              Show "Low Stock" warning below this quantity
+            </p>
           </div>
           <div className="flex items-start justify-between gap-3 rounded-lg border border-gray-200 p-3">
             <div>
-              <p className="text-xs font-semibold text-gray-700">Allow Overselling</p>
-              <p className="text-xs text-gray-400 mt-0.5">Customers can buy even when stock is 0</p>
+              <p className="text-xs font-semibold text-gray-700">
+                Allow Overselling
+              </p>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Customers can buy even when stock is 0
+              </p>
             </div>
             <button
               type="button"
-              onClick={() => setProduct((p) => ({ ...p, allowOverselling: !p.allowOverselling }))}
-              className={`relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors focus:outline-none ${product.allowOverselling ? "bg-green-500" : "bg-gray-200"}`}
-            >
-              <span className={`inline-block h-4 w-4 mt-0.5 rounded-full bg-white shadow transition-transform ${product.allowOverselling ? "translate-x-4" : "translate-x-0.5"}`} />
-            </button>
-          </div>
-          <div>
-            <label className={labelClass}>Units Sold (Last 30 Days)</label>
-            <input
-              type="number"
-              value={product.monthlySold ?? ""}
-              onChange={(e) =>
+              onClick={() =>
                 setProduct((p) => ({
                   ...p,
-                  monthlySold:
-                    e.target.value === "" ? undefined : Number(e.target.value),
+                  allowOverselling: !p.allowOverselling,
                 }))
               }
-              className={inputClass}
-              placeholder="0"
-            />
+              className={`relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors focus:outline-none ${product.allowOverselling ? "bg-green-500" : "bg-gray-200"}`}
+            >
+              <span
+                className={`inline-block h-4 w-4 mt-0.5 rounded-full bg-white shadow transition-transform ${product.allowOverselling ? "translate-x-4" : "translate-x-0.5"}`}
+              />
+            </button>
           </div>
+
           <div>
             <label className={labelClass}>Reward Points</label>
             <input
@@ -620,130 +626,6 @@ export default function ProductAsideSections({
               }
               className={inputClass}
               placeholder="0"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="product-warranty"
-        className="rounded-2xl border border-gray-200 bg-slate-50 p-5 shadow-sm scroll-mt-6"
-      >
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-          Product Warranty
-        </p>
-        <div className="mt-4 space-y-4">
-          <div>
-            <label className={labelClass}>Warranty Period</label>
-            <input
-              type="text"
-              value={product.warranty?.period || ""}
-              onChange={(e) =>
-                setProduct((p) => ({
-                  ...p,
-                  warranty: { ...(p.warranty || {}), period: e.target.value },
-                }))
-              }
-              className={inputClass}
-              placeholder="e.g., 12 months"
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Warranty Provider</label>
-            <input
-              type="text"
-              value={product.warranty?.provider || ""}
-              onChange={(e) =>
-                setProduct((p) => ({
-                  ...p,
-                  warranty: {
-                    ...(p.warranty || {}),
-                    provider: e.target.value,
-                  },
-                }))
-              }
-              className={inputClass}
-              placeholder="Manufacturer or store"
-            />
-          </div>
-          <div>
-            <label className={labelClass}>Warranty Details</label>
-            <textarea
-              value={product.warranty?.details || ""}
-              onChange={(e) =>
-                setProduct((p) => ({
-                  ...p,
-                  warranty: { ...(p.warranty || {}), details: e.target.value },
-                }))
-              }
-              className={`${inputClass} h-24`}
-              placeholder="Coverage details..."
-            />
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="return-policy"
-        className="rounded-2xl border border-gray-200 bg-slate-50 p-5 shadow-sm scroll-mt-6"
-      >
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-          Return Policy
-        </p>
-        <div className="mt-4 space-y-4">
-          <div>
-            <label className={labelClass}>Return Window (Days)</label>
-            <input
-              type="number"
-              value={product.returnPolicy?.days ?? ""}
-              onChange={(e) =>
-                setProduct((p) => ({
-                  ...p,
-                  returnPolicy: {
-                    ...(p.returnPolicy || {}),
-                    days:
-                      e.target.value === ""
-                        ? undefined
-                        : Number(e.target.value),
-                  },
-                }))
-              }
-              className={inputClass}
-              placeholder="e.g., 30"
-            />
-          </div>
-          <label className="flex items-center gap-3 text-sm font-medium text-gray-700">
-            <input
-              type="checkbox"
-              checked={product.returnPolicy?.refundable ?? true}
-              onChange={(e) =>
-                setProduct((p) => ({
-                  ...p,
-                  returnPolicy: {
-                    ...(p.returnPolicy || {}),
-                    refundable: e.target.checked,
-                  },
-                }))
-              }
-              className="h-4 w-4"
-            />
-            Product is refundable
-          </label>
-          <div>
-            <label className={labelClass}>Return Policy Details</label>
-            <textarea
-              value={product.returnPolicy?.details || ""}
-              onChange={(e) =>
-                setProduct((p) => ({
-                  ...p,
-                  returnPolicy: {
-                    ...(p.returnPolicy || {}),
-                    details: e.target.value,
-                  },
-                }))
-              }
-              className={`${inputClass} h-24`}
-              placeholder="Return process and conditions..."
             />
           </div>
         </div>
@@ -869,7 +751,8 @@ export default function ProductAsideSections({
                       String(x._id || x.id || x),
                     ),
                   ]);
-                  const slots = 6 - (product.frequentlyBoughtTogether || []).length;
+                  const slots =
+                    6 - (product.frequentlyBoughtTogether || []).length;
                   const candidates = (json.items || [])
                     .filter((item) => !excluded.has(String(item._id)))
                     .slice(0, slots);
@@ -895,7 +778,9 @@ export default function ProductAsideSections({
               }}
               className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border border-orange-300 px-3 py-2 text-xs font-semibold text-orange-700 hover:bg-orange-100 disabled:opacity-50"
             >
-              {fbtSearching ? "Searching…" : "✨ Auto-suggest from same category"}
+              {fbtSearching
+                ? "Searching…"
+                : "✨ Auto-suggest from same category"}
             </button>
           )}
 

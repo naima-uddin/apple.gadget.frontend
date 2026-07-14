@@ -777,7 +777,9 @@ export default function ProductEdit({ productId }) {
 
   const handleFile = async (file) => {
     if (file.size > MAX_UPLOAD_BYTES) {
-      alert(`"${file.name}" সাইজ ${(file.size / 1024 / 1024).toFixed(1)}MB — সর্বোচ্চ ১০MB অনুমোদিত।`);
+      alert(
+        `"${file.name}" সাইজ ${(file.size / 1024 / 1024).toFixed(1)}MB — সর্বোচ্চ ১০MB অনুমোদিত।`,
+      );
       return;
     }
     const preview = URL.createObjectURL(file);
@@ -1786,26 +1788,7 @@ export default function ProductEdit({ productId }) {
                     <option value="out_of_stock">Out of Stock</option>
                   </select>
                 </div>
-                <div>
-                  <label className={labelClass}>
-                    Units Sold (Last 30 Days)
-                  </label>
-                  <input
-                    type="number"
-                    value={product.monthlySold ?? ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        monthlySold:
-                          e.target.value === ""
-                            ? undefined
-                            : Number(e.target.value),
-                      }))
-                    }
-                    className={inputClass}
-                    placeholder="0"
-                  />
-                </div>
+
                 <div>
                   <label className={labelClass}>Reward Points</label>
                   <input
@@ -1942,29 +1925,6 @@ export default function ProductEdit({ productId }) {
                   <option value="upcoming">Coming Soon</option>
                   <option value="out_of_stock">Out of Stock</option>
                 </select>
-              </div>
-
-              {/* Monthly Sold */}
-              <div>
-                <label className={labelClass}>Units Sold (Last 30 Days)</label>
-                <input
-                  type="number"
-                  value={product.monthlySold ?? ""}
-                  onChange={(e) =>
-                    setProduct((p) => ({
-                      ...p,
-                      monthlySold:
-                        e.target.value === ""
-                          ? undefined
-                          : Number(e.target.value),
-                    }))
-                  }
-                  className={inputClass}
-                  placeholder="0"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Display popularity on product page
-                </p>
               </div>
 
               {/* Reward Points */}
@@ -2355,146 +2315,6 @@ export default function ProductEdit({ productId }) {
 
           {/* Policies Tab */}
           <div className="space-y-6">
-            {/* Warranty */}
-            <div className="hidden">
-              <label className="text-lg font-semibold text-gray-900 mb-4 block">
-                Product Warranty
-              </label>
-              <p className="text-sm text-gray-600 mb-4">
-                Provide warranty information to build customer trust
-              </p>
-
-              <div className="space-y-4">
-                <div>
-                  <label className={labelClass}>Warranty Period</label>
-                  <input
-                    type="text"
-                    value={product.warranty?.period || ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        warranty: {
-                          ...(p.warranty || {}),
-                          period: e.target.value,
-                        },
-                      }))
-                    }
-                    className={inputClass}
-                    placeholder="e.g., 12 months, 2 years"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Warranty Provider</label>
-                  <input
-                    type="text"
-                    value={product.warranty?.provider || ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        warranty: {
-                          ...(p.warranty || {}),
-                          provider: e.target.value,
-                        },
-                      }))
-                    }
-                    className={inputClass}
-                    placeholder="e.g., Manufacturer, Store"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Warranty Details</label>
-                  <textarea
-                    value={product.warranty?.details || ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        warranty: {
-                          ...(p.warranty || {}),
-                          details: e.target.value,
-                        },
-                      }))
-                    }
-                    className={`${inputClass} h-24`}
-                    placeholder="Describe what the warranty covers..."
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Return Policy */}
-            <div className="hidden">
-              <label className="text-lg font-semibold text-gray-900 mb-4 block">
-                Return Policy
-              </label>
-              <p className="text-sm text-gray-600 mb-4">
-                Set clear return and refund policies
-              </p>
-
-              <div className="space-y-4">
-                <div>
-                  <label className={labelClass}>Return Window (Days)</label>
-                  <input
-                    type="number"
-                    value={product.returnPolicy?.days ?? ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        returnPolicy: {
-                          ...(p.returnPolicy || {}),
-                          days:
-                            e.target.value === ""
-                              ? undefined
-                              : Number(e.target.value),
-                        },
-                      }))
-                    }
-                    className={inputClass}
-                    placeholder="e.g., 30"
-                  />
-                </div>
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    id="refundable"
-                    checked={product.returnPolicy?.refundable ?? true}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        returnPolicy: {
-                          ...(p.returnPolicy || {}),
-                          refundable: e.target.checked,
-                        },
-                      }))
-                    }
-                    className="w-5 h-5"
-                  />
-                  <label
-                    htmlFor="refundable"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Product is Refundable
-                  </label>
-                </div>
-                <div>
-                  <label className={labelClass}>Return Policy Details</label>
-                  <textarea
-                    value={product.returnPolicy?.details || ""}
-                    onChange={(e) =>
-                      setProduct((p) => ({
-                        ...p,
-                        returnPolicy: {
-                          ...(p.returnPolicy || {}),
-                          details: e.target.value,
-                        },
-                      }))
-                    }
-                    className={`${inputClass} h-24`}
-                    placeholder="Describe the return process and conditions..."
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* FAQs */}
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
               <div className="flex items-center justify-between mb-4">
@@ -2603,7 +2423,8 @@ export default function ProductEdit({ productId }) {
                                   const arr = [...(p.faqs || [])];
                                   arr[i] = {
                                     ...(arr[i] || {}),
-                                    createdAt: dateStrToISO(randomPastDateStr()),
+                                    createdAt:
+                                      dateStrToISO(randomPastDateStr()),
                                   };
                                   return { ...p, faqs: arr };
                                 })
@@ -2844,7 +2665,10 @@ export default function ProductEdit({ productId }) {
                     <button
                       type="button"
                       onClick={() =>
-                        setNewReview((n) => ({ ...n, date: randomPastDateStr() }))
+                        setNewReview((n) => ({
+                          ...n,
+                          date: randomPastDateStr(),
+                        }))
                       }
                       className="shrink-0 px-4 py-2.5 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 whitespace-nowrap"
                     >
@@ -3263,15 +3087,39 @@ export default function ProductEdit({ productId }) {
         >
           {saving ? (
             <>
-              <svg className="animate-spin w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+              <svg
+                className="animate-spin w-4 h-4 shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                />
               </svg>
               Saving...
             </>
           ) : (
             <>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                 <polyline points="17 21 17 13 7 13 7 21" />
                 <polyline points="7 3 7 8 15 8" />
