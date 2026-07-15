@@ -23,18 +23,11 @@ const SECTION_ICONS = {
 const SECTIONS = [
   {
     key: "overview",
-    label: "Home",
+    label: "Business Overview",
     icon: SECTION_ICONS.overview,
+    direct: true,
+    permissionKey: "dashboard.view",
     matchPrefixes: ["/dashboard"],
-    items: [
-      {
-        key: "overview-link",
-        label: "Business Overview",
-        href: "/dashboard",
-        icon: SECTION_ICONS.overview,
-        permissionKey: "dashboard.view",
-      },
-    ],
   },
   {
     key: "catalog",
@@ -537,16 +530,16 @@ export default function Sidebar({
   }, [collapsed]);
 
   // When navigating, make sure the group that owns the new route is open
-  useEffect(() => {
-    setOpenSections((current) => {
-      const next = { ...current };
-      for (const section of SECTIONS) {
-        if (isSectionActive(section)) next[section.key] = true;
-      }
-      return next;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  // (state adjustment during render — avoids a cascading effect re-render)
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    const next = { ...openSections };
+    for (const section of SECTIONS) {
+      if (isSectionActive(section)) next[section.key] = true;
+    }
+    setOpenSections(next);
+  }
 
   const handleSignOut = async () => {
     try {
@@ -588,9 +581,23 @@ export default function Sidebar({
           !hasPermission(user, section.permissionKey)
         )
           return [];
-        return section.items.filter(
+        const items = (section.items || []).filter(
           (item) => canSee(item) && item.label.toLowerCase().includes(q),
         );
+        // Direct sections (no submenu) are searchable by their own label
+        if (
+          section.direct &&
+          section.matchPrefixes?.[0] &&
+          section.label.toLowerCase().includes(q)
+        ) {
+          items.unshift({
+            key: section.key,
+            label: section.label,
+            href: section.matchPrefixes[0],
+            icon: section.icon,
+          });
+        }
+        return items;
       })
     : null;
 
@@ -651,39 +658,97 @@ export default function Sidebar({
       return null;
     }
 
-    const visibleItems = section.items.filter(canSee);
-    if (!visibleItems.length) return null;
+    const visibleItems = (section.items || []).filter(canSee);
+    if (!section.direct && !visibleItems.length) return null;
 
     const sectionActive = isSectionActive(section);
     const sectionOpen = openSections[section.key];
+    const directHref = section.direct
+      ? visibleItems[0]?.href || section.matchPrefixes?.[0] || "/dashboard"
+      : null;
 
     // Collapsed rail: one icon tile per group
     if (collapsed) {
+      const tileClass = `mx-auto flex h-10 w-10 items-center justify-center rounded-xl transition ${
+        sectionActive
+          ? "bg-[#5B21B6] text-white shadow-md shadow-violet-200"
+          : "bg-violet-50 text-[#5B21B6] hover:bg-violet-100"
+      }`;
+      const tileIcon = (
+        <svg
+          className="h-4.5 w-4.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d={section.icon} />
+        </svg>
+      );
+      if (directHref) {
+        return (
+          <Link
+            key={section.key}
+            href={directHref}
+            title={section.label}
+            className={tileClass}
+          >
+            {tileIcon}
+          </Link>
+        );
+      }
       return (
         <button
           key={section.key}
           type="button"
           onClick={() => toggleSection(section.key)}
           title={section.label}
-          className={`mx-auto flex h-10 w-10 items-center justify-center rounded-xl transition ${
-            sectionActive
-              ? "bg-[#5B21B6] text-white shadow-md shadow-violet-200"
-              : "bg-violet-50 text-[#5B21B6] hover:bg-violet-100"
+          className={tileClass}
+        >
+          {tileIcon}
+        </button>
+      );
+    }
+
+    // Direct link: no group/dropdown, the row itself navigates
+    if (directHref) {
+      return (
+        <Link
+          key={section.key}
+          href={directHref}
+          className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 transition ${
+            sectionActive ? "bg-violet-50" : "hover:bg-gray-50"
           }`}
         >
-          <svg
-            className="h-[18px] w-[18px]"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+          <span
+            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition ${
+              sectionActive
+                ? "bg-[#5B21B6] text-white shadow-sm shadow-violet-200"
+                : "bg-violet-50 text-[#5B21B6]"
+            }`}
           >
-            <path d={section.icon} />
-          </svg>
-        </button>
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d={section.icon} />
+            </svg>
+          </span>
+          <span
+            className={`min-w-0 flex-1 truncate text-sm font-semibold ${sectionActive ? "text-[#5B21B6]" : "text-[#1F2937]"}`}
+          >
+            {section.label}
+          </span>
+        </Link>
       );
     }
 
