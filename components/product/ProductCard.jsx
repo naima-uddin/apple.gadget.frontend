@@ -142,7 +142,7 @@ export default function ProductCard({
   return (
     <>
       <div
-        className="relative bg-white border border-gray-100 rounded-2xl shadow-sm group hover:shadow-lg hover:-translate-y-1 hover:border-violet-200 transition-all duration-300 flex flex-col cursor-pointer h-full"
+        className="relative bg-white border border-gray-100 rounded-2xl shadow-lg group hover:shadow-lg hover:-translate-y-1 hover:border-violet-200 transition-all duration-300 flex flex-col cursor-pointer h-full"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >

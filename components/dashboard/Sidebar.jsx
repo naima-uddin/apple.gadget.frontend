@@ -960,7 +960,7 @@ export default function Sidebar({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Find a menu…"
-                className="w-full rounded-full bg-gray-100 py-2.5 pl-10 pr-9 text-sm text-gray-900 placeholder-gray-400 outline-none transition focus:bg-white focus:ring-2 focus:ring-[#5B21B6]"
+                className="w-full rounded-full bg-[#d6d5d6] py-2.5 pl-10 pr-9 text-sm text-gray-900 placeholder-gray-600 outline-none transition focus:bg-white focus:ring-2 focus:ring-[#5B21B6]"
               />
               {query && (
                 <button
