@@ -548,17 +548,20 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 </div>
               ) : products.length > 0 ? (
                 <>
-                  <div className="hidden lg:flex items-center justify-between mb-3">
+                  <div className="hidden lg:flex items-center justify-between gap-4 mb-3">
                     <h2 className="text-xl md:text-3xl font-semibold mt-0 mb-3">
                       All Products
                     </h2>
-                    <SortDropdown
-                      value={sortOption}
-                      onChange={(value) => {
-                        setSortOption(value);
-                        setCurrentPage(1);
-                      }}
-                    />
+                    <div className="flex items-center gap-3">
+                      {paginationControls}
+                      <SortDropdown
+                        value={sortOption}
+                        onChange={(value) => {
+                          setSortOption(value);
+                          setCurrentPage(1);
+                        }}
+                      />
+                    </div>
                   </div>
 
                   <div className="lg:hidden mb-3">
@@ -587,55 +590,86 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 <NoProductsFound />
               )}
 
-              {!loadingProducts && totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-2 flex-wrap">
-                  <button
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className="px-3 py-1.5 bg-white border rounded-md text-sm disabled:opacity-50"
-                  >
-                    Prev
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, index) => index + 1)
-                    .filter(
-                      (page) =>
-                        page === 1 ||
-                        page === totalPages ||
-                        Math.abs(page - currentPage) <= 1,
-                    )
-                    .map((page, index, arr) => (
-                      <React.Fragment key={page}>
-                        {index > 0 && arr[index - 1] !== page - 1 ? (
-                          <span className="px-1 text-gray-400">…</span>
-                        ) : null}
-                        <button
-                          type="button"
-                          onClick={() => setCurrentPage(page)}
-                          className={`px-3 py-1.5 border rounded-md text-sm ${page === currentPage ? "bg-rose-600 text-white border-rose-600" : "bg-white"}`}
-                        >
-                          {page}
-                        </button>
-                      </React.Fragment>
-                    ))}
-
-                  <button
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                    }
-                    className="px-3 py-1.5 bg-white border rounded-md text-sm disabled:opacity-50"
-                  >
-                    Next
-                  </button>
+              {paginationControls && (
+                <div className="mt-8 flex justify-center lg:hidden">
+                  {paginationControls}
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Best Selling — below All Products */}
+      {(loadingBestSelling || bestSelling.length > 0) && (
+        <div className="max-w-7xl mx-auto px-2 sm:px-2 lg:px-8 py-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl md:text-3xl font-semibold">Best Selling</h2>
+            <Link
+              href="/tag/best-seller"
+              className="px-4 py-2 border border-rose-300 rounded-full text-sm hover:bg-[#FFF5ED]"
+            >
+              see all →
+            </Link>
+          </div>
+
+          {loadingBestSelling ? (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 ">
+              {Array(5)
+                .fill(0)
+                .map((_, i) => (
+                  <ProductCard key={i} loading={true} />
+                ))}
+            </div>
+          ) : (
+            <div className="relative pt-8 pb-3">
+              {canSlideBestSelling && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setBestSellingStartIndex((i) => Math.max(0, i - 1))
+                    }
+                    disabled={bestSellingStartIndex === 0}
+                    className="absolute left-2 top-0 z-10 h-6 w-6 md:h-8 md:w-8 rounded-full border  bg-red-600 text-white shadow-sm disabled:opacity-40"
+                    aria-label="Previous best selling products"
+                  >
+                    ‹
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setBestSellingStartIndex((i) =>
+                        Math.min(maxBestSellingStart, i + 1),
+                      )
+                    }
+                    disabled={bestSellingStartIndex >= maxBestSellingStart}
+                    className="absolute right-2 top-0 z-10 h-6 w-6 md:h-8 md:w-8 rounded-full border  bg-red-600 text-white shadow-sm disabled:opacity-40"
+                    aria-label="Next best selling products"
+                  >
+                    ›
+                  </button>
+                </>
+              )}
+
+              <div className="min-w-0 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {visibleBestSelling.map((p) => (
+                  <ProductCard
+                    key={p._id}
+                    product={p}
+                    imageWidth={360}
+                    imageHeight={160}
+                    showDiscount={true}
+                    maxTags={2}
+                    showActionsOnHover={true}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 }

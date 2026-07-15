@@ -133,14 +133,14 @@ const Banner = () => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
             }}
           >
-            {/* Soft glow halo behind the product image */}
+            {/* Luminous halo behind the product image — bright white core melting into violet */}
             {hasSideText && (
               <div
                 aria-hidden="true"
-                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-3/5 rounded-full blur-3xl"
+                className="banner-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-4/5 rounded-full blur-2xl"
                 style={{
                   background:
-                    "radial-gradient(closest-side, rgba(91,33,182,0.16), rgba(196,181,253,0.10) 55%, transparent 100%)",
+                    "radial-gradient(closest-side, rgba(255,255,255,0.95) 0%, rgba(250,248,255,0.85) 30%, rgba(221,214,254,0.55) 60%, rgba(196,181,253,0.25) 80%, transparent 100%)",
                 }}
               />
             )}
@@ -152,9 +152,7 @@ const Banner = () => {
               quality={100}
               sizes="(max-width: 768px) 100vw, 540px"
               className={
-                hasSideText
-                  ? "banner-image object-contain drop-shadow-[0_35px_40px_rgba(15,23,42,0.30)]"
-                  : "object-cover"
+                hasSideText ? "banner-image object-contain" : "object-cover"
               }
             />
           </div>
@@ -231,11 +229,29 @@ const Banner = () => {
           animation: bannerSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s
             both;
         }
-        /* image pops in first, then keeps gently floating */
+        /* image pops in first, then keeps gently floating.
+           filter: slight brightness/saturation lift + soft white glow rim,
+           with only a light grounding shadow so the product stays vivid */
         .banner-image {
+          filter: brightness(1.06) saturate(1.1) contrast(1.03)
+            drop-shadow(0 0 22px rgba(255, 255, 255, 0.7))
+            drop-shadow(0 0 45px rgba(196, 181, 253, 0.35))
+            drop-shadow(0 22px 26px rgba(15, 23, 42, 0.16));
           animation:
             bannerImageIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
             bannerFloat 5s ease-in-out 1s infinite alternate;
+        }
+        /* halo breathes slowly so the glow feels alive */
+        .banner-glow {
+          animation: bannerGlowPulse 4s ease-in-out 1s infinite alternate;
+        }
+        @keyframes bannerGlowPulse {
+          from {
+            opacity: 0.75;
+          }
+          to {
+            opacity: 1;
+          }
         }
         @keyframes bannerFade {
           from {
@@ -287,7 +303,8 @@ const Banner = () => {
           .banner-fade,
           .banner-slide-left,
           .banner-slide-right,
-          .banner-image {
+          .banner-image,
+          .banner-glow {
             animation: none;
           }
         }
