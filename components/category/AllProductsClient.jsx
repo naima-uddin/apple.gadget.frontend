@@ -105,61 +105,138 @@ export default function AllProductsClient() {
   }, [currentPage, sortOption, activeFilters]);
 
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
+  const showingFrom =
+    totalProducts === 0 ? 0 : (currentPage - 1) * PRODUCTS_PER_PAGE + 1;
+  const showingTo = Math.min(currentPage * PRODUCTS_PER_PAGE, totalProducts);
+
+  const paginationControls =
+    !loadingProducts && totalPages > 1 ? (
+      <div className="flex items-center gap-1.5 flex-wrap justify-center">
+        <button
+          type="button"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          aria-label="Previous page"
+        >
+          ‹
+        </button>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1)
+          .filter(
+            (page) =>
+              page === 1 ||
+              page === totalPages ||
+              Math.abs(page - currentPage) <= 1,
+          )
+          .map((page, index, arr) => (
+            <React.Fragment key={page}>
+              {index > 0 && arr[index - 1] !== page - 1 && (
+                <span className="px-1 text-gray-400">…</span>
+              )}
+              <button
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                className={`h-9 min-w-9 px-3 rounded-full text-sm font-medium transition-colors ${
+                  page === currentPage
+                    ? "bg-[#5B21B6] text-white shadow-sm"
+                    : "bg-white border border-gray-200 text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                }`}
+              >
+                {page}
+              </button>
+            </React.Fragment>
+          ))}
+
+        <button
+          type="button"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          aria-label="Next page"
+        >
+          ›
+        </button>
+      </div>
+    ) : null;
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-8">
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-2 transition"
-        >
-          <span className="text-xs">‹</span> Back
-        </button>
+      {/* ── Hero header ── */}
+      <div className="bg-gradient-to-b from-[#F5F3FF] to-white border-b border-violet-100/60">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pt-6 pb-8 relative overflow-hidden">
+          {/* decorative blobs */}
+          <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-violet-200/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-purple-100/40 blur-3xl" />
 
-        <div className="text-sm text-gray-500 mb-4">
-          <Link href="/" className="hover:underline">
-            Home
-          </Link>{" "}
-          &gt; <span className="text-gray-900">All Products</span>
-        </div>
+          {/* Breadcrumb row */}
+          <nav className="relative flex items-center flex-wrap gap-1.5 text-sm text-[#6B7280] mb-6">
+            <button
+              onClick={() => router.back()}
+              className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-[#6B7280] hover:text-[#5B21B6] hover:border-[#5B21B6] shadow-sm transition-colors mr-2"
+            >
+              <span className="text-[10px]">‹</span> Back
+            </button>
+            <Link href="/" className="hover:text-[#5B21B6] transition-colors">
+              Home
+            </Link>
+            <span className="text-gray-300">/</span>
+            <span className="text-[#5B21B6] font-medium">All Products</span>
+          </nav>
 
-        <div className="mb-3 text-center">
-          <h1 className="text-2xl md:text-4xl font-bold text-gray-900">
-            All Products
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Browse our complete variety of collections
-          </p>
+          {/* Title */}
+          <div className="relative text-center max-w-3xl mx-auto">
+            <span className="inline-flex items-center gap-1.5 bg-white border border-violet-200 text-[#5B21B6] text-[11px] font-semibold uppercase tracking-wider rounded-full px-3 py-1 shadow-sm mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#5B21B6]" />
+              Full Collection
+            </span>
+            <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight work-sans">
+              All Products
+            </h1>
+            <p className="text-[#6B7280] mt-3 text-sm md:text-base leading-relaxed">
+              Browse our complete variety of collections
+            </p>
+            {totalProducts > 0 && (
+              <p className="mt-3 text-xs font-medium text-[#6B7280]">
+                <span className="text-[#5B21B6] font-bold">
+                  {totalProducts.toLocaleString()}
+                </span>{" "}
+                product{totalProducts !== 1 ? "s" : ""} available
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-2 py-2">
+      <div className="max-w-7xl mx-auto px-3 py-2">
         <AdSlot page="allProductsPage" className="w-full" />
       </div>
 
-      <div className="bg-[#FFF5ED] w-full">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-8">
+      {/* ── Listing area ── */}
+      <div className="bg-[#FAFAFB] w-full">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 bg-[#FFF5ED] py-2 mb-3 shadow-2xl">
-            <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center rounded-lg bg-[#FCECF2] p-2">
+          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#FAFAFB]/95 backdrop-blur border-b border-gray-100">
+            <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
               <button
                 type="button"
                 onClick={() => setShowMobileFilters(true)}
-                className="h-9 w-9 rounded-md border border-rose-200 bg-white flex items-center justify-center"
+                className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center gap-1.5 text-xs font-medium text-[#1F2937]"
                 aria-label="Open filters"
               >
                 <svg
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
+                  stroke="#5B21B6"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
                   <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                 </svg>
+                Filter
               </button>
               <SortDropdown
                 value={sortOption}
@@ -169,7 +246,7 @@ export default function AllProductsClient() {
                 }}
                 className="w-full"
               />
-              <div className="h-9 min-w-[48px] px-2 rounded-md border border-rose-200 bg-white flex items-center justify-center text-sm text-gray-700">
+              <div className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center text-xs font-semibold text-[#5B21B6]">
                 {totalProducts > 0 ? totalProducts : "—"}
               </div>
             </div>
@@ -180,15 +257,15 @@ export default function AllProductsClient() {
             <div className="fixed inset-0 z-50 lg:hidden">
               <button
                 type="button"
-                className="absolute inset-0 bg-black/35"
+                className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
                 onClick={() => setShowMobileFilters(false)}
                 aria-label="Close filters"
               />
-              <div className="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-white shadow-xl overflow-y-auto p-4">
+              <div className="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-white shadow-2xl overflow-y-auto p-4 rounded-r-2xl">
                 <button
                   type="button"
                   onClick={() => setShowMobileFilters(false)}
-                  className="absolute top-3 right-3 h-8 w-8 bg-rose-500 text-white rounded-sm flex items-center justify-center"
+                  className="absolute top-3 right-3 h-8 w-8 bg-[#5B21B6] text-white rounded-full flex items-center justify-center shadow-sm hover:bg-[#4C1D95] transition-colors"
                   aria-label="Close filters panel"
                 >
                   ✕
@@ -208,8 +285,9 @@ export default function AllProductsClient() {
             </div>
           )}
 
-          {/* Filter + Products grid */}
-          <div className="grid grid-cols-12 gap-4 pt-0 lg:pt-4">
+          {/* Filters + products grid */}
+          <div className="grid grid-cols-12 gap-5">
+            {/* Filter sidebar */}
             <div className="hidden lg:block col-span-12 lg:col-span-3">
               <ProductFilters
                 products={products}
@@ -221,9 +299,38 @@ export default function AllProductsClient() {
               />
             </div>
 
+            {/* Products */}
             <div className="col-span-12 lg:col-span-9">
+              {/* Desktop toolbar */}
+              <div className="hidden lg:flex items-center justify-between gap-4 bg-white border border-gray-100 rounded-2xl shadow-sm px-5 py-3 mb-5">
+                <p className="text-sm text-[#6B7280]">
+                  {totalProducts > 0 ? (
+                    <>
+                      Showing{" "}
+                      <span className="font-semibold text-[#1F2937]">
+                        {showingFrom}–{showingTo}
+                      </span>{" "}
+                      of{" "}
+                      <span className="font-semibold text-[#1F2937]">
+                        {totalProducts.toLocaleString()}
+                      </span>{" "}
+                      products
+                    </>
+                  ) : (
+                    "Products"
+                  )}
+                </p>
+                <SortDropdown
+                  value={sortOption}
+                  onChange={(value) => {
+                    setSortOption(value);
+                    setCurrentPage(1);
+                  }}
+                />
+              </div>
+
               {!productsLoadedOnce && loadingProducts ? (
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                   {Array(8)
                     .fill(0)
                     .map((_, i) => (
@@ -232,26 +339,7 @@ export default function AllProductsClient() {
                 </div>
               ) : products.length > 0 ? (
                 <>
-                  <div className="hidden lg:flex items-center justify-between mb-3">
-                    <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
-                      Products
-                    </h2>
-                    <SortDropdown
-                      value={sortOption}
-                      onChange={(value) => {
-                        setSortOption(value);
-                        setCurrentPage(1);
-                      }}
-                    />
-                  </div>
-
-                  <div className="lg:hidden mb-3">
-                    <h2 className="text-xl font-semibold text-gray-800">
-                      Products
-                    </h2>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                     {products.map((p) => (
                       <ProductCard
                         key={p._id}
@@ -264,7 +352,7 @@ export default function AllProductsClient() {
                   </div>
 
                   {loadingProducts && (
-                    <div className="mt-4 text-center text-sm text-gray-500">
+                    <div className="mt-4 text-center text-sm text-[#6B7280]">
                       Updating products...
                     </div>
                   )}
@@ -273,53 +361,9 @@ export default function AllProductsClient() {
                 <NoProductsFound />
               )}
 
-              {!loadingProducts && totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-2 flex-wrap">
-                  <button
-                    type="button"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className="px-3 py-1.5 bg-white border rounded-md text-sm disabled:opacity-50"
-                  >
-                    Prev
-                  </button>
-
-                  {Array.from({ length: totalPages }, (_, i) => i + 1)
-                    .filter(
-                      (page) =>
-                        page === 1 ||
-                        page === totalPages ||
-                        Math.abs(page - currentPage) <= 1,
-                    )
-                    .map((page, index, arr) => (
-                      <React.Fragment key={page}>
-                        {index > 0 && arr[index - 1] !== page - 1 && (
-                          <span className="px-1 text-gray-400">…</span>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => setCurrentPage(page)}
-                          className={`px-3 py-1.5 border rounded-md text-sm ${
-                            page === currentPage
-                              ? "bg-rose-600 text-white border-rose-600"
-                              : "bg-white"
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      </React.Fragment>
-                    ))}
-
-                  <button
-                    type="button"
-                    disabled={currentPage === totalPages}
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                    }
-                    className="px-3 py-1.5 bg-white border rounded-md text-sm disabled:opacity-50"
-                  >
-                    Next
-                  </button>
+              {paginationControls && (
+                <div className="mt-10 flex justify-center">
+                  {paginationControls}
                 </div>
               )}
             </div>

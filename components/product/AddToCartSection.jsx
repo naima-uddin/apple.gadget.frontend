@@ -227,7 +227,7 @@ export default function AddToCartSection({
             <QuantitySelector quantity={qty} onChange={setQty} />
             <button
               onClick={handleAdd}
-              className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition"
+              className="bg-[#5B21B6] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#4C1D95] transition shadow-sm"
             >
               Add to cart
             </button>
@@ -239,7 +239,7 @@ export default function AddToCartSection({
           </div>
           <button
             onClick={handleBuyNow}
-            className="w-full mr-8 bg-gray-900 text-white py-2.5 rounded-md font-medium hover:bg-gray-700 transition"
+            className="w-full bg-[#e5d7fa] text-[#5B21B6] py-2.5 rounded-xl font-semibold hover:bg-[#d6c2f5] transition"
           >
             Buy Now
           </button>

@@ -336,8 +336,8 @@ export default function ProductInfoTabs({ product }) {
               onClick={() => setActiveTab(t.key)}
               className={`relative flex items-center gap-1.5 px-4 py-3 text-sm font-semibold transition-all duration-200 border-b-2 ${
                 activeTab === t.key
-                  ? "border-gray-900 text-gray-900"
-                  : "border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300"
+                  ? "border-[#5B21B6] text-[#5B21B6]"
+                  : "border-transparent text-gray-500 hover:text-[#5B21B6] hover:border-violet-200"
               }`}
             >
               {t.label}
@@ -345,7 +345,7 @@ export default function ProductInfoTabs({ product }) {
                 <span
                   className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none ${
                     activeTab === t.key
-                      ? "bg-gray-900 text-white"
+                      ? "bg-[#5B21B6] text-white"
                       : "bg-gray-100 text-gray-500"
                   }`}
                 >
@@ -650,7 +650,7 @@ export default function ProductInfoTabs({ product }) {
                     setReviewDone(false);
                     setShowReviewForm((v) => !v);
                   }}
-                  className="flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition"
+                  className="flex items-center gap-2 bg-[#5B21B6] hover:bg-[#4C1D95] text-white text-xs font-semibold px-4 py-2 rounded-lg transition"
                 >
                   <svg
                     className="w-3.5 h-3.5"
@@ -812,7 +812,7 @@ export default function ProductInfoTabs({ product }) {
                         <button
                           type="submit"
                           disabled={reviewSubmitting}
-                          className="bg-gray-900 text-white text-sm py-2 px-6 rounded-lg hover:bg-gray-700 transition disabled:opacity-60"
+                          className="bg-[#5B21B6] text-white text-sm py-2 px-6 rounded-lg hover:bg-[#4C1D95] transition disabled:opacity-60"
                         >
                           {reviewSubmitting
                             ? "Saving…"
@@ -995,7 +995,7 @@ export default function ProductInfoTabs({ product }) {
                     setQuestionError("");
                     setShowQuestionForm((v) => !v);
                   }}
-                  className="flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition"
+                  className="flex items-center gap-2 bg-[#5B21B6] hover:bg-[#4C1D95] text-white text-xs font-semibold px-4 py-2 rounded-lg transition"
                 >
                   <svg
                     className="w-3.5 h-3.5"
@@ -1069,7 +1069,7 @@ export default function ProductInfoTabs({ product }) {
                       <button
                         type="submit"
                         disabled={questionSubmitting}
-                        className="bg-gray-900 text-white text-sm py-2 px-6 rounded-lg hover:bg-gray-700 transition disabled:opacity-60"
+                        className="bg-[#5B21B6] text-white text-sm py-2 px-6 rounded-lg hover:bg-[#4C1D95] transition disabled:opacity-60"
                       >
                         {questionSubmitting
                           ? "Saving…"
@@ -1132,8 +1132,8 @@ export default function ProductInfoTabs({ product }) {
                           className="border border-gray-100 rounded-xl overflow-hidden"
                         >
                           {/* Question */}
-                          <div className="flex items-start gap-3 p-4 border-l-4 border-gray-900 bg-white">
-                            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gray-900 flex items-center justify-center text-white font-bold text-xs mt-0.5">
+                          <div className="flex items-start gap-3 p-4 border-l-4 border-[#5B21B6] bg-white">
+                            <div className="flex-shrink-0 w-7 h-7 rounded-full bg-[#5B21B6] flex items-center justify-center text-white font-bold text-xs mt-0.5">
                               Q
                             </div>
                             <div className="flex-1 min-w-0">
@@ -1307,7 +1307,7 @@ export default function ProductInfoTabs({ product }) {
                                             <button
                                               type="submit"
                                               disabled={aForm.submitting}
-                                              className="text-xs px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-60 font-medium"
+                                              className="text-xs px-3 py-1.5 rounded-lg bg-[#5B21B6] text-white hover:bg-[#4C1D95] disabled:opacity-60 font-medium"
                                             >
                                               {aForm.submitting
                                                 ? "Saving…"
@@ -1474,7 +1474,7 @@ export default function ProductInfoTabs({ product }) {
                                     <button
                                       type="submit"
                                       disabled={aForm.submitting}
-                                      className="text-xs px-4 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 disabled:opacity-60 font-medium transition"
+                                      className="text-xs px-4 py-1.5 rounded-lg bg-[#5B21B6] text-white hover:bg-[#4C1D95] disabled:opacity-60 font-medium transition"
                                     >
                                       {aForm.submitting
                                         ? "Submitting…"

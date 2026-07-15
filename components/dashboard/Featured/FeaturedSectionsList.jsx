@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import FeaturedSectionEditor from "./FeaturedSectionEditor";
+import VideoCarouselEditor from "./VideoCarouselEditor";
 import { useUser } from "@/components/context/UserContext";
 
 export default function FeaturedSectionsList() {
@@ -9,8 +10,10 @@ export default function FeaturedSectionsList() {
   const { user } = useUser();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState("list"); // 'list' | 'create' | 'edit'
+  // 'list' | 'create' | 'create-video' | 'edit'
+  const [view, setView] = useState("list");
   const [editId, setEditId] = useState(null);
+  const [editType, setEditType] = useState("products");
   const [deleting, setDeleting] = useState(null);
 
   const load = useCallback(() => {
@@ -82,9 +85,11 @@ export default function FeaturedSectionsList() {
     }
   };
 
-  if (view === "create")
+  if (view === "create" || view === "create-video") {
+    const Editor =
+      view === "create-video" ? VideoCarouselEditor : FeaturedSectionEditor;
     return (
-      <FeaturedSectionEditor
+      <Editor
         onSuccess={() => {
           setView("list");
           load();
@@ -92,10 +97,13 @@ export default function FeaturedSectionsList() {
         onCancel={() => setView("list")}
       />
     );
+  }
 
-  if (view === "edit" && editId)
+  if (view === "edit" && editId) {
+    const Editor =
+      editType === "video" ? VideoCarouselEditor : FeaturedSectionEditor;
     return (
-      <FeaturedSectionEditor
+      <Editor
         sectionId={editId}
         onSuccess={() => {
           setView("list");
@@ -108,6 +116,7 @@ export default function FeaturedSectionsList() {
         }}
       />
     );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
@@ -118,15 +127,24 @@ export default function FeaturedSectionsList() {
             Featured Sections
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Product carousels displayed on the homepage
+            Product &amp; video carousels displayed on the homepage, in this
+            order
           </p>
         </div>
-        <button
-          onClick={() => setView("create")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm shrink-0"
-        >
-          + New Section
-        </button>
+        <div className="flex gap-2 shrink-0">
+          <button
+            onClick={() => setView("create")}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm"
+          >
+            + Product Section
+          </button>
+          <button
+            onClick={() => setView("create-video")}
+            className="px-4 py-2 bg-[#5B21B6] text-white rounded-lg font-semibold hover:bg-violet-800 transition text-sm"
+          >
+            + Video Carousel
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -167,23 +185,34 @@ export default function FeaturedSectionsList() {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-800 truncate">
+                  {sec.type === "video" && (
+                    <span className="inline-block mr-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-violet-100 text-violet-800 rounded-full align-middle">
+                      Video
+                    </span>
+                  )}
                   {sec.title}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  {sec.productIds?.length
-                    ? `${sec.productIds.length} product${sec.productIds.length !== 1 ? "s" : ""} selected manually`
-                    : sec.categoryId
-                      ? `Auto-fill from category · limit ${sec.limit}`
-                      : "No products configured"}
-                  {" · "}
-                  <a
-                    href={sec.viewAllLink}
-                    className="text-blue-400 hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {sec.viewAllLink}
-                  </a>
+                  {sec.type === "video" ? (
+                    `${sec.videos?.length || 0} video${(sec.videos?.length || 0) !== 1 ? "s" : ""} · ${sec.videos?.filter((v) => v.productId).length || 0} linked product${(sec.videos?.filter((v) => v.productId).length || 0) !== 1 ? "s" : ""}`
+                  ) : (
+                    <>
+                      {sec.productIds?.length
+                        ? `${sec.productIds.length} product${sec.productIds.length !== 1 ? "s" : ""} selected manually`
+                        : sec.categoryId
+                          ? `Auto-fill from category · limit ${sec.limit}`
+                          : "No products configured"}
+                      {" · "}
+                      <a
+                        href={sec.viewAllLink}
+                        className="text-blue-400 hover:underline"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {sec.viewAllLink}
+                      </a>
+                    </>
+                  )}
                 </p>
               </div>
 
@@ -203,6 +232,7 @@ export default function FeaturedSectionsList() {
                 <button
                   onClick={() => {
                     setEditId(sec._id);
+                    setEditType(sec.type === "video" ? "video" : "products");
                     setView("edit");
                   }}
                   className="px-3 py-1.5 text-xs font-semibold bg-violet-50 text-violet-800 rounded-lg hover:bg-violet-100 transition"

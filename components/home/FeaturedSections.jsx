@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import ProductCard from "@/components/product/ProductCard";
 import { useLanguage } from "@/components/context/LanguageContext";
 import SectionHeader from "./SectionHeader";
+import ShoppableVideoCarousel from "./ShoppableVideoCarousel";
 
 // Returns how many cards fit at the current viewport width
 function useVisibleCount() {
@@ -136,7 +137,11 @@ export default function FeaturedSections() {
       .then((r) => r.json())
       .then((b) =>
         setSections(
-          (b.items || []).filter((s) => s.products && s.products.length > 0),
+          (b.items || []).filter((s) =>
+            s.type === "video"
+              ? s.videos && s.videos.length > 0
+              : s.products && s.products.length > 0,
+          ),
         ),
       )
       .catch(() => setSections([]))
@@ -149,24 +154,29 @@ export default function FeaturedSections() {
     // each dashboard section gets its own gray band; the white page background
     // shows through the space between bands
     <section className="w-full py-4 space-y-6 md:space-y-8 bg-white">
-      {sections.map((sec) => (
-        <div key={sec._id} className="w-full bg-[#F3F2F9] py-6 md:py-8">
-          <div className="max-w-7xl mx-auto px-2">
-            {/* Section header */}
-            <SectionHeader
-              title={lang === "bn" ? sec.titleBn || sec.title : sec.title}
-              seeMoreHref={
-                sec.viewAllLink && sec.viewAllLink !== "/"
-                  ? sec.viewAllLink
-                  : undefined
-              }
-              seeMoreLabel={t("home.see_more")}
-            />
-            {/* Product slider */}
-            <FeaturedSlider products={sec.products} />
+      {sections.map((sec) =>
+        sec.type === "video" ? (
+          // Shoppable video carousel — white band, centered header
+          <ShoppableVideoCarousel key={sec._id} section={sec} lang={lang} />
+        ) : (
+          <div key={sec._id} className="w-full bg-[#F3F2F9] py-6 md:py-8">
+            <div className="max-w-7xl mx-auto px-2">
+              {/* Section header */}
+              <SectionHeader
+                title={lang === "bn" ? sec.titleBn || sec.title : sec.title}
+                seeMoreHref={
+                  sec.viewAllLink && sec.viewAllLink !== "/"
+                    ? sec.viewAllLink
+                    : undefined
+                }
+                seeMoreLabel={t("home.see_more")}
+              />
+              {/* Product slider */}
+              <FeaturedSlider products={sec.products} />
+            </div>
           </div>
-        </div>
-      ))}
+        ),
+      )}
     </section>
   );
 }

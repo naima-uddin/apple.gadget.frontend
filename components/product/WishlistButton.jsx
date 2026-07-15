@@ -40,8 +40,8 @@ export default function WishlistButton({ product }) {
     <>
     <button
       onClick={(e) => { e.stopPropagation(); toggle(); }}
-      className={`w-10 h-10 flex items-center justify-center rounded-md transition-colors 
-        ${isFav ? 'bg-red-600 text-white' : 'bg-[#1a1a2e] text-white'} hover:bg-red-600`}
+      className={`w-10 h-10 flex items-center justify-center rounded-xl border transition-colors
+        ${isFav ? 'bg-rose-500 border-rose-500 text-white' : 'bg-white border-gray-200 text-[#5B21B6] shadow-sm'} hover:bg-rose-500 hover:border-rose-500 hover:text-white`}
       aria-label={t("wishlist.add")}
     >
       {isFav ? <FaHeart /> : <FaRegHeart />}

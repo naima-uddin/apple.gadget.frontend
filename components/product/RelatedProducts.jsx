@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import ProductCard from "@/components/product/ProductCard";
+import SectionHeader from "@/components/home/SectionHeader";
 
 export default function RelatedProducts({ products = [] }) {
   const scrollRef = useRef(null);
@@ -10,8 +11,14 @@ export default function RelatedProducts({ products = [] }) {
   if (products.length === 0) return null;
 
   return (
-    <div className="mt-6 relative px-2">
-      <h2 className="text-2xl font-semibold mb-2">Related Products</h2>
+    <div className="mt-10 relative px-2">
+      <SectionHeader
+        title={
+          <>
+            Related <span className="text-[#5B21B6]">Products</span>
+          </>
+        }
+      />
       {/* carousel container needs relative positioning for absolute arrows */}
       <div className="relative">
         <div
@@ -40,9 +47,10 @@ export default function RelatedProducts({ products = [] }) {
                 behavior: "smooth",
               });
           }}
-          className="absolute top-1/2 -left-4 transform -translate-y-1/2 p-1 md:p-2  rounded-full border border-red-600 bg-white shadow-md hover:bg-gray-100 transition z-10 "
+          className="absolute top-1/2 -left-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-gray-200 bg-white text-[#5B21B6] shadow-md hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors z-10"
+          aria-label="Scroll related products left"
         >
-          <FaChevronLeft className="w-4 h-4 text-red-600" />
+          <FaChevronLeft className="w-4 h-4" />
         </button>
 
         {/* right arrow positioned over carousel */}
@@ -54,9 +62,10 @@ export default function RelatedProducts({ products = [] }) {
                 behavior: "smooth",
               });
           }}
-          className="absolute top-1/2 -right-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-red-600 bg-white shadow-md hover:bg-gray-100 transition z-10"
+          className="absolute top-1/2 -right-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-gray-200 bg-white text-[#5B21B6] shadow-md hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors z-10"
+          aria-label="Scroll related products right"
         >
-          <FaChevronRight className="w-4 h-4 text-red-600" />
+          <FaChevronRight className="w-4 h-4" />
         </button>
       </div>
     </div>

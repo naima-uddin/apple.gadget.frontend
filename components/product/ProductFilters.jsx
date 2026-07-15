@@ -13,7 +13,7 @@ const Section = ({ id, title, children, isOpen, onToggle }) => (
     <button
       type="button"
       onClick={() => onToggle(id)}
-      className="w-full flex items-center justify-between py-2 text-sm font-semibold text-gray-800 hover:text-red-600 transition-colors"
+      className="w-full flex items-center justify-between py-2 text-sm font-semibold text-[#1F2937] hover:text-[#5B21B6] transition-colors"
     >
       {title}
       <svg className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
@@ -226,13 +226,18 @@ export default function ProductFilters({
   const toggleSection = useCallback((key) => setOpenSections(s => ({ ...s, [key]: !s[key] })), []);
 
   return (
-    <aside className={`w-full bg-white border border-gray-100 rounded-xl shadow-sm p-4 space-y-1 ${sticky ? 'sticky top-20' : ''}`}>
+    <aside className={`w-full bg-white border border-gray-100 rounded-2xl shadow-sm p-5 space-y-1 ${sticky ? 'sticky top-20' : ''}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-base font-bold text-gray-900">Filters</h4>
+        <h4 className="flex items-center gap-2 text-base font-semibold text-[#1F2937] work-sans">
+          <svg className="w-4 h-4 text-[#5B21B6]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Filters
+        </h4>
         {hasActiveFilters && (
           <button type="button" onClick={reset}
-            className="text-xs text-red-500 hover:text-red-700 font-medium transition-colors">
+            className="text-xs text-[#5B21B6] hover:text-[#4C1D95] font-medium bg-violet-50 hover:bg-violet-100 rounded-full px-3 py-1 transition-colors">
             Reset all
           </button>
         )}
@@ -242,7 +247,7 @@ export default function ProductFilters({
       <Section id="price" title="Price" isOpen={openSections.price} onToggle={toggleSection}>
         <div className="relative h-5 flex items-center my-3">
           <div className="absolute left-0 right-0 h-1.5 bg-gray-200 rounded-full" />
-          <div className="absolute h-1.5 bg-red-500 rounded-full"
+          <div className="absolute h-1.5 bg-[#5B21B6] rounded-full"
             style={{
               left:  `${((priceRange[0] - absMin) / span) * 100}%`,
               right: `${100 - ((priceRange[1] - absMin) / span) * 100}%`,
@@ -286,7 +291,7 @@ export default function ProductFilters({
                 e.target.blur();
               }
             }}
-            className="w-full border border-gray-200 rounded-lg px-2 py-1 text-sm text-center focus:outline-none focus:border-red-400"
+            className="w-full border border-gray-200 rounded-lg px-2 py-1 text-sm text-center focus:outline-none focus:border-[#5B21B6]"
           />
           <span className="text-gray-400 text-sm">—</span>
           <input 
@@ -305,7 +310,7 @@ export default function ProductFilters({
                 e.target.blur();
               }
             }}
-            className="w-full border border-gray-200 rounded-lg px-2 py-1 text-sm text-center focus:outline-none focus:border-red-400"
+            className="w-full border border-gray-200 rounded-lg px-2 py-1 text-sm text-center focus:outline-none focus:border-[#5B21B6]"
           />
         </div>
       </Section>
@@ -326,9 +331,9 @@ export default function ProductFilters({
                     type="checkbox"
                     checked={checked}
                     onChange={() => toggleSet(setSubIds, id)}
-                    className="accent-red-500 w-3.5 h-3.5 rounded shrink-0"
+                    className="accent-[#5B21B6] w-3.5 h-3.5 rounded shrink-0"
                   />
-                  <span className={`text-sm transition-colors truncate ${checked ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+                  <span className={`text-sm transition-colors truncate ${checked ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                     {sub.depth > 0 && <span className="text-gray-300 mr-1">{'└'}</span>}
                     {sub.name}
                   </span>
@@ -349,9 +354,9 @@ export default function ProductFilters({
                   type="checkbox"
                   checked={brands.has(b.name)}
                   onChange={() => toggleSet(setBrands, b.name)}
-                  className="accent-red-500 w-4 h-4 rounded shrink-0"
+                  className="accent-[#5B21B6] w-4 h-4 rounded shrink-0"
                 />
-                <span className={`text-sm flex-1 uppercase truncate transition-colors ${brands.has(b.name) ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+                <span className={`text-sm flex-1 uppercase truncate transition-colors ${brands.has(b.name) ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                   {b.name}
                 </span>
                 <span className="text-xs text-gray-400 shrink-0">({b.count})</span>
@@ -396,7 +401,7 @@ export default function ProductFilters({
               <button
                 type="button"
                 onClick={() => setMinRating(null)}
-                className="ml-2 text-red-500 hover:text-red-700 font-medium"
+                className="ml-2 text-[#5B21B6] hover:text-[#4C1D95] font-medium"
               >
                 ✕ clear
               </button>
@@ -419,9 +424,9 @@ export default function ProductFilters({
                   type="checkbox"
                   checked={selectedSkinTypes.has(type)}
                   onChange={() => toggleSet(setSelectedSkinTypes, type)}
-                  className="accent-red-500 w-4 h-4 rounded shrink-0"
+                  className="accent-[#5B21B6] w-4 h-4 rounded shrink-0"
                 />
-                <span className={`text-sm capitalize transition-colors ${selectedSkinTypes.has(type) ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+                <span className={`text-sm capitalize transition-colors ${selectedSkinTypes.has(type) ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                   {type}
                 </span>
               </label>
@@ -440,9 +445,9 @@ export default function ProductFilters({
                   type="checkbox"
                   checked={selectedFormulations.has(f)}
                   onChange={() => toggleSet(setSelectedFormulations, f)}
-                  className="accent-red-500 w-4 h-4 rounded shrink-0"
+                  className="accent-[#5B21B6] w-4 h-4 rounded shrink-0"
                 />
-                <span className={`text-sm capitalize transition-colors ${selectedFormulations.has(f) ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+                <span className={`text-sm capitalize transition-colors ${selectedFormulations.has(f) ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                   {f}
                 </span>
               </label>
@@ -465,9 +470,9 @@ export default function ProductFilters({
                   type="checkbox"
                   checked={freeFrom.has(key)}
                   onChange={() => toggleSet(setFreeFrom, key)}
-                  className="accent-red-500 w-4 h-4 rounded shrink-0"
+                  className="accent-[#5B21B6] w-4 h-4 rounded shrink-0"
                 />
-                <span className={`text-sm transition-colors ${freeFrom.has(key) ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+                <span className={`text-sm transition-colors ${freeFrom.has(key) ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                   {label}
                 </span>
               </label>
@@ -477,9 +482,9 @@ export default function ProductFilters({
                 type="checkbox"
                 checked={skincareFlags.crueltyFree}
                 onChange={() => setSkincareFlags(f => ({ ...f, crueltyFree: !f.crueltyFree }))}
-                className="accent-red-500 w-4 h-4 rounded shrink-0"
+                className="accent-[#5B21B6] w-4 h-4 rounded shrink-0"
               />
-              <span className={`text-sm transition-colors ${skincareFlags.crueltyFree ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+              <span className={`text-sm transition-colors ${skincareFlags.crueltyFree ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                 Cruelty-free
               </span>
             </label>
@@ -488,9 +493,9 @@ export default function ProductFilters({
                 type="checkbox"
                 checked={skincareFlags.vegan}
                 onChange={() => setSkincareFlags(f => ({ ...f, vegan: !f.vegan }))}
-                className="accent-red-500 w-4 h-4 rounded shrink-0"
+                className="accent-[#5B21B6] w-4 h-4 rounded shrink-0"
               />
-              <span className={`text-sm transition-colors ${skincareFlags.vegan ? 'text-red-600 font-medium' : 'text-gray-700 group-hover:text-red-600'}`}>
+              <span className={`text-sm transition-colors ${skincareFlags.vegan ? 'text-[#5B21B6] font-medium' : 'text-gray-700 group-hover:text-[#5B21B6]'}`}>
                 Vegan
               </span>
             </label>
@@ -505,7 +510,7 @@ export default function ProductFilters({
           appearance: none;
           width: 16px; height: 16px;
           background: #fff;
-          border: 2px solid #ef4444;
+          border: 2px solid #5B21B6;
           border-radius: 50%;
           cursor: pointer;
           box-shadow: 0 1px 4px rgba(0,0,0,.2);
@@ -513,7 +518,7 @@ export default function ProductFilters({
         .range-thumb::-moz-range-thumb {
           width: 16px; height: 16px;
           background: #fff;
-          border: 2px solid #ef4444;
+          border: 2px solid #5B21B6;
           border-radius: 50%;
           cursor: pointer;
           box-shadow: 0 1px 4px rgba(0,0,0,.2);

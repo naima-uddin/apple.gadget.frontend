@@ -11,6 +11,7 @@ import { useCategories } from "@/components/context/CategoryContext";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
+import SectionHeader from "@/components/home/SectionHeader";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const PRODUCTS_PER_PAGE = 20;
@@ -347,17 +348,22 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     setBestSellingStartIndex((prev) => Math.min(prev, maxBestSellingStart));
   }, [maxBestSellingStart]);
 
+  const showingFrom =
+    totalProducts === 0 ? 0 : (currentPage - 1) * PRODUCTS_PER_PAGE + 1;
+  const showingTo = Math.min(currentPage * PRODUCTS_PER_PAGE, totalProducts);
+
   // Rendered next to the sort dropdown on desktop and below the grid on mobile
   const paginationControls =
     !loadingProducts && totalPages > 1 ? (
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center gap-1.5 flex-wrap">
         <button
           type="button"
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-          className="px-3 py-1.5 bg-white border rounded-md text-sm disabled:opacity-50"
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          aria-label="Previous page"
         >
-          Prev
+          ‹
         </button>
 
         {Array.from({ length: totalPages }, (_, index) => index + 1)
@@ -375,7 +381,11 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
               <button
                 type="button"
                 onClick={() => setCurrentPage(page)}
-                className={`px-3 py-1.5 border rounded-md text-sm ${page === currentPage ? "bg-rose-600 text-white border-rose-600" : "bg-white"}`}
+                className={`h-9 min-w-9 px-3 rounded-full text-sm font-medium transition-colors ${
+                  page === currentPage
+                    ? "bg-[#5B21B6] text-white shadow-sm"
+                    : "bg-white border border-gray-200 text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                }`}
               >
                 {page}
               </button>
@@ -386,88 +396,113 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           type="button"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-          className="px-3 py-1.5 bg-white border rounded-md text-sm disabled:opacity-50"
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          aria-label="Next page"
         >
-          Next
+          ›
         </button>
       </div>
     ) : null;
 
   return (
     <>
-      <div className="max-w-7xl mx-auto px-2 sm:px-2 lg:px-8 py-8">
-        {/* Back button */}
-        <button
-          onClick={() => router.back()}
-          className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-2 transition"
-        >
-          <span className="text-xs">‹</span> Back
-        </button>
-        {/* Breadcrumb & header */}
-        <div className="text-sm text-gray-500 mb-4">
-          <Link href="/" className="hover:underline">
-            Home
-          </Link>
-          {category && category.name ? (
-            <>
-              {" "}
-              &gt;
-              {parentCategory ? (
-                <>
-                  <Link
-                    href={`/category/${parentCategory.slug || (parentCategory.name || "").toLowerCase().replace(/\s+/g, "-")}/`}
-                    className="hover:underline"
-                  >
-                    {parentCategory.name}
-                  </Link>{" "}
-                  &gt; <span className="text-gray-900">{category.name}</span>
-                </>
-              ) : (
-                <span className="text-gray-900">{category.name}</span>
-              )}
-            </>
-          ) : null}
-        </div>
-        <div className="mb-3 text-center">
-          <h1 className="text-2xl md:text-4xl font-bold text-gray-900">
-            {category?.name || slug}
-          </h1>
-          <p className="text-gray-600 mt-2 max-w-4xl mx-auto">
-            {category?.description || `Products for ${category?.name || slug}.`}
-          </p>
-        </div>
+      {/* ── Hero header ── */}
+      <div className="bg-gradient-to-b from-[#F5F3FF] to-white border-b border-violet-100/60">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pt-6 pb-8 relative overflow-hidden">
+          {/* decorative blobs */}
+          <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-violet-200/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-purple-100/40 blur-3xl" />
 
-        {/* Subcategories are shown in the filter sidebar (ProductFilters), not here */}
+          {/* Breadcrumb row */}
+          <nav className="relative flex items-center flex-wrap gap-1.5 text-sm text-[#6B7280] mb-6">
+            <button
+              onClick={() => router.back()}
+              className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-[#6B7280] hover:text-[#5B21B6] hover:border-[#5B21B6] shadow-sm transition-colors mr-2"
+            >
+              <span className="text-[10px]">‹</span> Back
+            </button>
+            <Link href="/" className="hover:text-[#5B21B6] transition-colors">
+              Home
+            </Link>
+            {category && category.name ? (
+              <>
+                <span className="text-gray-300">/</span>
+                {parentCategory ? (
+                  <>
+                    <Link
+                      href={`/category/${parentCategory.slug || (parentCategory.name || "").toLowerCase().replace(/\s+/g, "-")}/`}
+                      className="hover:text-[#5B21B6] transition-colors"
+                    >
+                      {parentCategory.name}
+                    </Link>
+                    <span className="text-gray-300">/</span>
+                    <span className="text-[#5B21B6] font-medium">
+                      {category.name}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-[#5B21B6] font-medium">
+                    {category.name}
+                  </span>
+                )}
+              </>
+            ) : null}
+          </nav>
+
+          {/* Title */}
+          <div className="relative text-center max-w-3xl mx-auto">
+            <span className="inline-flex items-center gap-1.5 bg-white border border-violet-200 text-[#5B21B6] text-[11px] font-semibold uppercase tracking-wider rounded-full px-3 py-1 shadow-sm mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#5B21B6]" />
+              {isSubcategoryPage ? "Subcategory" : "Category"}
+            </span>
+            <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight work-sans">
+              {category?.name || slug}
+            </h1>
+            <p className="text-[#6B7280] mt-3 text-sm md:text-base leading-relaxed">
+              {category?.description ||
+                `Products for ${category?.name || slug}.`}
+            </p>
+            {totalProducts > 0 && (
+              <p className="mt-3 text-xs font-medium text-[#6B7280]">
+                <span className="text-[#5B21B6] font-bold">
+                  {totalProducts.toLocaleString()}
+                </span>{" "}
+                product{totalProducts !== 1 ? "s" : ""} available
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-2 py-2">
+      <div className="max-w-7xl mx-auto px-3 py-2">
         <AdSlot page="categoryPage" className="w-full" />
       </div>
 
-      {/* wide background across viewport */}
-      <div className="bg-[#FFF5ED] w-full -mt-6 md:mt-0">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-8">
+      {/* ── Listing area ── */}
+      <div className="bg-[#FAFAFB] w-full">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 bg-[#FFF5ED] py-2 mb-3 shadow-2xl">
-            <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center rounded-lg bg-[#FCECF2] p-2">
+          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#FAFAFB]/95 backdrop-blur border-b border-gray-100">
+            <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
               <button
                 type="button"
                 onClick={() => setShowMobileFilters(true)}
-                className="h-9 w-9 rounded-md border border-rose-200 bg-white flex items-center justify-center"
+                className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center gap-1.5 text-xs font-medium text-[#1F2937]"
                 aria-label="Open filters"
               >
                 <svg
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
+                  stroke="#5B21B6"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
                   <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
+                Filter
               </button>
 
               <SortDropdown
@@ -479,8 +514,8 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 className="w-full"
               />
 
-              <div className="h-9 min-w-[48px] px-2 rounded-md border border-rose-200 bg-white flex items-center justify-center text-sm text-gray-700">
-                20
+              <div className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center text-xs font-semibold text-[#5B21B6]">
+                {totalProducts > 0 ? totalProducts : "—"}
               </div>
             </div>
           </div>
@@ -490,15 +525,15 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
             <div className="fixed inset-0 z-50 lg:hidden">
               <button
                 type="button"
-                className="absolute inset-0 bg-black/35"
+                className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
                 onClick={() => setShowMobileFilters(false)}
                 aria-label="Close filters"
               />
-              <div className="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-white shadow-xl overflow-y-auto p-4">
+              <div className="absolute left-0 top-0 h-full w-[85%] max-w-[340px] bg-white shadow-2xl overflow-y-auto p-4 rounded-r-2xl">
                 <button
                   type="button"
                   onClick={() => setShowMobileFilters(false)}
-                  className="absolute top-3 right-3 h-8 w-8 bg-rose-500 text-white rounded-sm flex items-center justify-center"
+                  className="absolute top-3 right-3 h-8 w-8 bg-[#5B21B6] text-white rounded-full flex items-center justify-center shadow-sm hover:bg-[#4C1D95] transition-colors"
                   aria-label="Close filters panel"
                 >
                   ✕
@@ -521,9 +556,9 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
             </div>
           )}
 
-          {/* product/filter grid below best-selling */}
-          <div className="grid grid-cols-12 gap-4 pt-0 lg:pt-12 ">
-            {/* Filters occupy 4/12 columns */}
+          {/* Filters + products grid */}
+          <div className="grid grid-cols-12 gap-5">
+            {/* Filter sidebar */}
             <div className="hidden lg:block col-span-12 lg:col-span-3">
               <ProductFilters
                 key={`${parentSlug || ""}/${slug}`}
@@ -536,10 +571,41 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 }}
               />
             </div>
-            {/* Products occupy 8/12 columns */}
+
+            {/* Products */}
             <div className="col-span-12 lg:col-span-9">
+              {/* Desktop toolbar */}
+              <div className="hidden lg:flex items-center justify-between gap-4 bg-white border border-gray-100 rounded-2xl shadow-sm px-5 py-3 mb-5">
+                <p className="text-sm text-[#6B7280]">
+                  {totalProducts > 0 ? (
+                    <>
+                      Showing{" "}
+                      <span className="font-semibold text-[#1F2937]">
+                        {showingFrom}–{showingTo}
+                      </span>{" "}
+                      of{" "}
+                      <span className="font-semibold text-[#1F2937]">
+                        {totalProducts.toLocaleString()}
+                      </span>{" "}
+                      products
+                    </>
+                  ) : (
+                    "Products"
+                  )}
+                </p>
+                <div className="flex items-center gap-3">
+                  <SortDropdown
+                    value={sortOption}
+                    onChange={(value) => {
+                      setSortOption(value);
+                      setCurrentPage(1);
+                    }}
+                  />
+                </div>
+              </div>
+
               {!productsLoadedOnce && loadingProducts ? (
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                   {Array(8)
                     .fill(0)
                     .map((_, i) => (
@@ -548,27 +614,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 </div>
               ) : products.length > 0 ? (
                 <>
-                  <div className="hidden lg:flex items-center justify-between gap-4 mb-3">
-                    <h2 className="text-xl md:text-3xl font-semibold mt-0 mb-3">
-                      All Products
-                    </h2>
-                    <div className="flex items-center gap-3">
-                      {paginationControls}
-                      <SortDropdown
-                        value={sortOption}
-                        onChange={(value) => {
-                          setSortOption(value);
-                          setCurrentPage(1);
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="lg:hidden mb-3">
-                    <h2 className="text-xl font-semibold mt-0">All Products</h2>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                     {products.map((p) => (
                       <ProductCard
                         key={p._id}
@@ -581,7 +627,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                   </div>
 
                   {loadingProducts && (
-                    <div className="mt-4 text-center text-sm text-gray-500">
+                    <div className="mt-4 text-center text-sm text-[#6B7280]">
                       Updating products...
                     </div>
                   )}
@@ -591,7 +637,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
               )}
 
               {paginationControls && (
-                <div className="mt-8 flex justify-center lg:hidden">
+                <div className="mt-10 flex justify-center">
                   {paginationControls}
                 </div>
               )}
@@ -600,21 +646,21 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         </div>
       </div>
 
-      {/* Best Selling — below All Products */}
+      {/* ── Best Selling — below All Products ── */}
       {(loadingBestSelling || bestSelling.length > 0) && (
-        <div className="max-w-7xl mx-auto px-2 sm:px-2 lg:px-8 py-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl md:text-3xl font-semibold">Best Selling</h2>
-            <Link
-              href="/tag/best-seller"
-              className="px-4 py-2 border border-rose-300 rounded-full text-sm hover:bg-[#FFF5ED]"
-            >
-              see all →
-            </Link>
-          </div>
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-10">
+          <SectionHeader
+            title={
+              <>
+                Best <span className="text-[#5B21B6]">Selling</span>
+              </>
+            }
+            seeMoreHref="/tag/best-seller"
+            seeMoreLabel="See More"
+          />
 
           {loadingBestSelling ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 ">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
               {Array(5)
                 .fill(0)
                 .map((_, i) => (
@@ -622,16 +668,16 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 ))}
             </div>
           ) : (
-            <div className="relative pt-8 pb-3">
+            <div className="relative">
               {canSlideBestSelling && (
-                <>
+                <div className="flex items-center justify-end gap-2 mb-4">
                   <button
                     type="button"
                     onClick={() =>
                       setBestSellingStartIndex((i) => Math.max(0, i - 1))
                     }
                     disabled={bestSellingStartIndex === 0}
-                    className="absolute left-2 top-0 z-10 h-6 w-6 md:h-8 md:w-8 rounded-full border  bg-red-600 text-white shadow-sm disabled:opacity-40"
+                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#5B21B6] shadow-sm hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#5B21B6] disabled:hover:border-gray-200"
                     aria-label="Previous best selling products"
                   >
                     ‹
@@ -645,12 +691,12 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                       )
                     }
                     disabled={bestSellingStartIndex >= maxBestSellingStart}
-                    className="absolute right-2 top-0 z-10 h-6 w-6 md:h-8 md:w-8 rounded-full border  bg-red-600 text-white shadow-sm disabled:opacity-40"
+                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#5B21B6] shadow-sm hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#5B21B6] disabled:hover:border-gray-200"
                     aria-label="Next best selling products"
                   >
                     ›
                   </button>
-                </>
+                </div>
               )}
 
               <div className="min-w-0 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
