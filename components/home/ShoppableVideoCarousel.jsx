@@ -158,7 +158,8 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
 
   const subtitle =
     lang === "bn" ? section.subtitleBn || section.subtitle : section.subtitle;
-  const title = lang === "bn" ? section.titleBn || section.title : section.title;
+  const title =
+    lang === "bn" ? section.titleBn || section.title : section.title;
 
   if (videos.length === 0) return null;
 
@@ -166,13 +167,12 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
     <div className="w-full bg-white py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-2">
         {/* Header — big tagline, smaller title beneath */}
-        <div className="text-center mb-6 md:mb-8">
+        <div className="text-left mb-6 md:mb-8">
           {subtitle && (
-            <p className="text-2xl md:text-3xl font-semibold text-[#1F2937] work-sans">
+            <p className="shrink-0 text-lg sm:text-xl md:text-2xl  tracking-tight text-[#1F2937] text-left work-sans">
               {subtitle}
             </p>
           )}
-          <h2 className="text-sm md:text-base text-[#6B7280] mt-2">{title}</h2>
         </div>
 
         <div className="relative">
