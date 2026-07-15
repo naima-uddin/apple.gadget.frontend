@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { getDisplayPrice } from "@/lib/pricing";
 
 // How many video cards fit at the current viewport width
 function useVisibleCount() {
@@ -21,82 +22,117 @@ function useVisibleCount() {
   return count;
 }
 
-function MuteIcon({ muted }) {
-  return muted ? (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="M3 9v6h4l5 5V4L7 9H3z" />
-      <path
-        d="M16 8l6 8M22 8l-6 8"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
-  ) : (
-    <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-      <path d="M3 9v6h4l5 5V4L7 9H3z" />
-      <path
-        d="M16 8a5 5 0 010 8M18.5 5.5a9 9 0 010 13"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
+function PlayOverlay() {
+  return (
+    <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <span className="w-14 h-14 rounded-full bg-black/80 flex items-center justify-center shadow-lg">
+        <svg viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-0.5">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </span>
+    </span>
   );
 }
 
-function VideoPlayer({ video, muted, onToggleMute }) {
+// One video card: paused by default (thumbnail / first frame + play button),
+// click to play with sound, click again to pause.
+function VideoPlayer({ video, playing, onToggle }) {
+  const videoRef = useRef(null);
+
+  // drive the native <video> element from the `playing` prop
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (playing) {
+      el.muted = false;
+      el.play().catch(() => {});
+    } else {
+      el.pause();
+    }
+  }, [playing]);
+
   if (video.youtubeId) {
-    const params = new URLSearchParams({
-      autoplay: "1",
-      mute: muted ? "1" : "0",
-      loop: "1",
-      playlist: video.youtubeId, // required for loop=1 to work
-      controls: "0",
-      playsinline: "1",
-      rel: "0",
-      modestbranding: "1",
-    });
     return (
-      <div className="relative w-full h-full">
-        <iframe
-          key={muted ? "m" : "u"} // remount to apply mute change
-          src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?${params}`}
-          title="video"
-          allow="autoplay; encrypted-media"
-          className="absolute inset-0 w-full h-full pointer-events-none"
-        />
-        <button
-          onClick={onToggleMute}
-          aria-label={muted ? "Unmute" : "Mute"}
-          className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"
-        >
-          <MuteIcon muted={muted} />
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-label={playing ? "Pause video" : "Play video"}
+        className="absolute inset-0 w-full h-full"
+      >
+        {playing ? (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?autoplay=1&mute=0&controls=0&playsinline=1&rel=0&modestbranding=1&loop=1&playlist=${video.youtubeId}`}
+            title="video"
+            allow="autoplay; encrypted-media"
+            className="absolute inset-0 w-full h-full pointer-events-none"
+          />
+        ) : (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <PlayOverlay />
+          </>
+        )}
+      </button>
     );
   }
+
   return (
-    <div className="relative w-full h-full">
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={playing ? "Pause video" : "Play video"}
+      className="absolute inset-0 w-full h-full"
+    >
       <video
+        ref={videoRef}
         src={video.url}
-        autoPlay
-        muted={muted}
         loop
         playsInline
         preload="metadata"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <button
-        onClick={onToggleMute}
-        aria-label={muted ? "Unmute" : "Mute"}
-        className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition"
-      >
-        <MuteIcon muted={muted} />
-      </button>
-    </div>
+      {!playing && <PlayOverlay />}
+    </button>
+  );
+}
+
+function ProductMiniCard({ product }) {
+  const { price, compareAtPrice: compareAt } = getDisplayPrice(product);
+  return (
+    <Link
+      href={`/product/${product._id}/`}
+      className="mt-3 flex items-center gap-3 bg-white border border-gray-100 rounded-xl shadow-sm p-3 hover:shadow-md hover:border-violet-200 transition"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={product.images?.[0]?.url || "/assets/placeholder.svg"}
+        alt={product.title}
+        className="w-11 h-11 object-cover rounded-lg border bg-gray-50 shrink-0"
+        onError={(e) => {
+          e.currentTarget.src = "/assets/placeholder.svg";
+        }}
+      />
+      <div className="min-w-0">
+        <p className="text-sm font-semibold text-[#1F2937] leading-snug line-clamp-2">
+          {product.title}
+        </p>
+        <p className="flex items-baseline gap-1.5 mt-0.5">
+          <span className="text-sm font-bold text-[#5B21B6] whitespace-nowrap">
+            ৳{price?.toLocaleString()}
+          </span>
+          {compareAt && compareAt > price && (
+            <span className="text-xs text-gray-400 line-through whitespace-nowrap">
+              ৳{compareAt?.toLocaleString()}
+            </span>
+          )}
+        </p>
+      </div>
+    </Link>
   );
 }
 
@@ -104,14 +140,14 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
   const videos = section.videos || [];
   const visibleCount = useVisibleCount();
   const [currentIndex, setCurrentIndex] = useState(0);
-  // index of the single card allowed to play sound; -1 = all muted
-  const [unmutedIdx, setUnmutedIdx] = useState(-1);
+  // index of the single card currently playing; -1 = all paused
+  const [playingIdx, setPlayingIdx] = useState(-1);
 
   const maxIndex = Math.max(0, videos.length - visibleCount);
   const pct = 100 / visibleCount;
-  const centerOffset = Math.floor(visibleCount / 2);
 
   const go = (dir) => {
+    setPlayingIdx(-1); // pause when sliding
     setCurrentIndex((prev) => {
       const next = prev + dir;
       if (next < 0) return maxIndex;
@@ -129,16 +165,14 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
   return (
     <div className="w-full bg-white py-8 md:py-12">
       <div className="max-w-7xl mx-auto px-2">
-        {/* Header — small tagline + big title, centered */}
-        <div className="text-center mb-6 md:mb-10">
+        {/* Header — big tagline, smaller title beneath */}
+        <div className="text-center mb-6 md:mb-8">
           {subtitle && (
-            <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-[#6B7280] mb-2">
+            <p className="text-2xl md:text-3xl font-semibold text-[#1F2937] work-sans">
               {subtitle}
             </p>
           )}
-          <h2 className="text-2xl md:text-3xl font-semibold text-[#1F2937] work-sans">
-            {title}
-          </h2>
+          <h2 className="text-sm md:text-base text-[#6B7280] mt-2">{title}</h2>
         </div>
 
         <div className="relative">
@@ -154,72 +188,32 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
           )}
 
           {/* Track */}
-          <div className="overflow-hidden py-6">
+          <div className="overflow-hidden">
             <div
-              className="flex items-center transition-transform duration-500 ease-in-out"
+              className="flex items-start transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * pct}%)` }}
             >
-              {videos.map((video, i) => {
-                const isCenter = i === currentIndex + centerOffset;
-                return (
-                  <div
-                    key={i}
-                    className="shrink-0 px-2"
-                    style={{ width: `${pct}%` }}
-                  >
-                    <div
-                      className={`bg-white border border-gray-100 rounded-xl overflow-hidden transition-all duration-500 ${
-                        isCenter
-                          ? "scale-105 md:scale-110 shadow-xl z-10 relative"
-                          : "shadow-sm"
-                      }`}
-                    >
-                      {/* Portrait video */}
-                      <div className="relative w-full aspect-[9/16] bg-black">
-                        <VideoPlayer
-                          video={video}
-                          muted={unmutedIdx !== i}
-                          onToggleMute={() =>
-                            setUnmutedIdx((prev) => (prev === i ? -1 : i))
-                          }
-                        />
-                      </div>
-
-                      {/* Product footer */}
-                      {video.product && (
-                        <Link
-                          href={`/product/${video.product._id}/`}
-                          className="flex items-center gap-3 p-3 hover:bg-violet-50/50 transition"
-                        >
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={
-                              video.product.images?.[0]?.url ||
-                              "/assets/placeholder.svg"
-                            }
-                            alt={video.product.title}
-                            className="w-10 h-10 object-cover rounded border shrink-0"
-                            onError={(e) => {
-                              e.currentTarget.src = "/assets/placeholder.svg";
-                            }}
-                          />
-                          <div className="min-w-0">
-                            <p className="text-sm font-medium text-[#1F2937] truncate">
-                              {video.product.title}
-                            </p>
-                            <p className="text-sm text-[#6B7280] mt-0.5">
-                              ৳
-                              {video.product.price ??
-                                video.product.variants?.[0]?.price ??
-                                0}
-                            </p>
-                          </div>
-                        </Link>
-                      )}
-                    </div>
+              {videos.map((video, i) => (
+                <div
+                  key={i}
+                  className="shrink-0 px-2"
+                  style={{ width: `${pct}%` }}
+                >
+                  {/* Portrait video */}
+                  <div className="relative w-full aspect-9/16 bg-black rounded-xl overflow-hidden shadow-sm">
+                    <VideoPlayer
+                      video={video}
+                      playing={playingIdx === i}
+                      onToggle={() =>
+                        setPlayingIdx((prev) => (prev === i ? -1 : i))
+                      }
+                    />
                   </div>
-                );
-              })}
+
+                  {/* Linked product — separate card below the video */}
+                  {video.product && <ProductMiniCard product={video.product} />}
+                </div>
+              ))}
             </div>
           </div>
 

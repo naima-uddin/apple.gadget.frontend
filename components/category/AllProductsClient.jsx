@@ -11,7 +11,7 @@ import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
-const PRODUCTS_PER_PAGE = 20;
+const PRODUCTS_PER_PAGE = 10;
 
 export default function AllProductsClient() {
   const router = useRouter();
@@ -21,6 +21,8 @@ export default function AllProductsClient() {
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productsLoadedOnce, setProductsLoadedOnce] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  // Desktop filter sidebar — collapsed by default; grid gains an extra column
+  const [showDesktopFilters, setShowDesktopFilters] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [sortOption, setSortOption] = useState("position");
   const [activeFilters, setActiveFilters] = useState({
@@ -105,9 +107,6 @@ export default function AllProductsClient() {
   }, [currentPage, sortOption, activeFilters]);
 
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
-  const showingFrom =
-    totalProducts === 0 ? 0 : (currentPage - 1) * PRODUCTS_PER_PAGE + 1;
-  const showingTo = Math.min(currentPage * PRODUCTS_PER_PAGE, totalProducts);
 
   const paginationControls =
     !loadingProducts && totalPages > 1 ? (
@@ -186,24 +185,12 @@ export default function AllProductsClient() {
 
           {/* Title */}
           <div className="relative text-center max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-1.5 bg-white border border-violet-200 text-[#5B21B6] text-[11px] font-semibold uppercase tracking-wider rounded-full px-3 py-1 shadow-sm mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5B21B6]" />
-              Full Collection
-            </span>
             <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight work-sans">
               All Products
             </h1>
             <p className="text-[#6B7280] mt-3 text-sm md:text-base leading-relaxed">
               Browse our complete variety of collections
             </p>
-            {totalProducts > 0 && (
-              <p className="mt-3 text-xs font-medium text-[#6B7280]">
-                <span className="text-[#5B21B6] font-bold">
-                  {totalProducts.toLocaleString()}
-                </span>{" "}
-                product{totalProducts !== 1 ? "s" : ""} available
-              </p>
-            )}
           </div>
         </div>
       </div>
@@ -287,8 +274,10 @@ export default function AllProductsClient() {
 
           {/* Filters + products grid */}
           <div className="grid grid-cols-12 gap-5">
-            {/* Filter sidebar */}
-            <div className="hidden lg:block col-span-12 lg:col-span-3">
+            {/* Filter sidebar — kept mounted (CSS-hidden) so filter state survives collapse */}
+            <div
+              className={`hidden ${showDesktopFilters ? "lg:block" : ""} col-span-12 lg:col-span-3`}
+            >
               <ProductFilters
                 products={products}
                 subcategories={[]}
@@ -300,26 +289,41 @@ export default function AllProductsClient() {
             </div>
 
             {/* Products */}
-            <div className="col-span-12 lg:col-span-9">
+            <div
+              className={`col-span-12 ${showDesktopFilters ? "lg:col-span-9" : "lg:col-span-12"}`}
+            >
               {/* Desktop toolbar */}
               <div className="hidden lg:flex items-center justify-between gap-4 bg-white border border-gray-100 rounded-2xl shadow-sm px-5 py-3 mb-5">
-                <p className="text-sm text-[#6B7280]">
-                  {totalProducts > 0 ? (
-                    <>
-                      Showing{" "}
-                      <span className="font-semibold text-[#1F2937]">
-                        {showingFrom}–{showingTo}
-                      </span>{" "}
-                      of{" "}
-                      <span className="font-semibold text-[#1F2937]">
-                        {totalProducts.toLocaleString()}
-                      </span>{" "}
-                      products
-                    </>
-                  ) : (
-                    "Products"
-                  )}
-                </p>
+                <div className="flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowDesktopFilters((v) => !v)}
+                    aria-expanded={showDesktopFilters}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium border shadow-sm transition-colors ${
+                      showDesktopFilters
+                        ? "bg-[#5B21B6] text-white border-[#5B21B6]"
+                        : "bg-white text-[#1F2937] border-gray-200 hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                    }`}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                    </svg>
+                    Filters
+                    <span className="text-[10px]">
+                      {showDesktopFilters ? "▲" : "▼"}
+                    </span>
+                  </button>
+                  {paginationControls}
+                </div>
                 <SortDropdown
                   value={sortOption}
                   onChange={(value) => {
@@ -330,8 +334,10 @@ export default function AllProductsClient() {
               </div>
 
               {!productsLoadedOnce && loadingProducts ? (
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-                  {Array(8)
+                <div
+                  className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-3 md:gap-4`}
+                >
+                  {Array(10)
                     .fill(0)
                     .map((_, i) => (
                       <ProductCard key={i} loading={true} />
@@ -339,7 +345,9 @@ export default function AllProductsClient() {
                 </div>
               ) : products.length > 0 ? (
                 <>
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                  <div
+                    className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-3 md:gap-4`}
+                  >
                     {products.map((p) => (
                       <ProductCard
                         key={p._id}
@@ -362,7 +370,7 @@ export default function AllProductsClient() {
               )}
 
               {paginationControls && (
-                <div className="mt-10 flex justify-center">
+                <div className="mt-10 flex justify-center lg:hidden">
                   {paginationControls}
                 </div>
               )}

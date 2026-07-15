@@ -11,6 +11,7 @@ import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const PRODUCTS_PER_PAGE = 10;
 
 const TAG_CONFIG = {
   "deals-of-the-day": {
@@ -158,8 +159,10 @@ export default function TagPageClient({ slug }) {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAll, setShowAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  // Desktop filter sidebar — collapsed by default; grid gains an extra column
+  const [showDesktopFilters, setShowDesktopFilters] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
   const [sortOption, setSortOption] = useState(
     config.defaultSort || "position",
@@ -181,7 +184,7 @@ export default function TagPageClient({ slug }) {
   useEffect(() => {
     if (!slug) return;
     setSortOption(config.defaultSort || "position");
-    setShowAll(false);
+    setCurrentPage(1);
     setShowMobileFilters(false);
     setActiveFilters({
       priceRange: [0, 0],
@@ -297,7 +300,62 @@ export default function TagPageClient({ slug }) {
     return list;
   }, [filtered, sortOption]);
 
-  const displayed = showAll ? sorted : sorted.slice(0, 20);
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PRODUCTS_PER_PAGE));
+  const displayed = sorted.slice(
+    (currentPage - 1) * PRODUCTS_PER_PAGE,
+    currentPage * PRODUCTS_PER_PAGE,
+  );
+
+  const paginationControls =
+    totalPages > 1 ? (
+      <div className="flex items-center gap-1.5 flex-wrap">
+        <button
+          type="button"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          aria-label="Previous page"
+        >
+          ‹
+        </button>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1)
+          .filter(
+            (page) =>
+              page === 1 ||
+              page === totalPages ||
+              Math.abs(page - currentPage) <= 1,
+          )
+          .map((page, index, arr) => (
+            <React.Fragment key={page}>
+              {index > 0 && arr[index - 1] !== page - 1 && (
+                <span className="px-1 text-gray-400">…</span>
+              )}
+              <button
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                className={`h-9 min-w-9 px-3 rounded-full text-sm font-medium transition-colors ${
+                  page === currentPage
+                    ? "bg-[#5B21B6] text-white shadow-sm"
+                    : "bg-white border border-gray-200 text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                }`}
+              >
+                {page}
+              </button>
+            </React.Fragment>
+          ))}
+
+        <button
+          type="button"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          aria-label="Next page"
+        >
+          ›
+        </button>
+      </div>
+    ) : null;
 
   return (
     <div className="bg-white min-h-screen">
@@ -323,21 +381,9 @@ export default function TagPageClient({ slug }) {
 
           {/* Title */}
           <div className="relative text-center max-w-3xl mx-auto">
-            <span className="inline-flex items-center gap-1.5 bg-white border border-violet-200 text-[#5B21B6] text-[11px] font-semibold uppercase tracking-wider rounded-full px-3 py-1 shadow-sm mb-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#5B21B6]" />
-              Collection
-            </span>
             <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight work-sans">
               {config.icon} {config.label}
             </h1>
-            {!loading && (
-              <p className="mt-3 text-xs font-medium text-[#6B7280]">
-                <span className="text-[#5B21B6] font-bold">
-                  {products.length}
-                </span>{" "}
-                product{products.length !== 1 ? "s" : ""} found
-              </p>
-            )}
           </div>
         </div>
       </div>
@@ -381,7 +427,7 @@ export default function TagPageClient({ slug }) {
                   value={sortOption}
                   onChange={(v) => {
                     setSortOption(v);
-                    setShowAll(false);
+                    setCurrentPage(1);
                   }}
                   className="w-full"
                 />
@@ -421,42 +467,67 @@ export default function TagPageClient({ slug }) {
               </div>
             )}
 
-            {/* Desktop filter sidebar */}
-            <div className="hidden lg:block col-span-3">
+            {/* Desktop filter sidebar — kept mounted (CSS-hidden) so filter state survives collapse */}
+            <div
+              className={`hidden ${showDesktopFilters ? "lg:block" : ""} col-span-3`}
+            >
               <ProductFilters
                 products={products}
                 subcategories={[]}
                 onChange={(f) => {
                   setActiveFilters(f);
-                  setShowAll(false);
+                  setCurrentPage(1);
                 }}
               />
             </div>
 
             {/* Products grid */}
-            <div className="col-span-12 lg:col-span-9">
+            <div
+              className={`col-span-12 ${showDesktopFilters ? "lg:col-span-9" : "lg:col-span-12"}`}
+            >
               <div className="hidden lg:flex items-center justify-between gap-4 bg-white border border-gray-100 rounded-2xl shadow-sm px-5 py-3 mb-5">
-                <p className="text-sm text-[#6B7280]">
-                  Showing{" "}
-                  <span className="font-semibold text-[#1F2937]">
-                    {displayed.length}
-                  </span>{" "}
-                  of{" "}
-                  <span className="font-semibold text-[#1F2937]">
-                    {sorted.length}
-                  </span>{" "}
-                  products
-                </p>
+                <div className="flex items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setShowDesktopFilters((v) => !v)}
+                    aria-expanded={showDesktopFilters}
+                    className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium border shadow-sm transition-colors ${
+                      showDesktopFilters
+                        ? "bg-[#5B21B6] text-white border-[#5B21B6]"
+                        : "bg-white text-[#1F2937] border-gray-200 hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                    }`}
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+                    </svg>
+                    Filters
+                    <span className="text-[10px]">
+                      {showDesktopFilters ? "▲" : "▼"}
+                    </span>
+                  </button>
+                  {paginationControls}
+                </div>
                 <SortDropdown
                   value={sortOption}
                   onChange={(v) => {
                     setSortOption(v);
-                    setShowAll(false);
+                    setCurrentPage(1);
                   }}
                 />
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-4">
+              <div
+                className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-2 md:gap-4`}
+              >
                 {displayed.map((p) => (
                   <ProductCard
                     key={p._id}
@@ -468,16 +539,9 @@ export default function TagPageClient({ slug }) {
                 ))}
               </div>
 
-              {sorted.length > 20 && (
-                <div className="mt-8 flex justify-center">
-                  <button
-                    onClick={() => setShowAll((s) => !s)}
-                    className="px-6 py-2.5 bg-white border border-gray-200 rounded-full text-sm font-medium text-[#1F2937] shadow-sm hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors"
-                  >
-                    {showAll
-                      ? "Show less"
-                      : `Show all ${sorted.length} products`}
-                  </button>
+              {paginationControls && (
+                <div className="mt-10 flex justify-center lg:hidden">
+                  {paginationControls}
                 </div>
               )}
             </div>
