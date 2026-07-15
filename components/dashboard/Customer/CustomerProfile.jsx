@@ -14,7 +14,7 @@ const STATUS_STYLE = {
   picked: "bg-orange-100 text-orange-700",
   rejected: "bg-red-100 text-red-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-indigo-100 text-indigo-700",
+  processing: "bg-violet-100 text-violet-800",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-gray-100 text-gray-600",
@@ -168,7 +168,7 @@ export default function CustomerProfile({ userId }) {
         <div>
           <Link
             href="/dashboard/customers"
-            className="text-sm text-gray-500 hover:text-rose-600"
+            className="text-sm text-gray-500 hover:text-violet-700"
           >
             ← Back to customers
           </Link>
@@ -270,11 +270,11 @@ export default function CustomerProfile({ userId }) {
                       .replace(/\D/g, "")
                       .endsWith(user.mobile.replace(/\D/g, "").slice(-10));
                   return (
-                    <tr key={order._id} className="hover:bg-rose-50/30">
+                    <tr key={order._id} className="hover:bg-violet-50/30">
                       <td className="px-4 py-3">
                         <Link
                           href={`/dashboard/orders/${order._id}`}
-                          className="font-mono text-xs text-rose-600 hover:underline"
+                          className="font-mono text-xs text-violet-700 hover:underline"
                         >
                           {formatOrderId(order._id)}
                         </Link>

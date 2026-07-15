@@ -28,7 +28,6 @@ export default function ComparePageClient() {
     { key: "freeShipping", label: t("compare.row_free_shipping"), render: (p) => (p.freeShipping ? "✓ Yes" : "✗ No") },
     { key: "rewardPoints", label: t("compare.row_reward_points"), render: (p) => (p.rewardPoints ? `${p.rewardPoints} pts` : "—") },
     { key: "category", label: t("compare.row_category"), render: (p) => (typeof p.category === "object" ? p.category?.name : p.category) || "—" },
-    { key: "warranty", label: t("compare.row_warranty"), render: (p) => p.warranty?.period || "—" },
   ];
 
   if (compareList.length === 0) {

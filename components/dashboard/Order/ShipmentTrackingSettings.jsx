@@ -360,7 +360,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
       >
         <div className="flex items-center gap-3">
           <span
-            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-gray-500 ${expanded ? "bg-rose-100 text-rose-600" : "bg-gray-200"}`}
+            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-gray-500 ${expanded ? "bg-violet-100 text-violet-700" : "bg-gray-200"}`}
           >
             <svg
               className={`w-3.5 h-3.5 transition-transform ${expanded ? "rotate-90" : ""}`}
@@ -700,7 +700,7 @@ export default function ShipmentTrackingSettings() {
       <div>
         <Link
           href="/dashboard/shipment-tracking"
-          className="text-sm text-gray-500 hover:text-rose-600"
+          className="text-sm text-gray-500 hover:text-violet-700"
         >
           ← Back to tracking orders
         </Link>

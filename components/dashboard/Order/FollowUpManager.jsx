@@ -10,7 +10,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const STATUS_STYLE = {
   unassigned: "bg-gray-100 text-gray-600",
   assigned: "bg-blue-100 text-blue-700",
-  called: "bg-indigo-100 text-indigo-700",
+  called: "bg-violet-100 text-violet-800",
   accepted: "bg-green-100 text-green-700",
   rejected: "bg-red-100 text-red-700",
 };
@@ -84,7 +84,7 @@ export default function FollowUpManager() {
         </div>
         <Link
           href="/dashboard/orders"
-          className="text-sm text-rose-600 hover:underline"
+          className="text-sm text-violet-700 hover:underline"
         >
           ← All Orders
         </Link>
@@ -147,7 +147,7 @@ export default function FollowUpManager() {
                           type="button"
                           disabled={assigning}
                           onClick={() => assignToOrder(p._id)}
-                          className="text-xs font-medium px-3 py-1 rounded-lg bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-60"
+                          className="text-xs font-medium px-3 py-1 rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
                         >
                           Assign
                         </button>
@@ -165,7 +165,7 @@ export default function FollowUpManager() {
                     No active authorized persons.{" "}
                     <Link
                       href="/dashboard/authorized"
-                      className="text-rose-600 hover:underline"
+                      className="text-violet-700 hover:underline"
                     >
                       Add one
                     </Link>

@@ -11,7 +11,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const STATUS_STYLE = {
   pending: "bg-yellow-100 text-yellow-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-indigo-100 text-indigo-700",
+  processing: "bg-violet-100 text-violet-800",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-gray-100 text-gray-600",
@@ -97,7 +97,7 @@ function OrderTrackingCard({
   return (
     <article
       className={`bg-white rounded-xl border shadow-sm overflow-hidden transition ${
-        highlighted ? "border-rose-400 ring-2 ring-rose-100" : "border-gray-200"
+        highlighted ? "border-violet-400 ring-2 ring-violet-100" : "border-gray-200"
       }`}
     >
       <button
@@ -106,7 +106,7 @@ function OrderTrackingCard({
         className="w-full flex items-center gap-4 px-4 py-3.5 hover:bg-gray-50 text-left transition"
       >
         <span
-          className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition ${expanded ? "bg-rose-100 text-rose-600" : "bg-gray-100 text-gray-500"}`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition ${expanded ? "bg-violet-100 text-violet-700" : "bg-gray-100 text-gray-500"}`}
         >
           <svg
             className={`w-4 h-4 transition-transform ${expanded ? "rotate-90" : ""}`}
@@ -152,11 +152,11 @@ function OrderTrackingCard({
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 pt-0 border-t border-gray-100 space-y-4 bg-linear-to-b from-rose-50/30 to-white">
+        <div className="px-4 pb-4 pt-0 border-t border-gray-100 space-y-4 bg-linear-to-b from-violet-50/30 to-white">
           <div className="flex flex-wrap gap-2 pt-4">
             <Link
               href={`/dashboard/orders/${order._id}`}
-              className="text-xs font-medium text-rose-600 hover:underline"
+              className="text-xs font-medium text-violet-700 hover:underline"
             >
               Full order details →
             </Link>
@@ -358,7 +358,7 @@ export default function ShipmentTrackingManager() {
             onClick={() => setFilter(tab.key)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
               filter === tab.key
-                ? "bg-rose-500 text-white"
+                ? "bg-violet-500 text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -368,7 +368,7 @@ export default function ShipmentTrackingManager() {
         <button
           type="button"
           onClick={loadOrders}
-          className="text-xs text-rose-600 hover:text-rose-700 font-medium ml-auto"
+          className="text-xs text-violet-700 hover:text-violet-800 font-medium ml-auto"
         >
           Refresh
         </button>

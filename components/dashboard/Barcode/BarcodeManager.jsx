@@ -243,13 +243,13 @@ export default function BarcodeManager() {
           <button
             type="button"
             onClick={resetForm}
-            className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+            className="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800"
           >
             <FaPlus /> New Barcode
           </button>
           <Link
             href="/dashboard/barcodes/lookup"
-            className="inline-flex items-center gap-2 rounded-xl border border-indigo-300 px-4 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50"
+            className="inline-flex items-center gap-2 rounded-xl border border-violet-300 px-4 py-2 text-sm font-semibold text-violet-800 hover:bg-violet-50"
           >
             <FaSearch /> Scan / Lookup
           </Link>
@@ -297,7 +297,7 @@ export default function BarcodeManager() {
                     code: e.target.value.replace(/\s+/g, ""),
                   }))
                 }
-                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-violet-500"
                 placeholder="123456789012"
                 inputMode="numeric"
               />
@@ -305,7 +305,7 @@ export default function BarcodeManager() {
                 <button
                   type="button"
                   onClick={handleGenerate}
-                  className="inline-flex items-center gap-2 rounded-lg border border-indigo-300 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
                 >
                   <FaRedo /> Generate
                 </button>
@@ -327,7 +327,7 @@ export default function BarcodeManager() {
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, label: e.target.value }))
                 }
-                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-violet-500"
                 placeholder="Product label"
               />
             </div>
@@ -341,7 +341,7 @@ export default function BarcodeManager() {
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, productTitle: e.target.value }))
                 }
-                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-violet-500"
                 placeholder="Optional display title"
               />
             </div>
@@ -355,7 +355,7 @@ export default function BarcodeManager() {
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, productId: e.target.value }))
                 }
-                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-violet-500"
                 placeholder="MongoDB ObjectId"
               />
             </div>
@@ -369,7 +369,7 @@ export default function BarcodeManager() {
                 onChange={(e) =>
                   setForm((prev) => ({ ...prev, notes: e.target.value }))
                 }
-                className="h-24 w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-indigo-500"
+                className="h-24 w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-violet-500"
                 placeholder="Optional note"
               />
             </div>
@@ -394,7 +394,7 @@ export default function BarcodeManager() {
             </div>
 
             {error && (
-              <p className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+              <p className="rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-sm text-violet-800">
                 {error}
               </p>
             )}
@@ -402,7 +402,7 @@ export default function BarcodeManager() {
             <button
               type="submit"
               disabled={saving || !form.code.trim()}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-violet-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-violet-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <FaRegSave />{" "}
               {saving
@@ -483,7 +483,7 @@ export default function BarcodeManager() {
                             <button
                               type="button"
                               onClick={() => handleEdit(item)}
-                              className="inline-flex items-center gap-2 rounded-lg border border-indigo-300 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-50"
+                              className="inline-flex items-center gap-2 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
                             >
                               <FaEdit /> Edit
                             </button>
@@ -491,7 +491,7 @@ export default function BarcodeManager() {
                               <button
                                 type="button"
                                 onClick={() => handleDelete(item)}
-                                className="inline-flex items-center gap-2 rounded-lg border border-rose-300 px-3 py-1.5 text-xs font-semibold text-rose-700 hover:bg-rose-50"
+                                className="inline-flex items-center gap-2 rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
                               >
                                 <FaTrash /> Delete
                               </button>
@@ -540,13 +540,13 @@ export default function BarcodeManager() {
                             <>
                               <Link
                                 href={`/dashboard/products/${linkedProduct._id}`}
-                                className="text-indigo-600 hover:underline"
+                                className="text-violet-700 hover:underline"
                               >
                                 Open product
                               </Link>
                               <Link
                                 href={`/dashboard/barcodes/lookup?code=${encodeURIComponent(item.code)}`}
-                                className="text-indigo-600 hover:underline"
+                                className="text-violet-700 hover:underline"
                               >
                                 Lookup
                               </Link>

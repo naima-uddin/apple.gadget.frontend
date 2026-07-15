@@ -103,7 +103,7 @@ const DEFAULT_MEGA_MENU_TAGS = [
   {
     name: "Featured",
     icon: "🏅",
-    color: "text-indigo-600",
+    color: "text-violet-700",
     href: "/tag/featured",
     isActive: true,
     order: 14,
@@ -328,7 +328,7 @@ export default function TagsForm() {
             <input
               className="md:col-span-2 border px-3 py-2 rounded"
               value={tag.color || ""}
-              placeholder="text-indigo-600"
+              placeholder="text-violet-700"
               onChange={(e) =>
                 setTags((prev) =>
                   prev.map((item, i) =>
@@ -389,7 +389,7 @@ export default function TagsForm() {
         {user?.role === "admin" ? (
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-indigo-600 text-white rounded"
+            className="px-4 py-2 bg-violet-700 text-white rounded"
             disabled={saving}
           >
             {saving ? "Saving…" : "Save tags"}

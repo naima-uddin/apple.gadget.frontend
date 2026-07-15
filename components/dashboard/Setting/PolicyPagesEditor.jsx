@@ -274,7 +274,7 @@ function QAEditor({ items, onChange }) {
               <input
                 value={item.question}
                 onChange={(e) => update(i, "question", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400"
                 placeholder="প্রশ্ন লিখুন…"
               />
             </div>
@@ -286,7 +286,7 @@ function QAEditor({ items, onChange }) {
                 value={item.answer}
                 onChange={(e) => update(i, "answer", e.target.value)}
                 rows={4}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 resize-y"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400 resize-y"
                 placeholder="উত্তর লিখুন…"
               />
             </div>
@@ -296,7 +296,7 @@ function QAEditor({ items, onChange }) {
       <button
         type="button"
         onClick={add}
-        className="w-full border-2 border-dashed border-gray-300 hover:border-indigo-400 text-gray-500 hover:text-indigo-600 rounded-xl py-3 text-sm transition"
+        className="w-full border-2 border-dashed border-gray-300 hover:border-violet-400 text-gray-500 hover:text-violet-700 rounded-xl py-3 text-sm transition"
       >
         + নতুন প্রশ্ন যোগ করুন
       </button>
@@ -337,7 +337,7 @@ function SectionEditor({ items, onChange }) {
               <input
                 value={item.heading}
                 onChange={(e) => update(i, "heading", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400"
                 placeholder="বিভাগের শিরোনাম লিখুন…"
               />
             </div>
@@ -349,7 +349,7 @@ function SectionEditor({ items, onChange }) {
                 value={item.content}
                 onChange={(e) => update(i, "content", e.target.value)}
                 rows={5}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-400 resize-y"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400 resize-y"
                 placeholder="বিষয়বস্তু লিখুন…"
               />
             </div>
@@ -359,7 +359,7 @@ function SectionEditor({ items, onChange }) {
       <button
         type="button"
         onClick={add}
-        className="w-full border-2 border-dashed border-gray-300 hover:border-indigo-400 text-gray-500 hover:text-indigo-600 rounded-xl py-3 text-sm transition"
+        className="w-full border-2 border-dashed border-gray-300 hover:border-violet-400 text-gray-500 hover:text-violet-700 rounded-xl py-3 text-sm transition"
       >
         + নতুন বিভাগ যোগ করুন
       </button>
@@ -512,7 +512,7 @@ export default function PolicyPagesEditor() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
+              className="px-4 py-2 bg-violet-700 hover:bg-violet-800 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
             >
               {saving ? "সেভ হচ্ছে…" : "সেভ করুন"}
             </button>
@@ -527,7 +527,7 @@ export default function PolicyPagesEditor() {
               onClick={() => setActiveTab(tab.key)}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap transition border-b-2 ${
                 activeTab === tab.key
-                  ? "border-indigo-500 text-indigo-700 bg-indigo-50"
+                  ? "border-violet-500 text-violet-800 bg-violet-50"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -559,7 +559,7 @@ export default function PolicyPagesEditor() {
             </div>
             <button
               onClick={handleLoadTabDefault}
-              className="text-xs text-indigo-600 hover:text-indigo-800 border border-indigo-200 hover:bg-indigo-50 px-3 py-1 rounded-lg transition"
+              className="text-xs text-violet-700 hover:text-violet-800 border border-violet-200 hover:bg-violet-50 px-3 py-1 rounded-lg transition"
             >
               এই ট্যাবে default কনটেন্ট লোড করুন
             </button>
@@ -591,7 +591,7 @@ export default function PolicyPagesEditor() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
+            className="px-4 py-2 bg-violet-700 hover:bg-violet-800 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
           >
             {saving ? "সেভ হচ্ছে…" : "সেভ করুন"}
           </button>

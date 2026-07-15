@@ -100,7 +100,7 @@ export default function AuthorizedFollowUpProfile({ adminId }) {
               >
                 <Link
                   href={`/dashboard/orders/${order._id}`}
-                  className="font-mono text-sm font-semibold text-rose-600 hover:underline"
+                  className="font-mono text-sm font-semibold text-violet-700 hover:underline"
                 >
                   {formatOrderId(order._id)}
                 </Link>

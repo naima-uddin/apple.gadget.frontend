@@ -54,7 +54,7 @@ export default function RewardsOverview() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-white rounded-xl border p-4">
           <p className="text-xs text-gray-500 uppercase">Total balance</p>
-          <p className="text-2xl font-bold text-rose-600">
+          <p className="text-2xl font-bold text-violet-700">
             {stats.totalBalance}
           </p>
           <p className="text-xs text-gray-400">≈ ৳{stats.totalBalanceTk}</p>
@@ -85,7 +85,7 @@ export default function RewardsOverview() {
           onClick={() => setTab("orders")}
           className={`px-4 py-2 rounded-full text-sm font-medium ${
             tab === "orders"
-              ? "bg-rose-500 text-white"
+              ? "bg-violet-500 text-white"
               : "bg-gray-100 text-gray-600"
           }`}
         >
@@ -96,7 +96,7 @@ export default function RewardsOverview() {
           onClick={() => setTab("users")}
           className={`px-4 py-2 rounded-full text-sm font-medium ${
             tab === "users"
-              ? "bg-rose-500 text-white"
+              ? "bg-violet-500 text-white"
               : "bg-gray-100 text-gray-600"
           }`}
         >
@@ -125,11 +125,11 @@ export default function RewardsOverview() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {orders.map((o) => (
-                    <tr key={o._id} className="hover:bg-rose-50/30">
+                    <tr key={o._id} className="hover:bg-violet-50/30">
                       <td className="px-4 py-3">
                         <Link
                           href={`/dashboard/orders/${o._id}`}
-                          className="font-mono text-xs text-rose-600 hover:underline"
+                          className="font-mono text-xs text-violet-700 hover:underline"
                         >
                           {formatOrderId(o._id)}
                         </Link>
@@ -173,7 +173,7 @@ export default function RewardsOverview() {
                   <tr key={u._id}>
                     <td className="px-4 py-3 font-medium">{u.name || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{u.email}</td>
-                    <td className="px-4 py-3 font-bold text-rose-600">
+                    <td className="px-4 py-3 font-bold text-violet-700">
                       {u.rewardPointsBalance}
                     </td>
                     <td className="px-4 py-3">

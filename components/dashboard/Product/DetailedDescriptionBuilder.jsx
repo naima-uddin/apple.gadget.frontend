@@ -60,7 +60,7 @@ function ImageSlot({
       <div
         className={`relative group rounded-lg overflow-hidden border-2 transition-all cursor-grab ${
           isDragOver
-            ? "border-indigo-500 scale-95 opacity-60"
+            ? "border-violet-500 scale-95 opacity-60"
             : "border-transparent"
         }`}
         style={{ aspectRatio: "4/3" }}
@@ -100,7 +100,7 @@ function ImageSlot({
   return (
     <div
       className={`relative border-2 border-dashed rounded-lg bg-gray-50 flex flex-col items-center justify-center transition-colors ${
-        isDragOver ? "border-indigo-500 bg-indigo-50" : "border-gray-300"
+        isDragOver ? "border-violet-500 bg-violet-50" : "border-gray-300"
       } ${uploading ? "pointer-events-none opacity-60" : ""}`}
       style={{ aspectRatio: "4/3", minHeight: 120 }}
       onDragOver={(e) => {
@@ -121,7 +121,7 @@ function ImageSlot({
         onChange={(e) => handleFiles(e.target.files)}
       />
       {uploading ? (
-        <div className="text-sm text-indigo-600 font-medium">Uploading…</div>
+        <div className="text-sm text-violet-700 font-medium">Uploading…</div>
       ) : (
         <div className="flex flex-col items-center gap-2 px-2">
           <svg
@@ -140,7 +140,7 @@ function ImageSlot({
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="text-xs font-medium text-indigo-600 hover:text-indigo-800 underline"
+            className="text-xs font-medium text-violet-700 hover:text-violet-800 underline"
           >
             Upload image
           </button>
@@ -148,7 +148,7 @@ function ImageSlot({
             <button
               type="button"
               onClick={onPickFromLibrary}
-              className="text-xs font-medium text-gray-500 hover:text-indigo-600 border border-gray-300 rounded px-2 py-0.5 hover:border-indigo-400 transition"
+              className="text-xs font-medium text-gray-500 hover:text-violet-700 border border-gray-300 rounded px-2 py-0.5 hover:border-violet-400 transition"
             >
               🖼 Media Library
             </button>
@@ -241,8 +241,8 @@ function ImageRowBlock({
             onClick={() => setCols(n)}
             className={`px-3 py-1 text-xs rounded-full border font-semibold transition ${
               cols === n
-                ? "bg-indigo-600 text-white border-indigo-600"
-                : "border-gray-300 text-gray-600 hover:border-indigo-400"
+                ? "bg-violet-700 text-white border-violet-700"
+                : "border-gray-300 text-gray-600 hover:border-violet-400"
             }`}
           >
             {n}
@@ -263,7 +263,7 @@ function ImageRowBlock({
             type="button"
             onClick={() => bulkInputRef.current?.click()}
             disabled={bulkUploading}
-            className="flex items-center gap-1 text-xs font-medium text-indigo-600 border border-indigo-200 bg-indigo-50 rounded px-2.5 py-1 hover:bg-indigo-100 disabled:opacity-50 transition"
+            className="flex items-center gap-1 text-xs font-medium text-violet-700 border border-violet-200 bg-violet-50 rounded px-2.5 py-1 hover:bg-violet-100 disabled:opacity-50 transition"
           >
             {bulkUploading ? "Uploading…" : "⬆ Upload all"}
           </button>
@@ -491,7 +491,7 @@ export default function DetailedDescriptionBuilder({
                     key={a}
                     type="button"
                     onClick={() => patchBlock(i, { align: a })}
-                    className={`px-2.5 py-1 text-xs rounded border transition ${block.align === a ? "bg-indigo-600 text-white border-indigo-600" : "border-gray-300 text-gray-600 hover:border-indigo-400"}`}
+                    className={`px-2.5 py-1 text-xs rounded border transition ${block.align === a ? "bg-violet-700 text-white border-violet-700" : "border-gray-300 text-gray-600 hover:border-violet-400"}`}
                   >
                     {a === "left"
                       ? "⬅ Left"
@@ -581,14 +581,14 @@ export default function DetailedDescriptionBuilder({
         <button
           type="button"
           onClick={() => addBlock("text")}
-          className="flex items-center gap-1.5 rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-indigo-400 hover:text-indigo-700 transition"
+          className="flex items-center gap-1.5 rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-violet-400 hover:text-violet-800 transition"
         >
           T&nbsp; Add Text
         </button>
         <button
           type="button"
           onClick={() => addBlock("image")}
-          className="flex items-center gap-1.5 rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-indigo-400 hover:text-indigo-700 transition"
+          className="flex items-center gap-1.5 rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-violet-400 hover:text-violet-800 transition"
         >
           🖼 Full-Width Image
         </button>
@@ -597,7 +597,7 @@ export default function DetailedDescriptionBuilder({
             key={n}
             type="button"
             onClick={() => addBlock("image-row", { cols: n })}
-            className="flex items-center gap-1.5 rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-indigo-400 hover:text-indigo-700 transition"
+            className="flex items-center gap-1.5 rounded-lg border-2 border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-600 hover:border-violet-400 hover:text-violet-800 transition"
           >
             ⊞ {n} Images
           </button>

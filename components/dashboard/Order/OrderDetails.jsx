@@ -16,7 +16,7 @@ const STATUS_STYLE = {
   approved: "bg-blue-100 text-blue-700",
   rejected: "bg-red-100 text-red-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-indigo-100 text-indigo-700",
+  processing: "bg-violet-100 text-violet-800",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   returned: "bg-teal-100 text-teal-700",
@@ -282,7 +282,7 @@ export default function OrderDetails({ orderId }) {
         <div>
           <Link
             href="/dashboard/orders"
-            className="text-sm text-gray-500 hover:text-rose-600 inline-flex items-center gap-1"
+            className="text-sm text-gray-500 hover:text-violet-700 inline-flex items-center gap-1"
           >
             ← Back
           </Link>
@@ -290,7 +290,7 @@ export default function OrderDetails({ orderId }) {
             <h1 className="text-2xl font-bold text-gray-900">
               {formatOrderId(order._id)}
             </h1>
-            <span className="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700">
+            <span className="text-xs font-medium px-2 py-1 rounded-full bg-violet-100 text-violet-800">
               Online Store
             </span>
             <span
@@ -497,7 +497,7 @@ export default function OrderDetails({ orderId }) {
                       type="button"
                       onClick={saveShipping}
                       disabled={saving}
-                      className="text-xs text-rose-600 hover:underline"
+                      className="text-xs text-violet-700 hover:underline"
                     >
                       Save
                     </button>
@@ -516,7 +516,7 @@ export default function OrderDetails({ orderId }) {
                   <button
                     type="button"
                     onClick={() => setShippingEdit(true)}
-                    className="text-rose-600 hover:underline"
+                    className="text-violet-700 hover:underline"
                   >
                     Edit Shipping Charge
                   </button>
@@ -542,7 +542,7 @@ export default function OrderDetails({ orderId }) {
                       type="button"
                       onClick={saveDiscount}
                       disabled={saving}
-                      className="text-xs text-rose-600 hover:underline"
+                      className="text-xs text-violet-700 hover:underline"
                     >
                       Save
                     </button>
@@ -561,7 +561,7 @@ export default function OrderDetails({ orderId }) {
                   <button
                     type="button"
                     onClick={() => setDiscountEdit(true)}
-                    className="text-rose-600 hover:underline"
+                    className="text-violet-700 hover:underline"
                   >
                     Apply Discount
                   </button>
@@ -615,7 +615,7 @@ export default function OrderDetails({ orderId }) {
                   href={order.shipment.trackingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-rose-600 hover:underline font-medium"
+                  className="text-sm text-violet-700 hover:underline font-medium"
                 >
                   Open live tracking link ↗
                 </a>
@@ -665,7 +665,7 @@ export default function OrderDetails({ orderId }) {
                           {ev.newStatus}
                         </span>
                         <span
-                          className={`text-xs px-2 py-0.5 rounded-full font-medium ${byCustomer ? "bg-orange-100 text-orange-700" : bySystem ? "bg-gray-100 text-gray-500" : "bg-indigo-100 text-indigo-700"}`}
+                          className={`text-xs px-2 py-0.5 rounded-full font-medium ${byCustomer ? "bg-orange-100 text-orange-700" : bySystem ? "bg-gray-100 text-gray-500" : "bg-violet-100 text-violet-800"}`}
                         >
                           {byCustomer
                             ? "By customer"
@@ -788,7 +788,7 @@ export default function OrderDetails({ orderId }) {
                     type="button"
                     disabled={saving}
                     onClick={saveCustomerDetails}
-                    className="px-3 py-1.5 text-xs font-medium rounded-lg bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-60"
+                    className="px-3 py-1.5 text-xs font-medium rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
                   >
                     {saving ? "Saving…" : "Save"}
                   </button>
@@ -847,7 +847,7 @@ export default function OrderDetails({ orderId }) {
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">
-                Reason <span className="text-rose-600">*</span>
+                Reason <span className="text-violet-700">*</span>
               </label>
               <textarea
                 value={statusModal.reason}
@@ -881,7 +881,7 @@ export default function OrderDetails({ orderId }) {
                 type="button"
                 onClick={updateStatus}
                 disabled={statusModal.submitting}
-                className="px-4 py-2 text-sm rounded-lg bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-60"
+                className="px-4 py-2 text-sm rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
               >
                 {statusModal.submitting ? "Saving…" : "Update"}
               </button>

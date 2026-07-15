@@ -152,9 +152,8 @@ export default function TagPageClient({ slug }) {
     label: slug.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
     icon: "🏷️",
     defaultSort: "newest",
-    mode: "productTag",
-    // try both space-separated and hyphenated forms; backend regex handles case
-    tagValue: slug.replace(/-/g, " "),
+    // unknown slugs map to a product badge key (mega-menu tags use /tag/x-y → badge x_y)
+    badge: slug.replace(/-/g, "_"),
   };
 
   const [products, setProducts] = useState([]);
@@ -196,7 +195,7 @@ export default function TagPageClient({ slug }) {
       try {
         let query = "limit=500";
 
-        if (config.mode !== "custom" && config.mode !== "productTag") {
+        if (config.mode !== "custom") {
           if (config.flag) query += `&flag=${encodeURIComponent(config.flag)}`;
           if (config.maxPrice != null)
             query += `&maxPrice=${encodeURIComponent(String(config.maxPrice))}`;
@@ -204,27 +203,7 @@ export default function TagPageClient({ slug }) {
 
         let items = [];
 
-        if (config.mode === "productTag") {
-          const resp = await fetch(
-            `${API}/api/products?${query}&tag=${encodeURIComponent(config.tagValue)}`,
-          );
-          const json = await resp.json();
-          items = (json.items || []).map((p) => ({
-            ...p,
-            price: getDisplayPrice(p).price,
-          }));
-          // fallback: try slug form (with hyphens) if no results
-          if (items.length === 0 && config.tagValue !== slug) {
-            const resp2 = await fetch(
-              `${API}/api/products?${query}&tag=${encodeURIComponent(slug)}`,
-            );
-            const json2 = await resp2.json();
-            items = (json2.items || []).map((p) => ({
-              ...p,
-              price: getDisplayPrice(p).price,
-            }));
-          }
-        } else if (
+        if (
           config.mode !== "custom" &&
           Array.isArray(config.badgeAliases) &&
           config.badgeAliases.length > 0

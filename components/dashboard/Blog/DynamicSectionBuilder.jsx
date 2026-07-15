@@ -81,7 +81,7 @@ export default function DynamicSectionBuilder({ sections = [], onChange }) {
         <button
           type="button"
           onClick={() => addSection('accordion')}
-          className="px-3 py-1.5 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700"
+          className="px-3 py-1.5 text-sm bg-violet-700 text-white rounded hover:bg-violet-800"
         >
           + Accordion
         </button>

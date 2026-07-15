@@ -35,7 +35,7 @@ const DEFAULT_BADGE_OPTIONS = [
   {
     key: "popular_pics",
     label: "Popular Pics",
-    color: "bg-pink-100 text-pink-800",
+    color: "bg-violet-100 text-violet-800",
   },
   { key: "trending", label: "Trending", color: "bg-blue-100 text-blue-800" },
   {
@@ -102,7 +102,7 @@ function ImageDragGrid({ images, onReorder, onRemove }) {
       {images.map((img, i) => (
         <div
           key={i}
-          className={`relative group rounded-lg transition-all ${dragOverIdx === i ? "scale-95 opacity-60 ring-2 ring-indigo-500" : ""}`}
+          className={`relative group rounded-lg transition-all ${dragOverIdx === i ? "scale-95 opacity-60 ring-2 ring-violet-500" : ""}`}
           draggable
           onDragStart={() => {
             dragSrc.current = i;
@@ -151,7 +151,7 @@ function ImageDragGrid({ images, onReorder, onRemove }) {
             ✕
           </button>
           {i === 0 && (
-            <div className="absolute top-2 left-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded">
+            <div className="absolute top-2 left-2 bg-violet-700 text-white text-xs px-2 py-1 rounded">
               Main
             </div>
           )}
@@ -173,7 +173,6 @@ export default function ProductEdit({ productId }) {
     detailedDescription: "",
     category: "",
     department: "",
-    tags: [],
     images: [],
     variants: [],
     buyingPrice: undefined,
@@ -190,9 +189,6 @@ export default function ProductEdit({ productId }) {
     specifications: [],
     monthlySold: undefined,
     rewardPoints: undefined,
-    customization: { customizable: false, options: [] },
-    warranty: { period: "", details: "", provider: "" },
-    returnPolicy: { days: undefined, refundable: true, details: "" },
     faqs: [],
     frequentlyBoughtTogether: [],
     reviews: [],
@@ -208,9 +204,6 @@ export default function ProductEdit({ productId }) {
     badges: [],
     certifications: [],
   });
-
-  // strings for comma-separated inputs (tags)
-  const [tagStr, setTagStr] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -290,7 +283,7 @@ export default function ProductEdit({ productId }) {
   ]);
 
   const inputClass =
-    "w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all";
+    "w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all";
   const labelClass = "block text-sm font-semibold text-gray-700 mb-2";
   const toDateInput = (value) => {
     if (!value) return "";
@@ -426,11 +419,6 @@ export default function ProductEdit({ productId }) {
     if (!user) refreshUser();
   }, [user, refreshUser]);
 
-  // sync string inputs when product data changes
-  useEffect(() => {
-    setTagStr((product.tags || []).join(", "));
-  }, [product.tags]);
-
   const [categories, setCategories] = useState([]);
   const [selectedMain, setSelectedMain] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
@@ -543,16 +531,6 @@ export default function ProductEdit({ productId }) {
             p.sku = `SB-${ymd}-${rand(5)}`;
           }
           p.barcode = p.barcode || "";
-          p.customization = p.customization || {
-            customizable: false,
-            options: [],
-          };
-          p.warranty = p.warranty || { period: "", details: "", provider: "" };
-          p.returnPolicy = p.returnPolicy || {
-            days: undefined,
-            refundable: true,
-            details: "",
-          };
           p.faqs = (p.faqs || []).map((f) => ({
             ...f,
             answer:
@@ -692,13 +670,8 @@ export default function ProductEdit({ productId }) {
     if (!product.title || !productId) return; // Need title and product ID
 
     try {
-      const finalTags = tagStr
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
       const payload = {
         ...product,
-        tags: finalTags,
         badges: sanitizeBadgeKeys(product.badges),
         frequentlyBoughtTogether: normalizeProductRefs(
           product.frequentlyBoughtTogether,
@@ -726,7 +699,7 @@ export default function ProductEdit({ productId }) {
       console.error("Failed to save draft:", err);
       return false;
     }
-  }, [product, tagStr, productId, API, sanitizeBadgeKeys]);
+  }, [product, productId, API, sanitizeBadgeKeys]);
 
   // Auto-save every 5 seconds when editing
   useEffect(() => {
@@ -744,13 +717,8 @@ export default function ProductEdit({ productId }) {
     const handleBeforeUnload = (e) => {
       if (product.title && productId) {
         // Use sendBeacon for reliable saving
-        const finalTags = tagStr
-          .split(",")
-          .map((s) => s.trim())
-          .filter(Boolean);
         const payload = {
           ...product,
-          tags: finalTags,
           badges: sanitizeBadgeKeys(product.badges),
           frequentlyBoughtTogether: normalizeProductRefs(
             product.frequentlyBoughtTogether,
@@ -773,7 +741,7 @@ export default function ProductEdit({ productId }) {
 
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [product, tagStr, productId, API, sanitizeBadgeKeys]);
+  }, [product, productId, API, sanitizeBadgeKeys]);
 
   const handleFile = async (file) => {
     if (file.size > MAX_UPLOAD_BYTES) {
@@ -1004,7 +972,7 @@ export default function ProductEdit({ productId }) {
       case "linked":
         return "text-green-700 bg-green-50 border-green-200";
       case "taken":
-        return "text-rose-700 bg-rose-50 border-rose-200";
+        return "text-violet-800 bg-violet-50 border-violet-200";
       case "checking":
         return "text-blue-700 bg-blue-50 border-blue-200";
       case "error":
@@ -1043,14 +1011,8 @@ export default function ProductEdit({ productId }) {
           .map((s) => s.trim())
           .filter(Boolean);
       }
-      // ensure tags sync with input strings
-      const finalTags = tagStr
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
       const payload = {
         ...product,
-        tags: finalTags,
         seo: seoCopy,
         badges: sanitizeBadgeKeys(product.badges),
         frequentlyBoughtTogether: normalizeProductRefs(
@@ -1245,7 +1207,7 @@ export default function ProductEdit({ productId }) {
                                 key={idx}
                                 type="button"
                                 onMouseDown={() => selectDepartment(dept)}
-                                className="w-full text-left px-4 py-2 hover:bg-indigo-50 transition-colors"
+                                className="w-full text-left px-4 py-2 hover:bg-violet-50 transition-colors"
                               >
                                 {dept}
                               </button>
@@ -1336,27 +1298,6 @@ export default function ProductEdit({ productId }) {
                       </div>
                     </div>
 
-                    <div>
-                      <label className={labelClass}>
-                        Tags (comma-separated)
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="e.g., wireless, bluetooth, sale"
-                        value={tagStr}
-                        onChange={(e) => setTagStr(e.target.value)}
-                        onBlur={() =>
-                          setProduct((p) => ({
-                            ...p,
-                            tags: tagStr
-                              .split(",")
-                              .map((s) => s.trim())
-                              .filter(Boolean),
-                          }))
-                        }
-                        className={inputClass}
-                      />
-                    </div>
                   </div>
                 </section>
 
@@ -1421,7 +1362,7 @@ export default function ProductEdit({ productId }) {
                     {
                       field: "featured",
                       label: "Featured",
-                      color: "bg-indigo-100 text-indigo-800",
+                      color: "bg-violet-100 text-violet-800",
                     },
                     {
                       field: "coupon",
@@ -1431,7 +1372,7 @@ export default function ProductEdit({ productId }) {
                     {
                       field: "flashSale",
                       label: "Flash Sale",
-                      color: "bg-rose-100 text-rose-800",
+                      color: "bg-violet-100 text-violet-800",
                     },
                     {
                       field: "clearance",
@@ -1472,14 +1413,14 @@ export default function ProductEdit({ productId }) {
                   <button
                     type="button"
                     onClick={() => setShowBadgeManager((v) => !v)}
-                    className="px-3 py-1.5 text-sm border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50"
+                    className="px-3 py-1.5 text-sm border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50"
                   >
                     {showBadgeManager ? "Hide Badge Manager" : "Manage Badges"}
                   </button>
                 </div>
 
                 {showBadgeManager && (
-                  <div className="mt-3 rounded-xl border border-indigo-200 bg-indigo-50 p-4 space-y-3">
+                  <div className="mt-3 rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
                     {(badgeOptions || []).map((item, index) => (
                       <div
                         key={`${item.key}-${index}`}
@@ -1562,7 +1503,7 @@ export default function ProductEdit({ productId }) {
                       </div>
                     ))}
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center pt-2 border-t border-indigo-200">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center pt-2 border-t border-violet-200">
                       <input
                         type="text"
                         value={newBadgeLabel}
@@ -1585,7 +1526,7 @@ export default function ProductEdit({ productId }) {
                       />
                       <button
                         type="button"
-                        className="md:col-span-1 px-2 py-2 rounded-lg border border-indigo-300 text-indigo-700 hover:bg-indigo-100"
+                        className="md:col-span-1 px-2 py-2 rounded-lg border border-violet-300 text-violet-800 hover:bg-violet-100"
                         onClick={() => {
                           const key = normalizeBadgeKey(
                             newBadgeKey || newBadgeLabel,
@@ -1611,7 +1552,7 @@ export default function ProductEdit({ productId }) {
                         type="button"
                         disabled={badgeSaving}
                         onClick={() => saveBadgeOptions(badgeOptions)}
-                        className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm hover:bg-indigo-700 disabled:opacity-60"
+                        className="px-4 py-2 rounded-lg bg-violet-700 text-white text-sm hover:bg-violet-800 disabled:opacity-60"
                       >
                         {badgeSaving ? "Saving..." : "Save Badge Options"}
                       </button>
@@ -1745,7 +1686,7 @@ export default function ProductEdit({ productId }) {
                     <button
                       type="button"
                       onClick={generateBarcode}
-                      className="rounded-lg border border-indigo-300 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-50"
+                      className="rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
                     >
                       Generate Barcode
                     </button>
@@ -1965,7 +1906,7 @@ export default function ProductEdit({ productId }) {
                 main product image.
               </p>
 
-              <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-all">
+              <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-violet-500 hover:bg-violet-50 transition-all">
                 <input
                   type="file"
                   accept="image/*"
@@ -2003,7 +1944,7 @@ export default function ProductEdit({ productId }) {
               <button
                 type="button"
                 onClick={() => setShowPicker(true)}
-                className="mt-3 flex items-center gap-2 px-4 py-2 border border-indigo-200 rounded-lg text-sm text-indigo-600 hover:bg-indigo-50 transition"
+                className="mt-3 flex items-center gap-2 px-4 py-2 border border-violet-200 rounded-lg text-sm text-violet-700 hover:bg-violet-50 transition"
               >
                 🖼 Select from Media Library
               </button>
@@ -2094,7 +2035,7 @@ export default function ProductEdit({ productId }) {
                   if (spec.type === "header") {
                     return (
                       <div key={i} className="flex gap-2 items-center">
-                        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 border border-indigo-200 rounded px-2 py-1">
+                        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-violet-700 bg-violet-50 border border-violet-200 rounded px-2 py-1">
                           Header
                         </span>
                         <input
@@ -2102,7 +2043,7 @@ export default function ProductEdit({ productId }) {
                           value={spec.label || ""}
                           onChange={(e) => patch({ label: e.target.value })}
                           placeholder="e.g., Technical Specification"
-                          className="flex-1 rounded-lg border border-indigo-300 bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                          className="flex-1 rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-sm font-semibold text-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-400"
                         />
                         <button
                           type="button"
@@ -2155,7 +2096,7 @@ export default function ProductEdit({ productId }) {
                         ],
                       }))
                     }
-                    className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 font-medium text-sm"
+                    className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-700 font-medium text-sm"
                   >
                     + Add Row
                   </button>
@@ -2172,7 +2113,7 @@ export default function ProductEdit({ productId }) {
                         ],
                       }))
                     }
-                    className="px-4 py-2 bg-indigo-100 text-indigo-700 border border-indigo-300 rounded-lg hover:bg-indigo-200 font-medium text-sm"
+                    className="px-4 py-2 bg-violet-100 text-violet-800 border border-violet-300 rounded-lg hover:bg-violet-200 font-medium text-sm"
                   >
                     + Add Section Header
                   </button>
@@ -2197,120 +2138,6 @@ export default function ProductEdit({ productId }) {
               />
             </div>
 
-            {/* Customization */}
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <div className="flex items-center gap-3 mb-4">
-                <input
-                  type="checkbox"
-                  id="customizable"
-                  checked={product.customization?.customizable || false}
-                  onChange={(e) =>
-                    setProduct((p) => ({
-                      ...p,
-                      customization: {
-                        ...(p.customization || {}),
-                        customizable: e.target.checked,
-                      },
-                    }))
-                  }
-                  className="w-5 h-5"
-                />
-                <label
-                  htmlFor="customizable"
-                  className="text-lg font-semibold text-gray-900"
-                >
-                  Allow Product Customization
-                </label>
-              </div>
-
-              {product.customization?.customizable && (
-                <div className="space-y-3">
-                  {(product.customization.options || []).map((opt, i) => (
-                    <div key={i} className="flex gap-3 items-center">
-                      <input
-                        type="text"
-                        value={opt.name || ""}
-                        onChange={(e) =>
-                          setProduct((p) => {
-                            const arr = [...(p.customization.options || [])];
-                            arr[i] = {
-                              ...(arr[i] || {}),
-                              name: e.target.value,
-                            };
-                            return {
-                              ...p,
-                              customization: {
-                                ...p.customization,
-                                options: arr,
-                              },
-                            };
-                          })
-                        }
-                        placeholder="Option name (e.g., Engraving)"
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg"
-                      />
-                      <input
-                        type="text"
-                        value={opt.type || ""}
-                        onChange={(e) =>
-                          setProduct((p) => {
-                            const arr = [...(p.customization.options || [])];
-                            arr[i] = {
-                              ...(arr[i] || {}),
-                              type: e.target.value,
-                            };
-                            return {
-                              ...p,
-                              customization: {
-                                ...p.customization,
-                                options: arr,
-                              },
-                            };
-                          })
-                        }
-                        placeholder="Type (e.g. text, select)"
-                        className="w-32 px-4 py-2 border border-gray-300 rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setProduct((p) => ({
-                            ...p,
-                            customization: {
-                              ...p.customization,
-                              options: p.customization.options.filter(
-                                (_, idx) => idx !== i,
-                              ),
-                            },
-                          }))
-                        }
-                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setProduct((p) => ({
-                        ...p,
-                        customization: {
-                          ...p.customization,
-                          options: [
-                            ...(p.customization.options || []),
-                            { name: "", type: "text", values: [] },
-                          ],
-                        },
-                      }))
-                    }
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
-                  >
-                    + Add Customization Option
-                  </button>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* Policies Tab */}
@@ -2334,7 +2161,7 @@ export default function ProductEdit({ productId }) {
                       faqs: [...(p.faqs || []), { question: "", answer: "" }],
                     }))
                   }
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+                  className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 transition-colors"
                 >
                   + Add FAQ
                 </button>
@@ -2429,7 +2256,7 @@ export default function ProductEdit({ productId }) {
                                   return { ...p, faqs: arr };
                                 })
                               }
-                              className="shrink-0 px-4 py-2.5 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 whitespace-nowrap"
+                              className="shrink-0 px-4 py-2.5 border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50 whitespace-nowrap"
                             >
                               🎲 Random
                             </button>
@@ -2586,7 +2413,7 @@ export default function ProductEdit({ productId }) {
                             <span className="flex-1 truncate text-sm font-medium text-gray-800">
                               {item.title}
                             </span>
-                            <span className="shrink-0 text-xs text-indigo-600 font-semibold">
+                            <span className="shrink-0 text-xs text-violet-700 font-semibold">
                               + Add
                             </span>
                           </button>
@@ -2611,7 +2438,7 @@ export default function ProductEdit({ productId }) {
             </h2>
 
             {/* Add Review Form */}
-            <div className="bg-indigo-50 rounded-xl p-6 border-2 border-indigo-200">
+            <div className="bg-violet-50 rounded-xl p-6 border-2 border-violet-200">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Add New Review
               </h3>
@@ -2670,7 +2497,7 @@ export default function ProductEdit({ productId }) {
                           date: randomPastDateStr(),
                         }))
                       }
-                      className="shrink-0 px-4 py-2.5 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 whitespace-nowrap"
+                      className="shrink-0 px-4 py-2.5 border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50 whitespace-nowrap"
                     >
                       🎲 Random
                     </button>
@@ -2705,7 +2532,7 @@ export default function ProductEdit({ productId }) {
                 <button
                   type="button"
                   onClick={addReview}
-                  className="w-full px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-md"
+                  className="w-full px-6 py-3 bg-violet-700 text-white font-semibold rounded-lg hover:bg-violet-800 transition-colors shadow-md"
                 >
                   Add Review
                 </button>
@@ -2821,7 +2648,7 @@ export default function ProductEdit({ productId }) {
                                     date: randomPastDateStr(),
                                   }))
                                 }
-                                className="shrink-0 px-4 py-2.5 border border-indigo-300 text-indigo-700 rounded-lg hover:bg-indigo-50 whitespace-nowrap"
+                                className="shrink-0 px-4 py-2.5 border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50 whitespace-nowrap"
                               >
                                 🎲 Random
                               </button>
@@ -2847,7 +2674,7 @@ export default function ProductEdit({ productId }) {
                                 });
                                 setEditingReviewIdx(null);
                               }}
-                              className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-semibold"
+                              className="px-5 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 transition-colors text-sm font-semibold"
                             >
                               Save
                             </button>
@@ -3069,7 +2896,7 @@ export default function ProductEdit({ productId }) {
               type="button"
               onClick={handleSave}
               disabled={saving}
-              className="px-8 py-3 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-3 bg-linear-to-r from-violet-700 to-purple-600 text-white font-semibold rounded-lg hover:from-violet-800 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? "Saving..." : "Update Product"}
             </button>
@@ -3083,7 +2910,7 @@ export default function ProductEdit({ productId }) {
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-full shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-5 py-3 bg-violet-700 hover:bg-violet-800 text-white text-sm font-semibold rounded-full shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? (
             <>

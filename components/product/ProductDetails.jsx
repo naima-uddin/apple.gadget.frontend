@@ -176,9 +176,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [zoomOpen, setZoomOpen] = useState(false);
-  const [openPolicy, setOpenPolicy] = useState(null);
   const [isDesktop, setIsDesktop] = useState(false);
-  const [tagsOpen, setTagsOpen] = useState(false); // mobile: collapse tags to one line
   const [descOpen, setDescOpen] = useState(false); // expand truncated description
   // touch swipe state for zoom modal
   const touchStartX = React.useRef(null);
@@ -358,7 +356,6 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
     availability,
     averageRating = 0,
     reviewCount = 0,
-    tags = [],
     category,
   } = product;
   // Get all colors and sizes from variants (unfiltered)
@@ -814,7 +811,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
           <hr className="border-gray-100 mb-3 hidden md:block" />
 
-          {/* SKU / Category / Tags / Share */}
+          {/* SKU / Category / Share */}
           <div className="flex flex-col gap-2 text-sm">
             {category && (
               <div className="flex items-center gap-2">
@@ -824,55 +821,6 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 <span className="text-gray-600">
                   {typeof category === "object" ? category.name : category}
                 </span>
-              </div>
-            )}
-            {tags.length > 0 && (
-              <div className="flex items-start gap-2">
-                <span className="text-gray-400 w-20 flex-shrink-0">Tags:</span>
-                <div className="min-w-0 flex-1 flex items-start gap-1.5">
-                  <div
-                    className={`flex flex-wrap gap-x-2 gap-y-1 ${
-                      !tagsOpen && tags.length > 3
-                        ? "max-h-5 overflow-hidden"
-                        : ""
-                    }`}
-                  >
-                    {tags.map((tag, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() =>
-                          router.push(
-                            `/tag/${encodeURIComponent(
-                              String(tag).toLowerCase().replace(/\s+/g, "-"),
-                            )}`,
-                          )
-                        }
-                        className="text-xs text-gray-500 hover:text-red-600 transition-colors cursor-pointer whitespace-nowrap"
-                      >
-                        #{tag}
-                      </button>
-                    ))}
-                  </div>
-                  {/* Toggle to reveal the remaining tags (all screen sizes) */}
-                  {tags.length > 3 && (
-                    <button
-                      type="button"
-                      onClick={() => setTagsOpen((v) => !v)}
-                      aria-expanded={tagsOpen}
-                      aria-label={
-                        tagsOpen ? "Show fewer tags" : "Show all tags"
-                      }
-                      className="shrink-0 mt-0.5 text-gray-400 hover:text-red-600 transition-colors"
-                    >
-                      <FaChevronDown
-                        className={`w-3 h-3 transition-transform ${
-                          tagsOpen ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                  )}
-                </div>
               </div>
             )}
             <div className="flex items-center gap-2">
@@ -1002,196 +950,6 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
       {/* detailed description blocks */}
       {product?.detailedDescription && (
         <DetailedDescriptionRenderer value={product.detailedDescription} />
-      )}
-
-      {/* warranty, return policy, customization — accordion */}
-      {(product?.warranty?.period?.trim() ||
-        product?.warranty?.details?.trim() ||
-        product?.returnPolicy?.days > 0 ||
-        product?.returnPolicy?.details?.trim() ||
-        product?.customization?.customizable) && (
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="border border-gray-200 rounded-xl overflow-hidden bg-white divide-y divide-gray-100">
-            {/* Warranty row */}
-            {(product.warranty?.period || product.warranty?.details) && (
-              <div>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setOpenPolicy(openPolicy === "warranty" ? null : "warranty")
-                  }
-                  className="w-full flex items-center justify-between px-5 py-2 hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-50 text-blue-600">
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                        />
-                      </svg>
-                    </span>
-                    <div className="text-left">
-                      <p className="text-sm font-semibold text-gray-800">
-                        Warranty
-                      </p>
-                      {product.warranty.period && (
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          {product.warranty.period}
-                          {product.warranty.provider
-                            ? ` · ${product.warranty.provider}`
-                            : ""}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <span className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                    {openPolicy === "warranty" ? "Hide" : "See"}
-                    <svg
-                      className={`w-3 h-3 transition-transform ${openPolicy === "warranty" ? "rotate-180" : ""}`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </span>
-                </button>
-                {openPolicy === "warranty" && (
-                  <div className="px-5 pb-5 pt-1 bg-blue-50/30">
-                    <div className="space-y-1">
-                      {product.warranty.period && (
-                        <div className="flex justify-between text-sm py-2 border-b border-blue-100">
-                          <span className="text-gray-500">Period</span>
-                          <span className="font-semibold text-gray-800">
-                            {product.warranty.period}
-                          </span>
-                        </div>
-                      )}
-                      {product.warranty.provider && (
-                        <div className="flex justify-between text-sm py-2 border-b border-blue-100">
-                          <span className="text-gray-500">Provider</span>
-                          <span className="text-gray-700">
-                            {product.warranty.provider}
-                          </span>
-                        </div>
-                      )}
-                      {product.warranty.details && (
-                        <p className="text-sm text-gray-600 pt-1 leading-relaxed">
-                          {product.warranty.details}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Customization Options row */}
-            {product.customization?.customizable &&
-              product.customization?.options?.length > 0 && (
-                <div>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setOpenPolicy(openPolicy === "custom" ? null : "custom")
-                    }
-                    className="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-50 text-orange-500">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                          />
-                        </svg>
-                      </span>
-                      <div className="text-left">
-                        <p className="text-sm font-semibold text-gray-800">
-                          Customization Options
-                        </p>
-                        <p className="text-xs text-gray-400 mt-0.5">
-                          {product.customization.options.length} option
-                          {product.customization.options.length !== 1
-                            ? "s"
-                            : ""}{" "}
-                          available
-                        </p>
-                      </div>
-                    </div>
-                    <span className="flex items-center gap-1.5 text-xs font-semibold text-orange-500 bg-orange-50 px-3 py-1 rounded-full">
-                      {openPolicy === "custom" ? "Hide" : "See"}
-                      <svg
-                        className={`w-3 h-3 transition-transform ${openPolicy === "custom" ? "rotate-180" : ""}`}
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                  {openPolicy === "custom" && (
-                    <div className="px-5 pb-5 pt-1 bg-orange-50/20">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {product.customization.options.map((opt, i) => (
-                          <div
-                            key={i}
-                            className="bg-white border border-orange-100 rounded-xl p-3"
-                          >
-                            <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">
-                              {opt.name}
-                            </p>
-                            {opt.values?.length > 0 ? (
-                              <div className="flex flex-wrap gap-1.5">
-                                {opt.values.map((v, j) => (
-                                  <span
-                                    key={j}
-                                    className="text-xs px-2.5 py-1 bg-orange-50 border border-orange-200 rounded-full text-orange-700"
-                                  >
-                                    {v}
-                                  </span>
-                                ))}
-                              </div>
-                            ) : (
-                              <p className="text-xs text-gray-400">
-                                Custom input
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-          </div>
-        </div>
       )}
 
       {/* recently viewed — always at the very bottom */}

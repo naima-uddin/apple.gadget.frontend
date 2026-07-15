@@ -128,8 +128,8 @@ export default function BarcodeLookup() {
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 flex flex-wrap gap-3">
-          <div className="flex min-w-[280px] flex-1 items-center gap-2 rounded-xl border-2 border-indigo-200 bg-indigo-50/40 px-3 py-2.5">
-            <FaBarcode className="shrink-0 text-indigo-500" />
+          <div className="flex min-w-[280px] flex-1 items-center gap-2 rounded-xl border-2 border-violet-200 bg-violet-50/40 px-3 py-2.5">
+            <FaBarcode className="shrink-0 text-violet-500" />
             <input
               ref={inputRef}
               value={code}
@@ -144,7 +144,7 @@ export default function BarcodeLookup() {
           <button
             type="submit"
             disabled={loading || !normalizeCode(code)}
-            className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <FaSearch />
             {loading ? "Looking up..." : "Look up"}
@@ -161,7 +161,7 @@ export default function BarcodeLookup() {
         )}
 
         {error && (
-          <p className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <p className="mt-4 rounded-xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm text-violet-800">
             {error}
           </p>
         )}
@@ -187,7 +187,7 @@ export default function BarcodeLookup() {
             <div className="flex flex-wrap gap-2">
               <Link
                 href={`/dashboard/products/${product._id}`}
-                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                className="inline-flex items-center gap-2 rounded-xl bg-violet-700 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-800"
               >
                 <FaEdit /> Edit in dashboard
               </Link>

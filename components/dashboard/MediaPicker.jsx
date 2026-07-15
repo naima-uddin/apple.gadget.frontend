@@ -137,7 +137,7 @@ export default function MediaPicker({
           <div>
             <h2 className="text-lg font-bold text-gray-800">Media Library</h2>
             {multiple && (
-              <p className="text-xs text-indigo-600 font-medium mt-0.5">
+              <p className="text-xs text-violet-700 font-medium mt-0.5">
                 Multiple selection mode — click to select/deselect
               </p>
             )}

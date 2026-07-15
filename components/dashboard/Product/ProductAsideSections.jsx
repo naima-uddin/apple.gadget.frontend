@@ -56,7 +56,7 @@ export default function ProductAsideSections({
       field: "featured",
       key: "flag:featured",
       label: "Featured",
-      color: "bg-indigo-100 text-indigo-800",
+      color: "bg-violet-100 text-violet-800",
     },
     {
       field: "coupon",
@@ -68,7 +68,7 @@ export default function ProductAsideSections({
       field: "flashSale",
       key: "flag:flashSale",
       label: "Flash Sale",
-      color: "bg-rose-100 text-rose-800",
+      color: "bg-violet-100 text-violet-800",
     },
     {
       field: "clearance",
@@ -173,7 +173,7 @@ export default function ProductAsideSections({
       case "linked":
         return "text-green-700 bg-green-50 border-green-200";
       case "taken":
-        return "text-rose-700 bg-rose-50 border-rose-200";
+        return "text-violet-800 bg-violet-50 border-violet-200";
       case "checking":
         return "text-blue-700 bg-blue-50 border-blue-200";
       case "error":
@@ -280,13 +280,13 @@ export default function ProductAsideSections({
         <button
           type="button"
           onClick={() => setShowBadgeManager((v) => !v)}
-          className="mt-3 rounded-lg border border-indigo-300 px-3 py-1.5 text-sm text-indigo-700 hover:bg-indigo-50"
+          className="mt-3 rounded-lg border border-violet-300 px-3 py-1.5 text-sm text-violet-800 hover:bg-violet-50"
         >
           {showBadgeManager ? "Hide Badge Manager" : "Manage Badges"}
         </button>
 
         {showBadgeManager && (
-          <div className="mt-3 space-y-3 rounded-xl border border-indigo-200 bg-indigo-50 p-3">
+          <div className="mt-3 space-y-3 rounded-xl border border-violet-200 bg-violet-50 p-3">
             {(badgeOptions || []).map((item, index) => (
               <div
                 key={`${item.key}-${index}`}
@@ -349,7 +349,7 @@ export default function ProductAsideSections({
               </div>
             ))}
 
-            <div className="space-y-2 border-t border-indigo-200 pt-3">
+            <div className="space-y-2 border-t border-violet-200 pt-3">
               <input
                 type="text"
                 value={newBadgeLabel}
@@ -366,7 +366,7 @@ export default function ProductAsideSections({
               />
               <button
                 type="button"
-                className="rounded-lg border border-indigo-300 px-3 py-1.5 text-sm text-indigo-700 hover:bg-indigo-100"
+                className="rounded-lg border border-violet-300 px-3 py-1.5 text-sm text-violet-800 hover:bg-violet-100"
                 onClick={() => {
                   const key = normalizeBadgeKey(newBadgeKey || newBadgeLabel);
                   const label = String(newBadgeLabel || "").trim();
@@ -388,7 +388,7 @@ export default function ProductAsideSections({
               type="button"
               disabled={badgeSaving}
               onClick={() => saveBadgeOptions(badgeOptions)}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 disabled:opacity-60"
+              className="w-full rounded-lg bg-violet-700 px-4 py-2 text-sm text-white hover:bg-violet-800 disabled:opacity-60"
             >
               {badgeSaving ? "Saving..." : "Save Badge Options"}
             </button>
@@ -503,7 +503,7 @@ export default function ProductAsideSections({
               <button
                 type="button"
                 onClick={generateSku}
-                className="rounded-lg border border-indigo-300 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-50"
+                className="rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
               >
                 Generate SKU
               </button>
@@ -528,7 +528,7 @@ export default function ProductAsideSections({
               <button
                 type="button"
                 onClick={generateBarcode}
-                className="rounded-lg border border-indigo-300 px-3 py-1.5 text-xs font-semibold text-indigo-700 hover:bg-indigo-50"
+                className="rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
               >
                 Generate Barcode
               </button>

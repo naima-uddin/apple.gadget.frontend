@@ -106,7 +106,7 @@ export default function OrderPickManager() {
         </div>
         <Link
           href="/dashboard/orders"
-          className="text-sm text-rose-600 hover:underline"
+          className="text-sm text-violet-700 hover:underline"
         >
           ← All Orders
         </Link>
@@ -172,7 +172,7 @@ export default function OrderPickManager() {
                         {isPicked ? (
                           <Link
                             href={`/dashboard/orders/${order._id}`}
-                            className="text-rose-600 hover:underline font-semibold"
+                            className="text-violet-700 hover:underline font-semibold"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {formatOrderId(order._id)}
@@ -220,7 +220,7 @@ export default function OrderPickManager() {
                             disabled={picking === order._id}
                             onClick={() => togglePick(order, !isPicked)}
                             className={`relative w-10 h-5 rounded-full transition-colors ${
-                              isPicked ? "bg-rose-500" : "bg-gray-300"
+                              isPicked ? "bg-violet-500" : "bg-gray-300"
                             } disabled:opacity-50`}
                           >
                             <span

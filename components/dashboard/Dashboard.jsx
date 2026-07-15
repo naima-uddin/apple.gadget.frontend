@@ -25,7 +25,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 const STATUS_STYLE = {
   pending: "bg-yellow-100 text-yellow-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-indigo-100 text-indigo-700",
+  processing: "bg-violet-100 text-violet-700",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-gray-100 text-gray-600",
@@ -135,7 +135,7 @@ export default function Dashboard() {
         <div className="mt-4 flex justify-center gap-3">
           <Link
             href="/adminlogin"
-            className="px-4 py-2 bg-indigo-600 text-white rounded"
+            className="px-4 py-2 bg-[#5B21B6] text-white rounded"
           >
             Go to admin login
           </Link>
@@ -181,7 +181,7 @@ export default function Dashboard() {
     {
       label: "Total Sales",
       value: money(overview.totalSales),
-      accent: "text-indigo-700",
+      accent: "text-[#5B21B6]",
     },
     {
       label: "Estimated Profit",
@@ -216,7 +216,7 @@ export default function Dashboard() {
     {
       name: "Processing",
       value: Number(orderFlow.processing || 0),
-      tone: "text-indigo-500",
+      tone: "text-violet-600",
     },
     {
       name: "Courier",
@@ -260,8 +260,10 @@ export default function Dashboard() {
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">Business Dashboard</h1>
-          <p className="mt-2 text-sm text-gray-600">
+          <h1 className="text-2xl font-semibold tracking-tight text-[#1F2937] work-sans">
+            Business Dashboard
+          </h1>
+          <p className="mt-2 text-sm text-[#6B7280]">
             Welcome back, <strong>{user.name || user.email}</strong>. Monitor
             orders, revenue, stock, and team actions from one place.
           </p>
@@ -348,7 +350,7 @@ export default function Dashboard() {
                     dataKey="sales"
                     name="Sales"
                     fill="currentColor"
-                    className="text-indigo-500"
+                    className="text-violet-600"
                     radius={[6, 6, 0, 0]}
                   />
                   <Bar
@@ -453,9 +455,9 @@ export default function Dashboard() {
                     {orderFlow.confirmed ?? 0}
                   </span>
                 </div>
-                <div className="rounded border p-3 bg-indigo-50 flex justify-between">
-                  <span className="text-indigo-700">Processing</span>
-                  <span className="font-semibold text-indigo-800">
+                <div className="rounded border p-3 bg-violet-50 flex justify-between">
+                  <span className="text-[#5B21B6]">Processing</span>
+                  <span className="font-semibold text-violet-800">
                     {orderFlow.processing ?? 0}
                   </span>
                 </div>
@@ -536,7 +538,7 @@ export default function Dashboard() {
                             onChange={(event) =>
                               handleStatusUpdate(order._id, event.target.value)
                             }
-                            className={`text-xs font-medium px-2 py-1 rounded-full border-0 focus:ring-2 focus:ring-indigo-200 ${STATUS_STYLE[order.status] || ""}`}
+                            className={`text-xs font-medium px-2 py-1 rounded-full border-0 focus:ring-2 focus:ring-violet-200 ${STATUS_STYLE[order.status] || ""}`}
                           >
                             <option value="pending">Pending</option>
                             <option value="confirmed">Confirmed</option>
@@ -574,7 +576,7 @@ export default function Dashboard() {
                     {actionCenter.pendingOrders ?? 0}
                   </span>
                 </div>
-                <div className="flex justify-between rounded border p-3 bg-indigo-50 text-sm">
+                <div className="flex justify-between rounded border p-3 bg-violet-50 text-sm">
                   <span>Processing orders</span>
                   <span className="font-semibold">
                     {actionCenter.processingOrders ?? 0}
@@ -714,7 +716,7 @@ export default function Dashboard() {
                     <Bar
                       dataKey="revenue"
                       fill="currentColor"
-                      className="text-indigo-500"
+                      className="text-violet-600"
                       radius={[5, 5, 0, 0]}
                     />
                   </BarChart>
@@ -747,7 +749,7 @@ export default function Dashboard() {
                       type="monotone"
                       dataKey="revenue"
                       name="Revenue"
-                      stroke="#6366f1"
+                      stroke="#7C3AED"
                       strokeWidth={2.5}
                       dot={{ r: 4 }}
                       activeDot={{ r: 6 }}
@@ -835,7 +837,7 @@ export default function Dashboard() {
                         >
                           {paymentBreakdown.map((_, idx) => {
                             const colors = [
-                              "#6366f1",
+                              "#7C3AED",
                               "#22c55e",
                               "#f97316",
                               "#ec4899",
@@ -857,10 +859,10 @@ export default function Dashboard() {
                   <div className="space-y-2">
                     {paymentBreakdown.map((p, idx) => {
                       const colors = [
-                        "bg-indigo-500",
+                        "bg-violet-500",
                         "bg-green-500",
                         "bg-orange-500",
-                        "bg-pink-500",
+                        "bg-violet-500",
                         "bg-teal-500",
                         "bg-amber-500",
                       ];

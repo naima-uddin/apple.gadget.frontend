@@ -42,7 +42,7 @@ function Field({ label, children }) {
 }
 
 const INPUT =
-  "w-full border border-gray-200 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300";
+  "w-full border border-gray-200 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-100 focus:border-violet-300";
 
 export default function SettingsForm() {
   const { user, refreshUser } = useUser();
@@ -438,7 +438,7 @@ export default function SettingsForm() {
                   type="url"
                   value={link.url || ""}
                   onChange={(e) => setSocial(key, "url", e.target.value)}
-                  className="flex-1 border border-gray-200 px-2.5 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100 focus:border-indigo-300 bg-white"
+                  className="flex-1 border border-gray-200 px-2.5 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-100 focus:border-violet-300 bg-white"
                   placeholder={placeholder}
                 />
                 <label className="flex items-center gap-1.5 text-xs cursor-pointer shrink-0 text-gray-600">
@@ -448,7 +448,7 @@ export default function SettingsForm() {
                     onChange={(e) =>
                       setSocial(key, "enabled", e.target.checked)
                     }
-                    className="w-3.5 h-3.5 accent-indigo-600"
+                    className="w-3.5 h-3.5 accent-violet-700"
                   />
                   Show
                 </label>
@@ -484,7 +484,7 @@ export default function SettingsForm() {
                     onClick={() =>
                       setLinks((prev) => [...prev, { label: "", href: "" }])
                     }
-                    className="flex items-center gap-1 text-xs px-2.5 py-1 bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-100"
+                    className="flex items-center gap-1 text-xs px-2.5 py-1 bg-violet-50 text-violet-700 border border-violet-200 rounded-lg hover:bg-violet-100"
                   >
                     <svg
                       width="10"
@@ -520,7 +520,7 @@ export default function SettingsForm() {
                             )
                           }
                           placeholder="Label"
-                          className="w-24 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                          className="w-24 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-100"
                         />
                         <input
                           value={item.href}
@@ -547,7 +547,7 @@ export default function SettingsForm() {
                             }
                           }}
                           placeholder="/path"
-                          className="flex-1 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                          className="flex-1 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-violet-100"
                         />
                         <button
                           type="button"

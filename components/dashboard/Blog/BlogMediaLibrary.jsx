@@ -131,7 +131,7 @@ export default function BlogMediaLibrary({
           <select
             value={folder}
             onChange={(e) => setFolder(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
           >
             <option value="">All folders</option>
             {folders.map((f) => (
@@ -147,7 +147,7 @@ export default function BlogMediaLibrary({
             placeholder="Search images..."
             value={q}
             onChange={(e) => handleQChange(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
           />
         </div>
         {showSelection && selected.size > 0 && user?.role === "admin" && (
@@ -168,9 +168,9 @@ export default function BlogMediaLibrary({
             key={item.public_id}
             className={`relative aspect-square rounded-lg overflow-hidden cursor-pointer group border-2 transition-all ${
               selected.has(item.public_id)
-                ? "border-indigo-500"
+                ? "border-violet-500"
                 : "border-transparent"
-            } ${onSelect ? "hover:border-green-400" : "hover:border-indigo-400"}`}
+            } ${onSelect ? "hover:border-green-400" : "hover:border-violet-400"}`}
             onMouseEnter={() => setHoverId(item.public_id)}
             onMouseLeave={() => setHoverId(null)}
             onClick={() => handleSelect(item)}
@@ -194,7 +194,7 @@ export default function BlogMediaLibrary({
 
             {/* Selection Indicator */}
             {showSelection && selected.has(item.public_id) && (
-              <div className="absolute top-2 right-2 w-6 h-6 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm">
+              <div className="absolute top-2 right-2 w-6 h-6 bg-violet-700 text-white rounded-full flex items-center justify-center text-sm">
                 ✓
               </div>
             )}

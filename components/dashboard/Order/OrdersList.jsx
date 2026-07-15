@@ -66,7 +66,7 @@ const STATUS_STYLE = {
   approved: "bg-emerald-100 text-emerald-700",
   rejected: "bg-red-100 text-red-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-indigo-100 text-indigo-700",
+  processing: "bg-violet-100 text-violet-800",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   returned: "bg-teal-100 text-teal-700",
@@ -164,7 +164,7 @@ function DateFilter({ value, onChange }) {
           key={p.key}
           type="button"
           onClick={() => onChange(p.key)}
-          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition ${value === p.key ? "bg-indigo-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition ${value === p.key ? "bg-violet-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
         >
           {p.label}
         </button>
@@ -388,7 +388,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm capitalize focus:outline-none focus:ring-2 focus:ring-rose-300"
+            className="w-full border rounded-lg px-3 py-2 text-sm capitalize focus:outline-none focus:ring-2 focus:ring-violet-300"
           >
             {ORDER_STATUSES.map((s) => (
               <option key={s} value={s} className="capitalize">
@@ -399,7 +399,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">
-            Reason <span className="text-rose-600">*</span>
+            Reason <span className="text-violet-700">*</span>
           </label>
           <textarea
             autoFocus
@@ -410,7 +410,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
               setError("");
             }}
             placeholder="Why are you changing this status? The customer can see this."
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 resize-none"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 resize-none"
           />
         </div>
         {error && <p className="text-xs text-red-500">{error}</p>}
@@ -427,7 +427,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
             type="button"
             onClick={submit}
             disabled={submitting}
-            className="flex-1 py-2 bg-rose-600 text-white rounded-lg text-sm font-semibold hover:bg-rose-700 transition disabled:opacity-60"
+            className="flex-1 py-2 bg-violet-700 text-white rounded-lg text-sm font-semibold hover:bg-violet-800 transition disabled:opacity-60"
           >
             {submitting ? "Saving…" : "Update"}
           </button>
@@ -501,7 +501,7 @@ function OrdersTable({
             <tr
               key={order._id}
               onClick={() => onRowClick(order._id)}
-              className={`hover:bg-rose-50 transition cursor-pointer ${checked ? "bg-rose-50/60" : ""}`}
+              className={`hover:bg-violet-50 transition cursor-pointer ${checked ? "bg-violet-50/60" : ""}`}
             >
               {selectable && (
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
@@ -517,7 +517,7 @@ function OrdersTable({
               <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                 <Link
                   href={`/dashboard/orders/${order._id}`}
-                  className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-rose-600 hover:bg-rose-50 hover:underline"
+                  className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:bg-violet-50 hover:underline"
                 >
                   {formatOrderId(order._id)}
                 </Link>
@@ -532,7 +532,7 @@ function OrdersTable({
                     className="text-left"
                     onClick={() => onCustomerClick(order)}
                   >
-                    <p className="font-medium text-gray-800 hover:text-indigo-600 hover:underline">
+                    <p className="font-medium text-gray-800 hover:text-violet-700 hover:underline">
                       {order.billingDetails?.name || "—"}
                     </p>
                     <p className="text-xs text-gray-400">
@@ -678,7 +678,7 @@ function CancelledOrdersTable({
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/dashboard/orders/${order._id}`}
-                    className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-rose-600 hover:underline"
+                    className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
                   >
                     {formatOrderId(order._id)}
                   </Link>
@@ -695,7 +695,7 @@ function CancelledOrdersTable({
                       className="text-left"
                       onClick={() => onCustomerClick(order)}
                     >
-                      <p className="font-medium text-gray-800 hover:text-indigo-600 hover:underline">
+                      <p className="font-medium text-gray-800 hover:text-violet-700 hover:underline">
                         {order.billingDetails?.name || "—"}
                       </p>
                       <p className="text-xs text-gray-400">
@@ -758,7 +758,7 @@ function CancelledOrdersTable({
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/dashboard/orders/${order._id}`}
-                      className="text-xs text-indigo-500 hover:underline"
+                      className="text-xs text-violet-500 hover:underline"
                     >
                       View
                     </Link>
@@ -950,7 +950,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
           <div className="px-6 py-4 space-y-4">
             <div className="bg-gray-50 rounded-xl px-4 py-3 text-sm">
               <span className="text-gray-500">Order:</span>{" "}
-              <span className="font-mono font-semibold text-rose-600">
+              <span className="font-mono font-semibold text-violet-700">
                 {formatOrderId(modal.order._id)}
               </span>
               <span className="ml-3 text-gray-500">
@@ -978,7 +978,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
                   onChange={(e) =>
                     setRefundAmount(Math.max(0, Number(e.target.value)))
                   }
-                  className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300"
+                  className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
                 />
                 <p className="text-xs text-gray-400 mt-1">
                   Order total: ৳{modal.order.total?.toLocaleString()}
@@ -998,7 +998,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
                     ? "Internal note…"
                     : "Explain why the return is rejected…"
                 }
-                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 resize-none"
+                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 resize-none"
               />
             </div>
           </div>
@@ -1116,7 +1116,7 @@ function AddReturnModal({ onClose, onSave }) {
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="e.g. Rina Khatun or 017…"
                     autoFocus
-                    className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 pr-8"
+                    className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 pr-8"
                   />
                   {searching && (
                     <svg
@@ -1141,10 +1141,10 @@ function AddReturnModal({ onClose, onSave }) {
                           setSearch("");
                           setResults([]);
                         }}
-                        className="w-full text-left px-4 py-3 hover:bg-rose-50 border-b last:border-0 transition"
+                        className="w-full text-left px-4 py-3 hover:bg-violet-50 border-b last:border-0 transition"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-xs text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded">
+                          <span className="font-mono text-xs text-violet-700 bg-violet-50 px-1.5 py-0.5 rounded">
                             {formatOrderId(o._id)}
                           </span>
                           <span className="text-sm font-medium text-gray-800 flex-1">
@@ -1168,10 +1168,10 @@ function AddReturnModal({ onClose, onSave }) {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-3 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-3 bg-violet-50 border border-violet-200 rounded-xl px-4 py-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-mono text-xs text-rose-600 bg-white border border-rose-200 px-1.5 py-0.5 rounded">
+                    <span className="font-mono text-xs text-violet-700 bg-white border border-violet-200 px-1.5 py-0.5 rounded">
                       {formatOrderId(selected._id)}
                     </span>
                     <span className="text-sm font-medium text-gray-800">
@@ -1186,7 +1186,7 @@ function AddReturnModal({ onClose, onSave }) {
                 <button
                   type="button"
                   onClick={() => setSelected(null)}
-                  className="text-xs text-rose-600 hover:underline shrink-0"
+                  className="text-xs text-violet-700 hover:underline shrink-0"
                 >
                   Change
                 </button>
@@ -1203,7 +1203,7 @@ function AddReturnModal({ onClose, onSave }) {
                 onChange={(e) => setReason(e.target.value)}
                 rows={3}
                 placeholder="Describe why the item is being returned…"
-                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300 resize-none"
+                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 resize-none"
               />
             </div>
             {err && (
@@ -1224,7 +1224,7 @@ function AddReturnModal({ onClose, onSave }) {
               type="button"
               onClick={handleSave}
               disabled={saving || !selected}
-              className="px-4 py-2 text-sm font-semibold text-white bg-rose-500 hover:bg-rose-600 rounded-xl transition disabled:opacity-60"
+              className="px-4 py-2 text-sm font-semibold text-white bg-violet-500 hover:bg-violet-700 rounded-xl transition disabled:opacity-60"
             >
               {saving ? "Creating…" : "Create Request"}
             </button>
@@ -1520,8 +1520,8 @@ function ReturnsRefundsSection() {
           {
             label: "Total Refunded",
             val: `৳${(stats.totalRefund || 0).toLocaleString()}`,
-            color: "text-indigo-600",
-            bg: "bg-indigo-50 border-indigo-100",
+            color: "text-violet-700",
+            bg: "bg-violet-50 border-violet-100",
           },
         ].map(({ label, val, color, bg }) => (
           <div key={label} className={`rounded-xl p-4 shadow-sm border ${bg}`}>
@@ -1554,7 +1554,7 @@ function ReturnsRefundsSection() {
               <button
                 type="button"
                 onClick={() => setAddModal(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white text-xs font-semibold rounded-lg transition"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-500 hover:bg-violet-700 text-white text-xs font-semibold rounded-lg transition"
               >
                 <svg
                   className="w-3.5 h-3.5"
@@ -1576,7 +1576,7 @@ function ReturnsRefundsSection() {
               setPage(1);
             }}
             placeholder="Search by customer name, phone, or order ID…"
-            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-rose-300"
+            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-violet-300"
           />
         </div>
 
@@ -1589,7 +1589,7 @@ function ReturnsRefundsSection() {
                 setActiveTab(tab);
                 setPage(1);
               }}
-              className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-rose-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-violet-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
             >
               {tab === "all"
                 ? "All"
@@ -1639,7 +1639,7 @@ function ReturnsRefundsSection() {
                     onClick={() =>
                       router.push(`/dashboard/orders/${order._id}`)
                     }
-                    className="hover:bg-rose-50 transition cursor-pointer"
+                    className="hover:bg-violet-50 transition cursor-pointer"
                   >
                     <td
                       className="px-4 py-3"
@@ -1647,7 +1647,7 @@ function ReturnsRefundsSection() {
                     >
                       <Link
                         href={`/dashboard/orders/${order._id}`}
-                        className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-rose-600 hover:underline"
+                        className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
                       >
                         {formatOrderId(order._id)}
                       </Link>
@@ -1888,7 +1888,7 @@ function AllOrdersSection() {
               stats.revenue != null
                 ? `৳${stats.revenue.toLocaleString()}`
                 : "—",
-            color: "text-indigo-600",
+            color: "text-violet-700",
           },
         ].map(({ label, val, color }) => (
           <div key={label} className="bg-white rounded-xl p-4 shadow-sm border">
@@ -1916,7 +1916,7 @@ function AllOrdersSection() {
                 setPage(1);
               }}
               placeholder="Search by name, phone, order ID…"
-              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-rose-300"
+              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-violet-300"
             />
             <div className="flex items-center gap-2 sm:ml-auto shrink-0">
               <span className="text-xs text-gray-400">
@@ -1958,7 +1958,7 @@ function AllOrdersSection() {
                   setActiveTab(tab);
                   setPage(1);
                 }}
-                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-rose-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-violet-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
               >
                 {ALL_ORDERS_LABELS[tab]}
                 {stats[tab] != null && (
@@ -1971,7 +1971,7 @@ function AllOrdersSection() {
 
         {/* Bulk action bar (admin only) */}
         {canPermanentDelete && selectedIds.length > 0 && (
-          <div className="flex flex-wrap items-center gap-3 px-5 py-3 bg-rose-50 border-b border-rose-100">
+          <div className="flex flex-wrap items-center gap-3 px-5 py-3 bg-violet-50 border-b border-violet-100">
             <span className="text-sm font-medium text-gray-700">
               {selectedIds.length} selected
             </span>
@@ -2181,7 +2181,7 @@ function FilteredOrdersSection({
                 setPage(1);
               }}
               placeholder="Search by name, phone, order ID…"
-              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-rose-300"
+              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-violet-300"
             />
             <span className="text-xs text-gray-400 sm:ml-auto shrink-0">
               {total} result{total !== 1 ? "s" : ""}
@@ -2230,7 +2230,7 @@ function FilteredOrdersSection({
                       onClick={() =>
                         router.push(`/dashboard/orders/${order._id}`)
                       }
-                      className={`hover:bg-rose-50 transition cursor-pointer ${age?.color?.includes("red") ? "bg-red-50/30" : ""}`}
+                      className={`hover:bg-violet-50 transition cursor-pointer ${age?.color?.includes("red") ? "bg-red-50/30" : ""}`}
                     >
                       <td
                         className="px-4 py-3"
@@ -2238,7 +2238,7 @@ function FilteredOrdersSection({
                       >
                         <Link
                           href={`/dashboard/orders/${order._id}`}
-                          className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-rose-600 hover:underline"
+                          className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
                         >
                           {formatOrderId(order._id)}
                         </Link>
@@ -2252,7 +2252,7 @@ function FilteredOrdersSection({
                           className="text-left"
                           onClick={() => openCustomer(order)}
                         >
-                          <p className="font-medium text-gray-800 hover:text-indigo-600 hover:underline">
+                          <p className="font-medium text-gray-800 hover:text-violet-700 hover:underline">
                             {order.billingDetails?.name || "—"}
                           </p>
                           <p className="text-xs text-gray-400">
@@ -2446,7 +2446,7 @@ function CustomerNoteModal({ order, onClose }) {
                 href={`/dashboard/orders/${order._id}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-indigo-600 hover:underline font-mono"
+                className="text-xs text-violet-700 hover:underline font-mono"
               >
                 #{String(order._id).slice(-8).toUpperCase()} →
               </a>
@@ -2643,7 +2643,7 @@ function CustomerNotesSection() {
                     <div className="flex items-center gap-2 flex-wrap mb-1.5">
                       <Link
                         href={`/dashboard/orders/${order._id}`}
-                        className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-rose-600 hover:underline"
+                        className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
                       >
                         {formatOrderId(order._id)}
                       </Link>
@@ -2655,7 +2655,7 @@ function CustomerNotesSection() {
                       {/* Customer name — clickable */}
                       <button
                         onClick={() => setSelectedOrder(order)}
-                        className="text-xs font-medium text-indigo-600 hover:underline"
+                        className="text-xs font-medium text-violet-700 hover:underline"
                       >
                         {order.billingDetails?.name || "—"}
                       </button>
@@ -2728,7 +2728,7 @@ function CustomerNotesSection() {
               <button
                 key={n}
                 onClick={() => goPage(n)}
-                className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${page === n ? "bg-indigo-600 text-white border-indigo-600 font-semibold" : "hover:bg-gray-50"}`}
+                className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${page === n ? "bg-violet-700 text-white border-violet-700 font-semibold" : "hover:bg-gray-50"}`}
               >
                 {n}
               </button>
@@ -2770,7 +2770,7 @@ const TIMELINE_STATUS_STYLE = {
   approved: "bg-emerald-400",
   rejected: "bg-red-400",
   confirmed: "bg-blue-500",
-  processing: "bg-indigo-500",
+  processing: "bg-violet-500",
   shipped: "bg-purple-500",
   delivered: "bg-green-500",
   returned: "bg-teal-500",
@@ -2883,7 +2883,7 @@ function OrderTimelineSection() {
                 <span onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/dashboard/orders/${order.orderId}`}
-                    className="font-mono text-xs text-rose-600 hover:underline bg-rose-50 px-1.5 py-0.5 rounded"
+                    className="font-mono text-xs text-violet-700 hover:underline bg-violet-50 px-1.5 py-0.5 rounded"
                   >
                     #{order.orderIdShort}
                   </Link>
@@ -2937,7 +2937,7 @@ function OrderTimelineSection() {
                           {ev.customerName && (
                             <button
                               type="button"
-                              className="text-xs text-gray-500 hover:text-indigo-600 hover:underline mt-0.5"
+                              className="text-xs text-gray-500 hover:text-violet-700 hover:underline mt-0.5"
                               onClick={() =>
                                 setSelectedCustomer({
                                   name: ev.customerName,
@@ -3087,7 +3087,7 @@ function AbandonedCartModal({ user, onClose }) {
                   href={`/product/${item.productId}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-indigo-300 hover:bg-indigo-50/40 transition-colors group"
+                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-violet-300 hover:bg-violet-50/40 transition-colors group"
                 >
                   {item.image ? (
                     <img
@@ -3101,7 +3101,7 @@ function AbandonedCartModal({ user, onClose }) {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-indigo-700">
+                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-violet-800">
                       {item.title || "—"}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -3338,7 +3338,7 @@ function AbandonedCartSection() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => setSelectedUser(u)}
-                        className="font-medium text-indigo-600 hover:text-indigo-800 hover:underline text-left"
+                        className="font-medium text-violet-700 hover:text-violet-800 hover:underline text-left"
                       >
                         {u.name || (
                           <span className="text-gray-400 italic font-normal">
@@ -3368,7 +3368,7 @@ function AbandonedCartSection() {
                             target="_blank"
                             rel="noreferrer"
                             title={item.title}
-                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
+                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-violet-100 hover:text-violet-800 text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
                           >
                             {item.image && (
                               <img
@@ -3456,7 +3456,7 @@ function AbandonedCartSection() {
               <button
                 key={p}
                 onClick={() => goPage(p)}
-                className={`w-9 h-9 text-sm rounded-lg border transition-colors ${p === page ? "bg-indigo-600 text-white border-indigo-600 font-semibold" : "hover:bg-gray-50"}`}
+                className={`w-9 h-9 text-sm rounded-lg border transition-colors ${p === page ? "bg-violet-700 text-white border-violet-700 font-semibold" : "hover:bg-gray-50"}`}
               >
                 {p}
               </button>
@@ -3508,7 +3508,7 @@ const ORDER_STATUS_LABEL = {
 const ORDER_STATUS_COLOR = {
   pending: "bg-yellow-100 text-yellow-700",
   accepted: "bg-blue-100 text-blue-700",
-  confirmed: "bg-indigo-100 text-indigo-700",
+  confirmed: "bg-violet-100 text-violet-800",
   processing: "bg-purple-100 text-purple-700",
   shipped: "bg-cyan-100 text-cyan-700",
   delivered: "bg-green-100 text-green-700",
@@ -3791,10 +3791,10 @@ function CheckoutSessionModal({ session, onClose }) {
                   href={`/product/${item.productId}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-indigo-300 hover:bg-indigo-50/40 transition-colors group"
+                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-violet-300 hover:bg-violet-50/40 transition-colors group"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-indigo-700">
+                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-violet-800">
                       {item.title || "—"}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -4039,7 +4039,7 @@ function AbandonCheckoutSection() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => setSelectedSession(s)}
-                        className="font-medium text-indigo-600 hover:text-indigo-800 hover:underline text-left"
+                        className="font-medium text-violet-700 hover:text-violet-800 hover:underline text-left"
                       >
                         {s.userName || (
                           <span className="text-gray-400 italic font-normal">
@@ -4070,7 +4070,7 @@ function AbandonCheckoutSection() {
                             target="_blank"
                             rel="noreferrer"
                             title={item.title}
-                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-indigo-100 hover:text-indigo-700 text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
+                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-violet-100 hover:text-violet-800 text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
                           >
                             {item.image && (
                               <img
@@ -4177,7 +4177,7 @@ function AbandonCheckoutSection() {
                 onClick={() => goPage(p)}
                 className={`w-9 h-9 text-sm rounded-lg border transition-colors ${
                   p === page
-                    ? "bg-indigo-600 text-white border-indigo-600 font-semibold"
+                    ? "bg-violet-700 text-white border-violet-700 font-semibold"
                     : "hover:bg-gray-50"
                 }`}
               >
@@ -4521,7 +4521,7 @@ function AllWishlistSection() {
                           </div>
                         )}
                         <div>
-                          <p className="font-medium text-gray-800 max-w-[200px] truncate group-hover:text-indigo-600 transition-colors">
+                          <p className="font-medium text-gray-800 max-w-[200px] truncate group-hover:text-violet-700 transition-colors">
                             {item.product?.title || item.productId}
                           </p>
                           {item.product?.price != null && (
@@ -4536,7 +4536,7 @@ function AllWishlistSection() {
                       </a>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-rose-50 text-rose-600 font-bold text-sm">
+                      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-violet-50 text-violet-700 font-bold text-sm">
                         {item.count}
                       </span>
                     </td>
@@ -4573,7 +4573,7 @@ function AllWishlistSection() {
                                     productId: item.productId,
                                   })
                                 }
-                                className="text-indigo-600 hover:underline font-medium"
+                                className="text-violet-700 hover:underline font-medium"
                               >
                                 {c.name || c.email || "Unknown"}
                               </button>
@@ -4655,7 +4655,7 @@ function AllWishlistSection() {
                 onClick={() => goPage(n)}
                 className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                   page === n
-                    ? "bg-indigo-600 text-white border-indigo-600 font-semibold"
+                    ? "bg-violet-700 text-white border-violet-700 font-semibold"
                     : "hover:bg-gray-50"
                 }`}
               >

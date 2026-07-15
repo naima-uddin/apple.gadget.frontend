@@ -129,7 +129,7 @@ export default function NotificationBell() {
             <Link
               href="/dashboard/orders"
               onClick={() => setOpen(false)}
-              className="text-xs text-pink-600 hover:underline"
+              className="text-xs text-violet-700 hover:underline"
             >
               View all
             </Link>

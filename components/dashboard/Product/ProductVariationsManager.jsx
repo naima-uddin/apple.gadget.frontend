@@ -197,7 +197,7 @@ export default function ProductVariationsManager() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, name: e.target.value }))
                   }
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-violet-500"
                   placeholder="Style"
                 />
               </div>
@@ -213,7 +213,7 @@ export default function ProductVariationsManager() {
                       optionsText: e.target.value,
                     }))
                   }
-                  className="min-h-24 w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="min-h-24 w-full rounded-lg border border-gray-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-violet-500"
                   placeholder={"Regular Fit\nSlim Fit\nOversized"}
                 />
                 <p className="mt-1 text-xs text-gray-500">
@@ -223,7 +223,7 @@ export default function ProductVariationsManager() {
               <button
                 type="submit"
                 disabled={saving}
-                className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60 md:mt-7"
+                className="rounded-lg bg-violet-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-800 disabled:opacity-60 md:mt-7"
               >
                 {saving ? "Saving..." : editingId ? "Update" : "Save"}
               </button>
@@ -239,7 +239,7 @@ export default function ProductVariationsManager() {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-64 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-64 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500"
               placeholder="Search"
             />
           </div>

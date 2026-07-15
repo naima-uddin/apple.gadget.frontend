@@ -137,7 +137,7 @@ function FilterCard({ label, value, color, onClick, active }) {
   return (
     <button
       onClick={onClick}
-      className={`rounded-xl border p-3 text-left w-full transition shadow-sm hover:shadow-md ${active ? "ring-2 ring-rose-400 border-rose-200 bg-rose-50" : "bg-white border-gray-100"}`}
+      className={`rounded-xl border p-3 text-left w-full transition shadow-sm hover:shadow-md ${active ? "ring-2 ring-violet-400 border-violet-200 bg-violet-50" : "bg-white border-gray-100"}`}
     >
       <p className="text-xs text-gray-500 mb-0.5">{label}</p>
       <p className={`text-xl font-bold ${color}`}>{value ?? "—"}</p>
@@ -263,7 +263,7 @@ function ProfitBarChart({ data }) {
         <Bar
           dataKey="revenue"
           name="Revenue"
-          fill="#818cf8"
+          fill="#A78BFA"
           radius={[3, 3, 0, 0]}
         />
         <Bar
@@ -398,7 +398,7 @@ function MarginPieChart({ summary }) {
 
 // ─── Profit pie chart (period contribution) ───────────────────────────────────
 const PERIOD_COLORS = [
-  "#818cf8",
+  "#A78BFA",
   "#a78bfa",
   "#c084fc",
   "#e879f9",
@@ -618,7 +618,7 @@ export default function ProfitMarginManager() {
               ? fmt(summary.totalSoldRevenue)
               : "From sold orders"
           }
-          valueColor="text-indigo-600"
+          valueColor="text-violet-700"
           icon="💰"
         />
         <KpiCard
@@ -680,7 +680,7 @@ export default function ProfitMarginManager() {
                 <button
                   key={t}
                   onClick={() => setChartTab(t)}
-                  className={`px-3 py-1.5 transition ${chartTab === t ? "bg-indigo-500 text-white" : "text-gray-600 hover:bg-gray-50"}`}
+                  className={`px-3 py-1.5 transition ${chartTab === t ? "bg-violet-500 text-white" : "text-gray-600 hover:bg-gray-50"}`}
                 >
                   {t === "monthly" ? "Monthly" : "Yearly"}
                 </button>
@@ -738,12 +738,12 @@ export default function ProfitMarginManager() {
 
       {/* ── Analytics totals strip ── */}
       {analytics && !analyticsLoading && (
-        <div className="bg-linear-to-r from-indigo-50 to-purple-50 border border-indigo-100 rounded-xl px-5 py-3 flex flex-wrap gap-6 items-center text-sm">
+        <div className="bg-linear-to-r from-violet-50 to-purple-50 border border-violet-100 rounded-xl px-5 py-3 flex flex-wrap gap-6 items-center text-sm">
           <div>
             <span className="text-gray-500 text-xs uppercase tracking-wide">
               Period Revenue
             </span>
-            <p className="font-bold text-indigo-700 tabular-nums">
+            <p className="font-bold text-violet-800 tabular-nums">
               {fmt(analytics.totals?.revenue)}
             </p>
           </div>
@@ -818,7 +818,7 @@ export default function ProfitMarginManager() {
               setPage(1);
             }}
             placeholder="Search product name or SKU…"
-            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-violet-300"
           />
           <select
             value={sort}
@@ -826,7 +826,7 @@ export default function ProfitMarginManager() {
               setSort(e.target.value);
               setPage(1);
             }}
-            className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
+            className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
           >
             <option value="margin_asc">Margin: Low → High</option>
             <option value="margin_desc">Margin: High → Low</option>
@@ -908,7 +908,7 @@ export default function ProfitMarginManager() {
                       <div className="min-w-0">
                         <Link
                           href={`/dashboard/products/${product._id}`}
-                          className="text-sm font-medium text-gray-800 hover:text-indigo-600 truncate block"
+                          className="text-sm font-medium text-gray-800 hover:text-violet-700 truncate block"
                         >
                           {product.title}
                         </Link>
@@ -1029,7 +1029,7 @@ export default function ProfitMarginManager() {
                     {/* Edit link */}
                     <Link
                       href={`/dashboard/products/${product._id}`}
-                      className="hidden lg:block text-xs text-gray-400 hover:text-indigo-500 px-2 py-1 rounded border border-transparent hover:border-indigo-200 shrink-0"
+                      className="hidden lg:block text-xs text-gray-400 hover:text-violet-500 px-2 py-1 rounded border border-transparent hover:border-violet-200 shrink-0"
                     >
                       Edit
                     </Link>
@@ -1060,7 +1060,7 @@ export default function ProfitMarginManager() {
                       <span>·</span>
                       <span>
                         Revenue{" "}
-                        <strong className="text-indigo-600">
+                        <strong className="text-violet-700">
                           {fmt(product.soldRevenue)}
                         </strong>
                       </span>

@@ -201,7 +201,7 @@ export default function QuestionsList() {
           <p className="text-sm text-gray-500 mt-0.5 flex flex-wrap gap-x-2 gap-y-1 items-center">
             <Link
               href="/dashboard/questions"
-              className="hover:text-pink-700 hover:underline"
+              className="hover:text-violet-800 hover:underline"
             >
               {rows.length} total
             </Link>

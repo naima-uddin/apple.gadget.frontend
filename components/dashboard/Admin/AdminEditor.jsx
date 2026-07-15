@@ -146,7 +146,7 @@ function GroupCheckbox({ allChecked, someChecked, onChange }) {
       type="checkbox"
       checked={allChecked}
       onChange={onChange}
-      className="h-4 w-4 rounded border-gray-300 text-indigo-600 accent-indigo-600"
+      className="h-4 w-4 rounded border-gray-300 text-violet-700 accent-violet-700"
     />
   );
 }
@@ -317,7 +317,7 @@ export default function AdminEditor({ adminId }) {
                 <button
                   type="button"
                   onClick={toggleAll}
-                  className="text-xs text-indigo-600 hover:underline"
+                  className="text-xs text-violet-700 hover:underline"
                 >
                   {allChecked ? "Deselect all" : "Select all"}
                 </button>
@@ -357,7 +357,7 @@ export default function AdminEditor({ adminId }) {
                               type="checkbox"
                               checked={checkedPermissions.includes(perm.key)}
                               onChange={(e) => togglePermission(perm.key, e.target.checked)}
-                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 accent-indigo-600"
+                              className="h-4 w-4 rounded border-gray-300 text-violet-700 accent-violet-700"
                             />
                             {perm.label}
                           </label>
@@ -400,7 +400,7 @@ export default function AdminEditor({ adminId }) {
                   setPassword(p);
                   setShowPassword(true);
                 }}
-                className="px-3 py-2 border border-indigo-300 text-indigo-600 rounded text-sm hover:bg-indigo-50 whitespace-nowrap font-medium"
+                className="px-3 py-2 border border-violet-300 text-violet-700 rounded text-sm hover:bg-violet-50 whitespace-nowrap font-medium"
                 title="Generate a strong random password"
               >
                 ✦ Generate
@@ -448,7 +448,7 @@ export default function AdminEditor({ adminId }) {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="px-3 py-2 bg-indigo-600 text-white rounded"
+              className="px-3 py-2 bg-violet-700 text-white rounded"
               disabled={saving}
             >
               {saving ? "Saving…" : "Save"}

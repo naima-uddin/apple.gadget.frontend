@@ -79,12 +79,7 @@ export default function SearchResultsClient() {
   }, [allProducts, activeFilters]);
 
   const hasExpress = (p) => {
-    return (
-      (Array.isArray(p.tags) &&
-        (p.tags.includes("express") || p.tags.includes("express_delivery"))) ||
-      p.express ||
-      p.expressDelivery
-    );
+    return p.express || p.expressDelivery;
   };
 
   const sorted = useMemo(() => {

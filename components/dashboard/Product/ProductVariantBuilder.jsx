@@ -443,7 +443,7 @@ export default function ProductVariantBuilder({
             </div>
           </div>
           {catalogLoading && (
-            <p className="mt-2 text-xs font-medium text-indigo-600">
+            <p className="mt-2 text-xs font-medium text-violet-700">
               Loading saved variation catalog...
             </p>
           )}
@@ -451,7 +451,7 @@ export default function ProductVariantBuilder({
         <button
           type="button"
           onClick={syncGeneratedVariants}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
+          className="rounded-lg bg-violet-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-800"
         >
           Create variant rows
         </button>
@@ -471,7 +471,7 @@ export default function ProductVariantBuilder({
               <button
                 type="button"
                 onClick={addVariation}
-                className="shrink-0 rounded-lg border border-indigo-300 px-3 text-sm font-semibold text-indigo-700 hover:bg-indigo-50"
+                className="shrink-0 rounded-lg border border-violet-300 px-3 text-sm font-semibold text-violet-800 hover:bg-violet-50"
               >
                 Add
               </button>
@@ -485,7 +485,7 @@ export default function ProductVariantBuilder({
                 key={group.id}
                 className={`rounded-xl border p-4 ${
                   selected
-                    ? "border-indigo-200 bg-indigo-50"
+                    ? "border-violet-200 bg-violet-50"
                     : "border-gray-200 bg-white"
                 }`}
               >
@@ -508,14 +508,14 @@ export default function ProductVariantBuilder({
                               renameVariation(group.name, editingName);
                             if (e.key === "Escape") setEditingGroup(null);
                           }}
-                          className="flex-1 rounded border border-indigo-300 px-2 py-0.5 text-sm font-semibold"
+                          className="flex-1 rounded border border-violet-300 px-2 py-0.5 text-sm font-semibold"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             renameVariation(group.name, editingName)
                           }
-                          className="shrink-0 rounded bg-indigo-600 px-2 py-0.5 text-xs text-white hover:bg-indigo-700"
+                          className="shrink-0 rounded bg-violet-700 px-2 py-0.5 text-xs text-white hover:bg-violet-800"
                         >
                           Save
                         </button>
@@ -539,7 +539,7 @@ export default function ProductVariantBuilder({
                             setEditingGroup(group.name);
                             setEditingName(group.name);
                           }}
-                          className="shrink-0 text-gray-400 hover:text-indigo-600 transition-colors"
+                          className="shrink-0 text-gray-400 hover:text-violet-700 transition-colors"
                           title="Rename"
                         >
                           <svg
@@ -571,7 +571,7 @@ export default function ProductVariantBuilder({
                           return (
                             <span
                               key={option.id}
-                              className="inline-flex items-center gap-1 rounded-full border border-indigo-300 bg-white px-2 py-1"
+                              className="inline-flex items-center gap-1 rounded-full border border-violet-300 bg-white px-2 py-1"
                             >
                               <input
                                 autoFocus
@@ -589,7 +589,7 @@ export default function ProductVariantBuilder({
                                   if (e.key === "Escape")
                                     setEditingOption(null);
                                 }}
-                                className="w-24 rounded border border-indigo-200 px-1.5 py-0.5 text-xs font-medium outline-none focus:ring-1 focus:ring-indigo-400"
+                                className="w-24 rounded border border-violet-200 px-1.5 py-0.5 text-xs font-medium outline-none focus:ring-1 focus:ring-violet-400"
                               />
                               <button
                                 type="button"
@@ -600,7 +600,7 @@ export default function ProductVariantBuilder({
                                     editingOptionValue,
                                   )
                                 }
-                                className="rounded bg-indigo-600 px-1.5 py-0.5 text-[10px] text-white hover:bg-indigo-700"
+                                className="rounded bg-violet-700 px-1.5 py-0.5 text-[10px] text-white hover:bg-violet-800"
                               >
                                 ✓
                               </button>
@@ -622,7 +622,7 @@ export default function ProductVariantBuilder({
                             key={option.id}
                             className={`group/opt inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm ${
                               option.selected
-                                ? "border-indigo-300 bg-white text-indigo-700"
+                                ? "border-violet-300 bg-white text-violet-800"
                                 : "border-gray-200 bg-white text-gray-600"
                             }`}
                           >
@@ -646,7 +646,7 @@ export default function ProductVariantBuilder({
                                 });
                                 setEditingOptionValue(option.value);
                               }}
-                              className="opacity-0 group-hover/opt:opacity-100 text-gray-400 hover:text-indigo-600 transition-opacity ml-0.5"
+                              className="opacity-0 group-hover/opt:opacity-100 text-gray-400 hover:text-violet-700 transition-opacity ml-0.5"
                               title="Rename option"
                             >
                               <svg
@@ -677,7 +677,7 @@ export default function ProductVariantBuilder({
                       <button
                         type="button"
                         onClick={() => addOption(group.name)}
-                        className="shrink-0 rounded-lg border border-indigo-300 px-3 text-sm font-semibold text-indigo-700 hover:bg-white"
+                        className="shrink-0 rounded-lg border border-violet-300 px-3 text-sm font-semibold text-violet-800 hover:bg-white"
                       >
                         Add
                       </button>

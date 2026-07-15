@@ -180,7 +180,7 @@ export default function CategoryCreate({ onSuccess }) {
             <button
               type="button"
               onClick={() => setShowPicker(true)}
-              className="w-24 h-24 flex flex-col items-center justify-center border border-dashed border-indigo-300 rounded cursor-pointer text-xs text-indigo-500 bg-indigo-50 hover:bg-indigo-100 gap-1"
+              className="w-24 h-24 flex flex-col items-center justify-center border border-dashed border-violet-300 rounded cursor-pointer text-xs text-violet-500 bg-violet-50 hover:bg-violet-100 gap-1"
             >
               <span className="text-lg">🖼</span>Library
             </button>
@@ -249,7 +249,7 @@ export default function CategoryCreate({ onSuccess }) {
         <div className="flex gap-2">
           <button
             onClick={handleSave}
-            className="px-3 py-2 bg-indigo-600 text-white rounded"
+            className="px-3 py-2 bg-violet-700 text-white rounded"
             disabled={saving}
           >
             {saving ? "Saving…" : "Create Category"}

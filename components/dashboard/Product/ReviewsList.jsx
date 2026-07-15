@@ -179,7 +179,7 @@ export default function ReviewsList() {
           <p className="text-sm text-gray-500 mt-0.5">
             <Link
               href="/dashboard/reviews"
-              className="hover:text-pink-700 hover:underline"
+              className="hover:text-violet-800 hover:underline"
             >
               {rows.length} total review{rows.length !== 1 ? "s" : ""}
             </Link>
@@ -285,7 +285,7 @@ export default function ReviewsList() {
                 {/* Product & meta */}
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                   <div>
-                    <span className="text-xs font-medium bg-pink-50 text-pink-700 px-2 py-0.5 rounded hover:bg-pink-100 transition">
+                    <span className="text-xs font-medium bg-violet-50 text-violet-800 px-2 py-0.5 rounded hover:bg-violet-100 transition">
                       <Link
                         href={`/product/${row.productId}`}
                         target="_blank"
@@ -363,14 +363,14 @@ export default function ReviewsList() {
                           setEditForm((f) => ({ ...f, body: e.target.value }))
                         }
                         rows={3}
-                        className="w-full border rounded px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-pink-300"
+                        className="w-full border rounded px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-300"
                       />
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleSave(row.productId, row.index)}
                         disabled={saving}
-                        className="text-sm px-4 py-1.5 rounded bg-pink-600 text-white hover:bg-pink-700 disabled:opacity-60 font-medium transition"
+                        className="text-sm px-4 py-1.5 rounded bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60 font-medium transition"
                       >
                         {saving ? "Saving…" : "Save"}
                       </button>

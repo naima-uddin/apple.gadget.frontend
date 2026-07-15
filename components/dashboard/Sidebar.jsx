@@ -510,16 +510,24 @@ export default function Sidebar({
   const { user, refreshUser } = useUser();
   const { storeName, logoUrl } = useStoreSettings();
 
-  const [openSections, setOpenSections] = useState({
-    overview: false,
-    catalog: false,
-    orders: false,
-    "profit-margin": false,
-    customers: false,
-    content: false,
-    addons: false,
-    system: false,
+  const [query, setQuery] = useState("");
+
+  const isSectionActive = (section) =>
+    section.matchPrefixes.some((prefix) =>
+      prefix === "/dashboard"
+        ? pathname === "/dashboard"
+        : pathname === prefix || pathname.startsWith(`${prefix}/`),
+    );
+
+  // Open the group that owns the current route by default
+  const [openSections, setOpenSections] = useState(() => {
+    const initial = {};
+    for (const section of SECTIONS) {
+      initial[section.key] = isSectionActive(section);
+    }
+    return initial;
   });
+
   useEffect(() => {
     try {
       window.localStorage.setItem(STORAGE_KEY, collapsed ? "1" : "0");
@@ -527,6 +535,18 @@ export default function Sidebar({
       // ignore storage errors
     }
   }, [collapsed]);
+
+  // When navigating, make sure the group that owns the new route is open
+  useEffect(() => {
+    setOpenSections((current) => {
+      const next = { ...current };
+      for (const section of SECTIONS) {
+        if (isSectionActive(section)) next[section.key] = true;
+      }
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   const handleSignOut = async () => {
     try {
@@ -556,9 +576,26 @@ export default function Sidebar({
     }));
   };
 
+  const canSee = (item) =>
+    (!item.adminOnly || user?.role === "admin") &&
+    (!item.permissionKey || hasPermission(user, item.permissionKey));
+
+  const q = query.trim().toLowerCase();
+  const searchResults = q
+    ? SECTIONS.flatMap((section) => {
+        if (
+          section.permissionKey &&
+          !hasPermission(user, section.permissionKey)
+        )
+          return [];
+        return section.items.filter(
+          (item) => canSee(item) && item.label.toLowerCase().includes(q),
+        );
+      })
+    : null;
+
   const renderLeafLink = (item) => {
-    if (item.adminOnly && user?.role !== "admin") return null;
-    if (item.permissionKey && !hasPermission(user, item.permissionKey)) return null;
+    if (!canSee(item)) return null;
 
     let active;
     if (item.orderTab !== undefined) {
@@ -573,24 +610,31 @@ export default function Sidebar({
         key={item.key}
         href={item.href}
         title={collapsed ? item.label : undefined}
-        className={`group flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition ${
+        className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] transition-all duration-150 ${
           active
-            ? "bg-pink-50 text-pink-700 shadow-sm ring-1 ring-pink-100"
-            : "text-gray-700 hover:bg-gray-50 hover:text-pink-700"
+            ? "bg-linear-to-r from-violet-600 to-purple-500 font-medium text-white shadow-md shadow-violet-200"
+            : "text-gray-600 hover:bg-violet-100/70 hover:text-[#5B21B6]"
         } ${collapsed ? "justify-center px-2" : ""}`}
       >
-        <svg
-          className={`h-4 w-4 shrink-0 ${active ? "text-pink-600" : "text-gray-400 group-hover:text-pink-600"}`}
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d={item.icon} />
-        </svg>
+        {item.icon ? (
+          <svg
+            className={`h-4 w-4 shrink-0 transition-colors ${active ? "text-white" : "text-violet-300 group-hover:text-[#5B21B6]"}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d={item.icon} />
+          </svg>
+        ) : (
+          <span
+            className={`h-1.5 w-1.5 shrink-0 rounded-full ${active ? "bg-white" : "bg-violet-300 group-hover:bg-[#5B21B6]"}`}
+            aria-hidden="true"
+          />
+        )}
         {!collapsed && <span className="truncate">{item.label}</span>}
       </Link>
     );
@@ -601,71 +645,75 @@ export default function Sidebar({
       return null;
     }
 
-    const visibleItems = section.items.filter(
-      (item) =>
-        (!item.adminOnly || user?.role === "admin") &&
-        (!item.permissionKey || hasPermission(user, item.permissionKey)),
-    );
-
+    const visibleItems = section.items.filter(canSee);
     if (!visibleItems.length) return null;
 
-    const sectionActive = section.matchPrefixes.some((prefix) =>
-      prefix === "/dashboard"
-        ? pathname === "/dashboard"
-        : pathname === prefix || pathname.startsWith(`${prefix}/`),
-    );
-
+    const sectionActive = isSectionActive(section);
     const sectionOpen = openSections[section.key];
 
+    // Collapsed rail: one icon per group, active group glows
+    if (collapsed) {
+      return (
+        <button
+          key={section.key}
+          type="button"
+          onClick={() => toggleSection(section.key)}
+          title={section.label}
+          className={`mx-auto flex h-10 w-10 items-center justify-center rounded-xl transition ${
+            sectionActive
+              ? "bg-linear-to-br from-violet-600 to-purple-500 text-white shadow-md shadow-violet-200"
+              : "text-violet-400 hover:bg-violet-100 hover:text-[#5B21B6]"
+          }`}
+        >
+          <svg
+            className="h-4.5 w-4.5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d={section.icon} />
+          </svg>
+        </button>
+      );
+    }
+
     return (
-      <div
-        key={section.key}
-        className={`rounded-2xl border border-gray-100 bg-white/80 p-2 shadow-sm ${collapsed ? "md:px-1" : ""}`}
-      >
+      <div key={section.key}>
         <button
           type="button"
           onClick={() => toggleSection(section.key)}
-          title={collapsed ? section.label : undefined}
           aria-expanded={sectionOpen}
-          className={`flex w-full items-center justify-between gap-3 rounded-xl px-3 py-1.5 text-left text-sm font-medium transition ${
-            sectionActive
-              ? "bg-pink-50 text-pink-700"
-              : "text-gray-700 hover:bg-gray-50"
-          } ${collapsed ? "justify-center px-2" : ""}`}
+          className="group flex w-full items-center justify-between gap-2 px-3 py-2 text-left"
         >
-          <span className="flex min-w-0 items-center gap-3">
-            <svg
-              className={`h-4 w-4 shrink-0 ${sectionActive ? "text-pink-600" : "text-gray-400"}`}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d={section.icon} />
-            </svg>
-            {!collapsed && <span className="truncate">{section.label}</span>}
+          <span
+            className={`text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
+              sectionActive
+                ? "text-[#18023b]"
+                : "text-[#0b001b] group-hover:text-[#0b001b]"
+            }`}
+          >
+            {section.label}
           </span>
-          {!collapsed && (
-            <svg
-              className={`h-4 w-4 shrink-0 transition-transform ${sectionOpen ? "rotate-90" : ""}`}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <path d="M9 5l7 7-7 7" />
-            </svg>
-          )}
+          <svg
+            className={`h-3.5 w-3.5 shrink-0 text-[#0b001b] transition-transform group-hover:text-[#230258] ${sectionOpen ? "rotate-180" : ""}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
         </button>
 
-        {!collapsed && sectionOpen && (
-          <div className="mt-2 space-y-1 border-l border-dashed border-pink-100 pl-3">
+        {sectionOpen && (
+          <div className="mb-1 space-y-0.5 px-1">
             {visibleItems.map((item) => renderLeafLink(item))}
           </div>
         )}
@@ -673,50 +721,59 @@ export default function Sidebar({
     );
   };
 
+  const initials = (user?.name || user?.email || "A")
+    .trim()
+    .charAt(0)
+    .toUpperCase();
+
   return (
     <>
       <div
-        className={`fixed inset-0 z-40 bg-black/40 transition-opacity md:hidden ${mobileOpen ? "block" : "hidden"}`}
+        className={`fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity md:hidden ${mobileOpen ? "block" : "hidden"}`}
         onClick={onClose}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex h-full w-65 sm:w-72 transform flex-col border-r border-pink-100 bg-white/95 shadow-xl backdrop-blur transition-all duration-300 md:sticky md:top-0 md:h-screen md:shadow-none md:translate-x-0 md:w-full ${collapsed ? "md:max-w-19" : "md:max-w-76"} ${
+        className={`fixed inset-y-0 left-0 z-50 flex h-full w-65 sm:w-72 transform flex-col border-r border-violet-100 bg-linear-to-b from-violet-100/70 via-violet-50 to-white shadow-xl transition-all duration-300 md:sticky md:top-0 md:h-screen md:shadow-none md:translate-x-0 md:w-full ${collapsed ? "md:max-w-19" : "md:max-w-76"} ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between gap-3 border-b border-pink-100 p-4">
-          <Link
-            href="/"
-            className={`flex items-center gap-3 ${collapsed ? "mx-auto" : ""}`}
-          >
+        {/* Brand */}
+        <div
+          className={`flex items-center gap-3 p-4 ${collapsed ? "flex-col" : "justify-between"}`}
+        >
+          <Link href="/" className="flex min-w-0 items-center gap-3">
             {logoUrl ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={logoUrl}
                 alt={storeName || "Store"}
-                className="h-10 w-10 rounded-xl object-contain bg-white border border-gray-100 p-0.5 shrink-0"
+                className="h-10 w-10 shrink-0 rounded-xl bg-white object-contain p-1 ring-2 ring-violet-200"
               />
             ) : (
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-pink-500 to-rose-500 text-sm font-bold text-white shadow-sm">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-violet-600 to-purple-500 text-sm font-bold text-white ring-2 ring-violet-200">
                 {storeName
                   ? storeName.replace(/\s+/g, "").slice(0, 2).toUpperCase()
                   : "SB"}
               </span>
             )}
             {!collapsed && (
-              <span className="leading-tight">
-                <span className="block text-base font-semibold text-gray-900">
+              <span className="min-w-0 leading-tight">
+                <span className="block truncate text-[15px] font-semibold text-[#1F2937]">
                   {storeName || "Dashboard"}
                 </span>
-                <span className="block text-xs text-gray-500">Dashboard</span>
+                <span className="block text-[11px] font-medium uppercase tracking-widest text-[#5B21B6]">
+                  Admin Panel
+                </span>
               </span>
             )}
           </Link>
 
-          <div className="flex items-center gap-1">
+          <div
+            className={`flex items-center gap-1 ${collapsed ? "" : "shrink-0"}`}
+          >
             <button
               type="button"
-              className="hidden rounded-xl p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 md:inline-flex"
+              className="hidden rounded-lg p-2 text-violet-400 transition hover:bg-violet-100 hover:text-[#5B21B6] md:inline-flex"
               onClick={() => setCollapsed((value) => !value)}
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
               title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -735,7 +792,7 @@ export default function Sidebar({
               </svg>
             </button>
             <button
-              className="rounded-xl p-2 text-gray-500 transition hover:bg-gray-100 hover:text-gray-900 md:hidden"
+              className="rounded-lg p-2 text-violet-400 transition hover:bg-violet-100 hover:text-[#5B21B6] md:hidden"
               onClick={onClose}
               aria-label="Close menu"
             >
@@ -755,34 +812,111 @@ export default function Sidebar({
           </div>
         </div>
 
+        {/* Menu search */}
+        {!collapsed && (
+          <div className="px-4 pb-3">
+            <div className="relative">
+              <svg
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-violet-300"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" />
+              </svg>
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search menu…"
+                className="w-full rounded-xl border border-violet-200 bg-white py-2 pl-9 pr-8 text-[13px] text-gray-900 placeholder-gray-400 shadow-sm outline-none transition focus:border-[#5B21B6] focus:ring-2 focus:ring-violet-100"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#5B21B6]"
+                >
+                  <svg
+                    className="h-3.5 w-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  >
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Navigation */}
         <nav
-          className={`flex-1 space-y-3 overflow-y-auto p-3 ${collapsed ? "md:px-2" : ""}`}
+          className={`no-scrollbar flex-1 overflow-y-auto px-2 pb-3 ${collapsed ? "space-y-2 pt-1 md:px-2" : "space-y-1"}`}
         >
-          {SECTIONS.map(renderSection)}
+          {searchResults ? (
+            <div className="space-y-0.5 px-1">
+              {searchResults.length ? (
+                searchResults.map((item) => renderLeafLink(item))
+              ) : (
+                <p className="px-3 py-6 text-center text-xs text-gray-400">
+                  No menu found for “{query}”
+                </p>
+              )}
+            </div>
+          ) : (
+            SECTIONS.map(renderSection)
+          )}
         </nav>
 
-        <div className="mt-auto border-t border-pink-100 p-4">
-          <button
-            onClick={handleSignOut}
-            title={collapsed ? "Sign out" : undefined}
-            className={`flex w-full items-center gap-3 rounded-xl border border-red-200 px-3 py-2 text-sm text-red-600 transition hover:bg-red-50 ${collapsed ? "justify-center px-2" : ""}`}
+        {/* User / sign out */}
+        <div className="p-3">
+          <div
+            className={`flex items-center gap-3 rounded-2xl border border-violet-100 bg-white p-2.5 shadow-sm ${collapsed ? "flex-col gap-2 p-2" : ""}`}
           >
-            <svg
-              className="h-4 w-4 shrink-0"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-violet-500 to-purple-500 text-sm font-bold text-white">
+              {initials}
+            </span>
+            {!collapsed && (
+              <span className="min-w-0 flex-1 leading-tight">
+                <span className="block truncate text-[13px] font-medium text-[#1F2937]">
+                  {user?.name || user?.email || "Admin"}
+                </span>
+                <span className="block truncate text-[11px] capitalize text-gray-400">
+                  {user?.role || "admin"}
+                </span>
+              </span>
+            )}
+            <button
+              onClick={handleSignOut}
+              title="Sign out"
+              aria-label="Sign out"
+              className="shrink-0 rounded-lg p-2 text-gray-400 transition hover:bg-red-50 hover:text-red-500"
             >
-              <path d="M16 17l5-5-5-5" />
-              <path d="M21 12H9" />
-              <path d="M13 5v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2v-2" />
-            </svg>
-            {!collapsed && <span>Sign out</span>}
-          </button>
+              <svg
+                className="h-4 w-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M16 17l5-5-5-5" />
+                <path d="M21 12H9" />
+                <path d="M13 5v-2a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2v-2" />
+              </svg>
+            </button>
+          </div>
         </div>
       </aside>
     </>

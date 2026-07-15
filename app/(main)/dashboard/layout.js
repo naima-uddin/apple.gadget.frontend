@@ -33,12 +33,12 @@ export default function DashboardLayout({ children }) {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="animate-spin w-10 h-10 text-gray-400"
+            className="animate-spin w-10 h-10 text-[#5B21B6]"
             viewBox="0 0 24 24"
             fill="none"
           >
             <circle
-              className="opacity-25"
+              className="opacity-20"
               cx="12"
               cy="12"
               r="10"
@@ -46,12 +46,12 @@ export default function DashboardLayout({ children }) {
               strokeWidth="4"
             />
             <path
-              className="opacity-75"
+              className="opacity-80"
               fill="currentColor"
               d="M4 12a8 8 0 018-8v8H4z"
             />
           </svg>
-          <p className="text-sm text-gray-400">Please wait…</p>
+          <p className="text-sm text-[#6B7280]">Please wait…</p>
         </div>
       </div>
     );
@@ -60,19 +60,21 @@ export default function DashboardLayout({ children }) {
   // ── Not logged in ─────────────────────────────────────────────────────────
   if (!user) {
     return (
-      <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded shadow text-center">
-        <h2 className="text-lg font-semibold text-gray-800 mb-2">
-          Session expired
-        </h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Please log in to access the dashboard.
-        </p>
-        <button
-          onClick={() => router.push("/")}
-          className="px-4 py-2 bg-gray-800 text-white rounded text-sm hover:bg-gray-700 transition"
-        >
-          Go to Homepage
-        </button>
+      <div className="min-h-[60vh] bg-gray-50 flex items-center justify-center px-4">
+        <div className="max-w-md w-full p-8 bg-white rounded-2xl border border-gray-200 shadow-sm text-center">
+          <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
+            Session expired
+          </h2>
+          <p className="text-sm text-[#6B7280] mb-5">
+            Please log in to access the dashboard.
+          </p>
+          <button
+            onClick={() => router.push("/auth/adminlogin")}
+            className="px-5 py-2.5 bg-[#5B21B6] text-white rounded-xl text-sm font-semibold hover:bg-violet-800 transition-colors"
+          >
+            Go to Login
+          </button>
+        </div>
       </div>
     );
   }
@@ -80,11 +82,15 @@ export default function DashboardLayout({ children }) {
   // ── Wrong role ────────────────────────────────────────────────────────────
   if (!["admin", "moderator"].includes(user.role)) {
     return (
-      <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded shadow text-center">
-        <h2 className="text-xl font-semibold">Access denied</h2>
-        <p className="mt-2 text-sm text-gray-600">
-          You must be an admin or moderator to view this area.
-        </p>
+      <div className="min-h-[60vh] bg-gray-50 flex items-center justify-center px-4">
+        <div className="max-w-md w-full p-8 bg-white rounded-2xl border border-gray-200 shadow-sm text-center">
+          <h2 className="text-xl font-semibold text-[#1F2937]">
+            Access denied
+          </h2>
+          <p className="mt-2 text-sm text-[#6B7280]">
+            You must be an admin or moderator to view this area.
+          </p>
+        </div>
       </div>
     );
   }
@@ -110,11 +116,11 @@ export default function DashboardLayout({ children }) {
           </div>
         </Suspense>
         <main className="w-full min-w-0 p-2 md:p-4 lg:p-6 xl:p-8">
-          <div className="print:hidden mb-6 flex items-center justify-between">
+          <div className="print:hidden mb-6 flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-3 py-2 shadow-sm">
             <div className="flex items-center gap-2">
               {/* hamburger for mobile */}
               <button
-                className="md:hidden p-2"
+                className="md:hidden p-2 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-[#5B21B6] transition-colors"
                 onClick={() => setMobileSidebarOpen(true)}
                 aria-label="Open menu"
               >
@@ -136,7 +142,7 @@ export default function DashboardLayout({ children }) {
               <button
                 type="button"
                 onClick={goBack}
-                className="inline-flex items-center gap-2 px-3 py-1 border rounded text-sm"
+                className="inline-flex items-center gap-2 px-4 py-1.5 border border-gray-200 rounded-full text-sm text-[#6B7280] hover:text-[#5B21B6] hover:border-[#5B21B6] transition-colors"
               >
                 <span className="text-sm">←</span>
                 <span>Back</span>

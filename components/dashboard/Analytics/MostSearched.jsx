@@ -139,7 +139,7 @@ export default function MostSearched() {
                     {item.term}
                   </td>
                   <td className="py-2.5 px-4 text-right">
-                    <span className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-700 font-semibold text-xs px-2 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1 bg-violet-50 text-violet-800 font-semibold text-xs px-2 py-0.5 rounded-full">
                       {item.count.toLocaleString("en-BD")}
                     </span>
                   </td>

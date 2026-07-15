@@ -130,7 +130,7 @@ export default function WaitlistManager() {
           placeholder="Search by product, email, or phone…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
         />
         <div className="flex items-center gap-2">
           <FaFilter className="text-gray-400 text-sm" />
@@ -140,7 +140,7 @@ export default function WaitlistManager() {
               onClick={() => setFilterNotified(val)}
               className={`capitalize text-sm px-3 py-1.5 rounded-lg border transition ${
                 filterNotified === val
-                  ? "bg-pink-600 text-white border-pink-600"
+                  ? "bg-violet-700 text-white border-violet-700"
                   : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
               }`}
             >
