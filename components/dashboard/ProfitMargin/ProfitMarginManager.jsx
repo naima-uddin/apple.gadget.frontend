@@ -109,7 +109,7 @@ function KpiCard({
   const trendColor =
     trend > 0 ? "text-green-600" : trend < 0 ? "text-red-600" : "text-gray-400";
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">
           {label}
@@ -665,7 +665,7 @@ export default function ProfitMarginManager() {
       {/* ── Charts section ── */}
       <div className="grid lg:grid-cols-5 gap-4">
         {/* Bar chart (3/5 width) */}
-        <div className="lg:col-span-3 bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+        <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-sm font-semibold text-gray-800">
@@ -699,7 +699,7 @@ export default function ProfitMarginManager() {
         {/* Right column: two pie charts stacked */}
         <div className="lg:col-span-2 flex flex-col gap-4">
           {/* Margin health distribution */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex-1">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex-1">
             <p className="text-sm font-semibold text-gray-800 mb-0.5">
               Margin Health
             </p>
@@ -716,7 +716,7 @@ export default function ProfitMarginManager() {
           </div>
 
           {/* Period profit contribution */}
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex-1">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 flex-1">
             <p className="text-sm font-semibold text-gray-800 mb-0.5">
               Profit Contribution
             </p>
@@ -808,7 +808,7 @@ export default function ProfitMarginManager() {
       </div>
 
       {/* ── Product table ── */}
-      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         {/* Toolbar */}
         <div className="px-5 py-4 border-b flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <input
@@ -877,7 +877,7 @@ export default function ProfitMarginManager() {
                       {product.hasVariants ? (
                         <button
                           onClick={() => toggle(product._id)}
-                          className="shrink-0 w-5 h-5 rounded flex items-center justify-center text-gray-400 hover:text-gray-600"
+                          className="shrink-0 w-5 h-5 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600"
                         >
                           <svg
                             className={`w-3 h-3 transition-transform ${isExpanded ? "rotate-90" : ""}`}
@@ -1029,7 +1029,7 @@ export default function ProfitMarginManager() {
                     {/* Edit link */}
                     <Link
                       href={`/dashboard/products/${product._id}`}
-                      className="hidden lg:block text-xs text-gray-400 hover:text-violet-500 px-2 py-1 rounded border border-transparent hover:border-violet-200 shrink-0"
+                      className="hidden lg:block text-xs text-gray-400 hover:text-violet-500 px-2 py-1 rounded-lg border border-transparent hover:border-violet-200 shrink-0"
                     >
                       Edit
                     </Link>
@@ -1122,7 +1122,7 @@ export default function ProfitMarginManager() {
       </div>
 
       {/* ── Formula legend ── */}
-      <div className="bg-white rounded-xl border border-gray-100 px-5 py-4 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4 shadow-sm">
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
           Calculation Reference
         </p>

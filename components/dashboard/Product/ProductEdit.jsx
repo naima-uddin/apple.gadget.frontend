@@ -151,7 +151,7 @@ function ImageDragGrid({ images, onReorder, onRemove }) {
             ✕
           </button>
           {i === 0 && (
-            <div className="absolute top-2 left-2 bg-violet-700 text-white text-xs px-2 py-1 rounded">
+            <div className="absolute top-2 left-2 bg-violet-700 text-white text-xs px-2 py-1 rounded-lg">
               Main
             </div>
           )}
@@ -1060,7 +1060,7 @@ export default function ProductEdit({ productId }) {
         <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-[#1F2937] work-sans">
                 Edit Product
               </h1>
               <p className="text-gray-600 mt-1">
@@ -1085,7 +1085,7 @@ export default function ProductEdit({ productId }) {
         <div className="relative bg-white rounded-xl shadow-md p-8 space-y-12 xl:pr-[26rem] xl:min-h-[220rem]">
           {/* Basic Info Tab */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
               Basic Information
             </h2>
 
@@ -1565,7 +1565,7 @@ export default function ProductEdit({ productId }) {
 
           {/* Pricing Tab */}
           <div className="hidden">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
               Pricing & Inventory
             </h2>
 
@@ -1895,7 +1895,7 @@ export default function ProductEdit({ productId }) {
 
           {/* Images Tab */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
               Product Images
             </h2>
 
@@ -1997,7 +1997,7 @@ export default function ProductEdit({ productId }) {
 
           {/* Attributes Tab */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
               Product Attributes
             </h2>
 
@@ -2035,7 +2035,7 @@ export default function ProductEdit({ productId }) {
                   if (spec.type === "header") {
                     return (
                       <div key={i} className="flex gap-2 items-center">
-                        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-violet-700 bg-violet-50 border border-violet-200 rounded px-2 py-1">
+                        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-violet-700 bg-violet-50 border border-violet-200 rounded-lg px-2 py-1">
                           Header
                         </span>
                         <input
@@ -2433,7 +2433,7 @@ export default function ProductEdit({ productId }) {
 
           {/* Reviews Tab */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
               Customer Reviews
             </h2>
 
@@ -2754,7 +2754,7 @@ export default function ProductEdit({ productId }) {
 
           {/* SEO Tab */}
           <div className="hidden">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
               SEO & Search Optimization
             </h2>
 

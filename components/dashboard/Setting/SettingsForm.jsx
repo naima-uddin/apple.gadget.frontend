@@ -13,7 +13,7 @@ function Section({
   children,
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
       <div className="px-5 py-3.5 border-b border-gray-100 flex items-center gap-2">
         <h2 className="font-semibold text-gray-800 text-sm">{title}</h2>
         {badge && (
@@ -185,7 +185,7 @@ export default function SettingsForm() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Settings</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Settings</h1>
           <p className="text-xs text-gray-400 mt-0.5">
             Store ও footer settings manage করুন
           </p>

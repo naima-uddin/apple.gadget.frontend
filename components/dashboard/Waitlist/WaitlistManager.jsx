@@ -97,7 +97,7 @@ export default function WaitlistManager() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans flex items-center gap-2">
             <FaBell className="text-amber-500" /> Product Waitlist
           </h1>
           <p className="text-sm text-gray-500 mt-1">
@@ -243,7 +243,7 @@ export default function WaitlistManager() {
                           <button
                             onClick={() => markNotified(entry._id)}
                             title="Mark as notified"
-                            className="text-xs text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded hover:bg-green-100 transition"
+                            className="text-xs text-green-700 bg-green-50 border border-green-200 px-2 py-1 rounded-lg hover:bg-green-100 transition"
                           >
                             Mark Notified
                           </button>

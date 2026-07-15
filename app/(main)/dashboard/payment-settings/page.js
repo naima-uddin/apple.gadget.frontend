@@ -298,7 +298,7 @@ export default function PaymentSettingsPage() {
   return (
     <div className="max-w-2xl mx-auto py-4">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900">
+        <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
           Mobile Banking Settings
         </h1>
         <p className="text-sm text-gray-500 mt-1">

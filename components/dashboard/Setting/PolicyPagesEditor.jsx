@@ -546,7 +546,7 @@ export default function PolicyPagesEditor() {
               <span className="text-sm font-medium text-gray-700">
                 {activeTabConfig?.icon} {activeTabConfig?.label} পেজ
               </span>
-              <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">
+              <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-lg">
                 /
                 {activeTab === "faq"
                   ? "faq"

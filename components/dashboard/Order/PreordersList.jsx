@@ -86,7 +86,7 @@ export default function PreordersList() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
           <h2 className="text-lg font-semibold text-gray-800">
@@ -100,7 +100,7 @@ export default function PreordersList() {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Search by product, customer, phone, or email…"
-          className="border px-3 py-2 rounded w-full sm:w-80 text-sm"
+          className="border px-3 py-2 rounded-lg w-full sm:w-80 text-sm"
         />
       </div>
 
@@ -194,7 +194,7 @@ export default function PreordersList() {
 
               <Link
                 href={`/dashboard/orders/${row.orderId}`}
-                className="text-xs px-3 py-1.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
+                className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
               >
                 {formatOrderId(row.orderId)}
               </Link>

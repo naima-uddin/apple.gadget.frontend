@@ -52,7 +52,7 @@ function SummaryCard({ icon, label, value, tint }) {
       <div className="text-2xl">{icon}</div>
       <div>
         <p className="text-xs text-gray-500">{label}</p>
-        <p className="text-2xl font-bold text-gray-900">{value}</p>
+        <p className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">{value}</p>
       </div>
     </div>
   );

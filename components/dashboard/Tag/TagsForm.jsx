@@ -242,18 +242,18 @@ export default function TagsForm() {
 
   if (loading)
     return (
-      <div className="max-w-5xl mx-auto bg-white p-6 rounded shadow text-center">
+      <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow text-center">
         Loading tags…
       </div>
     );
 
   return (
-    <div className="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold">Mega Menu Tags</h2>
         <button
           type="button"
-          className="px-3 py-1.5 border rounded text-sm shrink-0"
+          className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm shrink-0"
           onClick={handleAddTag}
         >
           + Add tag
@@ -264,7 +264,7 @@ export default function TagsForm() {
         {(tags || []).map((tag, idx) => (
           <div
             key={tag._localId || idx}
-            className="border rounded p-3 grid grid-cols-1 md:grid-cols-12 gap-2 items-center"
+            className="border border-gray-200 rounded-lg p-3 grid grid-cols-1 md:grid-cols-12 gap-2 items-center"
           >
             <label className="md:col-span-1 flex items-center gap-2 text-sm">
               <input
@@ -287,7 +287,7 @@ export default function TagsForm() {
               ref={(el) => {
                 if (el) nameInputRefs.current[tag._localId] = el;
               }}
-              className="md:col-span-3 border px-3 py-2 rounded"
+              className="md:col-span-3 border px-3 py-2 rounded-lg"
               value={tag.name || ""}
               placeholder="Tag name"
               onChange={(e) =>
@@ -300,7 +300,7 @@ export default function TagsForm() {
             />
 
             <input
-              className="md:col-span-3 border px-3 py-2 rounded"
+              className="md:col-span-3 border px-3 py-2 rounded-lg"
               value={tag.href || ""}
               placeholder="/tag/your-tag"
               onChange={(e) =>
@@ -313,7 +313,7 @@ export default function TagsForm() {
             />
 
             <input
-              className="md:col-span-1 border px-3 py-2 rounded"
+              className="md:col-span-1 border px-3 py-2 rounded-lg"
               value={tag.icon || ""}
               placeholder="🏷️"
               onChange={(e) =>
@@ -326,7 +326,7 @@ export default function TagsForm() {
             />
 
             <input
-              className="md:col-span-2 border px-3 py-2 rounded"
+              className="md:col-span-2 border px-3 py-2 rounded-lg"
               value={tag.color || ""}
               placeholder="text-violet-700"
               onChange={(e) =>
@@ -341,7 +341,7 @@ export default function TagsForm() {
             <div className="md:col-span-2 flex items-center gap-2 justify-end">
               <button
                 type="button"
-                className="px-2 py-1 border rounded text-xs"
+                className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                 onClick={() => {
                   if (idx === 0) return;
                   setTags((prev) => {
@@ -355,7 +355,7 @@ export default function TagsForm() {
               </button>
               <button
                 type="button"
-                className="px-2 py-1 border rounded text-xs"
+                className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                 onClick={() => {
                   setTags((prev) => {
                     if (idx >= prev.length - 1) return prev;
@@ -369,7 +369,7 @@ export default function TagsForm() {
               </button>
               <button
                 type="button"
-                className="px-2 py-1 border rounded text-xs text-red-600 border-red-200"
+                className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600 border-red-200"
                 onClick={() =>
                   setTags((prev) =>
                     prev
@@ -389,14 +389,14 @@ export default function TagsForm() {
         {user?.role === "admin" ? (
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-violet-700 text-white rounded"
+            className="px-4 py-2 bg-violet-700 text-white rounded-lg"
             disabled={saving}
           >
             {saving ? "Saving…" : "Save tags"}
           </button>
         ) : (
           <button
-            className="px-4 py-2 border rounded bg-gray-50 text-gray-500"
+            className="px-4 py-2 border border-gray-200 rounded-lg bg-gray-50 text-gray-500"
             disabled
           >
             Read-only
@@ -404,7 +404,7 @@ export default function TagsForm() {
         )}
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border border-gray-200 rounded-lg"
         >
           Reset
         </button>

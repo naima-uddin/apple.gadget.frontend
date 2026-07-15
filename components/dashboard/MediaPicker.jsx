@@ -224,7 +224,7 @@ export default function MediaPicker({
                       />
                       {isRecent && !sel && (
                         <div className="absolute top-1 left-1">
-                          <span className="bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow">
+                          <span className="bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-lg shadow">
                             New
                           </span>
                         </div>

@@ -200,7 +200,7 @@ export default function AddonsPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Addons</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Addons</h1>
         <p className="text-sm text-gray-500 mt-1">
           Extend your store with powerful integrations
         </p>

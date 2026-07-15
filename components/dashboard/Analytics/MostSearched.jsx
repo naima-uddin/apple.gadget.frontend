@@ -87,7 +87,7 @@ export default function MostSearched() {
           <select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="text-sm border rounded px-2 py-1.5"
+            className="text-sm border border-gray-200 rounded-lg px-2 py-1.5"
           >
             <option value={10}>Top 10</option>
             <option value={20}>Top 20</option>
@@ -95,7 +95,7 @@ export default function MostSearched() {
           </select>
           <button
             onClick={fetchData}
-            className="px-3 py-1.5 text-sm border rounded"
+            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg"
           >
             Refresh
           </button>
@@ -103,7 +103,7 @@ export default function MostSearched() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-xl border p-8 text-center text-gray-500">
+        <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-500">
           Loading…
         </div>
       ) : error ? (
@@ -111,14 +111,14 @@ export default function MostSearched() {
           {error}
         </div>
       ) : items.length === 0 ? (
-        <div className="bg-white rounded-xl border p-8 text-center text-gray-400 text-sm">
+        <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-400 text-sm">
           No search data yet. Searches made on the storefront will appear here.
         </div>
       ) : (
-        <div className="bg-white rounded-xl border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase text-gray-500 bg-gray-50 border-b">
+              <tr className="text-left bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                 <th className="py-2.5 px-4 w-8">#</th>
                 <th className="py-2.5 px-4">Search Term</th>
                 <th className="py-2.5 px-4 text-right">Count</th>
@@ -150,7 +150,7 @@ export default function MostSearched() {
                     <button
                       onClick={() => handleDelete(item)}
                       disabled={deletingId === item._id}
-                      className="text-xs px-2 py-1 border border-red-200 text-red-600 rounded hover:bg-red-50 disabled:opacity-50"
+                      className="text-xs px-2 py-1 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 disabled:opacity-50"
                     >
                       {deletingId === item._id ? "…" : "Delete"}
                     </button>

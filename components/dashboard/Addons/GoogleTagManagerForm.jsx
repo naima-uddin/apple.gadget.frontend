@@ -88,7 +88,7 @@ export default function GoogleTagManagerForm() {
             </svg>
             Back
           </button>
-          <h1 className="text-xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
             Edit Google Tag Manager
           </h1>
         </div>
@@ -145,7 +145,7 @@ export default function GoogleTagManagerForm() {
             <li>Select your account and container</li>
             <li>
               Your Container ID appears in the top right, format:{" "}
-              <code className="bg-amber-100 px-1 rounded">GTM-XXXXXXX</code>
+              <code className="bg-amber-100 px-1 rounded-lg">GTM-XXXXXXX</code>
             </li>
           </ol>
         </div>

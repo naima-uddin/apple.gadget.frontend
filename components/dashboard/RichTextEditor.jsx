@@ -77,9 +77,9 @@ export default function RichTextEditor({
   };
 
   const btn =
-    "px-2 py-1 border border-gray-300 rounded text-sm hover:bg-gray-100 transition select-none";
+    "px-2 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition select-none";
   const activeBtn =
-    "px-2 py-1 border rounded text-sm transition select-none bg-violet-100 border-violet-400 text-violet-800";
+    "px-2 py-1 border border-gray-200 rounded-lg text-sm transition select-none bg-violet-100 border-violet-400 text-violet-800";
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">

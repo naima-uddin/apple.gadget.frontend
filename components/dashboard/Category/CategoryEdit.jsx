@@ -199,13 +199,13 @@ export default function CategoryEdit({ categoryId }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold">Edit category</h2>
         <div>
           <button
             onClick={() => router.push("/dashboard/categories")}
-            className="px-3 py-2 border rounded text-sm shrink-0"
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm shrink-0"
           >
             Back
           </button>
@@ -223,7 +223,7 @@ export default function CategoryEdit({ categoryId }) {
               onChange={(e) =>
                 setCategory((c) => ({ ...c, name: e.target.value }))
               }
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded-lg"
             />
           </div>
 
@@ -239,7 +239,7 @@ export default function CategoryEdit({ categoryId }) {
               onChange={(e) =>
                 setCategory((c) => ({ ...c, description: e.target.value }))
               }
-              className="w-full border px-3 py-2 rounded h-24 resize-none"
+              className="w-full border px-3 py-2 rounded-lg h-24 resize-none"
               placeholder={`e.g. Browse our best ${category.name || "products"} with fast delivery across Bangladesh.`}
             />
           </div>
@@ -250,7 +250,7 @@ export default function CategoryEdit({ categoryId }) {
               {(category.images || []).map((img, idx) => (
                 <div
                   key={idx}
-                  className="relative w-24 h-24 bg-gray-50 border rounded overflow-hidden"
+                  className="relative w-24 h-24 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden"
                 >
                   <img
                     src={img.url}
@@ -267,7 +267,7 @@ export default function CategoryEdit({ categoryId }) {
                 </div>
               ))}
 
-              <label className="w-24 h-24 flex items-center justify-center border border-dashed rounded cursor-pointer text-sm text-gray-500 bg-white">
+              <label className="w-24 h-24 flex items-center justify-center border border-dashed rounded-lg cursor-pointer text-sm text-gray-500 bg-white">
                 <input
                   type="file"
                   accept="image/*"
@@ -283,7 +283,7 @@ export default function CategoryEdit({ categoryId }) {
               <button
                 type="button"
                 onClick={() => setShowPicker(true)}
-                className="w-24 h-24 flex flex-col items-center justify-center border border-dashed border-violet-300 rounded cursor-pointer text-xs text-violet-500 bg-violet-50 hover:bg-violet-100 gap-1"
+                className="w-24 h-24 flex flex-col items-center justify-center border border-dashed border-violet-300 rounded-lg cursor-pointer text-xs text-violet-500 bg-violet-50 hover:bg-violet-100 gap-1"
               >
                 <span className="text-lg">🖼</span>Library
               </button>
@@ -313,7 +313,7 @@ export default function CategoryEdit({ categoryId }) {
               <select
                 value={selectedPath[0] || ""}
                 onChange={(e) => setSelectedPath(e.target.value ? [e.target.value] : [])}
-                className="w-full border px-3 py-2 rounded"
+                className="w-full border px-3 py-2 rounded-lg"
               >
                 <option value="">(no parent / top level)</option>
                 {tree
@@ -336,7 +336,7 @@ export default function CategoryEdit({ categoryId }) {
                       if (e.target.value) newPath.push(e.target.value);
                       setSelectedPath(newPath);
                     }}
-                    className="w-full border px-3 py-2 rounded"
+                    className="w-full border px-3 py-2 rounded-lg"
                   >
                     <option value="">(direct child of selected)</option>
                     {children.map((n) => (
@@ -358,7 +358,7 @@ export default function CategoryEdit({ categoryId }) {
               onChange={(e) =>
                 setCategory((c) => ({ ...c, order: Number(e.target.value) }))
               }
-              className="w-40 border px-3 py-2 rounded"
+              className="w-40 border px-3 py-2 rounded-lg"
             />
           </div>
 
@@ -378,14 +378,14 @@ export default function CategoryEdit({ categoryId }) {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="px-3 py-2 bg-violet-700 text-white rounded"
+              className="px-3 py-2 bg-violet-700 text-white rounded-lg"
               disabled={saving}
             >
               {saving ? "Saving…" : "Save"}
             </button>
             <button
               onClick={() => router.push("/dashboard/categories")}
-              className="px-3 py-2 border rounded"
+              className="px-3 py-2 border border-gray-200 rounded-lg"
             >
               Cancel
             </button>

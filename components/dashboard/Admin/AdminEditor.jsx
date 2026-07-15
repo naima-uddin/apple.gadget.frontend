@@ -146,7 +146,7 @@ function GroupCheckbox({ allChecked, someChecked, onChange }) {
       type="checkbox"
       checked={allChecked}
       onChange={onChange}
-      className="h-4 w-4 rounded border-gray-300 text-violet-700 accent-violet-700"
+      className="h-4 w-4 rounded-lg border-gray-300 text-violet-700 accent-violet-700"
     />
   );
 }
@@ -250,14 +250,14 @@ export default function AdminEditor({ adminId }) {
   const allChecked = ALL_KEYS.every((k) => checkedPermissions.includes(k));
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold">
           {adminId === "new" ? "Create admin / moderator" : "Edit account"}
         </h2>
         <button
           onClick={() => router.push("/dashboard/authorized")}
-          className="px-3 py-2 border rounded text-sm shrink-0"
+          className="px-3 py-2 border border-gray-200 rounded-lg text-sm shrink-0"
         >
           Back
         </button>
@@ -272,7 +272,7 @@ export default function AdminEditor({ adminId }) {
             <input
               value={admin.name || ""}
               onChange={(e) => setAdmin((a) => ({ ...a, name: e.target.value }))}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded-lg"
             />
           </div>
           <div>
@@ -280,7 +280,7 @@ export default function AdminEditor({ adminId }) {
             <input
               value={admin.email || ""}
               onChange={(e) => setAdmin((a) => ({ ...a, email: e.target.value }))}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded-lg"
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -289,7 +289,7 @@ export default function AdminEditor({ adminId }) {
               <select
                 value={admin.role}
                 onChange={(e) => setAdmin((a) => ({ ...a, role: e.target.value }))}
-                className="w-full border px-3 py-2 rounded"
+                className="w-full border px-3 py-2 rounded-lg"
               >
                 <option value="admin">Admin</option>
                 <option value="moderator">Moderator</option>
@@ -302,7 +302,7 @@ export default function AdminEditor({ adminId }) {
                 onChange={(e) =>
                   setAdmin((a) => ({ ...a, isActive: e.target.value === "active" }))
                 }
-                className="w-full border px-3 py-2 rounded"
+                className="w-full border px-3 py-2 rounded-lg"
               >
                 <option value="active">Active</option>
                 <option value="disabled">Disabled</option>
@@ -357,7 +357,7 @@ export default function AdminEditor({ adminId }) {
                               type="checkbox"
                               checked={checkedPermissions.includes(perm.key)}
                               onChange={(e) => togglePermission(perm.key, e.target.checked)}
-                              className="h-4 w-4 rounded border-gray-300 text-violet-700 accent-violet-700"
+                              className="h-4 w-4 rounded-lg border-gray-300 text-violet-700 accent-violet-700"
                             />
                             {perm.label}
                           </label>
@@ -381,7 +381,7 @@ export default function AdminEditor({ adminId }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder={adminId !== "new" ? "Leave blank to keep current" : "Enter password"}
-                  className="w-full border px-3 py-2 rounded pr-10"
+                  className="w-full border px-3 py-2 rounded-lg pr-10"
                 />
                 <button
                   type="button"
@@ -400,7 +400,7 @@ export default function AdminEditor({ adminId }) {
                   setPassword(p);
                   setShowPassword(true);
                 }}
-                className="px-3 py-2 border border-violet-300 text-violet-700 rounded text-sm hover:bg-violet-50 whitespace-nowrap font-medium"
+                className="px-3 py-2 border border-violet-300 text-violet-700 rounded-lg text-sm hover:bg-violet-50 whitespace-nowrap font-medium"
                 title="Generate a strong random password"
               >
                 ✦ Generate
@@ -448,14 +448,14 @@ export default function AdminEditor({ adminId }) {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="px-3 py-2 bg-violet-700 text-white rounded"
+              className="px-3 py-2 bg-violet-700 text-white rounded-lg"
               disabled={saving}
             >
               {saving ? "Saving…" : "Save"}
             </button>
             <button
               onClick={() => router.push("/dashboard/authorized")}
-              className="px-3 py-2 border rounded"
+              className="px-3 py-2 border border-gray-200 rounded-lg"
             >
               Cancel
             </button>

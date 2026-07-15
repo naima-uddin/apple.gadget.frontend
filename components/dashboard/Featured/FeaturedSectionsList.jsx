@@ -114,7 +114,7 @@ export default function FeaturedSectionsList() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
             Featured Sections
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">

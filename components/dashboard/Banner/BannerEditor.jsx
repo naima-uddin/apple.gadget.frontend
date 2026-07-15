@@ -102,7 +102,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow space-y-5">
-      <h2 className="text-2xl font-bold text-gray-800">
+      <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
         {isEdit ? "Edit Banner Slide" : "New Banner Slide"}
       </h2>
 
@@ -154,7 +154,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
           )}
           {image.url && !uploading && (
             <div className="absolute bottom-2 right-2">
-              <span className="bg-black/50 text-white text-xs px-2 py-1 rounded">
+              <span className="bg-black/50 text-white text-xs px-2 py-1 rounded-lg">
                 Click to change
               </span>
             </div>

@@ -120,14 +120,14 @@ export default function Dashboard() {
 
   if (authLoading)
     return (
-      <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded shadow text-center text-gray-500">
+      <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm text-center text-gray-500">
         Checking authentication…
       </div>
     );
 
   if (!user || !["admin", "moderator"].includes(user.role)) {
     return (
-      <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded shadow text-center">
+      <div className="max-w-3xl mx-auto mt-12 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm text-center">
         <h2 className="text-xl font-semibold">Access denied</h2>
         <p className="mt-2 text-sm text-gray-600">
           You must be an admin or moderator to view this page.
@@ -135,11 +135,11 @@ export default function Dashboard() {
         <div className="mt-4 flex justify-center gap-3">
           <Link
             href="/adminlogin"
-            className="px-4 py-2 bg-[#5B21B6] text-white rounded"
+            className="px-4 py-2 bg-[#5B21B6] text-white rounded-lg"
           >
             Go to admin login
           </Link>
-          <Link href="/" className="px-4 py-2 border rounded text-sm">
+          <Link href="/" className="px-4 py-2 border border-gray-200 rounded-lg text-sm">
             Return to site
           </Link>
         </div>
@@ -276,17 +276,17 @@ export default function Dashboard() {
         <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             onClick={fetchOverview}
-            className="px-3 py-2 border rounded text-sm"
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm"
           >
             Refresh
           </button>
           <button
             onClick={handleLogout}
-            className="px-3 py-2 bg-red-50 border border-red-200 text-red-700 rounded"
+            className="px-3 py-2 bg-red-50 border border-red-200 text-red-700 rounded-lg"
           >
             Sign out
           </button>
-          <Link href="/" className="px-3 py-2 border rounded text-sm">
+          <Link href="/" className="px-3 py-2 border border-gray-200 rounded-lg text-sm">
             View site
           </Link>
         </div>
@@ -318,7 +318,7 @@ export default function Dashboard() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {statCards.map((card) => (
-              <div key={card.label} className="bg-white rounded-xl border p-4">
+              <div key={card.label} className="bg-white rounded-2xl border border-gray-100 p-4">
                 <p className="text-xs uppercase tracking-wide text-gray-500">
                   {card.label}
                 </p>
@@ -329,12 +329,12 @@ export default function Dashboard() {
             ))}
           </div>
 
-          <div className="bg-white rounded-xl border p-5">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5">
             <div className="flex justify-between items-center gap-4 mb-4">
               <h2 className="text-base font-semibold">Order Reports</h2>
               <Link
                 href="/dashboard/orders"
-                className="text-sm px-3 py-1.5 border rounded"
+                className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg"
               >
                 Open Orders
               </Link>
@@ -406,7 +406,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border p-5">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5">
             <h2 className="text-base font-semibold mb-4">Order Flow Status</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               <div className="h-72 rounded-lg border bg-gray-50 p-3">
@@ -485,12 +485,12 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div className="xl:col-span-2 bg-white rounded-xl border p-5">
+            <div className="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-5">
               <div className="flex justify-between items-center gap-4 mb-4">
                 <h2 className="text-base font-semibold">Recent Orders</h2>
                 <Link
                   href="/dashboard/orders"
-                  className="text-sm px-3 py-1.5 border rounded"
+                  className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg"
                 >
                   Manage all
                 </Link>
@@ -563,32 +563,32 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl border p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
               <h2 className="text-base font-semibold">Action Center</h2>
               <p className="mt-1 text-sm text-gray-500">
                 Use these counts so operations continue clearly even if owner is
                 away.
               </p>
               <div className="mt-4 space-y-2">
-                <div className="flex justify-between rounded border p-3 bg-yellow-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-yellow-50 text-sm">
                   <span>Pending orders</span>
                   <span className="font-semibold">
                     {actionCenter.pendingOrders ?? 0}
                   </span>
                 </div>
-                <div className="flex justify-between rounded border p-3 bg-violet-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-violet-50 text-sm">
                   <span>Processing orders</span>
                   <span className="font-semibold">
                     {actionCenter.processingOrders ?? 0}
                   </span>
                 </div>
-                <div className="flex justify-between rounded border p-3 bg-red-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-red-50 text-sm">
                   <span>Unpaid online orders</span>
                   <span className="font-semibold">
                     {actionCenter.unpaidOnlineOrders ?? 0}
                   </span>
                 </div>
-                <div className="flex justify-between rounded border p-3 bg-orange-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-orange-50 text-sm">
                   <span>Low stock products</span>
                   <span className="font-semibold">
                     {actionCenter.lowStockCount ?? 0}
@@ -598,25 +598,25 @@ export default function Dashboard() {
               <div className="mt-4 grid grid-cols-2 gap-2">
                 <Link
                   href="/dashboard/orders"
-                  className="px-3 py-2 text-sm rounded border text-center"
+                  className="px-3 py-2 text-sm rounded-lg border text-center"
                 >
                   Orders
                 </Link>
                 <Link
                   href="/dashboard/products"
-                  className="px-3 py-2 text-sm rounded border text-center"
+                  className="px-3 py-2 text-sm rounded-lg border text-center"
                 >
                   Products
                 </Link>
                 <Link
                   href="/dashboard/customers"
-                  className="px-3 py-2 text-sm rounded border text-center"
+                  className="px-3 py-2 text-sm rounded-lg border text-center"
                 >
                   Customers
                 </Link>
                 <Link
                   href="/dashboard/settings"
-                  className="px-3 py-2 text-sm rounded border text-center"
+                  className="px-3 py-2 text-sm rounded-lg border text-center"
                 >
                   Settings
                 </Link>
@@ -625,7 +625,7 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl border p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
               <h2 className="text-base font-semibold mb-4">
                 Top Selling Products (30 Days)
               </h2>
@@ -662,7 +662,7 @@ export default function Dashboard() {
                 {topSellingProducts.map((item, index) => (
                   <div
                     key={`${item._id || item.title}-${index}`}
-                    className="flex items-center justify-between rounded border p-3 text-sm"
+                    className="flex items-center justify-between rounded-lg border p-3 text-sm"
                   >
                     <div className="min-w-0">
                       <p className="font-medium text-gray-800 truncate">
@@ -683,7 +683,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="xl:col-span-2 bg-white rounded-xl border p-5">
+            <div className="xl:col-span-2 bg-white rounded-2xl border border-gray-100 p-5">
               <h2 className="text-base font-semibold mb-4">
                 Hourly Revenue (Today)
               </h2>
@@ -727,7 +727,7 @@ export default function Dashboard() {
 
           {/* Monthly Revenue Trend */}
           {monthlyRevenue.length > 0 && (
-            <div className="bg-white rounded-xl border p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
               <h2 className="text-base font-semibold mb-4">
                 Monthly Revenue Trend (12 Months)
               </h2>
@@ -771,7 +771,7 @@ export default function Dashboard() {
           {/* Customer Stats + Payment Breakdown */}
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* Customer Stats */}
-            <div className="bg-white rounded-xl border p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
               <h2 className="text-base font-semibold mb-4">
                 Customer Insights (Last 30 Days)
               </h2>
@@ -800,13 +800,13 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="space-y-2">
-                <div className="flex justify-between rounded border p-3 bg-gray-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-gray-50 text-sm">
                   <span className="text-gray-600">Total Orders Delivered</span>
                   <span className="font-semibold">
                     {orderFlow.delivered ?? 0}
                   </span>
                 </div>
-                <div className="flex justify-between rounded border p-3 bg-gray-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-gray-50 text-sm">
                   <span className="text-gray-600">Cancellation Rate</span>
                   <span className="font-semibold text-red-600">
                     {orderFlow.created > 0
@@ -818,7 +818,7 @@ export default function Dashboard() {
             </div>
 
             {/* Payment Method Breakdown */}
-            <div className="bg-white rounded-xl border p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 p-5">
               <h2 className="text-base font-semibold mb-4">
                 Payment Methods (Last 30 Days)
               </h2>
@@ -876,7 +876,7 @@ export default function Dashboard() {
                       return (
                         <div
                           key={p.method}
-                          className="flex items-center justify-between text-sm rounded border p-2.5"
+                          className="flex items-center justify-between text-sm rounded-lg border p-2.5"
                         >
                           <div className="flex items-center gap-2">
                             <span
@@ -907,12 +907,12 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border p-5">
+          <div className="bg-white rounded-2xl border border-gray-100 p-5">
             <div className="flex justify-between items-center gap-4 mb-4">
               <h2 className="text-base font-semibold">Stock Update</h2>
               <Link
                 href="/dashboard/products"
-                className="text-sm px-3 py-1.5 border rounded"
+                className="text-sm px-3 py-1.5 border border-gray-200 rounded-lg"
               >
                 Manage inventory
               </Link>
@@ -957,7 +957,7 @@ export default function Dashboard() {
                       </div>
                       <Link
                         href={`/dashboard/products/${item._id}`}
-                        className="px-2 py-1 border rounded text-xs"
+                        className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                       >
                         Edit
                       </Link>
@@ -991,7 +991,7 @@ export default function Dashboard() {
                       </div>
                       <Link
                         href={`/dashboard/products/${item._id}`}
-                        className="px-2 py-1 border rounded text-xs"
+                        className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                       >
                         Edit
                       </Link>

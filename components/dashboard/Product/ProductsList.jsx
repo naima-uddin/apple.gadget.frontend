@@ -196,7 +196,7 @@ export default function ProductsList() {
   };
 
   return (
-    <div className="mx-auto mt-6 bg-white p-4 sm:p-6 rounded shadow">
+    <div className="mx-auto mt-6 bg-white p-4 sm:p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
         <h2 className="text-lg font-semibold">
           {viewTrash ? "Trash" : "Products"}
@@ -215,7 +215,7 @@ export default function ProductsList() {
                 setPage(1);
                 setSelectedIds([]);
               }}
-              className={`px-3 py-2 rounded text-sm border ${viewTrash ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 hover:bg-gray-50"}`}
+              className={`px-3 py-2 rounded-lg text-sm border ${viewTrash ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 hover:bg-gray-50"}`}
             >
               <FaTrash className="inline-block mr-1" />
               {viewTrash ? "Back to Products" : "Trash"}
@@ -224,7 +224,7 @@ export default function ProductsList() {
           {!viewTrash && (
             <Link
               href="/dashboard/products/new"
-              className="px-3 py-2 bg-green-600 text-white rounded text-sm text-center"
+              className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm text-center"
             >
               Create product
             </Link>
@@ -244,7 +244,7 @@ export default function ProductsList() {
             setSelectedChild(null);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded"
+          className="border px-3 py-2 rounded-lg"
         >
           <option value="">All categories</option>
           {categories.map((c) => (
@@ -266,7 +266,7 @@ export default function ProductsList() {
             setSelectedChild(null);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded"
+          className="border px-3 py-2 rounded-lg"
         >
           <option value="">Sub category</option>
           {(selectedMain?.children || []).map((c) => (
@@ -286,7 +286,7 @@ export default function ProductsList() {
             setSelectedChild(child);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded"
+          className="border px-3 py-2 rounded-lg"
         >
           <option value="">Sub‑sub category</option>
           {(selectedSub?.children || []).map((c) => (
@@ -303,7 +303,7 @@ export default function ProductsList() {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="border px-3 py-2 rounded bg-white"
+            className="border px-3 py-2 rounded-lg bg-white"
           >
             <option value="">All statuses</option>
             <option value="draft">📝 Drafts</option>
@@ -320,13 +320,13 @@ export default function ProductsList() {
             setPage(1);
           }}
           placeholder="Search products"
-          className="border px-3 py-2 rounded flex-1 min-w-45"
+          className="border px-3 py-2 rounded-lg flex-1 min-w-45"
         />
       </div>
 
       {/* Bulk action bar — appears once one or more rows are selected (admin only) */}
       {user?.role === "admin" && selectedIds.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-violet-50 border border-violet-100 rounded">
+        <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-violet-50 border border-violet-100 rounded-lg">
           <span className="text-sm font-medium text-gray-700">
             {selectedIds.length} selected
           </span>
@@ -335,7 +335,7 @@ export default function ProductsList() {
               <button
                 onClick={() => restoreFromTrash(selectedIds)}
                 disabled={bulkBusy}
-                className="px-3 py-1.5 rounded text-xs text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                className="px-3 py-1.5 rounded-lg text-xs text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
               >
                 <FaTrashRestore className="inline-block mr-1" />
                 Restore
@@ -344,7 +344,7 @@ export default function ProductsList() {
                 <button
                   onClick={() => permanentDelete(selectedIds)}
                   disabled={bulkBusy}
-                  className="px-3 py-1.5 rounded text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+                  className="px-3 py-1.5 rounded-lg text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
                 >
                   <FaTrash className="inline-block mr-1" />
                   Delete permanently
@@ -355,7 +355,7 @@ export default function ProductsList() {
             <button
               onClick={() => moveToTrash(selectedIds)}
               disabled={bulkBusy}
-              className="px-3 py-1.5 rounded text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+              className="px-3 py-1.5 rounded-lg text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
             >
               <FaTrash className="inline-block mr-1" />
               Move to Trash
@@ -364,7 +364,7 @@ export default function ProductsList() {
           <button
             onClick={() => setSelectedIds([])}
             disabled={bulkBusy}
-            className="px-3 py-1.5 rounded text-xs border text-gray-600 hover:bg-gray-50 disabled:opacity-50"
+            className="px-3 py-1.5 rounded-lg text-xs border text-gray-600 hover:bg-gray-50 disabled:opacity-50"
           >
             Clear
           </button>
@@ -430,10 +430,10 @@ export default function ProductsList() {
                           <img
                             src={p.images[0].url}
                             alt=""
-                            className="w-12 h-12 object-cover rounded"
+                            className="w-12 h-12 object-cover rounded-lg"
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
+                          <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400">
                             No image
                           </div>
                         )}
@@ -444,7 +444,7 @@ export default function ProductsList() {
                           </div>
                           {viewTrash && daysLeft !== null && (
                             <span
-                              className={`inline-block mt-1 px-2 py-0.5 rounded text-xs font-medium ${daysLeft <= 3 ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-700"}`}
+                              className={`inline-block mt-1 px-2 py-0.5 rounded-lg text-xs font-medium ${daysLeft <= 3 ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-700"}`}
                             >
                               {daysLeft > 0
                                 ? `🗑 ${daysLeft} of ${TRASH_RETENTION_DAYS} days left`
@@ -471,7 +471,7 @@ export default function ProductsList() {
                     </td>
                     <td className="py-3 px-3">
                       <span
-                        className={`px-2 py-1 text-xs rounded ${p.status === "published" ? "bg-green-50 text-green-700" : p.status === "draft" ? "bg-yellow-50 text-yellow-700" : "bg-gray-50 text-gray-700"}`}
+                        className={`px-2 py-1 text-xs rounded-lg ${p.status === "published" ? "bg-green-50 text-green-700" : p.status === "draft" ? "bg-yellow-50 text-yellow-700" : "bg-gray-50 text-gray-700"}`}
                       >
                         {p.status}
                       </span>
@@ -484,7 +484,7 @@ export default function ProductsList() {
                               title="Restore this product"
                               onClick={() => restoreFromTrash([id])}
                               disabled={bulkBusy}
-                              className="px-2 py-1 border rounded text-xs text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
                             >
                               <FaTrashRestore className="inline-block mr-1" />
                               Restore
@@ -494,7 +494,7 @@ export default function ProductsList() {
                                 title="Delete permanently"
                                 onClick={() => permanentDelete([id])}
                                 disabled={bulkBusy}
-                                className="px-2 py-1 border rounded text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
+                                className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
                               >
                                 <FaTrash className="inline-block mr-1" />
                                 Delete
@@ -504,7 +504,7 @@ export default function ProductsList() {
                         ) : (
                           <>
                             <Link
-                              className="px-2 py-1 border rounded text-xs"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                               href={`/dashboard/products/${p._id}`}
                             >
                               Edit
@@ -513,7 +513,7 @@ export default function ProductsList() {
                               title="Duplicate this product"
                               onClick={() => handleDuplicate(p._id)}
                               disabled={duplicatingId === p._id}
-                              className="px-2 py-1 border rounded text-xs text-gray-600 hover:text-violet-700 disabled:opacity-50"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700 disabled:opacity-50"
                             >
                               <FaClone className="inline-block mr-1" />
                               {duplicatingId === p._id
@@ -525,7 +525,7 @@ export default function ProductsList() {
                                 title="Move to Trash"
                                 onClick={() => moveToTrash([id])}
                                 disabled={bulkBusy}
-                                className="px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
+                                className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
                               >
                                 <FaTrash className="inline-block mr-1" />
                                 Trash
@@ -538,7 +538,7 @@ export default function ProductsList() {
                                   `/dashboard/waitlist?productId=${p._id}`,
                                 )
                               }
-                              className="px-2 py-1 border rounded text-xs text-gray-600 hover:text-violet-700"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700"
                             >
                               <FaBell className="inline-block mr-1" />
                               Waitlist
@@ -550,7 +550,7 @@ export default function ProductsList() {
                                   `/dashboard/reviews?productId=${p._id}`,
                                 )
                               }
-                              className="px-2 py-1 border rounded text-xs text-gray-600 hover:text-violet-700"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700"
                             >
                               <FaStar className="inline-block mr-1" />
                               Reviews
@@ -562,7 +562,7 @@ export default function ProductsList() {
                                   `/dashboard/questions?productId=${p._id}`,
                                 )
                               }
-                              className="px-2 py-1 border rounded text-xs text-gray-600 hover:text-violet-700"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700"
                             >
                               <FaQuestionCircle className="inline-block mr-1" />
                               Q&A
@@ -593,7 +593,7 @@ export default function ProductsList() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="px-4 py-2 border rounded text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-200 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
           >
             ← Previous
           </button>
@@ -603,7 +603,7 @@ export default function ProductsList() {
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="px-4 py-2 border rounded text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-200 rounded-lg text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-50"
           >
             Next →
           </button>

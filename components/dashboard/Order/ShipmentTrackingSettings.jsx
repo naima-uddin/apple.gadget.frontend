@@ -140,7 +140,7 @@ function CourierManager({ couriers, onChange }) {
   };
 
   return (
-    <section className="bg-white rounded-xl border p-5 shadow-sm space-y-4">
+    <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
       <h2 className="text-base font-semibold text-gray-800">Courier Names</h2>
       <p className="text-xs text-gray-500">
         Names shown in order forms. API Key/Secret connect করতে উপরের
@@ -179,7 +179,7 @@ function CourierManager({ couriers, onChange }) {
                 <input
                   value={editForm.name}
                   onChange={(e) => setEditForm({ name: e.target.value })}
-                  className="border rounded px-2 py-1 flex-1 min-w-32"
+                  className="border border-gray-200 rounded-lg px-2 py-1 flex-1 min-w-32"
                 />
                 <button
                   type="button"
@@ -201,12 +201,12 @@ function CourierManager({ couriers, onChange }) {
                 <span className="font-medium text-gray-800">{c.name}</span>
                 <span className="text-xs text-gray-400">({c.slug})</span>
                 {c.apiEnabled && (
-                  <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-lg">
                     API on
                   </span>
                 )}
                 {c.isSystem && (
-                  <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-lg">
                     built-in
                   </span>
                 )}
@@ -432,7 +432,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                       <label className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
                         {f.label}
                         {isSaved && (
-                          <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-medium">
+                          <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-lg font-medium">
                             saved
                           </span>
                         )}
@@ -607,7 +607,7 @@ function ShopShipmentConfig({ onSaved }) {
   };
 
   return (
-    <section className="bg-white rounded-xl border p-5 shadow-sm space-y-4">
+    <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
       <h2 className="text-base font-semibold text-gray-800">
         Shop pickup & defaults
       </h2>
@@ -704,7 +704,7 @@ export default function ShipmentTrackingSettings() {
         >
           ← Back to tracking orders
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900 mt-2">
+        <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mt-2">
           Courier Settings
         </h1>
         <p className="text-sm text-gray-500 mt-1">
@@ -713,7 +713,7 @@ export default function ShipmentTrackingSettings() {
         </p>
       </div>
 
-      <section className="bg-white rounded-xl border p-5 shadow-sm space-y-4">
+      <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
         <h2 className="text-base font-semibold text-gray-800">
           Merchant API connections (Courier Connect)
         </h2>
@@ -727,7 +727,7 @@ export default function ShipmentTrackingSettings() {
             Steadfast live tracking webhook (recommended)
           </p>
           <p>Steadfast merchant panel → Webhook → Callback URL:</p>
-          <code className="block bg-white/80 px-2 py-1 rounded border text-[11px] break-all">
+          <code className="block bg-white/80 px-2 py-1 rounded-lg border text-[11px] break-all">
             {typeof window !== "undefined"
               ? `${process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com"}/api/orders/webhooks/steadfast`
               : "/api/orders/webhooks/steadfast"}

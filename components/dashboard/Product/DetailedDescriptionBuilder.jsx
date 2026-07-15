@@ -148,7 +148,7 @@ function ImageSlot({
             <button
               type="button"
               onClick={onPickFromLibrary}
-              className="text-xs font-medium text-gray-500 hover:text-violet-700 border border-gray-300 rounded px-2 py-0.5 hover:border-violet-400 transition"
+              className="text-xs font-medium text-gray-500 hover:text-violet-700 border border-gray-300 rounded-lg px-2 py-0.5 hover:border-violet-400 transition"
             >
               🖼 Media Library
             </button>
@@ -263,7 +263,7 @@ function ImageRowBlock({
             type="button"
             onClick={() => bulkInputRef.current?.click()}
             disabled={bulkUploading}
-            className="flex items-center gap-1 text-xs font-medium text-violet-700 border border-violet-200 bg-violet-50 rounded px-2.5 py-1 hover:bg-violet-100 disabled:opacity-50 transition"
+            className="flex items-center gap-1 text-xs font-medium text-violet-700 border border-violet-200 bg-violet-50 rounded-lg px-2.5 py-1 hover:bg-violet-100 disabled:opacity-50 transition"
           >
             {bulkUploading ? "Uploading…" : "⬆ Upload all"}
           </button>
@@ -271,7 +271,7 @@ function ImageRowBlock({
             <button
               type="button"
               onClick={onPickAllFromLibrary}
-              className="flex items-center gap-1 text-xs font-medium text-gray-600 border border-gray-300 rounded px-2.5 py-1 hover:bg-gray-50 transition"
+              className="flex items-center gap-1 text-xs font-medium text-gray-600 border border-gray-300 rounded-lg px-2.5 py-1 hover:bg-gray-50 transition"
             >
               🖼 Pick from library
             </button>
@@ -347,7 +347,7 @@ function BlockWrapper({
             type="button"
             onClick={onMoveUp}
             disabled={index === 0}
-            className="p-1.5 rounded text-gray-400 hover:text-gray-700 disabled:opacity-25 transition"
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 disabled:opacity-25 transition"
             title="Move up"
           >
             ▲
@@ -356,7 +356,7 @@ function BlockWrapper({
             type="button"
             onClick={onMoveDown}
             disabled={index === total - 1}
-            className="p-1.5 rounded text-gray-400 hover:text-gray-700 disabled:opacity-25 transition"
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 disabled:opacity-25 transition"
             title="Move down"
           >
             ▼
@@ -364,7 +364,7 @@ function BlockWrapper({
           <button
             type="button"
             onClick={onRemove}
-            className="p-1.5 rounded text-red-400 hover:text-red-600 transition ml-1"
+            className="p-1.5 rounded-lg text-red-400 hover:text-red-600 transition ml-1"
             title="Remove block"
           >
             🗑
@@ -491,7 +491,7 @@ export default function DetailedDescriptionBuilder({
                     key={a}
                     type="button"
                     onClick={() => patchBlock(i, { align: a })}
-                    className={`px-2.5 py-1 text-xs rounded border transition ${block.align === a ? "bg-violet-700 text-white border-violet-700" : "border-gray-300 text-gray-600 hover:border-violet-400"}`}
+                    className={`px-2.5 py-1 text-xs rounded-lg border transition ${block.align === a ? "bg-violet-700 text-white border-violet-700" : "border-gray-300 text-gray-600 hover:border-violet-400"}`}
                   >
                     {a === "left"
                       ? "⬅ Left"

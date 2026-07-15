@@ -78,7 +78,7 @@ function ProductSearchSelect({ selectedProducts, onChange, API }) {
                   alt={p.title}
                   width={24}
                   height={24}
-                  className="w-6 h-6 object-contain rounded"
+                  className="w-6 h-6 object-contain rounded-lg"
                 />
                 <span className="max-w-30 truncate text-gray-800">
                   {p.title}
@@ -146,7 +146,7 @@ function ProductSearchSelect({ selectedProducts, onChange, API }) {
                   alt={p.title}
                   width={32}
                   height={32}
-                  className="w-8 h-8 object-contain rounded border shrink-0"
+                  className="w-8 h-8 object-contain rounded-lg border shrink-0"
                 />
                 <span className="flex-1 truncate text-gray-800">{p.title}</span>
                 {selected && (
@@ -260,7 +260,7 @@ export default function PromoPanelEditor({
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow space-y-5">
-      <h2 className="text-2xl font-bold text-gray-800">
+      <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
         {isEdit ? "Edit Promo Panel" : "New Promo Panel"}
       </h2>
 
@@ -311,7 +311,7 @@ export default function PromoPanelEditor({
           )}
           {image.url && !uploading && (
             <div className="absolute bottom-2 right-2">
-              <span className="bg-black/50 text-white text-xs px-2 py-1 rounded">
+              <span className="bg-black/50 text-white text-xs px-2 py-1 rounded-lg">
                 Click to change
               </span>
             </div>

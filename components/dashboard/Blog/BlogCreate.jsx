@@ -220,7 +220,7 @@ export default function BlogCreate() {
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow max-w-5xl mx-auto">
+    <div className="bg-white p-6 rounded-lg shadow max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Create New Blog Post</h1>
 
       <div className="flex flex-col sm:flex-row justify-between items-start gap-6 mb-6">
@@ -230,7 +230,7 @@ export default function BlogCreate() {
               Title *
             </label>
             <input
-              className="w-full text-xl font-semibold border rounded px-3 py-2"
+              className="w-full text-xl font-semibold border border-gray-200 rounded-lg px-3 py-2"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Post title"
@@ -242,7 +242,7 @@ export default function BlogCreate() {
               Excerpt(Optional need for featured blog)
             </label>
             <textarea
-              className="w-full border rounded px-3 py-2"
+              className="w-full border border-gray-200 rounded-lg px-3 py-2"
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               placeholder="Short excerpt (shows in listing)"
@@ -256,7 +256,7 @@ export default function BlogCreate() {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-200 rounded-lg px-3 py-2"
           >
             <option value="draft">Draft</option>
             <option value="published">Published</option>
@@ -289,49 +289,49 @@ export default function BlogCreate() {
           <button
             type="button"
             onClick={() => exec("bold")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             B
           </button>
           <button
             type="button"
             onClick={() => exec("italic")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             I
           </button>
           <button
             type="button"
             onClick={() => exec("underline")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             U
           </button>
           <button
             type="button"
             onClick={() => exec("formatBlock", "<h2>")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             H2
           </button>
           <button
             type="button"
             onClick={() => exec("formatBlock", "<p>")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             P
           </button>
           <button
             type="button"
             onClick={() => exec("insertUnorderedList")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             • List
           </button>
           <button
             type="button"
             onClick={() => exec("insertOrderedList")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             1. List
           </button>
@@ -339,13 +339,13 @@ export default function BlogCreate() {
             onMouseDown={saveSelection}
             type="button"
             onClick={handleLink}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             🔗 Link
           </button>
           <label
             onMouseDown={saveSelection}
-            className="px-3 py-1.5 border rounded cursor-pointer hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-100"
           >
             📷 Img
             <input
@@ -359,27 +359,27 @@ export default function BlogCreate() {
             type="button"
             onMouseDown={saveSelection}
             onClick={() => setShowPicker(true)}
-            className="px-3 py-1.5 border rounded text-blue-600 hover:bg-blue-50"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg text-blue-600 hover:bg-blue-50"
           >
             📚 Library
           </button>
           <button
             type="button"
             onClick={() => exec("undo")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             ↶
           </button>
           <button
             type="button"
             onClick={() => exec("redo")}
-            className="px-3 py-1.5 border rounded hover:bg-gray-100"
+            className="px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-100"
           >
             ↷
           </button>
         </div>
 
-        <div className="max-h-[60vh] overflow-y-auto border rounded">
+        <div className="max-h-[60vh] overflow-y-auto border border-gray-200 rounded-lg">
           <div
             ref={editorRef}
             contentEditable
@@ -494,21 +494,21 @@ export default function BlogCreate() {
       <div className="flex gap-3 pt-4 border-t">
         <button
           onClick={() => handleSave(false)}
-          className="px-6 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 disabled:opacity-50"
+          className="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 disabled:opacity-50"
           disabled={saving}
         >
           {saving ? "Saving…" : "Save Draft"}
         </button>
         <button
           onClick={() => handleSave(true)}
-          className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
           disabled={saving}
         >
           Publish
         </button>
         <button
           onClick={() => router.push("/dashboard/blog")}
-          className="px-6 py-2 border rounded hover:bg-gray-50"
+          className="px-6 py-2 border border-gray-200 rounded-lg hover:bg-gray-50"
         >
           Cancel
         </button>

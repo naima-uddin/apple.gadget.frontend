@@ -159,7 +159,7 @@ export default function FeaturedSectionEditor({
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800">
+      <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
         {isEdit ? "Edit Featured Section" : "New Featured Section"}
       </h2>
 
@@ -251,7 +251,7 @@ export default function FeaturedSectionEditor({
                 <img
                   src={getProductThumb(p)}
                   alt={p.title}
-                  className="w-10 h-10 object-cover rounded border shrink-0"
+                  className="w-10 h-10 object-cover rounded-lg border shrink-0"
                   onError={(e) => {
                     e.currentTarget.src = "/assets/placeholder.svg";
                   }}
@@ -303,7 +303,7 @@ export default function FeaturedSectionEditor({
                 <img
                   src={getProductThumb(p)}
                   alt={p.title}
-                  className="w-12 h-12 object-cover rounded border shrink-0"
+                  className="w-12 h-12 object-cover rounded-lg border shrink-0"
                   onError={(e) => {
                     e.currentTarget.src = "/assets/placeholder.svg";
                   }}

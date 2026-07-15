@@ -150,12 +150,12 @@ export default function AdminsList() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-4 sm:p-6 rounded shadow">
+    <div className="max-w-6xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold">Authorized accounts</h2>
         <a
           href="/dashboard/authorized/new"
-          className="px-3 py-2 bg-green-600 text-white rounded text-sm text-center shrink-0"
+          className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm text-center shrink-0"
         >
           Create admin/moderator
         </a>
@@ -205,20 +205,20 @@ export default function AdminsList() {
                   <td className="py-3">
                     <div className="flex flex-wrap gap-1.5">
                       <a
-                        className="px-2 py-1 border rounded text-xs"
+                        className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                         href={`/dashboard/authorized/${a._id}/profile`}
                       >
                         Profile
                       </a>
                       <a
-                        className="px-2 py-1 border rounded text-xs"
+                        className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
                         href={`/dashboard/authorized/${a._id}`}
                       >
                         Edit
                       </a>
                       {a.isActive && (
                         <button
-                          className="px-2 py-1 border rounded text-xs text-red-600"
+                          className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600"
                           onClick={() => handleDeactivate(a._id)}
                         >
                           Deactivate
@@ -226,7 +226,7 @@ export default function AdminsList() {
                       )}
                       {user?.role === "admin" && (
                         <button
-                          className="px-2 py-1 border rounded text-xs text-red-600"
+                          className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600"
                           onClick={() => handleDelete(a._id)}
                         >
                           Delete

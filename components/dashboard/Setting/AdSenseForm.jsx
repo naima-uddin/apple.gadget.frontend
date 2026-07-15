@@ -111,7 +111,7 @@ export default function AdSenseForm() {
             </li>
             <li>
               Copy your <strong>Publisher ID</strong> — it looks like{" "}
-              <code className="bg-amber-100 px-1 rounded font-mono">
+              <code className="bg-amber-100 px-1 rounded-lg font-mono">
                 ca-pub-1234567890123456
               </code>
             </li>
@@ -129,7 +129,7 @@ export default function AdSenseForm() {
             </li>
             <li>
               Copy the <strong>data-ad-slot</strong> number — it looks like{" "}
-              <code className="bg-amber-100 px-1 rounded font-mono">
+              <code className="bg-amber-100 px-1 rounded-lg font-mono">
                 1234567890
               </code>
             </li>
@@ -157,7 +157,7 @@ export default function AdSenseForm() {
                 adsensePublisherId: e.target.value.trim(),
               }))
             }
-            className="w-full border px-3 py-2 rounded text-sm font-mono focus:ring-2 focus:ring-green-300 focus:outline-none"
+            className="w-full border px-3 py-2 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-300 focus:outline-none"
           />
         </div>
 
@@ -176,7 +176,7 @@ export default function AdSenseForm() {
             onChange={(e) =>
               setSettings((s) => ({ ...s, adsenseSlot: e.target.value.trim() }))
             }
-            className="w-full border px-3 py-2 rounded text-sm font-mono focus:ring-2 focus:ring-green-300 focus:outline-none"
+            className="w-full border px-3 py-2 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-300 focus:outline-none"
           />
           {settings.adsensePublisherId &&
             settings.adsenseSlot &&
@@ -199,7 +199,7 @@ export default function AdSenseForm() {
             <p className="text-gray-500 mb-1">
               Auto Ads script (added to every page automatically):
             </p>
-            <pre className="bg-gray-50 border rounded px-3 py-2 overflow-x-auto text-gray-600 whitespace-pre-wrap break-all">
+            <pre className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 overflow-x-auto text-gray-600 whitespace-pre-wrap break-all">
               {`<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.adsensePublisherId}" crossorigin="anonymous"></script>`}
             </pre>
           </div>

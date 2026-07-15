@@ -74,21 +74,21 @@ export default function DynamicSectionBuilder({ sections = [], onChange }) {
         <button
           type="button"
           onClick={() => addSection('faq')}
-          className="px-3 py-1.5 text-sm bg-purple-600 text-white rounded hover:bg-purple-700"
+          className="px-3 py-1.5 text-sm bg-purple-600 text-white rounded-lg hover:bg-purple-700"
         >
           + FAQ
         </button>
         <button
           type="button"
           onClick={() => addSection('accordion')}
-          className="px-3 py-1.5 text-sm bg-violet-700 text-white rounded hover:bg-violet-800"
+          className="px-3 py-1.5 text-sm bg-violet-700 text-white rounded-lg hover:bg-violet-800"
         >
           + Accordion
         </button>
         <button
           type="button"
           onClick={() => addSection('steps')}
-          className="px-3 py-1.5 text-sm bg-teal-600 text-white rounded hover:bg-teal-700"
+          className="px-3 py-1.5 text-sm bg-teal-600 text-white rounded-lg hover:bg-teal-700"
         >
           + Steps
         </button>
@@ -152,7 +152,7 @@ export default function DynamicSectionBuilder({ sections = [], onChange }) {
 
                   <div className="space-y-3">
                     {section.items.map((item, iIdx) => (
-                      <div key={iIdx} className="p-3 border rounded bg-gray-50 space-y-2">
+                      <div key={iIdx} className="p-3 border border-gray-200 rounded-lg bg-gray-50 space-y-2">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-sm font-medium text-gray-700">
                             {section.type === 'steps' ? `Step ${iIdx + 1}` : `Item ${iIdx + 1}`}

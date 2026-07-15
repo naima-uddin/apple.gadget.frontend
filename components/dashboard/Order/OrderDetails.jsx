@@ -287,7 +287,7 @@ export default function OrderDetails({ orderId }) {
             ← Back
           </Link>
           <div className="flex flex-wrap items-center gap-2 mt-2">
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
               {formatOrderId(order._id)}
             </h1>
             <span className="text-xs font-medium px-2 py-1 rounded-full bg-violet-100 text-violet-800">
@@ -376,7 +376,7 @@ export default function OrderDetails({ orderId }) {
         {/* Left column */}
         <div className="lg:col-span-2 space-y-5">
           {/* Products */}
-          <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b bg-gray-50/50">
               <span
                 className={`text-xs font-semibold px-2 py-1 rounded-full capitalize ${STATUS_STYLE[order.status] || ""}`}
@@ -463,7 +463,7 @@ export default function OrderDetails({ orderId }) {
           </div>
 
           {/* Payment summary */}
-          <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b bg-gray-50/50">
               <span
                 className={`text-xs font-semibold px-2 py-1 rounded-full ${PAYMENT_STYLE[order.paymentStatus] || ""}`}
@@ -491,7 +491,7 @@ export default function OrderDetails({ orderId }) {
                       onChange={(e) =>
                         setEditShipping(Number(e.target.value) || 0)
                       }
-                      className="w-20 text-sm border rounded px-2 py-1"
+                      className="w-20 text-sm border border-gray-200 rounded-lg px-2 py-1"
                     />
                     <button
                       type="button"
@@ -536,7 +536,7 @@ export default function OrderDetails({ orderId }) {
                       onChange={(e) =>
                         setEditDiscount(Number(e.target.value) || 0)
                       }
-                      className="w-20 text-sm border rounded px-2 py-1"
+                      className="w-20 text-sm border border-gray-200 rounded-lg px-2 py-1"
                     />
                     <button
                       type="button"
@@ -606,7 +606,7 @@ export default function OrderDetails({ orderId }) {
           {/* Tracking */}
           {(order.shipment?.trackingUrl ||
             order.shipment?.trackingEvents?.length > 0) && (
-            <div className="bg-white rounded-xl border shadow-sm p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
                 Tracking
               </h2>
@@ -635,7 +635,7 @@ export default function OrderDetails({ orderId }) {
           {/* Status history — every status change with its reason, including
               cancellations made by the customer */}
           {order.statusHistory?.length > 0 && (
-            <div className="bg-white rounded-xl border shadow-sm p-5">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
               <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
                 Status History
               </h2>
@@ -696,7 +696,7 @@ export default function OrderDetails({ orderId }) {
         {/* Right sidebar */}
         <div className="space-y-5">
           {/* Courier Score */}
-          <div className="bg-white rounded-xl border shadow-sm p-5">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <h2 className="text-sm font-semibold text-gray-800 mb-3">
               Courier Score
             </h2>
@@ -719,7 +719,7 @@ export default function OrderDetails({ orderId }) {
           </div>
 
           {/* Customer Info */}
-          <div className="bg-white rounded-xl border shadow-sm p-5">
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-gray-800">
                 Customer Info

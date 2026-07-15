@@ -176,7 +176,7 @@ export default function CategoryShowcaseEditor() {
           <button
             type="button"
             onClick={() => setPickerIdx(i)}
-            className="text-[11px] px-2 py-1 border border-gray-300 rounded text-gray-600 hover:bg-gray-50 flex items-center gap-1"
+            className="text-[11px] px-2 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-1"
           >
             <span>🖼</span> Media Library
           </button>
@@ -186,7 +186,7 @@ export default function CategoryShowcaseEditor() {
               onClick={() =>
                 patchTile(i, { image: { url: "", public_id: "" } })
               }
-              className="text-[11px] px-2 py-1 border border-red-200 rounded text-red-500 hover:bg-red-50"
+              className="text-[11px] px-2 py-1 border border-red-200 rounded-lg text-red-500 hover:bg-red-50"
             >
               Remove image
             </button>
@@ -212,7 +212,7 @@ export default function CategoryShowcaseEditor() {
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-2xl shadow space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-800">Category Showcase</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Category Showcase</h2>
         <p className="text-sm text-gray-500 mt-1">
           Homepage bento slider (shown before &quot;Why Choose Us&quot;). Add
           one or more pages — each page has 6 tiles (image + label + link) in a

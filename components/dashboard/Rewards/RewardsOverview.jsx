@@ -45,25 +45,25 @@ export default function RewardsOverview() {
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">All Rewards</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">All Rewards</h1>
         <p className="text-sm text-gray-500 mt-1">
           Customer reward points — {pointsPerTk} points = ৳1
         </p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border p-4">
+        <div className="bg-white rounded-2xl border border-gray-100 p-4">
           <p className="text-xs text-gray-500 uppercase">Total balance</p>
           <p className="text-2xl font-bold text-violet-700">
             {stats.totalBalance}
           </p>
           <p className="text-xs text-gray-400">≈ ৳{stats.totalBalanceTk}</p>
         </div>
-        <div className="bg-white rounded-xl border p-4">
+        <div className="bg-white rounded-2xl border border-gray-100 p-4">
           <p className="text-xs text-gray-500 uppercase">Users with points</p>
           <p className="text-2xl font-bold">{stats.usersWithBalance}</p>
         </div>
-        <div className="bg-white rounded-xl border p-4">
+        <div className="bg-white rounded-2xl border border-gray-100 p-4">
           <p className="text-xs text-gray-500 uppercase">
             Points earned (orders)
           </p>
@@ -71,7 +71,7 @@ export default function RewardsOverview() {
             {stats.totalEarned}
           </p>
         </div>
-        <div className="bg-white rounded-xl border p-4">
+        <div className="bg-white rounded-2xl border border-gray-100 p-4">
           <p className="text-xs text-gray-500 uppercase">Points redeemed</p>
           <p className="text-2xl font-bold text-amber-600">
             {stats.totalRedeemed}
@@ -104,7 +104,7 @@ export default function RewardsOverview() {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {tab === "orders" ? (
           orders.length === 0 ? (
             <p className="text-center py-12 text-gray-400">
@@ -113,7 +113,7 @@ export default function RewardsOverview() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs uppercase text-gray-500 bg-gray-50 border-b">
+                <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                   <tr>
                     <th className="px-4 py-3">Order</th>
                     <th className="px-4 py-3">Customer</th>
@@ -160,7 +160,7 @@ export default function RewardsOverview() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs uppercase text-gray-500 bg-gray-50 border-b">
+              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                 <tr>
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Email</th>

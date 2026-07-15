@@ -223,7 +223,7 @@ export default function OrderPrintView({
           ← Back to order
         </Link>
         {!backHref && (
-          <span className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+          <span className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-2 py-1">
             💡 For clear Print →{" "}
             <strong>Print {isSlip ? "Slip" : "Invoice"} button</strong> →{" "}
             <strong>More settings</strong> → uncheck{" "}
@@ -258,7 +258,7 @@ export default function OrderPrintView({
         ref={contentRef}
         className={`print-root mx-auto p-4 print:p-0 ${isSlip ? "max-w-sm" : "max-w-3xl"}`}
       >
-        <div className="print-card bg-white rounded-xl border shadow-sm p-6 print:p-0">
+        <div className="print-card bg-white rounded-2xl border border-gray-100 shadow-sm p-6 print:p-0">
           {/* ─── DELIVERY SLIP ─────────────────────────────────── */}
           {isSlip && (
             <div style={{ fontFamily: "Arial, sans-serif" }}>

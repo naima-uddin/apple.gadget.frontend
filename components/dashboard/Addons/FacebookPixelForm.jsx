@@ -93,7 +93,7 @@ export default function FacebookPixelForm() {
             </svg>
             Back
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Edit Meta Pixel</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Edit Meta Pixel</h1>
         </div>
         <button
           onClick={handleSave}

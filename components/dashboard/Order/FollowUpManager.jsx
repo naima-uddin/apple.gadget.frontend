@@ -77,7 +77,7 @@ export default function FollowUpManager() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Follow Up</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Follow Up</h1>
           <p className="text-sm text-gray-500 mt-1">
             Assign an authorized person to call and confirm orders.
           </p>
@@ -113,7 +113,7 @@ export default function FollowUpManager() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="bg-gray-50 text-gray-600 text-xs uppercase">

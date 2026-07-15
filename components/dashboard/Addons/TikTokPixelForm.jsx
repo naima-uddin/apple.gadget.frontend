@@ -90,7 +90,7 @@ export default function TikTokPixelForm() {
             </svg>
             Back
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Edit TikTok Pixel</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Edit TikTok Pixel</h1>
         </div>
         <button
           onClick={handleSave}

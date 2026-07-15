@@ -39,7 +39,7 @@ function fmt(date) {
 
 function StatCard({ label, value, color = "text-gray-800", sub }) {
   return (
-    <div className="bg-white rounded-xl border p-4 shadow-sm">
+    <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
       <p className="text-xs text-gray-500 uppercase tracking-wide">{label}</p>
       <p className={`text-2xl font-bold mt-1 ${color}`}>{value}</p>
       {sub ? <p className="text-xs text-gray-400 mt-1">{sub}</p> : null}
@@ -172,7 +172,7 @@ export default function CustomerProfile({ userId }) {
           >
             ← Back to customers
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900 mt-2">
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mt-2">
             {user.name || "Customer Profile"}
           </h1>
           <p className="text-sm text-gray-500">{user.email || "No email"}</p>
@@ -221,7 +221,7 @@ export default function CustomerProfile({ userId }) {
         />
       ) : null}
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 className="text-base font-semibold text-gray-800">
@@ -248,7 +248,7 @@ export default function CustomerProfile({ userId }) {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b">
+              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                 <tr>
                   <th className="px-4 py-3">Order</th>
                   <th className="px-4 py-3">Date</th>
@@ -381,7 +381,7 @@ export default function CustomerProfile({ userId }) {
           />
         </div>
 
-        <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b">
             <h3 className="text-base font-semibold text-gray-800">
               Courier-wise (Pickob)
@@ -394,7 +394,7 @@ export default function CustomerProfile({ userId }) {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b">
+                <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                   <tr>
                     <th className="px-4 py-3">Courier</th>
                     <th className="px-4 py-3">Total</th>

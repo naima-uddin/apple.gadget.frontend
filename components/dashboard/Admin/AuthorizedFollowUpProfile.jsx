@@ -55,7 +55,7 @@ export default function AuthorizedFollowUpProfile({ adminId }) {
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{person.name}</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">{person.name}</h1>
           <p className="text-sm text-gray-500 mt-1">
             {person.email} · <span className="capitalize">{person.role}</span>
           </p>
@@ -76,14 +76,14 @@ export default function AuthorizedFollowUpProfile({ adminId }) {
         </div>
       </div>
 
-      <div className="bg-white rounded-xl border p-4">
+      <div className="bg-white rounded-2xl border border-gray-100 p-4">
         <p className="text-xs text-gray-500 uppercase">Orders picked</p>
         <p className="text-3xl font-bold text-emerald-700 mt-1">
           {stats.total}
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="px-5 py-4 border-b">
           <h2 className="font-semibold text-gray-800">Picked orders</h2>
         </div>

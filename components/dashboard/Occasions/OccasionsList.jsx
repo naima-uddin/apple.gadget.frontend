@@ -117,7 +117,7 @@ export default function OccasionsList() {
     <div className="max-w-5xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h2 className="text-xl font-bold text-gray-800">Occasion Sections</h2>
+          <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Occasion Sections</h2>
           <p className="text-sm text-gray-500 mt-0.5">
             Manage festival / occasion mini-banner sections shown on the
             homepage.
@@ -173,7 +173,7 @@ export default function OccasionsList() {
                 {section.cards?.slice(0, 4).map((card, ci) => (
                   <div
                     key={ci}
-                    className="w-10 h-8 rounded overflow-hidden bg-gray-100 border border-gray-200"
+                    className="w-10 h-8 rounded-lg overflow-hidden bg-gray-100 border border-gray-200"
                   >
                     {card.image?.url ? (
                       <img
@@ -189,7 +189,7 @@ export default function OccasionsList() {
                   </div>
                 ))}
                 {(section.cards?.length || 0) > 4 && (
-                  <div className="w-10 h-8 rounded bg-gray-100 border border-gray-200 flex items-center justify-center text-xs text-gray-500">
+                  <div className="w-10 h-8 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-xs text-gray-500">
                     +{section.cards.length - 4}
                   </div>
                 )}

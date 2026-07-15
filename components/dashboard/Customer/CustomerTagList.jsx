@@ -104,7 +104,7 @@ export default function CustomerTagList() {
           type="color"
           value={form.color}
           onChange={(e) => setForm((p) => ({ ...p, color: e.target.value }))}
-          className="h-10 w-full rounded border border-gray-300 bg-white p-1"
+          className="h-10 w-full rounded-lg border border-gray-300 bg-white p-1"
           title="Tag color"
         />
         <input
@@ -173,7 +173,7 @@ export default function CustomerTagList() {
                             description: tag.description || "",
                           });
                         }}
-                        className="mr-2 rounded border border-gray-300 px-3 py-1.5 text-sm"
+                        className="mr-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm"
                       >
                         Edit
                       </button>

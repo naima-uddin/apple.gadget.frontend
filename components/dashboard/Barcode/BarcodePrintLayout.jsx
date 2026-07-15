@@ -112,7 +112,7 @@ export default function BarcodePrintLayout() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
               Print Labels
             </p>
-            <h1 className="mt-1 text-xl font-bold text-gray-900">
+            <h1 className="mt-1 text-xl font-bold tracking-tight text-[#1F2937] work-sans">
               Barcode print sheets
             </h1>
           </div>

@@ -96,7 +96,7 @@ function OrderTrackingCard({
 
   return (
     <article
-      className={`bg-white rounded-xl border shadow-sm overflow-hidden transition ${
+      className={`bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition ${
         highlighted ? "border-violet-400 ring-2 ring-violet-100" : "border-gray-200"
       }`}
     >
@@ -330,7 +330,7 @@ export default function ShipmentTrackingManager() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Order Tracking</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Order Tracking</h1>
           <p className="text-sm text-gray-500 mt-1">
             সব order collapsed — expand করে courier name ও live tracking URL
             save করুন।

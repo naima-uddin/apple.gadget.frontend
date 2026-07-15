@@ -111,7 +111,7 @@ export default function PromoStripList() {
     <div className="max-w-5xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-gray-800">Promo Strip Items</h2>
+          <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Promo Strip Items</h2>
           <p className="text-sm text-gray-500">
             Manage combo/offer cards shown right below banner.
           </p>

@@ -191,7 +191,7 @@ export default function QuestionsList() {
   const unansweredCount = rows.length - answeredCount;
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
@@ -229,7 +229,7 @@ export default function QuestionsList() {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Search by product, asker, question, or answer…"
-          className="border px-3 py-2 rounded w-full sm:w-72 text-sm"
+          className="border px-3 py-2 rounded-lg w-full sm:w-72 text-sm"
         />
       </div>
 
@@ -244,7 +244,7 @@ export default function QuestionsList() {
             setSelectedSub(null);
             setSelectedChild(null);
           }}
-          className="border px-3 py-2 rounded text-sm bg-white"
+          className="border px-3 py-2 rounded-lg text-sm bg-white"
         >
           <option value="">All categories</option>
           {categories.map((c) => (
@@ -264,7 +264,7 @@ export default function QuestionsList() {
             setSelectedSub(sub);
             setSelectedChild(null);
           }}
-          className="border px-3 py-2 rounded text-sm bg-white"
+          className="border px-3 py-2 rounded-lg text-sm bg-white"
           disabled={!selectedMain}
         >
           <option value="">Sub category</option>
@@ -284,7 +284,7 @@ export default function QuestionsList() {
               ) || null;
             setSelectedChild(child);
           }}
-          className="border px-3 py-2 rounded text-sm bg-white"
+          className="border px-3 py-2 rounded-lg text-sm bg-white"
           disabled={!selectedSub}
         >
           <option value="">Sub‑sub category</option>
@@ -298,7 +298,7 @@ export default function QuestionsList() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="border px-3 py-2 rounded text-sm bg-white ml-auto"
+          className="border px-3 py-2 rounded-lg text-sm bg-white ml-auto"
         >
           <option value="unanswered">Unanswered first</option>
           <option value="date_desc">Newest first</option>
@@ -340,7 +340,7 @@ export default function QuestionsList() {
                       href={`/product/${row.productId}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-medium bg-green-50 text-green-700 px-2 py-0.5 rounded hover:bg-green-100 transition inline-block mb-1"
+                      className="text-xs font-medium bg-green-50 text-green-700 px-2 py-0.5 rounded-lg hover:bg-green-100 transition inline-block mb-1"
                     >
                       {row.productTitle || "Unknown Product"}
                     </Link>
@@ -350,7 +350,7 @@ export default function QuestionsList() {
                         onChange={(e) =>
                           setEditForm(key, { question: e.target.value })
                         }
-                        className="w-full border rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"
+                        className="w-full border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-300"
                       />
                     ) : (
                       <p className="text-gray-800 font-medium leading-snug">
@@ -365,12 +365,12 @@ export default function QuestionsList() {
                         </span>
                       )}
                       {!isAnswered && (
-                        <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 rounded px-1.5 py-0.5 font-medium">
+                        <span className="bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-lg px-1.5 py-0.5 font-medium">
                           Awaiting answer
                         </span>
                       )}
                       {isAnswered && (
-                        <span className="bg-green-50 text-green-700 border border-green-200 rounded px-1.5 py-0.5 font-medium">
+                        <span className="bg-green-50 text-green-700 border border-green-200 rounded-lg px-1.5 py-0.5 font-medium">
                           {answers.length} answer
                           {answers.length !== 1 ? "s" : ""}
                         </span>
@@ -381,7 +381,7 @@ export default function QuestionsList() {
                     <div className="flex items-center gap-2 shrink-0">
                       <button
                         onClick={() => startEdit(row)}
-                        className="text-xs px-3 py-1.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
+                        className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
                       >
                         {officialAnswer ? "Edit Answer" : "Answer"}
                       </button>
@@ -390,7 +390,7 @@ export default function QuestionsList() {
                           onClick={() =>
                             handleDeleteQuestion(row.productId, row.index)
                           }
-                          className="text-xs px-3 py-1.5 rounded bg-red-50 text-red-600 hover:bg-red-100 font-medium transition"
+                          className="text-xs px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 font-medium transition"
                         >
                           Delete
                         </button>
@@ -401,13 +401,13 @@ export default function QuestionsList() {
                       <button
                         onClick={() => handleSave(row.productId, row.index)}
                         disabled={form.submitting}
-                        className="text-xs px-3 py-1.5 rounded bg-green-600 text-white hover:bg-green-700 disabled:opacity-60 font-medium transition"
+                        className="text-xs px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 disabled:opacity-60 font-medium transition"
                       >
                         {form.submitting ? "Saving…" : "Save"}
                       </button>
                       <button
                         onClick={() => cancelEdit(key)}
-                        className="text-xs px-3 py-1.5 rounded border text-gray-600 hover:bg-gray-50 transition"
+                        className="text-xs px-3 py-1.5 rounded-lg border text-gray-600 hover:bg-gray-50 transition"
                       >
                         Cancel
                       </button>
@@ -431,7 +431,7 @@ export default function QuestionsList() {
                       }
                       rows={4}
                       placeholder="Type the official answer here…"
-                      className="w-full border rounded px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-300"
+                      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-green-300"
                     />
                   </div>
                 ) : officialAnswer ? (
@@ -441,7 +441,7 @@ export default function QuestionsList() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-xs font-semibold bg-green-600 text-white px-2 py-0.5 rounded">
+                        <span className="text-xs font-semibold bg-green-600 text-white px-2 py-0.5 rounded-lg">
                           Seller Answer
                         </span>
                         <span className="text-xs text-gray-500">
@@ -512,7 +512,7 @@ export default function QuestionsList() {
                                   aIdx,
                                 )
                               }
-                              className="shrink-0 text-xs px-2 py-1 rounded bg-red-50 text-red-500 hover:bg-red-100 transition"
+                              className="shrink-0 text-xs px-2 py-1 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition"
                             >
                               Delete
                             </button>

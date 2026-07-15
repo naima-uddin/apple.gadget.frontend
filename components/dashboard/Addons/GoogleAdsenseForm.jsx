@@ -128,7 +128,7 @@ export default function GoogleAdsenseForm() {
             </svg>
             Back
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Google AdSense</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Google AdSense</h1>
         </div>
         <button
           onClick={handleSave}
@@ -192,7 +192,7 @@ export default function GoogleAdsenseForm() {
           />
           <p className="mt-1.5 text-xs text-gray-400">
             Format:{" "}
-            <code className="bg-gray-100 px-1 rounded">
+            <code className="bg-gray-100 px-1 rounded-lg">
               ca-pub-XXXXXXXXXXXXXXXX
             </code>{" "}
             — Google AdSense dashboard থেকে পাবেন।
@@ -216,7 +216,7 @@ export default function GoogleAdsenseForm() {
           />
           <p className="mt-1.5 text-xs text-gray-400">
             AdSense → Ads → By ad unit → Display ads থেকে{" "}
-            <code className="bg-gray-100 px-1 rounded">data-ad-slot</code>{" "}
+            <code className="bg-gray-100 px-1 rounded-lg">data-ad-slot</code>{" "}
             নম্বরটি কপি করুন।
           </p>
         </div>
@@ -269,7 +269,7 @@ export default function GoogleAdsenseForm() {
             <li>Account → Settings → Account information</li>
             <li>
               <strong>Publisher ID</strong> কপি করুন —{" "}
-              <code className="bg-blue-100 px-1 rounded">
+              <code className="bg-blue-100 px-1 rounded-lg">
                 ca-pub-XXXXXXXXXXXXXXXX
               </code>
             </li>

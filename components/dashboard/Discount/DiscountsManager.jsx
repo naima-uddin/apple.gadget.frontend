@@ -124,7 +124,7 @@ function OfferCard({ offer }) {
             </p>
           )}
           {offer.couponCode && (
-            <span className="inline-block bg-white border border-dashed border-gray-400 rounded px-2 py-0.5 text-xs font-mono font-bold text-gray-700 truncate">
+            <span className="inline-block bg-white border border-dashed border-gray-400 rounded-lg px-2 py-0.5 text-xs font-mono font-bold text-gray-700 truncate">
               {offer.couponCode}
             </span>
           )}
@@ -276,7 +276,7 @@ export default function DiscountsManager() {
     <div className="max-w-5xl mx-auto p-4 sm:p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
             Discounts & Coupons
           </h1>
           <p className="text-sm text-gray-500 mt-1">
@@ -727,14 +727,14 @@ export default function DiscountsManager() {
                 <button
                   onClick={() => move(index, -1)}
                   disabled={index === 0}
-                  className="p-1.5 rounded hover:bg-gray-100 disabled:opacity-30 text-gray-500"
+                  className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30 text-gray-500"
                 >
                   ▲
                 </button>
                 <button
                   onClick={() => move(index, 1)}
                   disabled={index === items.length - 1}
-                  className="p-1.5 rounded hover:bg-gray-100 disabled:opacity-30 text-gray-500"
+                  className="p-1.5 rounded-lg hover:bg-gray-100 disabled:opacity-30 text-gray-500"
                 >
                   ▼
                 </button>
@@ -745,7 +745,7 @@ export default function DiscountsManager() {
                 <OfferCard offer={item} />
                 {item.couponCode && (
                   <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded">
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-lg">
                       {item.discountType === "free_shipping"
                         ? "Free Shipping"
                         : item.discountType === "percentage"
@@ -753,27 +753,27 @@ export default function DiscountsManager() {
                           : `৳${item.discountValue} off`}
                     </span>
                     {item.minOrderAmount > 0 && (
-                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded">
+                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-lg">
                         Min: ৳{item.minOrderAmount}
                       </span>
                     )}
                     {item.isNewUserOnly && (
-                      <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded">
+                      <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-lg">
                         New Users
                       </span>
                     )}
                     {item.isFirstOrderOnly && (
-                      <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded">
+                      <span className="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-lg">
                         First Order
                       </span>
                     )}
                     {item.stackable && (
-                      <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded">
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-lg">
                         allowMultiple
                       </span>
                     )}
                     {item.usageCount > 0 && (
-                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded">
+                      <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-lg">
                         Used: {item.usageCount}x
                       </span>
                     )}

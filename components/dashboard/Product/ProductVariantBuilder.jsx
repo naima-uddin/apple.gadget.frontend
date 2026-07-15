@@ -424,7 +424,7 @@ export default function ProductVariantBuilder({
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
             Product Variant Setup
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-gray-900">
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
             Product Variants
           </h2>
           <p className="mt-1 text-sm text-gray-600">
@@ -508,14 +508,14 @@ export default function ProductVariantBuilder({
                               renameVariation(group.name, editingName);
                             if (e.key === "Escape") setEditingGroup(null);
                           }}
-                          className="flex-1 rounded border border-violet-300 px-2 py-0.5 text-sm font-semibold"
+                          className="flex-1 rounded-lg border border-violet-300 px-2 py-0.5 text-sm font-semibold"
                         />
                         <button
                           type="button"
                           onClick={() =>
                             renameVariation(group.name, editingName)
                           }
-                          className="shrink-0 rounded bg-violet-700 px-2 py-0.5 text-xs text-white hover:bg-violet-800"
+                          className="shrink-0 rounded-lg bg-violet-700 px-2 py-0.5 text-xs text-white hover:bg-violet-800"
                         >
                           Save
                         </button>
@@ -525,7 +525,7 @@ export default function ProductVariantBuilder({
                             e.stopPropagation();
                             setEditingGroup(null);
                           }}
-                          className="shrink-0 rounded border border-gray-300 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-50"
+                          className="shrink-0 rounded-lg border border-gray-300 px-2 py-0.5 text-xs text-gray-600 hover:bg-gray-50"
                         >
                           ✕
                         </button>
@@ -589,7 +589,7 @@ export default function ProductVariantBuilder({
                                   if (e.key === "Escape")
                                     setEditingOption(null);
                                 }}
-                                className="w-24 rounded border border-violet-200 px-1.5 py-0.5 text-xs font-medium outline-none focus:ring-1 focus:ring-violet-400"
+                                className="w-24 rounded-lg border border-violet-200 px-1.5 py-0.5 text-xs font-medium outline-none focus:ring-1 focus:ring-violet-400"
                               />
                               <button
                                 type="button"
@@ -833,7 +833,7 @@ export default function ProductVariantBuilder({
                                 },
                               })
                             }
-                            className="h-9 w-10 rounded border border-gray-300"
+                            className="h-9 w-10 rounded-lg border border-gray-300"
                           />
                           <input
                             value={variant.color?.name || ""}

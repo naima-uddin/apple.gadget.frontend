@@ -517,7 +517,7 @@ function OrdersTable({
               <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                 <Link
                   href={`/dashboard/orders/${order._id}`}
-                  className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:bg-violet-50 hover:underline"
+                  className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:bg-violet-50 hover:underline"
                 >
                   {formatOrderId(order._id)}
                 </Link>
@@ -590,7 +590,7 @@ function OrdersTable({
                 {fmt(order.createdAt)}
                 {trashMode && daysLeft !== null && (
                   <span
-                    className={`block mt-1 px-2 py-0.5 rounded text-[11px] font-medium w-fit ${daysLeft <= 3 ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-700"}`}
+                    className={`block mt-1 px-2 py-0.5 rounded-lg text-[11px] font-medium w-fit ${daysLeft <= 3 ? "bg-red-50 text-red-600" : "bg-amber-50 text-amber-700"}`}
                   >
                     {daysLeft > 0
                       ? `🗑 ${daysLeft} of ${TRASH_RETENTION_DAYS} days left`
@@ -678,7 +678,7 @@ function CancelledOrdersTable({
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/dashboard/orders/${order._id}`}
-                    className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
+                    className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
                   >
                     {formatOrderId(order._id)}
                   </Link>
@@ -815,7 +815,7 @@ function Pagination({ page, totalPages, onPage }) {
 
 function FeatureGate({ icon, title, description, whatItDoes, mockRows }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       {/* Blurred data preview */}
       {mockRows && (
         <div className="relative overflow-hidden max-h-52">
@@ -1144,7 +1144,7 @@ function AddReturnModal({ onClose, onSave }) {
                         className="w-full text-left px-4 py-3 hover:bg-violet-50 border-b last:border-0 transition"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-xs text-violet-700 bg-violet-50 px-1.5 py-0.5 rounded">
+                          <span className="font-mono text-xs text-violet-700 bg-violet-50 px-1.5 py-0.5 rounded-lg">
                             {formatOrderId(o._id)}
                           </span>
                           <span className="text-sm font-medium text-gray-800 flex-1">
@@ -1171,7 +1171,7 @@ function AddReturnModal({ onClose, onSave }) {
               <div className="flex items-center gap-3 bg-violet-50 border border-violet-200 rounded-xl px-4 py-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-mono text-xs text-violet-700 bg-white border border-violet-200 px-1.5 py-0.5 rounded">
+                    <span className="font-mono text-xs text-violet-700 bg-white border border-violet-200 px-1.5 py-0.5 rounded-lg">
                       {formatOrderId(selected._id)}
                     </span>
                     <span className="text-sm font-medium text-gray-800">
@@ -1535,7 +1535,7 @@ function ReturnsRefundsSection() {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         {/* Header */}
         <div className="px-5 py-4 border-b flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -1647,7 +1647,7 @@ function ReturnsRefundsSection() {
                     >
                       <Link
                         href={`/dashboard/orders/${order._id}`}
-                        className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
+                        className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
                       >
                         {formatOrderId(order._id)}
                       </Link>
@@ -1902,7 +1902,7 @@ function AllOrdersSection() {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         {/* Header */}
         <div className="px-5 py-4 border-b flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -2168,7 +2168,7 @@ function FilteredOrdersSection({
         </div>
       )}
 
-      <div className="bg-white rounded-xl shadow-sm border">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         <div className="px-5 py-4 border-b flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <h2 className="text-base font-semibold text-gray-800 shrink-0">
@@ -2238,7 +2238,7 @@ function FilteredOrdersSection({
                       >
                         <Link
                           href={`/dashboard/orders/${order._id}`}
-                          className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
+                          className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
                         >
                           {formatOrderId(order._id)}
                         </Link>
@@ -2611,13 +2611,13 @@ function CustomerNotesSection() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">Customer Notes</h2>
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Customer Notes</h2>
         <p className="text-sm text-gray-500 mt-0.5">
           {total} টি order যেখানে customer checkout-এ note দিয়েছেন
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-gray-400 text-sm">
             লোড হচ্ছে…
@@ -2643,7 +2643,7 @@ function CustomerNotesSection() {
                     <div className="flex items-center gap-2 flex-wrap mb-1.5">
                       <Link
                         href={`/dashboard/orders/${order._id}`}
-                        className="font-mono text-xs bg-gray-100 rounded px-1.5 py-0.5 text-violet-700 hover:underline"
+                        className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
                       >
                         {formatOrderId(order._id)}
                       </Link>
@@ -2819,14 +2819,14 @@ function OrderTimelineSection() {
 
   if (loading)
     return (
-      <div className="bg-white rounded-xl shadow-sm border py-20 text-center text-gray-400 text-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-20 text-center text-gray-400 text-sm">
         Loading timeline…
       </div>
     );
 
   if (!events.length)
     return (
-      <div className="bg-white rounded-xl shadow-sm border py-20 text-center text-gray-400 text-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm py-20 text-center text-gray-400 text-sm">
         No timeline events yet. Status changes will appear here.
       </div>
     );
@@ -2852,7 +2852,7 @@ function OrderTimelineSection() {
   const orders = orderKeys.map((k) => orderMap[k]);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="px-5 py-4 border-b">
         <h2 className="text-base font-semibold text-gray-800">
           Order Timeline
@@ -2883,7 +2883,7 @@ function OrderTimelineSection() {
                 <span onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/dashboard/orders/${order.orderId}`}
-                    className="font-mono text-xs text-violet-700 hover:underline bg-violet-50 px-1.5 py-0.5 rounded"
+                    className="font-mono text-xs text-violet-700 hover:underline bg-violet-50 px-1.5 py-0.5 rounded-lg"
                   >
                     #{order.orderIdShort}
                   </Link>
@@ -3281,7 +3281,7 @@ function AbandonedCartSection() {
       {/* Header */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Abandoned Carts</h2>
+          <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Abandoned Carts</h2>
           <p className="text-sm text-gray-500 mt-0.5">
             {total} জন logged-in customer পণ্য cart-এ রেখে চলে গেছেন
           </p>
@@ -3305,12 +3305,12 @@ function AbandonedCartSection() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b text-xs text-gray-500 uppercase tracking-wide">
+            <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
               <tr>
                 <th className="px-4 py-3 text-left">#</th>
                 <th className="px-4 py-3 text-left">Customer</th>
@@ -3977,7 +3977,7 @@ function AbandonCheckoutSection() {
       {/* Header */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
             Abandoned Checkouts
           </h2>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -4006,12 +4006,12 @@ function AbandonCheckoutSection() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b text-xs text-gray-500 uppercase tracking-wide">
+            <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
               <tr>
                 <th className="px-4 py-3 text-left">#</th>
                 <th className="px-4 py-3 text-left">Customer</th>
@@ -4474,18 +4474,18 @@ function AllWishlistSection() {
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-xl font-bold text-gray-900">All Wishlists</h2>
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">All Wishlists</h2>
         <p className="text-sm text-gray-500 mt-0.5">
           {total} টি unique পণ্য customer-দের wishlist-এ আছে
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b text-xs text-gray-500 uppercase">
+            <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
               <tr>
                 <th className="px-4 py-3 text-left w-8">#</th>
                 <th className="px-4 py-3 text-left">Product</th>

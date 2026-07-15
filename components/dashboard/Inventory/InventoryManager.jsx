@@ -90,7 +90,7 @@ function InlineStockEditor({ value, onSave, disabled }) {
               setEditing(false);
             }
           }}
-          className="w-16 border border-violet-400 rounded px-1.5 py-0.5 text-sm text-center focus:outline-none focus:ring-1 focus:ring-violet-400"
+          className="w-16 border border-violet-400 rounded-lg px-1.5 py-0.5 text-sm text-center focus:outline-none focus:ring-1 focus:ring-violet-400"
         />
       </div>
     );
@@ -100,7 +100,7 @@ function InlineStockEditor({ value, onSave, disabled }) {
     <button
       onClick={() => !disabled && setEditing(true)}
       title="Click to edit stock"
-      className={`min-w-[2.5rem] px-2 py-0.5 rounded text-sm font-semibold border border-dashed transition ${disabled ? "opacity-40 cursor-not-allowed border-gray-200 text-gray-400" : "border-gray-300 text-gray-800 hover:border-violet-400 hover:text-violet-700 hover:bg-violet-50 cursor-text"}`}
+      className={`min-w-[2.5rem] px-2 py-0.5 rounded-lg text-sm font-semibold border border-dashed transition ${disabled ? "opacity-40 cursor-not-allowed border-gray-200 text-gray-400" : "border-gray-300 text-gray-800 hover:border-violet-400 hover:text-violet-700 hover:bg-violet-50 cursor-text"}`}
     >
       {value}
     </button>
@@ -364,7 +364,7 @@ export default function InventoryManager() {
         </div>
       )}
 
-      <div className="bg-white rounded-xl border shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">
         {/* Toolbar */}
         <div className="px-5 py-4 border-b flex flex-col sm:flex-row gap-3 items-start sm:items-center">
           <input
@@ -419,7 +419,7 @@ export default function InventoryManager() {
                     {product.hasVariants ? (
                       <button
                         onClick={() => toggleExpand(product._id)}
-                        className="shrink-0 w-5 h-5 rounded flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+                        className="shrink-0 w-5 h-5 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100"
                       >
                         <svg
                           className={`w-3 h-3 transition-transform ${isExpanded ? "rotate-90" : ""}`}
@@ -534,7 +534,7 @@ export default function InventoryManager() {
                     {/* Edit link */}
                     <Link
                       href={`/dashboard/products/${product._id}`}
-                      className="shrink-0 text-xs text-gray-400 hover:text-violet-500 px-2 py-1 rounded border border-transparent hover:border-violet-200"
+                      className="shrink-0 text-xs text-gray-400 hover:text-violet-500 px-2 py-1 rounded-lg border border-transparent hover:border-violet-200"
                     >
                       Edit
                     </Link>
@@ -591,7 +591,7 @@ export default function InventoryManager() {
       </div>
 
       {/* Legend */}
-      <div className="bg-white rounded-xl border px-5 py-4 shadow-sm">
+      <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4 shadow-sm">
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
           How it works
         </p>

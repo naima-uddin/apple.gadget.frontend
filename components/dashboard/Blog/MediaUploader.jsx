@@ -117,7 +117,7 @@ export default function MediaUploader({
   return (
     <div className="space-y-3">
       <div className="flex gap-2">
-        <label className="inline-block px-4 py-2 bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700 transition">
+        <label className="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition">
           {uploading ? uploadProgress : label}
           <input
             type="file"
@@ -133,7 +133,7 @@ export default function MediaUploader({
           <button
             type="button"
             onClick={() => setShowLibrary(true)}
-            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
           >
             Select from Library
           </button>
@@ -147,12 +147,12 @@ export default function MediaUploader({
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             placeholder={urlPlaceholder}
-            className="w-full sm:flex-1 px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           <button
             type="button"
             onClick={handleAddUrl}
-            className="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition"
+            className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition"
           >
             Paste Link
           </button>
@@ -164,7 +164,7 @@ export default function MediaUploader({
           {currentMedia.map((asset, idx) => (
             <div
               key={idx}
-              className="relative group border rounded overflow-hidden bg-gray-50"
+              className="relative group border border-gray-200 rounded-lg overflow-hidden bg-gray-50"
             >
               {asset.resourceType === "video" ? (
                 isDirectVideoUrl(asset.url) ? (

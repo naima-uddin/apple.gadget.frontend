@@ -149,7 +149,7 @@ export default function OccasionEditor({
     <div className="max-w-4xl mx-auto bg-white rounded-xl shadow p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-gray-800">
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
           {isEdit ? "Edit Occasion Section" : "New Occasion Section"}
         </h2>
         <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -294,7 +294,7 @@ export default function OccasionEditor({
                       value={card.label}
                       onChange={(e) => updateCard(idx, "label", e.target.value)}
                       placeholder="e.g. Air Conditioners"
-                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                   <div>
@@ -305,7 +305,7 @@ export default function OccasionEditor({
                       value={card.link}
                       onChange={(e) => updateCard(idx, "link", e.target.value)}
                       placeholder="/category/air-conditioners"
-                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                   <div className="sm:col-span-2">
@@ -318,7 +318,7 @@ export default function OccasionEditor({
                         updateCard(idx, "subtitle", e.target.value)
                       }
                       placeholder="e.g. Up to 29% OFF | Starting from ৳35,990"
-                      className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      className="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                 </div>
@@ -328,7 +328,7 @@ export default function OccasionEditor({
                   <button
                     onClick={() => moveCard(idx, -1)}
                     disabled={idx === 0}
-                    className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 text-gray-500 text-sm"
+                    className="p-1 rounded-lg hover:bg-gray-200 disabled:opacity-30 text-gray-500 text-sm"
                     title="Move up"
                   >
                     ▲
@@ -336,14 +336,14 @@ export default function OccasionEditor({
                   <button
                     onClick={() => moveCard(idx, 1)}
                     disabled={idx === cards.length - 1}
-                    className="p-1 rounded hover:bg-gray-200 disabled:opacity-30 text-gray-500 text-sm"
+                    className="p-1 rounded-lg hover:bg-gray-200 disabled:opacity-30 text-gray-500 text-sm"
                     title="Move down"
                   >
                     ▼
                   </button>
                   <button
                     onClick={() => removeCard(idx)}
-                    className="p-1 rounded hover:bg-red-100 text-red-500 text-sm"
+                    className="p-1 rounded-lg hover:bg-red-100 text-red-500 text-sm"
                     title="Delete card"
                   >
                     ✕

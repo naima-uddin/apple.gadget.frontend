@@ -79,10 +79,10 @@ export default function CustomersList() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-4">
-      <div className="bg-white rounded-xl border shadow-sm p-5">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
         <div className="flex flex-wrap justify-between items-center gap-3 mb-4">
           <div>
-            <h2 className="text-xl font-bold text-gray-900">Customers</h2>
+            <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Customers</h2>
             <p className="text-sm text-gray-500 mt-0.5">
               Search by name, email, or mobile. List shows Pickob stats — open
               profile for lifetime courier fraud check (Pathao/Steadfast/RedX).
@@ -103,7 +103,7 @@ export default function CustomersList() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-y">
+              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                 <tr>
                   <th className="px-3 py-3">Customer</th>
                   <th className="px-3 py-3">Mobile</th>
@@ -154,19 +154,19 @@ export default function CustomersList() {
                         <div className="flex flex-wrap gap-2">
                           <Link
                             href={`/dashboard/customers/${u._id}/profile`}
-                            className="px-2 py-1 border rounded text-xs font-medium text-violet-800 border-violet-200 hover:bg-violet-50"
+                            className="px-2 py-1 border border-gray-200 rounded-lg text-xs font-medium text-violet-800 border-violet-200 hover:bg-violet-50"
                           >
                             Profile
                           </Link>
                           <Link
                             href={`/dashboard/customers/${u._id}`}
-                            className="px-2 py-1 border rounded text-xs hover:bg-gray-50"
+                            className="px-2 py-1 border border-gray-200 rounded-lg text-xs hover:bg-gray-50"
                           >
                             Edit
                           </Link>
                           {user?.role === "admin" && (
                             <button
-                              className="px-2 py-1 border rounded text-xs text-red-600 hover:bg-red-50"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600 hover:bg-red-50"
                               onClick={() => handleDelete(u._id)}
                             >
                               Delete

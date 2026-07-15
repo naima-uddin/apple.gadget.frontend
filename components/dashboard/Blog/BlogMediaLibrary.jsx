@@ -210,7 +210,7 @@ export default function BlogMediaLibrary({
 
             {/* Type Badge */}
             {getItemType(item) === "video" && (
-              <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+              <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded-lg">
                 VIDEO
               </div>
             )}

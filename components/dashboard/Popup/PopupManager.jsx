@@ -118,7 +118,7 @@ export default function PopupManager() {
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">Popup Banner</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Popup Banner</h1>
         <p className="text-sm text-gray-500 mt-0.5">
           Shown to visitors after 3 seconds. Auto-closes after 6 seconds if not
           dismissed.

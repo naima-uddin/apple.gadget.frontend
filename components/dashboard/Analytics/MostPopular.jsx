@@ -79,7 +79,7 @@ export default function MostPopular() {
           <select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="text-sm border rounded px-2 py-1.5"
+            className="text-sm border border-gray-200 rounded-lg px-2 py-1.5"
           >
             <option value={10}>Top 10</option>
             <option value={20}>Top 20</option>
@@ -87,7 +87,7 @@ export default function MostPopular() {
           </select>
           <button
             onClick={fetchData}
-            className="px-3 py-1.5 text-sm border rounded"
+            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg"
           >
             Refresh
           </button>
@@ -95,7 +95,7 @@ export default function MostPopular() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-xl border p-8 text-center text-gray-500">
+        <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-500">
           Loading…
         </div>
       ) : error ? (
@@ -103,14 +103,14 @@ export default function MostPopular() {
           {error}
         </div>
       ) : items.length === 0 ? (
-        <div className="bg-white rounded-xl border p-8 text-center text-gray-400 text-sm">
+        <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-400 text-sm">
           No view data yet. Product page visits will appear here.
         </div>
       ) : (
-        <div className="bg-white rounded-xl border overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase text-gray-500 bg-gray-50 border-b">
+              <tr className="text-left bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                 <th className="py-2.5 px-4 w-8">#</th>
                 <th className="py-2.5 px-4">Product</th>
                 <th className="py-2.5 px-4 text-right">Views</th>
@@ -168,14 +168,14 @@ export default function MostPopular() {
                       <div className="flex items-center justify-end gap-1.5">
                         <Link
                           href={`/dashboard/products/${item._id}`}
-                          className="text-xs px-2 py-1 border rounded hover:bg-gray-50"
+                          className="text-xs px-2 py-1 border border-gray-200 rounded-lg hover:bg-gray-50"
                         >
                           Edit
                         </Link>
                         <button
                           onClick={() => handleDelete(item)}
                           disabled={deletingId === item._id}
-                          className="text-xs px-2 py-1 border border-red-200 text-red-600 rounded hover:bg-red-50 disabled:opacity-50"
+                          className="text-xs px-2 py-1 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 disabled:opacity-50"
                           title="Reset view count"
                         >
                           {deletingId === item._id ? "…" : "Delete"}

@@ -66,13 +66,13 @@ export default function CustomerEditor({ userId }) {
     return <div className="text-center py-12">Loading…</div>;
   if (!customer)
     return (
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
         No user selected
       </div>
     );
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold">
           {userId === "new" ? "Create user" : "Edit customer"}
@@ -80,7 +80,7 @@ export default function CustomerEditor({ userId }) {
         <div>
           <button
             onClick={() => router.push("/dashboard/customers")}
-            className="px-3 py-2 border rounded text-sm shrink-0"
+            className="px-3 py-2 border border-gray-200 rounded-lg text-sm shrink-0"
           >
             Back
           </button>
@@ -93,7 +93,7 @@ export default function CustomerEditor({ userId }) {
           <input
             value={customer.email || ""}
             readOnly
-            className="w-full border px-3 py-2 rounded bg-gray-50"
+            className="w-full border px-3 py-2 rounded-lg bg-gray-50"
           />
         </div>
 
@@ -104,7 +104,7 @@ export default function CustomerEditor({ userId }) {
             onChange={(e) =>
               setCustomer((c) => ({ ...c, name: e.target.value }))
             }
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border px-3 py-2 rounded-lg"
           />
         </div>
 
@@ -115,7 +115,7 @@ export default function CustomerEditor({ userId }) {
             onChange={(e) =>
               setCustomer((c) => ({ ...c, mobile: e.target.value }))
             }
-            className="w-full border px-3 py-2 rounded font-mono"
+            className="w-full border px-3 py-2 rounded-lg font-mono"
             placeholder="e.g. 01700000000"
             inputMode="tel"
           />
@@ -127,7 +127,7 @@ export default function CustomerEditor({ userId }) {
             <input
               value={customer.provider || ""}
               readOnly
-              className="w-full border px-3 py-2 rounded bg-gray-50"
+              className="w-full border px-3 py-2 rounded-lg bg-gray-50"
             />
           </div>
           <div>
@@ -135,7 +135,7 @@ export default function CustomerEditor({ userId }) {
             <input
               value={new Date(customer.createdAt).toLocaleString()}
               readOnly
-              className="w-full border px-3 py-2 rounded bg-gray-50"
+              className="w-full border px-3 py-2 rounded-lg bg-gray-50"
             />
           </div>
         </div>
@@ -199,14 +199,14 @@ export default function CustomerEditor({ userId }) {
         <div className="flex gap-2">
           <button
             onClick={handleSave}
-            className="px-3 py-2 bg-violet-700 text-white rounded"
+            className="px-3 py-2 bg-violet-700 text-white rounded-lg"
             disabled={saving}
           >
             {saving ? "Saving…" : "Save"}
           </button>
           <button
             onClick={() => router.push("/dashboard/customers")}
-            className="px-3 py-2 border rounded"
+            className="px-3 py-2 border border-gray-200 rounded-lg"
           >
             Cancel
           </button>

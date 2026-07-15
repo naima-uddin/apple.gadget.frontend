@@ -112,7 +112,7 @@ export default function BannersList() {
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Banner Slides</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Banner Slides</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             Slides shown in the homepage banner carousel
           </p>
@@ -180,7 +180,7 @@ export default function BannersList() {
                 <p className="text-xs text-gray-400 mt-0.5 truncate">
                   {b.subtitle || "—"}
                   {b.badge && (
-                    <span className="ml-2 bg-blue-100 text-blue-700 rounded px-1.5 py-0.5">
+                    <span className="ml-2 bg-blue-100 text-blue-700 rounded-lg px-1.5 py-0.5">
                       {b.badge}
                     </span>
                   )}

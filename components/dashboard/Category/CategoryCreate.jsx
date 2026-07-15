@@ -107,12 +107,12 @@ export default function CategoryCreate({ onSuccess }) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-lg font-semibold">Create category</h2>
         <button
           onClick={() => router.push("/dashboard/categories")}
-          className="px-3 py-2 border rounded text-sm shrink-0"
+          className="px-3 py-2 border border-gray-200 rounded-lg text-sm shrink-0"
         >
           Back
         </button>
@@ -124,7 +124,7 @@ export default function CategoryCreate({ onSuccess }) {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border px-3 py-2 rounded-lg"
             placeholder="e.g. Power Bank"
           />
         </div>
@@ -139,7 +139,7 @@ export default function CategoryCreate({ onSuccess }) {
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border px-3 py-2 rounded h-24 resize-none"
+            className="w-full border px-3 py-2 rounded-lg h-24 resize-none"
             placeholder={`e.g. Browse our best ${name || "products"} with fast delivery across Bangladesh.`}
           />
         </div>
@@ -150,7 +150,7 @@ export default function CategoryCreate({ onSuccess }) {
             {images.map((img, idx) => (
               <div
                 key={idx}
-                className="relative w-24 h-24 bg-gray-50 border rounded overflow-hidden"
+                className="relative w-24 h-24 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden"
               >
                 <img
                   src={img.url}
@@ -166,7 +166,7 @@ export default function CategoryCreate({ onSuccess }) {
                 </button>
               </div>
             ))}
-            <label className="w-24 h-24 flex items-center justify-center border border-dashed rounded cursor-pointer text-sm text-gray-500 bg-white">
+            <label className="w-24 h-24 flex items-center justify-center border border-dashed rounded-lg cursor-pointer text-sm text-gray-500 bg-white">
               <input
                 type="file"
                 accept="image/*"
@@ -180,7 +180,7 @@ export default function CategoryCreate({ onSuccess }) {
             <button
               type="button"
               onClick={() => setShowPicker(true)}
-              className="w-24 h-24 flex flex-col items-center justify-center border border-dashed border-violet-300 rounded cursor-pointer text-xs text-violet-500 bg-violet-50 hover:bg-violet-100 gap-1"
+              className="w-24 h-24 flex flex-col items-center justify-center border border-dashed border-violet-300 rounded-lg cursor-pointer text-xs text-violet-500 bg-violet-50 hover:bg-violet-100 gap-1"
             >
               <span className="text-lg">🖼</span>Library
             </button>
@@ -209,7 +209,7 @@ export default function CategoryCreate({ onSuccess }) {
             <select
               value={selectedPath[0] || ""}
               onChange={(e) => setSelectedPath(e.target.value ? [e.target.value] : [])}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded-lg"
             >
               <option value="">(no parent / top level)</option>
               {tree
@@ -232,7 +232,7 @@ export default function CategoryCreate({ onSuccess }) {
                     if (e.target.value) newPath.push(e.target.value);
                     setSelectedPath(newPath);
                   }}
-                  className="w-full border px-3 py-2 rounded"
+                  className="w-full border px-3 py-2 rounded-lg"
                 >
                   <option value="">(direct child of selected)</option>
                   {children.map((n) => (
@@ -249,14 +249,14 @@ export default function CategoryCreate({ onSuccess }) {
         <div className="flex gap-2">
           <button
             onClick={handleSave}
-            className="px-3 py-2 bg-violet-700 text-white rounded"
+            className="px-3 py-2 bg-violet-700 text-white rounded-lg"
             disabled={saving}
           >
             {saving ? "Saving…" : "Create Category"}
           </button>
           <button
             onClick={() => router.push("/dashboard/categories")}
-            className="px-3 py-2 border rounded"
+            className="px-3 py-2 border border-gray-200 rounded-lg"
           >
             Cancel
           </button>

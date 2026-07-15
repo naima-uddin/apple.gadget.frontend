@@ -111,7 +111,7 @@ export default function CategoryManager() {
               )}
             </button>
 
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded overflow-hidden flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
               {cat.images && cat.images[0] ? (
                 <img
                   src={cat.images[0].url}
@@ -143,7 +143,7 @@ export default function CategoryManager() {
 
             <button
               onClick={() => setEditingCategory(cat)}
-              className="p-2 text-violet-700 hover:bg-violet-50 rounded"
+              className="p-2 text-violet-700 hover:bg-violet-50 rounded-lg"
               title="Edit & manage children"
             >
               <FaEdit />
@@ -152,7 +152,7 @@ export default function CategoryManager() {
             {user?.role === "admin" && (
               <button
                 onClick={() => handleDelete(cat)}
-                className="p-2 text-red-600 hover:bg-red-50 rounded"
+                className="p-2 text-red-600 hover:bg-red-50 rounded-lg"
                 title="Delete"
               >
                 <FaTrash />
@@ -171,13 +171,13 @@ export default function CategoryManager() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto bg-white rounded shadow">
+    <div className="max-w-7xl mx-auto bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="p-6 border-b">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <h2 className="text-2xl font-semibold">Categories</h2>
           <button
             onClick={() => setShowCreateMain(true)}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 flex items-center gap-2 text-sm shrink-0"
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 text-sm shrink-0"
           >
             <FaPlus /> Create Main Category
           </button>
@@ -188,7 +188,7 @@ export default function CategoryManager() {
           placeholder="Search categories by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-violet-100"
+          className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-100"
         />
       </div>
 
@@ -345,7 +345,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter category name"
-                className="w-full border px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-violet-100"
+                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-100"
                 autoFocus
               />
             </div>
@@ -361,7 +361,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder={`e.g. Browse our best ${name || "products"} with fast delivery across Bangladesh.`}
-                className="w-full border px-3 py-2 rounded h-20 resize-none focus:outline-none focus:ring-2 focus:ring-violet-100"
+                className="w-full border px-3 py-2 rounded-lg h-20 resize-none focus:outline-none focus:ring-2 focus:ring-violet-100"
               />
             </div>
 
@@ -371,7 +371,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
                 {images.map((img, idx) => (
                   <div
                     key={img.public_id || img.__tempId || `img-${idx}`}
-                    className="relative w-20 h-20 bg-gray-50 border rounded overflow-hidden"
+                    className="relative w-20 h-20 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden"
                   >
                     <img
                       src={img.url}
@@ -395,7 +395,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
                     </button>
                   </div>
                 ))}
-                <label className="w-20 h-20 flex items-center justify-center border border-dashed rounded cursor-pointer hover:bg-gray-50">
+                <label className="w-20 h-20 flex items-center justify-center border border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
                   <input
                     type="file"
                     accept="image/*"
@@ -414,13 +414,13 @@ function CreateMainModal({ API, onClose, onSuccess }) {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 py-2 bg-violet-700 text-white rounded hover:bg-violet-800 disabled:opacity-50"
+              className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 disabled:opacity-50"
             >
               {saving ? "Creating..." : "Create"}
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50"
             >
               Cancel
             </button>
@@ -617,7 +617,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
 
           <div className="space-y-6">
             {/* Parent category info */}
-            <div className="border rounded p-4">
+            <div className="border border-gray-200 rounded-lg p-4">
               <h4 className="font-medium mb-3">Category Details</h4>
               <div className="space-y-4">
                 <div>
@@ -625,7 +625,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full border px-3 py-2 rounded"
+                    className="w-full border px-3 py-2 rounded-lg"
                   />
                 </div>
 
@@ -640,7 +640,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder={`e.g. Browse our best ${name || "products"} with fast delivery across Bangladesh.`}
-                    className="w-full border px-3 py-2 rounded h-20 resize-none"
+                    className="w-full border px-3 py-2 rounded-lg h-20 resize-none"
                   />
                 </div>
 
@@ -652,7 +652,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                     {images.map((img, idx) => (
                       <div
                         key={img.public_id || img.__tempId || `img-${idx}`}
-                        className="relative w-20 h-20 bg-gray-50 border rounded overflow-hidden"
+                        className="relative w-20 h-20 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden"
                       >
                         <img
                           src={img.url}
@@ -678,7 +678,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                         </button>
                       </div>
                     ))}
-                    <label className="w-20 h-20 flex items-center justify-center border border-dashed rounded cursor-pointer hover:bg-gray-50">
+                    <label className="w-20 h-20 flex items-center justify-center border border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
                       <input
                         type="file"
                         accept="image/*"
@@ -697,7 +697,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
 
             {/* Add children section */}
             {canAddChildren && (
-              <div className="border rounded p-4 bg-blue-50">
+              <div className="border border-gray-200 rounded-lg p-4 bg-blue-50">
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-medium">Add Subcategories</h4>
                   <button
@@ -707,7 +707,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                         { name: "", description: "", images: [] },
                       ])
                     }
-                    className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    className="text-sm px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
                     + Add Row
                   </button>
@@ -715,7 +715,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
 
                 <div className="space-y-3">
                   {newChildren.map((child, idx) => (
-                    <div key={idx} className="bg-white p-3 rounded border">
+                    <div key={idx} className="bg-white p-3 rounded-lg border">
                       <div className="flex gap-3">
                         <div className="flex-1 space-y-2">
                           <input
@@ -730,7 +730,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                               )
                             }
                             placeholder="Subcategory name"
-                            className="w-full border px-3 py-2 rounded"
+                            className="w-full border px-3 py-2 rounded-lg"
                           />
                           <textarea
                             value={child.description || ""}
@@ -744,7 +744,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                               )
                             }
                             placeholder="Description (optional)"
-                            className="w-full border px-3 py-2 rounded h-16 resize-none text-sm"
+                            className="w-full border px-3 py-2 rounded-lg h-16 resize-none text-sm"
                           />
                         </div>
 
@@ -756,7 +756,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                                 img.__tempId ||
                                 `child-${idx}-img-${imgIdx}`
                               }
-                              className="relative w-16 h-16 bg-gray-50 border rounded overflow-hidden"
+                              className="relative w-16 h-16 bg-gray-50 border border-gray-200 rounded-lg overflow-hidden"
                             >
                               <img
                                 src={img.url}
@@ -791,7 +791,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                               </button>
                             </div>
                           ))}
-                          <label className="w-16 h-16 flex items-center justify-center border border-dashed rounded cursor-pointer hover:bg-gray-50">
+                          <label className="w-16 h-16 flex items-center justify-center border border-dashed rounded-lg cursor-pointer hover:bg-gray-50">
                             <input
                               type="file"
                               accept="image/*"
@@ -811,7 +811,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
                               kids.filter((_, i) => i !== idx),
                             )
                           }
-                          className="px-2 text-red-600 hover:bg-red-50 rounded"
+                          className="px-2 text-red-600 hover:bg-red-50 rounded-lg"
                         >
                           <FaTrash />
                         </button>
@@ -824,7 +824,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
 
             {/* Existing children list */}
             {children.length > 0 && (
-              <div className="border rounded p-4">
+              <div className="border border-gray-200 rounded-lg p-4">
                 <h4 className="font-medium mb-3">
                   Existing Subcategories ({children.length})
                 </h4>
@@ -840,13 +840,13 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
             <button
               onClick={handleUpdate}
               disabled={saving}
-              className="px-4 py-2 bg-violet-700 text-white rounded hover:bg-violet-800 disabled:opacity-50"
+              className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save All Changes"}
             </button>
             <button
               onClick={onClose}
-              className="px-4 py-2 border rounded hover:bg-gray-50"
+              className="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50"
             >
               Cancel
             </button>

@@ -111,7 +111,7 @@ export default function BarcodeLookup() {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
               Barcode Lookup
             </p>
-            <h1 className="mt-2 text-2xl font-bold text-gray-900">
+            <h1 className="mt-2 text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
               Scan or search product by barcode
             </h1>
             <p className="mt-1 max-w-2xl text-sm text-gray-500">
@@ -174,7 +174,7 @@ export default function BarcodeLookup() {
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
                 Linked product
               </p>
-              <h2 className="mt-1 text-xl font-bold text-gray-900">
+              <h2 className="mt-1 text-xl font-bold tracking-tight text-[#1F2937] work-sans">
                 {product.title || "Untitled product"}
               </h2>
               <p className="mt-1 text-sm text-gray-500">

@@ -225,7 +225,7 @@ export default function DealOfDayEditor() {
                         </span>
                       ) : null}
                       {isBestSeller && (
-                        <span className="px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 font-semibold">
+                        <span className="px-1.5 py-0.5 rounded-lg bg-amber-50 text-amber-600 font-semibold">
                           ⭐ Best Seller
                         </span>
                       )}

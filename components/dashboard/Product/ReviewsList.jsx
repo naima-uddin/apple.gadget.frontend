@@ -169,7 +169,7 @@ export default function ReviewsList() {
     });
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
@@ -189,7 +189,7 @@ export default function ReviewsList() {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Search by product, author, or comment…"
-          className="border px-3 py-2 rounded w-full sm:w-72 text-sm"
+          className="border px-3 py-2 rounded-lg w-full sm:w-72 text-sm"
         />
       </div>
 
@@ -204,7 +204,7 @@ export default function ReviewsList() {
             setSelectedSub(null);
             setSelectedChild(null);
           }}
-          className="border px-3 py-2 rounded text-sm bg-white"
+          className="border px-3 py-2 rounded-lg text-sm bg-white"
         >
           <option value="">All categories</option>
           {categories.map((c) => (
@@ -224,7 +224,7 @@ export default function ReviewsList() {
             setSelectedSub(sub);
             setSelectedChild(null);
           }}
-          className="border px-3 py-2 rounded text-sm bg-white"
+          className="border px-3 py-2 rounded-lg text-sm bg-white"
           disabled={!selectedMain}
         >
           <option value="">Sub category</option>
@@ -244,7 +244,7 @@ export default function ReviewsList() {
               ) || null;
             setSelectedChild(child);
           }}
-          className="border px-3 py-2 rounded text-sm bg-white"
+          className="border px-3 py-2 rounded-lg text-sm bg-white"
           disabled={!selectedSub}
         >
           <option value="">Sub‑sub category</option>
@@ -258,7 +258,7 @@ export default function ReviewsList() {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="border px-3 py-2 rounded text-sm bg-white ml-auto"
+          className="border px-3 py-2 rounded-lg text-sm bg-white ml-auto"
         >
           <option value="date_desc">Newest first</option>
           <option value="date_asc">Oldest first</option>
@@ -285,7 +285,7 @@ export default function ReviewsList() {
                 {/* Product & meta */}
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-3">
                   <div>
-                    <span className="text-xs font-medium bg-violet-50 text-violet-800 px-2 py-0.5 rounded hover:bg-violet-100 transition">
+                    <span className="text-xs font-medium bg-violet-50 text-violet-800 px-2 py-0.5 rounded-lg hover:bg-violet-100 transition">
                       <Link
                         href={`/product/${row.productId}`}
                         target="_blank"
@@ -310,14 +310,14 @@ export default function ReviewsList() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => startEdit(row)}
-                        className="text-xs px-3 py-1.5 rounded bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
+                        className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
                       >
                         Edit
                       </button>
                       {user?.role === "admin" && (
                         <button
                           onClick={() => handleDelete(row.productId, row.index)}
-                          className="text-xs px-3 py-1.5 rounded bg-red-50 text-red-600 hover:bg-red-100 font-medium transition"
+                          className="text-xs px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 font-medium transition"
                         >
                           Delete
                         </button>
@@ -363,20 +363,20 @@ export default function ReviewsList() {
                           setEditForm((f) => ({ ...f, body: e.target.value }))
                         }
                         rows={3}
-                        className="w-full border rounded px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-300"
+                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-violet-300"
                       />
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleSave(row.productId, row.index)}
                         disabled={saving}
-                        className="text-sm px-4 py-1.5 rounded bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60 font-medium transition"
+                        className="text-sm px-4 py-1.5 rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60 font-medium transition"
                       >
                         {saving ? "Saving…" : "Save"}
                       </button>
                       <button
                         onClick={cancelEdit}
-                        className="text-sm px-4 py-1.5 rounded border text-gray-600 hover:bg-gray-50 transition"
+                        className="text-sm px-4 py-1.5 rounded-lg border text-gray-600 hover:bg-gray-50 transition"
                       >
                         Cancel
                       </button>

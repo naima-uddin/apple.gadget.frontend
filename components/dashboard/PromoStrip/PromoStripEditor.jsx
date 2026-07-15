@@ -96,7 +96,7 @@ export default function PromoStripEditor({
   return (
     <div className="max-w-3xl mx-auto bg-white rounded-xl shadow p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-gray-800">
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
           {isEdit ? "Edit Promo Item" : "New Promo Item"}
         </h2>
         <label className="flex items-center gap-2 cursor-pointer select-none">

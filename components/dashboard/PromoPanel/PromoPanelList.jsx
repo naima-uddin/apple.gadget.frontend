@@ -185,7 +185,7 @@ function DealOfDayPicker({ API }) {
                     alt={p.title}
                     width={32}
                     height={32}
-                    className="w-8 h-8 object-contain rounded border shrink-0"
+                    className="w-8 h-8 object-contain rounded-lg border shrink-0"
                   />
                   <span className="flex-1 truncate text-gray-800">
                     {p.title}
@@ -319,7 +319,7 @@ export default function PromoPanelList() {
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
               Popular Picks Promo Panel
             </h1>
             <p className="text-sm text-gray-500 mt-0.5">

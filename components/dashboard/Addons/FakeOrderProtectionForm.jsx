@@ -107,7 +107,7 @@ export default function FakeOrderProtectionForm() {
             </svg>
             Back
           </button>
-          <h1 className="text-xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
             Fake Order Protection
           </h1>
         </div>

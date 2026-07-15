@@ -115,7 +115,7 @@ export default function CodeSnippetForm() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Code Snippet</h1>
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Code Snippet</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             Header, Body ও Footer-এ custom code inject করুন
           </p>
@@ -137,7 +137,7 @@ export default function CodeSnippetForm() {
             <div className="flex items-center gap-2">
               <span className="text-sm font-semibold text-gray-800">{label}</span>
               <span
-                className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded ${badgeColor}`}
+                className={`text-[10px] font-mono font-semibold px-1.5 py-0.5 rounded-lg ${badgeColor}`}
               >
                 {badge}
               </span>

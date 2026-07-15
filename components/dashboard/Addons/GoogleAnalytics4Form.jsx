@@ -88,7 +88,7 @@ export default function GoogleAnalytics4Form() {
             </svg>
             Back
           </button>
-          <h1 className="text-xl font-bold text-gray-900">
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">
             Edit Google Analytics 4
           </h1>
         </div>
@@ -147,7 +147,7 @@ export default function GoogleAnalytics4Form() {
             <li>Select your web stream</li>
             <li>
               Copy the <strong>Measurement ID</strong> — format:{" "}
-              <code className="bg-amber-100 px-1 rounded">G-XXXXXXXXXX</code>
+              <code className="bg-amber-100 px-1 rounded-lg">G-XXXXXXXXXX</code>
             </li>
           </ol>
         </div>

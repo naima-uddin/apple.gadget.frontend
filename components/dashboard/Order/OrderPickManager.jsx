@@ -98,7 +98,7 @@ export default function OrderPickManager() {
     <div className="max-w-6xl mx-auto space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">All New Orders</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">All New Orders</h1>
           <p className="text-sm text-gray-500 mt-1">
             Turn on Pick to accept an order and view its details. The person who
             picks is auto-assigned.
@@ -124,13 +124,13 @@ export default function OrderPickManager() {
         </span>
       </div>
 
-      <div className="bg-white rounded-xl border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-gray-400">Loading orders…</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b text-xs text-gray-500 uppercase">
+              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
                 <tr>
                   <th className="px-4 py-3 text-left w-10">
                     <input

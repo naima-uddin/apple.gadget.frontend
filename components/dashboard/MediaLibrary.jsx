@@ -169,7 +169,7 @@ export default function MediaLibrary() {
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Media Library</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Media Library</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             Browse and manage all uploaded images and videos.
           </p>
@@ -320,7 +320,7 @@ export default function MediaLibrary() {
 
                 {/* Video badge */}
                 {isVideo && (
-                  <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-0.5 rounded">
+                  <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-0.5 rounded-lg">
                     🎥 Video
                   </div>
                 )}
