@@ -1,9 +1,7 @@
-cartnest.com-3495
-KinboBD.com
-LagbeBD.com
-DorkarBD.com
-PriyoCart.com
-AmarCart.com
-Kinbo24.com
-Lagbe24.com
-PriyoStore.com
+Shohozia.com-11$
+shombriti.com-11$
+upoharr.com-11
+upoherr-11
+kinboii-11
+dorkeri-11
+laggbe-11
