@@ -7,12 +7,20 @@ import {
   getItemPrice,
   getItemCompareAtPrice,
 } from "@/components/context/CartContext";
-import QuantitySelector from "@/components/ui/QuantitySelector";
 import ProductCard from "@/components/product/ProductCard";
 import Image from "next/image";
-import { FaTrash, FaPencilAlt, FaPlus, FaShareAlt } from "react-icons/fa";
+import {
+  FiTrash2,
+  FiShare2,
+  FiPlus,
+  FiEdit2,
+  FiArrowLeft,
+  FiHome,
+  FiShoppingBag,
+  FiMinus,
+  FiArrowRight,
+} from "react-icons/fi";
 import toast from "react-hot-toast";
-import EmptyState from "@/components/ui/EmptyState";
 import VariantEditModal, {
   getVariantColors,
   getVariantSizes,
@@ -81,6 +89,7 @@ export default function CartPage({ embedded = false }) {
   }, [cartItems]);
 
   // Calculate totals
+  const totalQty = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cartItems.reduce(
     (sum, item) => sum + getItemPrice(item) * item.quantity,
     0,
@@ -128,23 +137,12 @@ export default function CartPage({ embedded = false }) {
             : "min-h-screen bg-gray-50 flex items-center justify-center"
         }
       >
-        <div className="flex flex-col items-center gap-3 text-gray-400">
-          <svg className="animate-spin w-8 h-8" viewBox="0 0 24 24" fill="none">
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8v8H4z"
-            />
-          </svg>
-          <span className="text-sm">{t("cart.loading")}</span>
+        <div className="flex flex-col items-center gap-4">
+          <div className="relative w-14 h-14">
+            <div className="absolute inset-0 rounded-full border-4 border-violet-100" />
+            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#5B21B6] animate-spin" />
+          </div>
+          <span className="text-sm text-[#6B7280]">{t("cart.loading")}</span>
         </div>
       </div>
     );
@@ -152,307 +150,365 @@ export default function CartPage({ embedded = false }) {
 
   if (cartItems.length === 0) {
     return (
-      <EmptyState
-        title={t("cart.cart_empty_title")}
-        description={t("cart.cart_empty_msg")}
-        buttonText={t("success.continue_shopping")}
-        onButtonClick={() => router.push("/")}
-        className={embedded ? "py-8" : ""}
-      />
+      <div
+        className={
+          embedded
+            ? "flex items-center justify-center py-10"
+            : "min-h-[75vh] bg-gray-50 flex items-center justify-center px-4"
+        }
+      >
+        <div className="text-center max-w-sm w-full">
+          <div className="relative w-28 h-28 mx-auto mb-6">
+            <div className="absolute inset-0 rounded-full bg-violet-100" />
+            <div className="absolute inset-3 rounded-full bg-violet-50 flex items-center justify-center">
+              <FiShoppingBag className="w-10 h-10 text-[#5B21B6]" />
+            </div>
+            <span className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-[#5B21B6] text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-violet-300">
+              0
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-[#1F2937] mb-2">
+            {t("cart.cart_empty_title")}
+          </h1>
+          <p className="text-[#6B7280] mb-8">{t("cart.cart_empty_msg")}</p>
+          <button
+            onClick={() => router.push("/")}
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-[#5B21B6] text-white px-8 py-3 rounded-xl font-semibold hover:bg-violet-700 active:scale-[0.98] transition shadow-lg shadow-violet-200"
+          >
+            {t("success.continue_shopping")}
+            <FiArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className={embedded ? "" : "min-h-screen bg-gray-50 py-8"}>
+    <div className={embedded ? "" : "min-h-screen bg-gray-50 py-6 md:py-10"}>
       <div className={embedded ? "" : "max-w-7xl mx-auto px-3 md:px-4"}>
-        {/* Back & Home */}
+        {/* Page header */}
         {!embedded && (
-          <div className="flex items-center gap-2 mb-4">
-            <button
-              onClick={() => router.back()}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
-            >
-              <svg
-                className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+          <div className="flex items-end justify-between gap-3 mb-6">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] flex items-center gap-3">
+                {t("cart.my_cart")}
+                <span className="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-violet-100 text-[#5B21B6] text-sm font-bold">
+                  {totalQty}
+                </span>
+              </h1>
+              <p className="text-sm text-[#6B7280] mt-1">
+                {totalQty} {t("cart.items_label")}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => router.back()}
+                aria-label="Go back"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-[#6B7280] hover:text-[#5B21B6] hover:border-violet-300 transition"
               >
-                <path d="M19 12H5M12 5l-7 7 7 7" />
-              </svg>
-            </button>
-            <button
-              onClick={() => router.push("/")}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
-            >
-              <svg
-                className="w-4 h-4"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                <FiArrowLeft className="w-4.5 h-4.5" />
+              </button>
+              <button
+                onClick={() => router.push("/")}
+                aria-label="Go home"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-[#6B7280] hover:text-[#5B21B6] hover:border-violet-300 transition"
               >
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9 22 9 12 15 12 15 22" />
-              </svg>
-            </button>
+                <FiHome className="w-4.5 h-4.5" />
+              </button>
+            </div>
           </div>
         )}
-        {/* Cart Items */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm mb-8">
-          {cartItems.map((item) => {
-            const { product, quantity, cartKey, selectedColor, selectedSize } =
-              item;
-            const price = getItemPrice(item);
-            const compareAt = getItemCompareAtPrice(item) || price;
-            const itemSaved = Math.max(0, (compareAt - price) * quantity);
-            const image = product.images?.[0]?.url || "/assets/placeholder.svg";
-            const title = product.title || product.name;
-            const allColors = getVariantColors(product);
-            const allSizes = getVariantSizes(product);
-            const hasVariants =
-              allColors.length > 0 ||
-              allSizes.length > 0 ||
-              product.variants?.length > 0;
 
-            // Find color hex for the selected color
-            const selectedColorObj = selectedColor
-              ? allColors.find(
-                  (c) => c.name?.toLowerCase() === selectedColor?.toLowerCase(),
-                )
-              : null;
-            const colorHex = selectedColorObj?.hex || null;
+        {/* Two-column layout: items + sticky summary */}
+        <div className="lg:grid lg:grid-cols-[1fr_360px] lg:items-start gap-6">
+          {/* ── Cart Items ─────────────────────────────────────────────── */}
+          <div className="space-y-3 md:space-y-4">
+            {cartItems.map((item) => {
+              const {
+                product,
+                quantity,
+                cartKey,
+                selectedColor,
+                selectedSize,
+              } = item;
+              const price = getItemPrice(item);
+              const compareAt = getItemCompareAtPrice(item) || price;
+              const itemSaved = Math.max(0, (compareAt - price) * quantity);
+              const image =
+                product.images?.[0]?.url || "/assets/placeholder.svg";
+              const title = product.title || product.name;
+              const allColors = getVariantColors(product);
+              const allSizes = getVariantSizes(product);
+              const hasVariants =
+                allColors.length > 0 ||
+                allSizes.length > 0 ||
+                product.variants?.length > 0;
 
-            return (
-              <div
-                key={cartKey}
-                className="p-3 md:p-6 border-b last:border-b-0"
-              >
-                <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 relative">
-                  {/* Product Image */}
-                  <div className="shrink-0 self-start">
-                    <a href={`/product/${product._id}/`} className="block">
-                      <Image
-                        src={encodeURI(image)}
-                        alt={title}
-                        width={84}
-                        height={84}
-                        className="object-contain rounded w-21 h-21 md:w-25 md:h-25 hover:opacity-80 transition-opacity"
-                      />
+              // Find color hex for the selected color
+              const selectedColorObj = selectedColor
+                ? allColors.find(
+                    (c) =>
+                      c.name?.toLowerCase() === selectedColor?.toLowerCase(),
+                  )
+                : null;
+              const colorHex = selectedColorObj?.hex || null;
+
+              return (
+                <div
+                  key={cartKey}
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-violet-200 hover:shadow-md transition p-3.5 md:p-5"
+                >
+                  <div className="flex gap-3.5 md:gap-5">
+                    {/* Product Image */}
+                    <a
+                      href={`/product/${product._id}/`}
+                      className="shrink-0 self-start"
+                    >
+                      <div className="w-22 h-22 md:w-28 md:h-28 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
+                        <Image
+                          src={encodeURI(image)}
+                          alt={title}
+                          width={112}
+                          height={112}
+                          className="object-contain w-full h-full p-1.5 hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
                     </a>
-                  </div>
 
-                  {/* Product Details */}
-                  <div className="flex-1">
-                    <a href={`/product/${product._id}/`} className="block">
-                      <h3 className="text-base md:text-lg font-semibold mb-1 pr-10 md:pr-0 hover:text-[#5B21B6] transition-colors">
-                        {title}
-                      </h3>
-                    </a>
+                    {/* Details */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <a
+                          href={`/product/${product._id}/`}
+                          className="block min-w-0"
+                        >
+                          <h3 className="text-sm md:text-base font-semibold text-[#1F2937] leading-snug line-clamp-2 hover:text-[#5B21B6] transition-colors">
+                            {title}
+                          </h3>
+                        </a>
+                        <button
+                          onClick={() => removeFromCart(cartKey)}
+                          title={t("cart.remove")}
+                          className="shrink-0 w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition"
+                        >
+                          <FiTrash2 className="w-4 h-4" />
+                        </button>
+                      </div>
 
-                    {/* Variant display with color swatch */}
-                    {selectedColor || selectedSize ? (
-                      <div className="flex items-center gap-2 mb-2 flex-wrap">
-                        {selectedColor && (
-                          <span className="inline-flex items-center gap-1.5 text-xs bg-gray-100 px-2 py-1 rounded">
-                            {colorHex && (
-                              <span
-                                className="w-4 h-4 rounded-full border border-gray-300 inline-block"
-                                style={{ backgroundColor: colorHex }}
-                              />
-                            )}
-                            <span className="text-gray-700 font-medium">
+                      {/* Variant chips */}
+                      {selectedColor || selectedSize ? (
+                        <div className="flex items-center gap-1.5 mt-2 flex-wrap">
+                          {selectedColor && (
+                            <span className="inline-flex items-center gap-1.5 text-xs bg-violet-50 border border-violet-100 text-[#5B21B6] font-medium px-2 py-1 rounded-full">
+                              {colorHex && (
+                                <span
+                                  className="w-3.5 h-3.5 rounded-full border border-white shadow-sm inline-block"
+                                  style={{ backgroundColor: colorHex }}
+                                />
+                              )}
                               {selectedColor}
                             </span>
-                          </span>
-                        )}
-                        {selectedSize && (
-                          <span className="inline-flex items-center text-xs bg-gray-100 px-2 py-1 rounded">
-                            <span className="text-gray-700 font-medium">
+                          )}
+                          {selectedSize && (
+                            <span className="inline-flex items-center text-xs bg-violet-50 border border-violet-100 text-[#5B21B6] font-medium px-2 py-1 rounded-full">
                               {selectedSize}
                             </span>
-                          </span>
-                        )}
-                        {hasVariants && (
+                          )}
+                          {hasVariants && (
+                            <button
+                              onClick={() => {
+                                setEditItem(item);
+                                setEditMode("edit");
+                              }}
+                              title="Edit variant"
+                              className="w-6 h-6 flex items-center justify-center rounded-full text-gray-400 hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                            >
+                              <FiEdit2 className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
+                      ) : (
+                        hasVariants && (
                           <button
                             onClick={() => {
                               setEditItem(item);
                               setEditMode("edit");
                             }}
-                            title="Edit variant"
-                            className="text-gray-400 hover:text-gray-700 p-0.5 ml-1"
+                            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-[#5B21B6] bg-violet-50 border border-violet-100 px-2.5 py-1 rounded-full hover:bg-violet-100 transition"
                           >
-                            <FaPencilAlt className="w-3 h-3" />
+                            <FiEdit2 className="w-3 h-3" />
+                            {t("cart.select_option")}
                           </button>
-                        )}
-                      </div>
-                    ) : (
-                      hasVariants && (
+                        )
+                      )}
+
+                      {/* Add another size/color */}
+                      {hasVariants && (
                         <button
                           onClick={() => {
                             setEditItem(item);
-                            setEditMode("edit");
+                            setEditMode("add");
                           }}
-                          className="flex items-center gap-1 mb-2 text-xs text-blue-600 hover:underline"
+                          className="flex items-center gap-1 mt-1.5 text-xs text-[#6B7280] hover:text-[#5B21B6] transition"
                         >
-                          <FaPencilAlt className="w-3 h-3" />{" "}
-                          {t("cart.select_option")}
+                          <FiPlus className="w-3 h-3" />
+                          {t("cart.add_size_color")}
                         </button>
-                      )
-                    )}
-
-                    {/* Add more variants button */}
-                    {hasVariants && (
-                      <button
-                        onClick={() => {
-                          setEditItem(item);
-                          setEditMode("add");
-                        }}
-                        className="flex items-center gap-1 mb-2 text-xs text-green-600 hover:text-green-700 hover:underline"
-                      >
-                        <FaPlus className="w-2.5 h-2.5" />{" "}
-                        {t("cart.add_size_color")}
-                      </button>
-                    )}
-
-                    <div className="flex items-center gap-3 md:gap-4 mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">
-                          {t("cart.price")}
-                        </span>
-                        <span className="text-base md:text-lg font-bold text-[#5B21B6]">
-                          ৳{price.toFixed(2)}
-                        </span>
-                        {compareAt > price && (
-                          <span className="text-sm text-gray-500 line-through">
-                            ৳{compareAt}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {product.freeShipping && (
-                      <p className="text-sm font-semibold text-green-700 mb-3">
-                        {t("home.free_shipping")}
-                      </p>
-                    )}
-                    {product.availability === "out_of_stock" && (
-                      <button
-                        onClick={() => setWaitlistProduct(product)}
-                        className="inline-flex items-center gap-1.5 mb-3 text-sm font-semibold text-amber-700 bg-amber-50 border border-amber-300 rounded-lg px-3 py-1.5 hover:bg-amber-100 transition"
-                      >
-                        {t("cart.out_of_stock_waitlist")}
-                      </button>
-                    )}
-
-                    <div className="flex flex-wrap items-center gap-4 md:gap-6">
-                      <div className="flex items-center gap-3 md:gap-4">
-                        <button
-                          onClick={() =>
-                            updateQty(cartKey, Math.max(1, quantity - 1))
-                          }
-                          className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-violet-50 hover:border-violet-300 text-base md:text-lg font-semibold"
-                        >
-                          -
-                        </button>
-                        <span className="w-10 md:w-12 text-center font-medium">
-                          {quantity}
-                        </span>
-                        <button
-                          onClick={() => updateQty(cartKey, quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-violet-50 hover:border-violet-300 text-base md:text-lg font-semibold"
-                        >
-                          +
-                        </button>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">
-                          {t("checkout.total")}
-                        </span>
-                        <span className="text-lg md:text-xl font-bold text-gray-900">
-                          ৳{(price * quantity).toFixed(2)}
-                        </span>
-                      </div>
-                      {itemSaved > 0 && (
-                        <div className="text-sm text-green-600">
-                          {t("cart.saved")}{" "}
-                          <span className="font-semibold">
-                            ৳{itemSaved.toFixed(2)}
-                          </span>
-                        </div>
                       )}
+
+                      {/* Badges */}
+                      {product.freeShipping && (
+                        <p className="text-xs font-semibold text-green-700 mt-2">
+                          {t("home.free_shipping")}
+                        </p>
+                      )}
+                      {product.availability === "out_of_stock" && (
+                        <button
+                          onClick={() => setWaitlistProduct(product)}
+                          className="inline-flex items-center gap-1.5 mt-2 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-3 py-1.5 hover:bg-amber-100 transition"
+                        >
+                          {t("cart.out_of_stock_waitlist")}
+                        </button>
+                      )}
+
+                      {/* Qty + price row */}
+                      <div className="flex flex-wrap items-end justify-between gap-3 mt-3">
+                        <div className="inline-flex items-center bg-gray-50 border border-gray-200 rounded-full overflow-hidden">
+                          <button
+                            onClick={() =>
+                              updateQty(cartKey, Math.max(1, quantity - 1))
+                            }
+                            aria-label="Decrease quantity"
+                            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                          >
+                            <FiMinus className="w-3.5 h-3.5" />
+                          </button>
+                          <span className="w-9 md:w-10 text-center text-sm font-bold text-[#1F2937]">
+                            {quantity}
+                          </span>
+                          <button
+                            onClick={() => updateQty(cartKey, quantity + 1)}
+                            aria-label="Increase quantity"
+                            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                          >
+                            <FiPlus className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        <div className="text-right">
+                          <div className="flex items-baseline justify-end gap-2">
+                            {compareAt > price && (
+                              <span className="text-xs text-gray-400 line-through">
+                                ৳{(compareAt * quantity).toFixed(2)}
+                              </span>
+                            )}
+                            <span className="text-base md:text-lg font-bold text-[#5B21B6]">
+                              ৳{(price * quantity).toFixed(2)}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-[#6B7280] mt-0.5">
+                            ৳{price.toFixed(2)} × {quantity}
+                            {itemSaved > 0 && (
+                              <span className="ml-1.5 text-green-600 font-semibold">
+                                {t("cart.saved")} ৳{itemSaved.toFixed(2)}
+                              </span>
+                            )}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
-                  {/* Remove Button */}
-                  <button
-                    onClick={() => removeFromCart(cartKey)}
-                    className="absolute top-0 right-0 md:static text-red-600 hover:text-red-700 p-1.5 md:p-2"
-                    title="Remove item"
-                  >
-                    <FaTrash className="w-4 h-4 md:w-5 md:h-5" />
-                  </button>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Cart Summary */}
-        <div className="bg-violet-50 rounded-2xl border border-violet-100 p-6 mb-6 -mt-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2 md:mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-[#1F2937] mb-2">
-                {t("cart.cart_total")}
-              </h2>
-              <p className="text-3xl font-bold text-[#5B21B6]">
-                ৳{subtotal.toFixed(2)}
-              </p>
-              {saved > 0 && (
-                <p className="text-sm text-green-600 mt-2">
-                  {t("checkout.you_saving_prefix")} ৳{saved.toFixed(2)}{" "}
-                  {t("checkout.you_saving_suffix")}
-                </p>
-              )}
-              {anyFreeShip && (
-                <p className="text-sm font-semibold text-green-700 mt-2">
-                  {t("home.free_shipping")}
-                </p>
-              )}
-            </div>
-            <div className="flex items-center gap-3 w-full md:w-auto">
-              <button
-                onClick={handleShare}
-                disabled={sharing}
-                className="flex items-center justify-center gap-2 border border-violet-200 text-[#5B21B6] bg-white px-2 py-2 rounded-lg font-medium hover:bg-violet-50 transition disabled:opacity-50"
-                title="Share this cart"
-              >
-                <FaShareAlt className="w-4 h-4" /> {t("cart.share_cart")}
-              </button>
-              <button
-                onClick={handleCheckout}
-                className="flex-1 md:flex-none bg-[#5B21B6] text-white px-2 py-2 rounded-md font-semibold hover:bg-violet-700 transition text-base md:text-lg"
-              >
-                {t("cart.proceed_checkout")}
-              </button>
-            </div>
+              );
+            })}
           </div>
+
+          {/* ── Order Summary (sticky) ─────────────────────────────────── */}
+          <aside className="mt-6 lg:mt-0 lg:sticky lg:top-24">
+            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+              <div className="h-1.5 bg-linear-to-r from-[#5B21B6] via-violet-500 to-violet-300" />
+              <div className="p-5 md:p-6">
+                <h2 className="text-lg font-bold text-[#1F2937] mb-4">
+                  {t("cart.order_summary")}
+                </h2>
+
+                <div className="space-y-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#6B7280]">
+                      {t("cart.subtotal")} ({totalQty})
+                    </span>
+                    <span className="font-semibold text-[#1F2937]">
+                      ৳{subtotal.toFixed(2)}
+                    </span>
+                  </div>
+                  {saved > 0 && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#6B7280]">{t("cart.saved")}</span>
+                      <span className="font-semibold text-green-600">
+                        −৳{saved.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                  {anyFreeShip && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#6B7280]">
+                        {t("cart.shipping")}
+                      </span>
+                      <span className="text-xs font-semibold text-green-700">
+                        {t("cart.free_shipping_badge")}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="border-t border-dashed border-gray-200 my-4" />
+
+                <div className="flex items-center justify-between mb-5">
+                  <span className="font-bold text-[#1F2937]">
+                    {t("cart.total")}
+                  </span>
+                  <span className="text-2xl font-bold text-[#5B21B6]">
+                    ৳{subtotal.toFixed(2)}
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleCheckout}
+                  className="w-full flex items-center justify-center gap-2 bg-[#5B21B6] text-white py-3 rounded-xl font-semibold hover:bg-violet-700 active:scale-[0.99] transition shadow-lg shadow-violet-200"
+                >
+                  {t("cart.proceed_checkout")}
+                  <FiArrowRight className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={handleShare}
+                  disabled={sharing}
+                  title="Share this cart"
+                  className="w-full flex items-center justify-center gap-2 mt-3 border border-violet-200 text-[#5B21B6] bg-violet-50/50 py-2.5 rounded-xl font-medium hover:bg-violet-50 transition disabled:opacity-50"
+                >
+                  <FiShare2 className="w-4 h-4" />
+                  {t("cart.share_cart")}
+                </button>
+                <button
+                  onClick={() => router.push("/")}
+                  className="w-full text-center text-sm text-[#6B7280] hover:text-[#5B21B6] mt-4 transition"
+                >
+                  {t("cart.continue")}
+                </button>
+              </div>
+            </div>
+          </aside>
         </div>
 
         {/* ── Frequently Bought Together ───────────────────────────────── */}
         {fbtProducts.length > 0 && (
-          <div className="my-8">
-            <div className="flex items-center gap-3 mb-1">
-              <span className="text-xl">🛍️</span>
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          <div className="mt-10 md:mt-12">
+            <div className="flex items-center gap-2.5 mb-1">
+              <span className="w-1.5 h-6 rounded-full bg-[#5B21B6]" />
+              <h2 className="text-lg md:text-2xl font-bold text-[#1F2937]">
                 {t("cart.fbt_title")}
               </h2>
             </div>
-            <p className="text-gray-500 text-sm mb-4 ml-9">
+            <p className="text-[#6B7280] text-sm mb-4 ml-4">
               {t("cart.fbt_desc")}
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
@@ -470,10 +526,10 @@ export default function CartPage({ embedded = false }) {
         )}
 
         {/* ── Picked For You (Recommended) ─────────────────────────────── */}
-        <div className="my-8">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-xl">✨</span>
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+        <div className="mt-10 md:mt-12">
+          <div className="flex items-center gap-2.5 mb-4">
+            <span className="w-1.5 h-6 rounded-full bg-[#5B21B6]" />
+            <h2 className="text-lg md:text-2xl font-bold text-[#1F2937]">
               {t("cart.picked_for_you")}
             </h2>
           </div>
