@@ -87,20 +87,20 @@ export default function CartSidebar() {
       {/* backdrop */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 transition-opacity"
+          className="fixed inset-0 bg-black/20  z-40 transition-opacity"
           onClick={toggleSidebar}
         />
       )}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`fixed top-0 right-0 h-full w-full max-w-xs sm:w-88 md:w-96 bg-gray-50 shadow-2xl transform transition-transform duration-300 z-50 ${
+        className={`fixed top-0 right-0 h-full w-full max-w-xs sm:w-88 md:w-96 bg-[#faf9fc] shadow-2xl transform transition-transform duration-300 z-50 ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         } flex flex-col`}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-gray-100 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-full bg-violet-100 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-full bg-[#af82f8] flex items-center justify-center">
               <FiShoppingBag className="w-4 h-4 text-[#5B21B6]" />
             </div>
             <div>
@@ -186,7 +186,7 @@ export default function CartSidebar() {
             return (
               <div
                 key={cartKey}
-                className="bg-white rounded-xl border border-gray-100 p-3 mb-3 last:mb-0"
+                className="bg-white rounded-xl border border-[#e5e7eb] p-3 mb-3 last:mb-0"
               >
                 <div className="flex gap-2.5">
                   {thumb && (

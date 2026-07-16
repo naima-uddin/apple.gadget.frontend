@@ -131,51 +131,30 @@ export default function PaymentSelector({
 }) {
   return (
     <div>
-      <h3 className="font-semibold mb-3 text-[#1F2937]">Payment Method</h3>
-
       {/* ── Cash on Delivery ──────────────────────────────────────────────── */}
       <label
-        className={`flex items-center justify-between px-4 py-3 border-2 cursor-pointer rounded-xl mb-4 transition-all ${
+        className={`flex items-center gap-3 px-3.5 py-3 border rounded-lg cursor-pointer transition-colors ${
           value === "cash-on-delivery"
-            ? "border-emerald-400 bg-emerald-50"
-            : "border-gray-200 hover:border-gray-300 bg-white"
+            ? "border-violet-400 bg-violet-50/40"
+            : "border-gray-200 hover:border-gray-300"
         }`}
       >
-        <div className="flex items-center gap-3">
-          <input
-            type="radio"
-            name="paymentMethod"
-            value="cash-on-delivery"
-            checked={value === "cash-on-delivery"}
-            onChange={() => onChange("cash-on-delivery")}
-            className="w-4 h-4 accent-emerald-600"
-          />
-          <div className="flex items-center gap-2.5">
-            {/* COD icon */}
-            <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-              <svg
-                className="w-5 h-5 text-emerald-600"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-800">
-                Cash on Delivery
-              </p>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Pay when your order arrives
-              </p>
-            </div>
-          </div>
+        <input
+          type="radio"
+          name="paymentMethod"
+          value="cash-on-delivery"
+          checked={value === "cash-on-delivery"}
+          onChange={() => onChange("cash-on-delivery")}
+          className="w-4 h-4 accent-[#5B21B6] shrink-0"
+        />
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-[#1F2937]">
+            Cash on Delivery
+          </p>
+          <p className="text-xs text-gray-400 mt-0.5">
+            Pay when your order arrives
+          </p>
         </div>
-        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full shrink-0">
-          COD
-        </span>
       </label>
 
       {/* ── Mobile Banking ──────────────────────────────────────────────────── */}
@@ -240,7 +219,7 @@ export default function PaymentSelector({
         type="button"
         onClick={onSubmit}
         disabled={isLoading}
-        className="mt-5 w-full bg-[#5B21B6] text-white py-3.5 rounded-xl font-semibold hover:bg-violet-700 transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm shadow-lg shadow-violet-200"
+        className="mt-4 w-full bg-[#5B21B6] text-white py-3 rounded-lg font-medium hover:bg-violet-700 transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
       >
         {isLoading ? (
           <>

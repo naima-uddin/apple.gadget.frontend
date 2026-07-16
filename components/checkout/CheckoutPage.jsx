@@ -9,18 +9,17 @@ import {
   getItemPrice,
   getItemCompareAtPrice,
 } from "@/components/context/CartContext";
-import { getVariantColors } from "@/components/cart/VariantEditModal";
 import { useUser } from "@/components/context/UserContext";
 import AuthModal from "@/components/auth/AuthModal";
 import Image from "next/image";
 import {
-  FaTag,
   FaCheckCircle,
   FaTimesCircle,
   FaTimes,
   FaTicketAlt,
   FaGift,
 } from "react-icons/fa";
+import { FiArrowLeft } from "react-icons/fi";
 import PaymentSelector from "@/components/checkout/PaymentSelector";
 import SearchableSelect from "@/components/ui/SearchableSelect";
 import { toast } from "react-hot-toast";
@@ -67,8 +66,6 @@ export default function CheckoutPage() {
 
   // Progress indicators state
   const [progressItems, setProgressItems] = useState([]);
-  const [savingsOpen, setSavingsOpen] = useState(false);
-  const [nudgeOpen, setNudgeOpen] = useState(false);
 
   // Order items scroll indicator
   const itemsScrollRef = useRef(null);
@@ -702,114 +699,31 @@ export default function CheckoutPage() {
     : Math.max(0, (quote.total ?? 0) - (quote.shipping ?? 0));
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-2">
-        {/* Back & Home */}
-        <div className="flex items-center gap-2 mb-4">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-[#5B21B6] bg-white border border-gray-200 rounded-lg hover:border-violet-300 transition"
-          >
-            <svg
-              className="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
-          </button>
-          <button
-            onClick={() => router.push("/")}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-[#5B21B6] bg-white border border-gray-200 rounded-lg hover:border-violet-300 transition"
-          >
-            <svg
-              className="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-          </button>
-        </div>
-        <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-6">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        {/* Header */}
+        <button
+          onClick={() => router.back()}
+          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#1F2937] transition mb-5"
+        >
+          <FiArrowLeft className="w-4 h-4" />
+          {t("cart.continue")}
+        </button>
+        <h1 className="text-2xl sm:text-3xl font-semibold text-[#1F2937] tracking-tight mb-8">
           {t("checkout.title")}
         </h1>
 
         {/* Guest login nudge */}
         {!user && (
-          <div className="mb-5 border border-violet-100 bg-violet-50/60 rounded-xl overflow-hidden">
+          <div className="mb-8 pb-6 border-b border-gray-100 text-sm text-gray-500">
+            Sign in for faster checkout, reward points & saved addresses —{" "}
             <button
               type="button"
-              onClick={() => setNudgeOpen((v) => !v)}
-              className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-violet-50 transition"
+              onClick={() => setShowAuthModal(true)}
+              className="font-medium text-[#5B21B6] hover:underline"
             >
-              <div className="flex items-center gap-2">
-                <span className="text-base">🎁</span>
-                <span className="font-semibold text-[#5B21B6] text-sm">
-                  Login করুন — আরও সুবিধা পান!
-                </span>
-              </div>
-              <svg
-                className={`w-4 h-4 text-[#5B21B6]/50 transition-transform duration-200 ${nudgeOpen ? "rotate-180" : ""}`}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M6 9l6 6 6-6" />
-              </svg>
+              Sign in
             </button>
-            {nudgeOpen && (
-              <div className="px-4 py-3 bg-white border-t border-violet-100">
-                <ul className="space-y-1.5 text-xs text-[#6B7280] mb-3">
-                  <li className="flex items-center gap-1.5">
-                    <span className="text-[#5B21B6]">✦</span> Reward Points
-                    earn করুন এবং পরের order এ discount পান
-                  </li>
-                  <li className="flex items-center gap-1.5">
-                    <span className="text-[#5B21B6]">✦</span> আগের address
-                    auto-fill হবে
-                  </li>
-                  <li className="flex items-center gap-1.5">
-                    <span className="text-[#5B21B6]">✦</span> Order history ও
-                    tracking সহজে দেখুন
-                  </li>
-                  <li className="flex items-center gap-1.5">
-                    <span className="text-[#5B21B6]">✦</span> Exclusive coupon ও
-                    special offer পাবেন
-                  </li>
-                </ul>
-                <button
-                  type="button"
-                  onClick={() => setShowAuthModal(true)}
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#5B21B6] hover:bg-violet-700 text-white text-xs font-semibold rounded-full transition"
-                >
-                  Login / Sign up
-                  <svg
-                    className="w-3 h-3"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            )}
           </div>
         )}
 
@@ -818,227 +732,110 @@ export default function CheckoutPage() {
           user.createdAt &&
           Date.now() - new Date(user.createdAt).getTime() <
             30 * 24 * 60 * 60 * 1000 && (
-            <div className="mb-5 flex items-start gap-3 p-4 bg-violet-50/60 border border-violet-100 rounded-xl">
-              <FaTag className="text-[#5B21B6] mt-0.5 shrink-0" />
-              <div>
-                <p className="font-semibold text-[#1F2937] text-sm">
-                  {t("checkout.new_user_welcome")}
-                </p>
-                <p className="text-sm text-[#6B7280] mt-0.5">
-                  {t("checkout.new_user_desc_prefix")}{" "}
-                  <strong className="text-[#5B21B6]">newUser26</strong>{" "}
-                  {t("checkout.new_user_desc_middle")}{" "}
-                  <strong className="text-[#5B21B6]">
-                    {t("checkout.new_user_desc_perk")}
-                  </strong>{" "}
-                  {t("checkout.new_user_desc_suffix")}
-                </p>
-              </div>
+            <div className="mb-8 pb-6 border-b border-gray-100 text-sm text-gray-500">
+              {t("checkout.new_user_welcome")}{" "}
+              {t("checkout.new_user_desc_prefix")}{" "}
+              <strong className="text-[#1F2937]">newUser26</strong>{" "}
+              {t("checkout.new_user_desc_middle")}{" "}
+              <strong className="text-[#1F2937]">
+                {t("checkout.new_user_desc_perk")}
+              </strong>{" "}
+              {t("checkout.new_user_desc_suffix")}
             </div>
           )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Left Column - Order Items + Billing Details */}
-          <div className="lg:col-span-2 lg:self-start space-y-4">
-            {/* Order Items Card */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-                <h2 className="text-sm font-bold text-[#1F2937]">
-                  {t("checkout.order_items")}{" "}
-                  <span className="text-gray-400 font-normal">
-                    ({cartItems.length})
-                  </span>
-                </h2>
-                {progressItems.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleViewRewards}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-[#5B21B6] hover:text-violet-700 transition"
-                  >
-                    <FaGift className="text-[#5B21B6]" />
-                    {t("checkout.unlock_rewards")}
-                  </button>
-                )}
-              </div>
-              {/* Vertical list — 2 items visible, rest scrollable */}
-              <div className="relative flex">
-                {/* Custom scroll track — right side */}
-                {cartItems.length > 2 && (
-                  <div className="absolute right-2 top-2 bottom-2 w-0.75 rounded-full bg-gray-100 z-10 overflow-hidden">
-                    <div
-                      className="absolute left-0 right-0 top-0 rounded-full bg-violet-300 transition-all duration-100"
-                      style={{ height: `${itemsScrollPct * 100}%` }}
-                    />
-                    <div
-                      className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#5B21B6] border-2 border-white shadow-sm transition-all duration-100"
-                      style={{ top: `calc(${itemsScrollPct * 100}% - 5px)` }}
-                    />
-                  </div>
-                )}
-                <div
-                  ref={itemsScrollRef}
-                  onScroll={handleItemsScroll}
-                  className="flex-1 overflow-y-auto no-scrollbar divide-y divide-gray-50"
-                  style={{ maxHeight: "152px" }}
-                >
-                  {cartItems.map((item) => {
-                    const { product, quantity, selectedColor, selectedSize } =
-                      item;
-                    const id = product._id || product.id;
-                    const image =
-                      product.images?.[0]?.url || "/assets/placeholder.svg";
-                    const title = product.title || product.name;
-                    const price =
-                      quoteItemMap[
-                        makeCartKey(id, selectedColor, selectedSize)
-                      ] ?? 0;
-                    const allColors = getVariantColors(product);
-                    const colorObj = selectedColor
-                      ? allColors.find(
-                          (c) =>
-                            c.name?.toLowerCase() ===
-                            selectedColor?.toLowerCase(),
-                        )
-                      : null;
-                    const colorHex = colorObj?.hex || null;
-                    return (
-                      <div
-                        key={id}
-                        className="flex items-start gap-3 px-5 py-3"
-                      >
-                        <Image
-                          src={encodeURI(image)}
-                          alt={title}
-                          width={52}
-                          height={52}
-                          className="object-cover rounded-lg border border-gray-100 w-13 h-13 shrink-0"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-[#1F2937] line-clamp-2 leading-snug">
-                            {title}
-                          </p>
-                          <p className="text-xs text-[#6B7280] mt-1">
-                            {quantity} ×{" "}
-                            <span className="font-semibold text-gray-700">
-                              ৳{price.toFixed(0)}
-                            </span>
-                          </p>
-                          {(selectedColor || selectedSize) && (
-                            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                              {selectedColor && (
-                                <span className="inline-flex items-center gap-1 text-[11px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md font-medium">
-                                  {colorHex && (
-                                    <span
-                                      className="w-2.5 h-2.5 rounded-full border border-gray-300 shrink-0 inline-block"
-                                      style={{ backgroundColor: colorHex }}
-                                    />
-                                  )}
-                                  {selectedColor}
-                                </span>
-                              )}
-                              {selectedSize && (
-                                <span className="text-[11px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md font-medium">
-                                  {selectedSize}
-                                </span>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-sm font-bold text-[#5B21B6] shrink-0 mt-0.5">
-                          ৳{(price * quantity).toFixed(0)}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Billing Details Form */}
-            <form
-              onSubmit={handlePlaceOrder}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
-            >
-              <h2 className="text-sm font-bold text-[#1F2937] mb-5">
-                {t("checkout.billing_details")}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 items-start">
+          {/* ── Left — form ──────────────────────────────────────────────── */}
+          <form onSubmit={handlePlaceOrder} className="space-y-10">
+            {/* Contact Information */}
+            <section>
+              <h2 className="text-base font-semibold text-[#1F2937] pb-3 mb-5 border-b border-gray-100">
+                Contact Information
               </h2>
 
               {previousAddresses.length > 0 && (
-                <div className="mb-5">
-                  <p className="text-sm font-medium text-gray-700 mb-2">
+                <div className="mb-6">
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
                     {t("checkout.use_prev_address")}
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  </label>
+                  <select
+                    defaultValue=""
+                    onChange={(e) => {
+                      if (e.target.value === "") return;
+                      applyPreviousAddress(previousAddresses[e.target.value]);
+                      e.target.value = "";
+                    }}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                  >
+                    <option value="" disabled>
+                      {t("checkout.saved_address")}
+                    </option>
                     {previousAddresses.map((billing, idx) => (
-                      <button
-                        key={`${billing.address}-${idx}`}
-                        type="button"
-                        onClick={() => applyPreviousAddress(billing)}
-                        className="text-left border border-gray-200 rounded-lg p-3 hover:border-violet-300 hover:bg-violet-50 transition"
-                      >
-                        <span className="block text-sm font-semibold text-gray-900 truncate">
-                          {billing.name || t("checkout.saved_address")}
-                        </span>
-                        <span className="block text-xs text-gray-500 mt-1 line-clamp-2">
-                          {[
-                            billing.address,
-                            billing.area,
-                            billing.zone,
-                            billing.city,
-                          ]
-                            .filter(Boolean)
-                            .join(", ")}
-                        </span>
-                        {billing.phone && (
-                          <span className="block text-xs text-gray-400 mt-1">
-                            {billing.phone}
-                          </span>
-                        )}
-                      </button>
+                      <option key={`${billing.address}-${idx}`} value={idx}>
+                        {billing.name ? `${billing.name} — ` : ""}
+                        {[billing.address, billing.area, billing.city]
+                          .filter(Boolean)
+                          .join(", ")}
+                      </option>
                     ))}
-                  </div>
+                  </select>
                 </div>
               )}
 
-              {/* Name */}
-              <div className="mb-4">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder={t("checkout.name_ph")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none"
-                  required
-                />
-              </div>
-
-              {/* Phone and Email */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder={t("checkout.phone_ph")}
-                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder={t("checkout.email_ph")}
-                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none"
-                  required
-                />
-              </div>
-
-              {/* City, Zone, Area */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                {/* City Searchable Dropdown */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="sm:col-span-2">
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    {t("checkout.name")}
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    required
+                  />
+                </div>
                 <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    {t("checkout.phone")}
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    {t("checkout.email")}
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    required
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Delivery Address */}
+            <section>
+              <h2 className="text-base font-semibold text-[#1F2937] pb-3 mb-5 border-b border-gray-100">
+                Delivery Address
+              </h2>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    {t("checkout.city")}
+                  </label>
                   <SearchableSelect
                     name="city"
                     value={formData.city}
@@ -1053,14 +850,16 @@ export default function CheckoutPage() {
                       value={customCity}
                       onChange={(e) => setCustomCity(e.target.value)}
                       placeholder={t("checkout.enter_city")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none mt-2"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition mt-2"
                       required
                     />
                   )}
                 </div>
 
-                {/* Zone Searchable Dropdown */}
                 <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    {t("checkout.zone")}
+                  </label>
                   <SearchableSelect
                     name="zone"
                     value={formData.zone}
@@ -1070,20 +869,23 @@ export default function CheckoutPage() {
                     required
                     disabled={!formData.city || formData.city === "other"}
                   />
-                  {(formData.zone === "other" || formData.city === "other") && (
+                  {(formData.zone === "other" ||
+                    formData.city === "other") && (
                     <input
                       type="text"
                       value={customZone}
                       onChange={(e) => setCustomZone(e.target.value)}
                       placeholder={t("checkout.enter_zone")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none mt-2"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition mt-2"
                       required
                     />
                   )}
                 </div>
 
-                {/* Area Searchable Dropdown */}
                 <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                    {t("checkout.area")}
+                  </label>
                   <SearchableSelect
                     name="area"
                     value={formData.area}
@@ -1104,51 +906,128 @@ export default function CheckoutPage() {
                       value={customArea}
                       onChange={(e) => setCustomArea(e.target.value)}
                       placeholder={t("checkout.enter_area")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none mt-2"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition mt-2"
                     />
                   )}
                 </div>
               </div>
 
-              {/* Address */}
-              <div className="mb-4">
+              <div className="mb-5">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                  {t("checkout.address")}
+                </label>
                 <textarea
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
                   placeholder={t("checkout.address_ph")}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none resize-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition resize-none"
                   required
                 />
               </div>
 
-              {/* Note */}
-              <div className="mb-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">
+                  {t("checkout.note")}
+                </label>
                 <textarea
                   name="note"
                   value={formData.note}
                   onChange={handleInputChange}
                   placeholder={t("checkout.note_ph")}
                   rows={2}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none resize-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition resize-none"
                 />
               </div>
-            </form>
-          </div>
+            </section>
+          </form>
 
-          {/* Right Column - Order Summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-4">
-              {/* Header */}
-              <div className="px-5 py-4 border-b border-gray-100">
-                <h2 className="text-sm font-bold text-[#1F2937]">
+          {/* ── Right — sticky summary ───────────────────────────────────── */}
+          <aside className="lg:sticky lg:top-8 space-y-6">
+            <div className="border border-gray-200 rounded-xl p-5 sm:p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-semibold text-[#1F2937]">
                   {t("checkout.order_summary")}
                 </h2>
+                {progressItems.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleViewRewards}
+                    className="flex items-center gap-1 text-xs font-medium text-[#5B21B6] hover:underline"
+                  >
+                    <FaGift className="w-3 h-3" />
+                    {t("checkout.unlock_rewards")}
+                  </button>
+                )}
+              </div>
+
+              {/* Order items — compact list */}
+              <div className="relative mb-4 pb-4 border-b border-gray-100">
+                {cartItems.length > 2 && (
+                  <div className="absolute right-0 top-0 bottom-4 w-0.5 rounded-full bg-gray-100 overflow-hidden">
+                    <div
+                      className="absolute left-0 right-0 top-0 rounded-full bg-gray-400 transition-all duration-100"
+                      style={{ height: `${itemsScrollPct * 100}%`, width: "100%" }}
+                    />
+                  </div>
+                )}
+                <div
+                  ref={itemsScrollRef}
+                  onScroll={handleItemsScroll}
+                  className="space-y-3 overflow-y-auto no-scrollbar pr-2"
+                  style={{ maxHeight: "220px" }}
+                >
+                  {cartItems.map((item) => {
+                    const { product, quantity, selectedColor, selectedSize } =
+                      item;
+                    const id = product._id || product.id;
+                    const image =
+                      product.images?.[0]?.url || "/assets/placeholder.svg";
+                    const title = product.title || product.name;
+                    const price =
+                      quoteItemMap[
+                        makeCartKey(id, selectedColor, selectedSize)
+                      ] ?? 0;
+                    return (
+                      <div key={id} className="flex items-center gap-3">
+                        <div className="relative shrink-0">
+                          <div className="w-11 h-11 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
+                            <Image
+                              src={encodeURI(image)}
+                              alt={title}
+                              width={44}
+                              height={44}
+                              className="object-contain w-full h-full p-1"
+                            />
+                          </div>
+                          <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gray-500 text-white text-[9px] font-bold flex items-center justify-center">
+                            {quantity}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-medium text-[#1F2937] truncate">
+                            {title}
+                          </p>
+                          {(selectedColor || selectedSize) && (
+                            <p className="text-[11px] text-gray-400 truncate">
+                              {[selectedColor, selectedSize]
+                                .filter(Boolean)
+                                .join(" · ")}
+                            </p>
+                          )}
+                        </div>
+                        <p className="text-xs font-medium text-gray-600 shrink-0">
+                          ৳{(price * quantity).toFixed(0)}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Price Breakdown */}
-              <div className="px-5 py-4 space-y-2 border-b border-gray-100 relative">
+              <div className="space-y-2 relative">
                 {quoteLoading && (
                   <div className="absolute inset-0 bg-white/75 flex items-center justify-center rounded z-10">
                     <svg
@@ -1174,14 +1053,16 @@ export default function CheckoutPage() {
                 )}
                 <div className="flex justify-between text-sm text-gray-500">
                   <span>{t("cart.subtotal")}</span>
-                  <span className="font-medium text-gray-700">
+                  <span className="text-gray-700">
                     ৳{(quote.subtotal ?? 0).toFixed(0)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500">
                   <span>{t("orders.shipping")}</span>
                   <span
-                    className={`font-medium ${displayShipping === 0 ? "text-green-600" : "text-gray-700"}`}
+                    className={
+                      displayShipping === 0 ? "text-green-600" : "text-gray-700"
+                    }
                   >
                     {displayShipping === 0
                       ? t("checkout.free")
@@ -1195,14 +1076,14 @@ export default function CheckoutPage() {
                     {quote.appliedCoupons.map((coupon, idx) => (
                       <div
                         key={idx}
-                        className="flex justify-between items-center text-xs text-green-700 bg-green-50 px-2.5 py-1.5 rounded-lg"
+                        className="flex justify-between items-center text-xs text-green-600"
                       >
                         <span className="flex items-center gap-1.5">
-                          <FaTicketAlt className="shrink-0 opacity-70" />
-                          <span className="font-semibold uppercase">
+                          <FaTicketAlt className="shrink-0 opacity-60 w-3 h-3" />
+                          <span className="font-medium uppercase">
                             {coupon.code}
                           </span>
-                          <span className="opacity-70">
+                          <span className="text-gray-400">
                             {coupon.givesFreeShipping
                               ? t("checkout.free_shipping_coupon")
                               : `(-৳${coupon.discountValue ?? 0})`}
@@ -1211,7 +1092,7 @@ export default function CheckoutPage() {
                         <button
                           type="button"
                           onClick={() => handleRemoveCoupon(coupon.code)}
-                          className="text-red-400 hover:text-red-600 ml-1"
+                          className="text-gray-300 hover:text-red-500"
                         >
                           <FaTimes className="w-2.5 h-2.5" />
                         </button>
@@ -1223,32 +1104,26 @@ export default function CheckoutPage() {
                 {(quote.couponDiscount ?? 0) > 0 && (
                   <div className="flex justify-between text-sm text-green-600">
                     <span>{t("checkout.coupon_discount")}</span>
-                    <span className="font-semibold">
-                      -৳{(quote.couponDiscount ?? 0).toFixed(0)}
-                    </span>
+                    <span>-৳{(quote.couponDiscount ?? 0).toFixed(0)}</span>
                   </div>
                 )}
                 {(quote.pointsDiscount ?? 0) > 0 && (
-                  <div className="flex justify-between text-sm text-amber-600">
-                    <span className="flex items-center gap-1">
-                      🏆 Points ({quote.pointsRedeemed} pts)
-                    </span>
-                    <span className="font-semibold">
-                      -৳{(quote.pointsDiscount ?? 0).toFixed(0)}
-                    </span>
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>Points ({quote.pointsRedeemed} pts)</span>
+                    <span>-৳{(quote.pointsDiscount ?? 0).toFixed(0)}</span>
                   </div>
                 )}
 
-                <div className="flex justify-between items-center pt-2 border-t border-dashed border-gray-200">
-                  <span className="text-sm font-bold text-[#1F2937]">
+                <div className="flex justify-between items-center pt-3 mt-1 border-t border-gray-100">
+                  <span className="text-sm font-semibold text-[#1F2937]">
                     {t("checkout.total")}
                   </span>
-                  <span className="text-xl font-extrabold text-[#5B21B6]">
+                  <span className="text-lg font-semibold text-[#1F2937]">
                     ৳{displayTotal.toFixed(0)}
                   </span>
                 </div>
 
-                {/* Savings banner */}
+                {/* Savings line */}
                 {(() => {
                   // Use shared cart utilities — same logic as CartSidebar
                   const mrpSavings = cartItems.reduce((sum, item) => {
@@ -1274,246 +1149,121 @@ export default function CheckoutPage() {
                       : 0);
 
                   return totalSaved > 0 ? (
-                    <div className="flex items-center gap-2 mt-2 bg-green-50 border border-green-100 rounded-lg px-3 py-2">
-                      <span className="text-base">🎉</span>
-                      <p className="text-xs text-green-700 font-medium">
-                        {t("checkout.you_saving_prefix")}{" "}
-                        <span className="font-extrabold">
-                          ৳{Math.round(totalSaved)}
-                        </span>{" "}
-                        {t("checkout.you_saving_suffix")}
-                      </p>
-                    </div>
+                    <p className="text-xs text-green-600 pt-1">
+                      {t("checkout.you_saving_prefix")}{" "}
+                      <span className="font-semibold">
+                        ৳{Math.round(totalSaved)}
+                      </span>{" "}
+                      {t("checkout.you_saving_suffix")}
+                    </p>
                   ) : null;
                 })()}
               </div>
 
-              {/* Savings Section — Reward Points + Coupon */}
-              <div className="border-b border-gray-100">
-                {/* Collapse header */}
-                <button
-                  type="button"
-                  onClick={() => setSavingsOpen((o) => !o)}
-                  className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">🏷️</span>
-                    <span className="text-xs font-semibold text-gray-700">
-                      {t("checkout.coupons_rewards")}
-                    </span>
-                    {/* badges when collapsed */}
-                    {!savingsOpen && (
-                      <span className="flex items-center gap-1">
-                        {appliedCoupons.length > 0 && (
-                          <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-semibold">
-                            {appliedCoupons.length} coupon
-                          </span>
-                        )}
-                        {useRewardPoints && (
-                          <span className="text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded-full font-semibold">
-                            Points ✓
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </div>
-                  <svg
-                    className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${savingsOpen ? "rotate-180" : ""}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+              {/* Coupon code — always visible, one line */}
+              <div className="pt-4 mt-4 border-t border-gray-100">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    name="coupon"
+                    value={formData.coupon}
+                    onChange={handleInputChange}
+                    placeholder={t("checkout.coupon_label")}
+                    disabled={appliedCoupons.length >= 2}
+                    className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 disabled:bg-gray-50 transition"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleApplyCoupon}
+                    disabled={
+                      appliedCoupons.length >= 2 || !formData.coupon.trim()
+                    }
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:border-gray-400 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                   >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </button>
+                    {t("checkout.apply")}
+                  </button>
+                </div>
 
-                {/* Collapsible content */}
-                {savingsOpen && (
-                  <div className="px-5 pb-4 space-y-3">
-                    {/* Reward Points Row */}
-                    {user ? (
-                      <div
-                        onClick={() => {
-                          if (
-                            (quote.availablePoints ?? 0) >=
-                            (quote.pointsPerTk || 100)
-                          ) {
-                            handleToggleRewardPoints(!useRewardPoints);
-                          }
-                        }}
-                        className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all cursor-pointer select-none ${
-                          useRewardPoints
-                            ? "border-amber-300 bg-amber-50"
-                            : (quote.availablePoints ?? 0) >=
-                                (quote.pointsPerTk || 100)
-                              ? "border-gray-200 hover:border-amber-300 hover:bg-amber-50/30"
-                              : "border-gray-100 bg-gray-50/60 cursor-default"
-                        }`}
-                      >
-                        {/* Icon */}
-                        <div
-                          className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-base transition-colors ${
-                            useRewardPoints ? "bg-amber-100" : "bg-gray-100"
-                          }`}
-                        >
-                          🏆
-                        </div>
-
-                        {/* Text */}
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-gray-800 leading-tight">
-                            {t("checkout.reward_points")}
-                          </p>
-                          {(quote.availablePoints ?? 0) > 0 ? (
-                            <p className="text-[11px] leading-tight mt-0.5">
-                              <span className="font-bold text-amber-600">
-                                {quote.availablePoints} pts
-                              </span>
-                              <span className="text-gray-400 mx-1">=</span>
-                              <span className="font-bold text-amber-600">
-                                ৳
-                                {Math.floor(
-                                  (quote.availablePoints || 0) /
-                                    (quote.pointsPerTk || 100),
-                                )}{" "}
-                                off
-                              </span>
-                              {useRewardPoints &&
-                                (quote.pointsDiscount ?? 0) > 0 && (
-                                  <span className="ml-1.5 text-green-600 font-bold">
-                                    ✓ Applied
-                                  </span>
-                                )}
-                            </p>
-                          ) : (
-                            <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
-                              {t("checkout.no_points")}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Toggle */}
-                        {(quote.availablePoints ?? 0) >=
-                        (quote.pointsPerTk || 100) ? (
-                          <div
-                            className={`relative w-10 h-5.5 rounded-full shrink-0 transition-colors duration-200 ${
-                              useRewardPoints ? "bg-amber-400" : "bg-gray-200"
-                            }`}
-                          >
-                            <span
-                              className={`absolute top-0.75 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
-                                useRewardPoints
-                                  ? "translate-x-5.5"
-                                  : "translate-x-0.75"
-                              }`}
-                            />
-                          </div>
-                        ) : (quote.availablePoints ?? 0) > 0 ? (
-                          <span className="text-[10px] text-amber-500 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md shrink-0">
-                            Low pts
-                          </span>
-                        ) : null}
-                      </div>
+                {couponMsg && (
+                  <p
+                    className={`mt-1.5 text-xs flex items-center gap-1 ${couponMsg.type === "success" ? "text-green-600" : "text-red-500"}`}
+                  >
+                    {couponMsg.type === "success" ? (
+                      <FaCheckCircle className="shrink-0" />
                     ) : (
-                      <div className="flex items-center gap-3 p-3 rounded-xl border-2 border-dashed border-gray-200 bg-gray-50/50">
-                        <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-base shrink-0 opacity-50">
-                          🏆
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-gray-500">
-                            Reward Points
-                          </p>
-                          <p className="text-[11px] text-gray-400 mt-0.5">
-                            {t("checkout.sign_in_points")}
-                          </p>
-                        </div>
-                      </div>
+                      <FaTimesCircle className="shrink-0" />
                     )}
+                    {couponMsg.text}
+                  </p>
+                )}
 
-                    {/* Earn points hint */}
-                    {user && (quote.rewardPointsEarned ?? 0) > 0 && (
-                      <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5">
-                        <span>✨</span>
-                        You&apos;ll earn{" "}
-                        <strong className="mx-0.5">
-                          {quote.rewardPointsEarned} pts
-                        </strong>{" "}
-                        on delivery
-                      </p>
-                    )}
-
-                    {/* Coupon Input */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="text-xs font-semibold text-gray-700">
-                          {t("checkout.coupon_label")}
-                        </span>
-                        {appliedCoupons.length > 0 && (
-                          <span className="text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-                            {appliedCoupons.length}/2
-                          </span>
-                        )}
-                      </div>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name="coupon"
-                          value={formData.coupon}
-                          onChange={handleInputChange}
-                          placeholder={t("checkout.enter_code_ph")}
-                          disabled={appliedCoupons.length >= 2}
-                          className="w-full px-3 pr-20 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300 disabled:bg-gray-100 font-mono tracking-widest placeholder:text-gray-300 placeholder:tracking-widest"
-                        />
-                        <button
-                          type="button"
-                          onClick={handleApplyCoupon}
-                          disabled={
-                            appliedCoupons.length >= 2 ||
-                            !formData.coupon.trim()
-                          }
-                          className="absolute right-1 top-1/2 -translate-y-1/2 px-3 py-1 bg-gray-900 text-white text-xs font-semibold rounded-md hover:bg-gray-700 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
-                        >
-                          {t("checkout.apply")}
-                        </button>
-                      </div>
-
-                      {couponMsg && (
-                        <p
-                          className={`mt-1.5 text-xs flex items-center gap-1 ${couponMsg.type === "success" ? "text-green-600" : "text-red-500"}`}
-                        >
-                          {couponMsg.type === "success" ? (
-                            <FaCheckCircle className="shrink-0" />
-                          ) : (
-                            <FaTimesCircle className="shrink-0" />
-                          )}
-                          {couponMsg.text}
-                        </p>
-                      )}
-
-                      {appliedCoupons.length > 0 ? (
-                        <button
-                          type="button"
-                          onClick={handleRemoveAllCoupons}
-                          className="mt-1.5 text-xs text-red-400 hover:text-red-600 transition"
-                        >
-                          {t("checkout.remove_all_coupons")}
-                        </button>
-                      ) : (
-                        <Link
-                          href="/user/coupons"
-                          className="mt-1 text-[11px] text-[#5B21B6] hover:underline inline-block"
-                        >
-                          {t("checkout.browse_coupons")}
-                        </Link>
-                      )}
-                    </div>
-                  </div>
+                {appliedCoupons.length > 0 ? (
+                  <button
+                    type="button"
+                    onClick={handleRemoveAllCoupons}
+                    className="mt-1.5 text-xs text-gray-400 hover:text-red-500 transition"
+                  >
+                    {t("checkout.remove_all_coupons")}
+                  </button>
+                ) : (
+                  <Link
+                    href="/user/coupons"
+                    className="mt-1.5 text-xs text-[#5B21B6] hover:underline inline-block"
+                  >
+                    {t("checkout.browse_coupons")}
+                  </Link>
                 )}
               </div>
 
-              {/* Payment Methods */}
-              <div className="px-5 py-4">
+              {/* Reward points — simple toggle row, only when relevant */}
+              {user && (quote.availablePoints ?? 0) >= (quote.pointsPerTk || 100) && (
+                <div className="flex items-center justify-between gap-3 pt-4 mt-4 border-t border-gray-100">
+                  <div className="min-w-0">
+                    <p className="text-sm text-gray-700">
+                      {t("checkout.reward_points")}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      {quote.availablePoints} pts = ৳
+                      {Math.floor(
+                        (quote.availablePoints || 0) /
+                          (quote.pointsPerTk || 100),
+                      )}{" "}
+                      off
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleToggleRewardPoints(!useRewardPoints)}
+                    aria-pressed={useRewardPoints}
+                    className={`relative w-9 h-5 rounded-full shrink-0 transition-colors duration-200 ${
+                      useRewardPoints ? "bg-[#5B21B6]" : "bg-gray-200"
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                        useRewardPoints ? "translate-x-4.5" : "translate-x-0.5"
+                      }`}
+                    />
+                  </button>
+                </div>
+              )}
+
+              {/* Earn points hint */}
+              {user && (quote.rewardPointsEarned ?? 0) > 0 && (
+                <p className="text-xs text-gray-400 pt-3">
+                  You&apos;ll earn{" "}
+                  <span className="text-gray-600 font-medium">
+                    {quote.rewardPointsEarned} pts
+                  </span>{" "}
+                  on delivery
+                </p>
+              )}
+
+              {/* Payment Method */}
+              <div className="pt-4 mt-4 border-t border-gray-100">
+                <h2 className="text-sm font-semibold text-[#1F2937] mb-3">
+                  {t("checkout.payment")}
+                </h2>
                 <PaymentSelector
                   value={formData.paymentMethod}
                   onChange={(method) =>
@@ -1524,7 +1274,7 @@ export default function CheckoutPage() {
                 />
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
 
@@ -1541,8 +1291,8 @@ export default function CheckoutPage() {
         <div className="fixed inset-0 bg-black/30 bg-opacity-60 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-md w-full max-h-[80vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-100 p-4 flex justify-between items-center">
-              <h3 className="text-lg font-bold text-[#1F2937] flex items-center gap-2">
-                <FaGift className="text-[#5B21B6]" />
+              <h3 className="text-lg font-semibold text-[#1F2937] flex items-center gap-2">
+                <FaGift className="text-[#5B21B6] w-4 h-4" />
                 {t("checkout.available_rewards")}
               </h3>
               <button
@@ -1558,16 +1308,16 @@ export default function CheckoutPage() {
                   {progressItems.map((item, idx) => (
                     <div
                       key={idx}
-                      className="border border-violet-100 rounded-xl p-4 bg-violet-50/60"
+                      className="border border-gray-200 rounded-xl p-4"
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1">
-                          <p className="font-semibold text-[#1F2937]">
+                          <p className="font-medium text-[#1F2937] text-sm">
                             {item.message}
                           </p>
                           {item.couponCode && (
                             <div className="mt-2">
-                              <span className="text-xs font-mono bg-white border border-violet-200 px-2 py-1 rounded text-[#5B21B6]">
+                              <span className="text-xs font-mono bg-gray-50 border border-gray-200 px-2 py-1 rounded text-[#5B21B6]">
                                 {item.couponCode}
                               </span>
                             </div>
@@ -1575,22 +1325,22 @@ export default function CheckoutPage() {
                         </div>
                       </div>
                       <div className="mt-3">
-                        <div className="flex justify-between text-sm mb-1">
-                          <span className="text-[#6B7280]">Progress</span>
-                          <span className="font-medium text-[#1F2937]">
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-gray-400">Progress</span>
+                          <span className="font-medium text-gray-600">
                             ৳{quote.subtotal} / ৳{item.minOrderAmount}
                           </span>
                         </div>
-                        <div className="w-full bg-white border border-violet-100 rounded-full h-2">
+                        <div className="w-full bg-gray-100 rounded-full h-1.5">
                           <div
-                            className="bg-[#5B21B6] h-2 rounded-full transition-all duration-300"
+                            className="bg-[#5B21B6] h-1.5 rounded-full transition-all duration-300"
                             style={{
                               width: `${Math.min(100, (quote.subtotal / item.minOrderAmount) * 100)}%`,
                             }}
                           />
                         </div>
                         {quote.subtotal >= item.minOrderAmount && (
-                          <div className="mt-2 text-green-600 text-sm flex items-center gap-1">
+                          <div className="mt-2 text-green-600 text-xs flex items-center gap-1">
                             <FaCheckCircle className="w-3 h-3" />
                             <span>Eligible! Use the coupon code above.</span>
                           </div>
@@ -1611,7 +1361,7 @@ export default function CheckoutPage() {
                   setShowRewardsModal(false);
                   router.push("/user/coupons");
                 }}
-                className="w-full bg-[#5B21B6] text-white py-2.5 rounded-xl hover:bg-violet-700 transition font-semibold"
+                className="w-full bg-[#5B21B6] text-white py-2.5 rounded-lg hover:bg-violet-700 transition font-medium text-sm"
               >
                 {t("checkout.explore_coupons")}
               </button>
