@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useUser } from "@/components/context/UserContext";
 import { hasPermission } from "@/lib/permissions";
@@ -22,12 +21,6 @@ export default function ProductAsideSections({
   normalizeBadgeKey,
   labelClass,
   inputClass,
-  fbtSearch,
-  setFbtSearch,
-  fbtSearchResults,
-  setFbtSearchResults,
-  fbtSearching,
-  setFbtSearching,
   API,
 }) {
   const [barcodeLookup, setBarcodeLookup] = useState({
@@ -690,188 +683,6 @@ export default function ProductAsideSections({
             />
           </div>
         </div>
-      </section>
-
-      <section
-        id="frequently-bought-together"
-        className="rounded-2xl border border-orange-200 bg-orange-50 p-5 shadow-sm scroll-mt-6"
-      >
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-orange-700">
-          Frequently Bought Together
-        </p>
-        <p className="mt-2 text-sm text-gray-600">
-          Select up to 6 products shown when a user adds this product to cart.
-        </p>
-
-        {(product.frequentlyBoughtTogether || []).length > 0 && (
-          <div className="mt-4 space-y-2">
-            {(product.frequentlyBoughtTogether || []).map((p, i) => (
-              <div
-                key={p._id || p.id || i}
-                className="flex items-center gap-2 rounded-lg border border-orange-300 bg-white px-3 py-2"
-              >
-                <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">
-                  {p.title || p._id || p}
-                </span>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setProduct((prev) => ({
-                      ...prev,
-                      frequentlyBoughtTogether:
-                        prev.frequentlyBoughtTogether.filter(
-                          (_, idx) => idx !== i,
-                        ),
-                    }))
-                  }
-                  className="text-red-500 hover:text-red-700"
-                >
-                  x
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {(product.frequentlyBoughtTogether || []).length < 6 &&
-          product.categoryId && (
-            <button
-              type="button"
-              disabled={fbtSearching}
-              onClick={async () => {
-                setFbtSearching(true);
-                try {
-                  const r = await fetch(
-                    `${API}/api/products?categoryId=${product.categoryId}&limit=12&status=published`,
-                  );
-                  const json = await r.json();
-                  const excluded = new Set([
-                    String(product._id || ""),
-                    ...(product.frequentlyBoughtTogether || []).map((x) =>
-                      String(x._id || x.id || x),
-                    ),
-                  ]);
-                  const slots =
-                    6 - (product.frequentlyBoughtTogether || []).length;
-                  const candidates = (json.items || [])
-                    .filter((item) => !excluded.has(String(item._id)))
-                    .slice(0, slots);
-                  if (candidates.length) {
-                    setProduct((prev) => ({
-                      ...prev,
-                      frequentlyBoughtTogether: [
-                        ...(prev.frequentlyBoughtTogether || []),
-                        ...candidates.map((item) => ({
-                          _id: item._id,
-                          title: item.title,
-                          price: item.price,
-                          images: item.images,
-                        })),
-                      ],
-                    }));
-                  }
-                } catch {
-                  // silently fail
-                } finally {
-                  setFbtSearching(false);
-                }
-              }}
-              className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg border border-orange-300 px-3 py-2 text-xs font-semibold text-orange-700 hover:bg-orange-100 disabled:opacity-50"
-            >
-              {fbtSearching
-                ? "Searching…"
-                : "✨ Auto-suggest from same category"}
-            </button>
-          )}
-
-        {(product.frequentlyBoughtTogether || []).length < 6 && (
-          <div className="relative mt-4">
-            <input
-              type="text"
-              value={fbtSearch}
-              onChange={async (e) => {
-                const q = e.target.value;
-                setFbtSearch(q);
-                if (!q.trim()) {
-                  setFbtSearchResults([]);
-                  return;
-                }
-                setFbtSearching(true);
-                try {
-                  const r = await fetch(
-                    `${API}/api/products?q=${encodeURIComponent(q)}&limit=10&status=published`,
-                  );
-                  const json = await r.json();
-                  const selected = (product.frequentlyBoughtTogether || []).map(
-                    (x) => String(x._id || x.id || x),
-                  );
-                  setFbtSearchResults(
-                    (json.items || []).filter(
-                      (item) => !selected.includes(String(item._id)),
-                    ),
-                  );
-                } catch {
-                  setFbtSearchResults([]);
-                } finally {
-                  setFbtSearching(false);
-                }
-              }}
-              className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-orange-400"
-              placeholder="Search products..."
-            />
-            {fbtSearching && (
-              <span className="absolute right-3 top-2.5 text-xs text-gray-400">
-                Searching...
-              </span>
-            )}
-            {fbtSearchResults.length > 0 && (
-              <div className="absolute z-20 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow-lg">
-                {fbtSearchResults.map((item) => {
-                  const thumb =
-                    Array.isArray(item.images) && item.images[0]?.url;
-                  return (
-                    <button
-                      key={item._id}
-                      type="button"
-                      onClick={() => {
-                        setProduct((prev) => ({
-                          ...prev,
-                          frequentlyBoughtTogether: [
-                            ...(prev.frequentlyBoughtTogether || []),
-                            {
-                              _id: item._id,
-                              title: item.title,
-                              price: item.price,
-                              images: item.images,
-                            },
-                          ],
-                        }));
-                        setFbtSearch("");
-                        setFbtSearchResults([]);
-                      }}
-                      className="flex w-full items-center gap-3 border-b border-gray-100 px-3 py-2 text-left hover:bg-orange-50 last:border-0"
-                    >
-                      <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                        {thumb && (
-                          <Image
-                            src={thumb}
-                            alt={item.title}
-                            fill
-                            sizes="36px"
-                            className="object-cover"
-                          />
-                        )}
-                      </div>
-                      <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">
-                        {item.title}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
       </section>
     </>
   );

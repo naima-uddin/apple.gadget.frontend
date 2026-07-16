@@ -25,6 +25,7 @@ import VariantEditModal, {
 } from "@/components/cart/VariantEditModal";
 import WaitlistModal from "@/components/cart/WaitlistModal";
 import { useLanguage } from "@/components/context/LanguageContext";
+import EmptyCartAnimation from "@/components/ui/EmptyCartAnimation";
 
 export default function CartSidebar() {
   const router = useRouter();
@@ -137,12 +138,7 @@ export default function CartSidebar() {
         <div className="p-3.5 grow overflow-y-auto">
           {cartItems.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center px-4">
-              <div className="relative w-20 h-20 mb-4">
-                <div className="absolute inset-0 rounded-full bg-violet-100" />
-                <div className="absolute inset-2.5 rounded-full bg-violet-50 flex items-center justify-center">
-                  <FiShoppingBag className="w-7 h-7 text-[#5B21B6]" />
-                </div>
-              </div>
+              <EmptyCartAnimation className="w-32 h-32 mb-2" />
               <p className="font-semibold text-[#1F2937] mb-1">
                 {t("cart.cart_empty_title")}
               </p>

@@ -7,7 +7,6 @@ import { useUser } from "@/components/context/UserContext";
 import RichTextEditor from "@/components/dashboard/RichTextEditor";
 import DetailedDescriptionBuilder from "@/components/dashboard/Product/DetailedDescriptionBuilder";
 import MediaPicker from "@/components/dashboard/MediaPicker";
-import Image from "next/image";
 import ProductVariantBuilder from "@/components/dashboard/Product/ProductVariantBuilder";
 import ProductAsideSections from "@/components/dashboard/Product/ProductAsideSections";
 import { uploadImageDirect, MAX_UPLOAD_BYTES } from "@/lib/uploadImage";
@@ -234,9 +233,6 @@ export default function ProductCreate() {
   });
   const [draftId, setDraftId] = useState(null); // Track backend draft ID
   const [lastSaved, setLastSaved] = useState(null);
-  const [fbtSearch, setFbtSearch] = useState("");
-  const [fbtSearchResults, setFbtSearchResults] = useState([]);
-  const [fbtSearching, setFbtSearching] = useState(false);
   const [badgeOptions, setBadgeOptions] = useState(DEFAULT_BADGE_OPTIONS);
   const [showBadgeManager, setShowBadgeManager] = useState(false);
   const [badgeSaving, setBadgeSaving] = useState(false);
@@ -1097,12 +1093,6 @@ export default function ProductCreate() {
                   normalizeBadgeKey={normalizeBadgeKey}
                   labelClass={labelClass}
                   inputClass={inputClass}
-                  fbtSearch={fbtSearch}
-                  setFbtSearch={setFbtSearch}
-                  fbtSearchResults={fbtSearchResults}
-                  setFbtSearchResults={setFbtSearchResults}
-                  fbtSearching={fbtSearching}
-                  setFbtSearching={setFbtSearching}
                   API={API}
                 />
               </aside>
@@ -1733,151 +1723,6 @@ export default function ProductCreate() {
               )}
             </div>
 
-            {/* Frequently Bought Together */}
-            <div className="hidden">
-              <div className="mb-4">
-                <label className="text-lg font-semibold text-gray-900 block">
-                  Frequently Bought Together
-                </label>
-                <p className="text-sm text-gray-600 mt-1">
-                  Select up to 6 products shown when a user adds this product to
-                  cart
-                </p>
-              </div>
-
-              {/* Selected FBT products */}
-              {(product.frequentlyBoughtTogether || []).length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {(product.frequentlyBoughtTogether || []).map((p, i) => (
-                    <div
-                      key={p._id || p.id || i}
-                      className="flex items-center gap-2 bg-white border border-orange-300 rounded-lg px-3 py-1.5"
-                    >
-                      <span className="text-sm font-medium text-gray-800 max-w-40 truncate">
-                        {p.title || p._id}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setProduct((prev) => ({
-                            ...prev,
-                            frequentlyBoughtTogether:
-                              prev.frequentlyBoughtTogether.filter(
-                                (_, idx) => idx !== i,
-                              ),
-                          }))
-                        }
-                        className="text-red-400 hover:text-red-600 font-bold leading-none"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Search */}
-              {(product.frequentlyBoughtTogether || []).length < 6 && (
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={fbtSearch}
-                    onChange={async (e) => {
-                      const q = e.target.value;
-                      setFbtSearch(q);
-                      if (!q.trim()) {
-                        setFbtSearchResults([]);
-                        return;
-                      }
-                      setFbtSearching(true);
-                      try {
-                        const r = await fetch(
-                          `${API}/api/products?q=${encodeURIComponent(q)}&limit=10&status=published`,
-                        );
-                        const json = await r.json();
-                        const selected = (
-                          product.frequentlyBoughtTogether || []
-                        ).map((x) => String(x._id || x.id || x));
-                        setFbtSearchResults(
-                          (json.items || []).filter(
-                            (item) => !selected.includes(String(item._id)),
-                          ),
-                        );
-                      } catch {
-                        setFbtSearchResults([]);
-                      } finally {
-                        setFbtSearching(false);
-                      }
-                    }}
-                    className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-                    placeholder="Search products to add..."
-                  />
-                  {fbtSearching && (
-                    <span className="absolute right-3 top-2.5 text-gray-400 text-xs">
-                      Searching…
-                    </span>
-                  )}
-                  {fbtSearchResults.length > 0 && (
-                    <div className="absolute z-20 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 w-full max-h-48 overflow-y-auto">
-                      {fbtSearchResults.map((item) => {
-                        const thumb =
-                          Array.isArray(item.images) && item.images[0]?.url;
-                        return (
-                          <button
-                            key={item._id}
-                            type="button"
-                            onClick={() => {
-                              setProduct((prev) => ({
-                                ...prev,
-                                frequentlyBoughtTogether: [
-                                  ...(prev.frequentlyBoughtTogether || []),
-                                  {
-                                    _id: item._id,
-                                    title: item.title,
-                                    price: item.price,
-                                    images: item.images,
-                                  },
-                                ],
-                              }));
-                              setFbtSearch("");
-                              setFbtSearchResults([]);
-                            }}
-                            className="w-full text-left px-3 py-2 hover:bg-orange-50 flex items-center gap-3 border-b border-gray-100 last:border-0"
-                          >
-                            <div className="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 shrink-0 relative">
-                              {thumb ? (
-                                <Image
-                                  src={thumb}
-                                  alt={item.title}
-                                  fill
-                                  sizes="40px"
-                                  className="object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-gray-300 text-lg">
-                                  🛍
-                                </div>
-                              )}
-                            </div>
-                            <span className="flex-1 truncate text-sm font-medium text-gray-800">
-                              {item.title}
-                            </span>
-                            <span className="shrink-0 text-xs text-violet-700 font-semibold">
-                              + Add
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              )}
-              {(product.frequentlyBoughtTogether || []).length >= 6 && (
-                <p className="text-sm text-orange-600">
-                  Maximum 6 products selected.
-                </p>
-              )}
-            </div>
           </div>
 
           {/* Reviews Tab */}

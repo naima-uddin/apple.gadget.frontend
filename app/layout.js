@@ -4,11 +4,9 @@ import { UserProvider } from "@/components/context/UserContext";
 import { CartProvider } from "@/components/context/CartContext";
 import { CategoryProvider } from "@/components/context/CategoryContext";
 import { LanguageProvider } from "@/components/context/LanguageContext";
-import CartToast from "@/components/cart/CartToast";
 import CartSidebar from "@/components/cart/CartSidebar";
 import CartFloating from "@/components/cart/CartFloating";
 import ToastProvider from "@/components/ui/ToastProvider";
-import FrequentlyBoughtTogetherModal from "@/components/cart/FrequentlyBoughtTogetherModal";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
 import TrackingCodeInjector from "@/components/layout/TrackingCodeInjector";
 import ScrollToTop from "@/components/ui/ScrollToTop";
@@ -154,12 +152,10 @@ export default async function RootLayout({ children }) {
                   <LayoutWrapper>{children}</LayoutWrapper>
                   {/* <FloatingWhatsApp /> */}
                   {/* global UI overlays */}
-                  <CartToast />
                   <CartSidebar />
                   <CartFloating />
                   <ToastProvider />
                   <PopupBanner />
-                  <FrequentlyBoughtTogetherModal />
                   <CompareBar />
                 </CompareProvider>
               </CategoryProvider>

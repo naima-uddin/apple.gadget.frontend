@@ -9,6 +9,7 @@ import React, {
   useRef,
 } from "react";
 import UserContext from "@/components/context/UserContext";
+import { showActionToast } from "@/components/ui/ActionToast";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
@@ -85,8 +86,6 @@ export const CartProvider = ({ children }) => {
   const [wishlistHydrated, setWishlistHydrated] = useState(false);
   const [cartHydrated, setCartHydrated] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [toastData, setToastData] = useState(null);
-  const [fbtModalData, setFbtModalData] = useState(null);
   const cartSyncTimer = useRef(null);
   const wishlistSyncTimer = useRef(null);
   // Prevents overwriting localStorage with an empty array when the batch API
@@ -261,10 +260,12 @@ export const CartProvider = ({ children }) => {
         ];
       });
       if (!silent) {
-        const fbtItems = Array.isArray(product.frequentlyBoughtTogether)
-          ? product.frequentlyBoughtTogether.filter((p) => p && (p._id || p.id))
-          : [];
-        setFbtModalData({ product, qty, fbtItems });
+        showActionToast({
+          message:
+            qty > 1 ? `${qty} items added to your cart` : "1 item added to your cart",
+          icon: "cart",
+          accent: "violet",
+        });
       }
     },
     [getId],
@@ -333,10 +334,19 @@ export const CartProvider = ({ children }) => {
     (product) => {
       const id = getId(product);
       if (typeof id !== "string" || !id) return;
+      let added = false;
       setWishlistItems((prev) => {
         if (prev.includes(id)) return prev;
+        added = true;
         return [...prev, id];
       });
+      if (added) {
+        showActionToast({
+          message: "1 item added to your favorite wishlist",
+          icon: "wishlist",
+          accent: "rose",
+        });
+      }
     },
     [getId],
   );
@@ -391,10 +401,6 @@ export const CartProvider = ({ children }) => {
         cartItems,
         wishlistItems,
         isSidebarOpen,
-        toastData,
-        setToastData,
-        fbtModalData,
-        setFbtModalData,
         cartHydrated,
         addToCart,
         updateQty,

@@ -16,7 +16,6 @@ import {
   FiEdit2,
   FiArrowLeft,
   FiHome,
-  FiShoppingBag,
   FiMinus,
   FiArrowRight,
 } from "react-icons/fi";
@@ -27,6 +26,7 @@ import VariantEditModal, {
 } from "@/components/cart/VariantEditModal";
 import WaitlistModal from "@/components/cart/WaitlistModal";
 import { useLanguage } from "@/components/context/LanguageContext";
+import EmptyCartAnimation from "@/components/ui/EmptyCartAnimation";
 
 export default function CartPage({ embedded = false }) {
   const router = useRouter();
@@ -158,15 +158,7 @@ export default function CartPage({ embedded = false }) {
         }
       >
         <div className="text-center max-w-sm w-full">
-          <div className="relative w-28 h-28 mx-auto mb-6">
-            <div className="absolute inset-0 rounded-full bg-violet-100" />
-            <div className="absolute inset-3 rounded-full bg-violet-50 flex items-center justify-center">
-              <FiShoppingBag className="w-10 h-10 text-[#5B21B6]" />
-            </div>
-            <span className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-[#5B21B6] text-white text-sm font-bold flex items-center justify-center shadow-lg shadow-violet-300">
-              0
-            </span>
-          </div>
+          <EmptyCartAnimation className="w-44 h-44 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-[#1F2937] mb-2">
             {t("cart.cart_empty_title")}
           </h1>
