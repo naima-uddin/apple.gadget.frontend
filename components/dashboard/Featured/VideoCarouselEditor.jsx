@@ -119,6 +119,7 @@ export default function VideoCarouselEditor({
             url: asset.url,
             public_id: asset.public_id || "",
             youtubeId: "",
+            previewTime: 0,
             productId: null,
             product: null,
           },
@@ -139,7 +140,14 @@ export default function VideoCarouselEditor({
     }
     setVideos((prev) => [
       ...prev,
-      { url: "", public_id: "", youtubeId: id, productId: null, product: null },
+      {
+        url: "",
+        public_id: "",
+        youtubeId: id,
+        previewTime: 0,
+        productId: null,
+        product: null,
+      },
     ]);
     setYtInput("");
   };
@@ -201,6 +209,7 @@ export default function VideoCarouselEditor({
           url: v.url || "",
           public_id: v.public_id || "",
           youtubeId: v.youtubeId || "",
+          previewTime: Math.max(0, Number(v.previewTime) || 0),
           productId: v.productId || null,
         })),
       };
@@ -388,7 +397,8 @@ export default function VideoCarouselEditor({
                     />
                   ) : (
                     <video
-                      src={v.url}
+                      key={`${v.url}#t=${Number(v.previewTime) || 0}`}
+                      src={`${v.url}#t=${Number(v.previewTime) || 0}`}
                       muted
                       playsInline
                       preload="metadata"
@@ -414,6 +424,34 @@ export default function VideoCarouselEditor({
                         "Uploaded video"
                       )}
                     </p>
+
+                    {/* Which frame shows while the card is paused / not centered */}
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <label className="text-xs text-gray-500">
+                        Paused preview at
+                      </label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        value={v.previewTime ?? 0}
+                        onChange={(e) =>
+                          setVideos((prev) =>
+                            prev.map((vv, i) =>
+                              i === idx
+                                ? { ...vv, previewTime: e.target.value }
+                                : vv,
+                            ),
+                          )
+                        }
+                        className="w-20 border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500"
+                      />
+                      <span className="text-xs text-gray-400">
+                        {v.youtubeId
+                          ? "sec — shown live on the homepage while paused (thumbnail here stays YouTube's default)"
+                          : "sec — this frame shows while the video is paused (thumbnail on the left updates)"}
+                      </span>
+                    </div>
 
                     {/* Linked product */}
                     {v.product ? (

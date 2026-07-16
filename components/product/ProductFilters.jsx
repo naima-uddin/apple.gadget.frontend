@@ -82,6 +82,10 @@ export default function ProductFilters({
   // Use refs to track initialization - refs don't cause re-renders
   const initializedRef = useRef(false);
   const initialBoundsRef = useRef({ min: 0, max: 10000 });
+  // Auto-computed bound updates (initial mount, or bounds derived from a
+  // partial/paginated products list) must not silently narrow the parent's
+  // fetch — only a real user interaction should notify onChange.
+  const skipNextNotifyRef = useRef(true);
 
   // ── filter state ────────────────────────────────────────────────────
   const [absMin, setAbsMin] = useState(0);
@@ -115,7 +119,8 @@ export default function ProductFilters({
     // Mark as initialized FIRST to prevent any race conditions
     initializedRef.current = true;
     initialBoundsRef.current = { min, max };
-    
+    skipNextNotifyRef.current = true;
+
     setAbsMin(min);
     setAbsMax(max);
     setPriceRange([min, max]);
@@ -187,6 +192,10 @@ export default function ProductFilters({
 
   // ── notify parent ───────────────────────────────────────────────────
   useEffect(() => {
+    if (skipNextNotifyRef.current) {
+      skipNextNotifyRef.current = false;
+      return;
+    }
     onChange?.({ priceRange, expandedSubIds, brands, minRating, selectedSkinTypes, selectedFormulations, freeFrom, skincareFlags });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceRange, expandedSubIds, brands, minRating, selectedSkinTypes, selectedFormulations, freeFrom, skincareFlags]);

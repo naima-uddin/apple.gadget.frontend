@@ -179,9 +179,24 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
   const [zoomOpen, setZoomOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [descOpen, setDescOpen] = useState(false); // expand truncated description
+  // hover magnifier state (desktop only)
+  const [magnify, setMagnify] = useState(false);
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
+  const imgBoxRef = React.useRef(null);
   // touch swipe state for zoom modal
   const touchStartX = React.useRef(null);
   const currentImage = images[currentIndex] || "/assets/placeholder.svg";
+
+  const handleMagnifyMove = (e) => {
+    const rect = imgBoxRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setZoomPos({
+      x: Math.max(0, Math.min(100, x)),
+      y: Math.max(0, Math.min(100, y)),
+    });
+  };
 
   // keyboard navigation in zoom modal
   useEffect(() => {
@@ -491,34 +506,15 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         {/* ── LEFT: image gallery ── */}
         <div className="w-full lg:w-[42%] flex flex-col gap-3">
-          <div className="flex gap-2">
-            {/* Vertical thumbnail strip */}
-            {images.length > 1 && (
-              <div className="flex flex-col gap-2 w-12 md:w-16 flex-shrink-0">
-                {images.map((img, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setCurrentIndex(idx)}
-                    onMouseEnter={() => setCurrentIndex(idx)}
-                    className={`rounded-xl border-2 overflow-hidden transition aspect-square bg-white ${
-                      currentIndex === idx
-                        ? "border-[#5B21B6] ring-2 ring-violet-100"
-                        : "border-gray-100 hover:border-violet-300"
-                    }`}
-                  >
-                    <Image
-                      src={encodeURI(img)}
-                      alt={`${title} ${idx + 1}`}
-                      width={48}
-                      height={48}
-                      className="object-contain w-full h-full p-0 md:p-0.5"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-            {/* Main image */}
-            <div className="relative bg-white border border-gray-100 flex-1 aspect-square flex items-center justify-center overflow-hidden rounded-2xl shadow-sm">
+          {/* Main image + magnifier panel wrapper */}
+          <div className="relative">
+            <div
+              ref={imgBoxRef}
+              onMouseEnter={() => isDesktop && setMagnify(true)}
+              onMouseLeave={() => setMagnify(false)}
+              onMouseMove={handleMagnifyMove}
+              className="relative bg-white border border-gray-100 w-full aspect-square flex items-center justify-center overflow-hidden rounded-2xl shadow-sm"
+            >
               {images.length > 1 && (
                 <button
                   onClick={prevImage}
@@ -529,7 +525,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               )}
               <button
                 onClick={() => setZoomOpen(true)}
-                className="w-full h-full cursor-zoom-in group flex items-center justify-center"
+                className="w-full h-full cursor-zoom-in flex items-center justify-center"
                 title="Click to zoom"
               >
                 <Image
@@ -537,9 +533,21 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   alt={title}
                   width={700}
                   height={700}
-                  className="w-full h-full object-contain p-0 md:p-1 group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-contain p-0 md:p-1"
                 />
               </button>
+              {/* Magnifier lens — highlights the area being zoomed */}
+              {magnify && isDesktop && (
+                <span
+                  className="absolute z-10 pointer-events-none rounded-lg border-2 border-[#5B21B6]/50 bg-violet-500/10 hidden lg:block"
+                  style={{
+                    width: "40%",
+                    height: "40%",
+                    left: `${zoomPos.x * 0.6}%`,
+                    top: `${zoomPos.y * 0.6}%`,
+                  }}
+                />
+              )}
               {images.length > 1 && (
                 <button
                   onClick={nextImage}
@@ -547,6 +555,12 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 >
                   <FaChevronRight className="w-3 h-3" />
                 </button>
+              )}
+              {/* Image counter */}
+              {images.length > 1 && (
+                <span className="absolute bottom-3 right-3 z-10 bg-black/45 text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                  {currentIndex + 1} / {images.length}
+                </span>
               )}
               {discountPct && (
                 <span className="absolute top-3 left-3 bg-gradient-to-r from-rose-500 to-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
@@ -625,7 +639,45 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 </div>
               )}
             </div>
+
+            {/* Magnifier result panel — floats over the info column (desktop) */}
+            {magnify && isDesktop && (
+              <div
+                className="hidden lg:block absolute top-0 left-full ml-4 z-30 h-full w-[480px] rounded-2xl border border-violet-100 bg-white shadow-2xl pointer-events-none bg-no-repeat"
+                style={{
+                  backgroundImage: `url("${encodeURI(currentImage)}")`,
+                  backgroundSize: "250%",
+                  backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+                }}
+              />
+            )}
           </div>
+
+          {/* Horizontal thumbnail strip — below main image */}
+          {images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto pb-1 justify-start lg:justify-center">
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  onMouseEnter={() => setCurrentIndex(idx)}
+                  className={`w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-xl border-2 overflow-hidden transition bg-white ${
+                    currentIndex === idx
+                      ? "border-[#5B21B6] ring-2 ring-violet-100 shadow-md"
+                      : "border-gray-100 hover:border-violet-300"
+                  }`}
+                >
+                  <Image
+                    src={encodeURI(img)}
+                    alt={`${title} ${idx + 1}`}
+                    width={64}
+                    height={64}
+                    className="object-contain w-full h-full p-0.5"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── MIDDLE: product info ── */}
