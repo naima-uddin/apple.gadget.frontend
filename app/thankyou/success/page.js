@@ -89,7 +89,7 @@ function ProductAddCardSuccess({ product, onAdd }) {
           <p className="text-xs font-semibold text-gray-800 truncate">
             {product.title}
           </p>
-          <p className="text-xs text-orange-600 font-bold">৳{getPrice()}</p>
+          <p className="text-xs text-[#5B21B6] font-bold">৳{getPrice()}</p>
         </div>
         <div className="flex items-center gap-1 shrink-0">
           <button
@@ -117,7 +117,7 @@ function ProductAddCardSuccess({ product, onAdd }) {
               key={c}
               type="button"
               onClick={() => setSelectedColor((p) => (p === c ? "" : c))}
-              className={`px-2 py-0.5 rounded-full text-xs border transition ${selectedColor === c ? "bg-orange-500 text-white border-orange-500" : "border-gray-300 text-gray-600 hover:border-orange-400"}`}
+              className={`px-2 py-0.5 rounded-full text-xs border transition ${selectedColor === c ? "bg-[#5B21B6] text-white border-[#5B21B6]" : "border-gray-300 text-gray-600 hover:border-violet-400"}`}
             >
               {c}
             </button>
@@ -142,7 +142,7 @@ function ProductAddCardSuccess({ product, onAdd }) {
       <button
         type="button"
         onClick={() => onAdd(selectedColor, selectedSize, qty, getPrice())}
-        className="w-full py-1.5 bg-orange-500 text-white rounded-lg text-xs font-semibold hover:bg-orange-600 transition"
+        className="w-full py-1.5 bg-[#5B21B6] text-white rounded-lg text-xs font-semibold hover:bg-violet-700 transition"
       >
         {t("orders.add_to_order")}
       </button>
@@ -422,15 +422,31 @@ function SuccessContent() {
     `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
-      <div className="bg-white rounded-2xl shadow-md w-full max-w-sm overflow-hidden">
-        {/* Green header */}
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-10">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 w-full max-w-sm overflow-hidden">
+        {/* Header */}
         <div className="flex flex-col items-center pt-8 pb-4 px-6">
-          {/* Header icon — blue for paid online, green for COD */}
+          {/* Header icon — gray X for cancelled, blue for paid online, violet check otherwise */}
           <div
-            className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${order?.paymentStatus === "paid" ? "bg-blue-600" : "bg-green-500"}`}
+            className={`w-14 h-14 rounded-full flex items-center justify-center mb-3 ${
+              cancelled
+                ? "bg-gray-400"
+                : order?.paymentStatus === "paid"
+                  ? "bg-blue-600"
+                  : "bg-[#5B21B6]"
+            }`}
           >
-            {order?.paymentStatus === "paid" ? (
+            {cancelled ? (
+              <svg
+                className="w-7 h-7 text-white"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            ) : order?.paymentStatus === "paid" ? (
               <svg
                 className="w-8 h-8 text-white"
                 viewBox="0 0 24 24"
@@ -471,28 +487,28 @@ function SuccessContent() {
           </div>
           {cancelled ? (
             <>
-              <h1 className="text-lg font-bold text-gray-900">
+              <h1 className="text-lg font-semibold text-[#1F2937]">
                 {t("success.order_cancelled_title")}
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#6B7280]">
                 {t("success.order_cancelled_desc")}
               </p>
             </>
           ) : order?.paymentStatus === "paid" ? (
             <>
-              <h1 className="text-lg font-bold text-gray-900">
+              <h1 className="text-lg font-semibold text-[#1F2937]">
                 {t("success.payment_confirmed")}
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#6B7280]">
                 {t("success.payment_desc")}
               </p>
             </>
           ) : (
             <>
-              <h1 className="text-lg font-bold text-gray-900">
+              <h1 className="text-lg font-semibold text-[#1F2937]">
                 {t("success.order_placed")}
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#6B7280]">
                 {t("success.thanks_order")}
               </p>
             </>
@@ -504,16 +520,16 @@ function SuccessContent() {
           {/* Order ID + Delivery */}
           <div className="flex justify-between py-4 text-sm">
             <div>
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 {t("success.order_id")}
               </p>
-              <p className="font-bold text-gray-900">{shortId(orderId)}</p>
+              <p className="font-semibold text-[#1F2937]">{shortId(orderId)}</p>
             </div>
             <div className="text-right">
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 {t("success.estimated_delivery")}
               </p>
-              <p className="font-bold text-gray-900">
+              <p className="font-semibold text-[#1F2937]">
                 {t("success.within_days")}
               </p>
             </div>
@@ -522,10 +538,10 @@ function SuccessContent() {
           {/* Shipping Address */}
           {!loading && addr && (
             <div className="py-4 text-sm">
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 {t("success.address")}
               </p>
-              <p className="text-gray-800">
+              <p className="text-[#374151]">
                 {billing.name}
                 {addr ? ", " + addr : ""}
               </p>
@@ -535,22 +551,24 @@ function SuccessContent() {
           {/* Ordered Items */}
           {!loading && order?.items?.length > 0 && (
             <div className="py-4">
-              <p className="text-gray-500 text-xs mb-3">
+              <p className="text-gray-400 text-xs mb-3">
                 {t("success.items_ordered")} ({order.items.length})
               </p>
               <div className="space-y-3">
                 {order.items.map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
                     {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={48}
-                        height={48}
-                        className="rounded-lg object-contain border border-gray-100 bg-gray-50 shrink-0"
-                      />
+                      <div className="w-12 h-12 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden shrink-0">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={48}
+                          height={48}
+                          className="object-contain w-full h-full p-1"
+                        />
+                      </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+                      <div className="w-12 h-12 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
                         <svg
                           className="w-5 h-5 text-gray-400"
                           viewBox="0 0 24 24"
@@ -564,7 +582,7 @@ function SuccessContent() {
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-medium text-[#1F2937] truncate">
                         {item.title}
                       </p>
                       {(item.color || item.size) && (
@@ -572,11 +590,11 @@ function SuccessContent() {
                           {[item.color, item.size].filter(Boolean).join(" / ")}
                         </p>
                       )}
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-gray-400">
                         {t("success.qty")} {item.quantity}
                       </p>
                     </div>
-                    <p className="text-sm font-semibold text-gray-900 shrink-0">
+                    <p className="text-sm font-semibold text-[#1F2937] shrink-0">
                       ৳{((item.price || 0) * item.quantity).toFixed(0)}
                     </p>
                   </div>
@@ -588,11 +606,11 @@ function SuccessContent() {
           {/* Total */}
           {!loading && order && (
             <div className="py-4 text-sm">
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 Total (Inc. delivery
                 {order.shipping > 0 ? ` - ${order.shipping}` : ""})
               </p>
-              <p className="text-2xl font-extrabold text-gray-900">
+              <p className="text-2xl font-bold text-[#5B21B6]">
                 ৳{(order.total || 0).toFixed(0)}
               </p>
             </div>
@@ -601,7 +619,7 @@ function SuccessContent() {
           {/* Payment Status */}
           {!loading && order && (
             <div className="py-4 text-sm">
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 {t("success.payment_status")}
               </p>
               <p
@@ -610,7 +628,7 @@ function SuccessContent() {
                     ? "text-green-600"
                     : order.paymentStatus === "cancelled"
                       ? "text-red-500"
-                      : "text-orange-500"
+                      : "text-amber-500"
                 }`}
               >
                 {order.paymentStatus === "cod"
@@ -623,26 +641,26 @@ function SuccessContent() {
           {/* Note */}
           {!loading && billing.note && (
             <div className="py-4 text-sm">
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 {t("success.order_note")}
               </p>
-              <p className="text-gray-700">{billing.note}</p>
+              <p className="text-[#374151]">{billing.note}</p>
             </div>
           )}
 
           {/* 3-hour cancel window — edit + cancel */}
           {canCancel && !cancelled && (
             <div className="py-4">
-              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 text-sm">
-                <p className="text-orange-700 font-medium mb-1">
+              <div className="bg-violet-50/60 border border-violet-100 rounded-lg p-3 text-sm">
+                <p className="text-[#5B21B6] font-medium mb-1">
                   {t("success.edit_cancel_time")} {fmtTime(timeLeft)}
                 </p>
 
                 {isEditing ? (
-                  <div className="mt-2 border border-orange-200 rounded-xl overflow-hidden">
+                  <div className="mt-2 border border-violet-100 rounded-xl overflow-hidden">
                     {/* Sticky header */}
-                    <div className="sticky top-0 z-10 bg-orange-100 border-b border-orange-200 px-3 py-2 flex items-center justify-between">
-                      <p className="text-xs font-bold text-orange-800">
+                    <div className="sticky top-0 z-10 bg-violet-50 border-b border-violet-100 px-3 py-2 flex items-center justify-between">
+                      <p className="text-xs font-semibold text-[#5B21B6]">
                         {t("orders.edit_title")}
                       </p>
                       <div className="flex gap-1.5">
@@ -655,7 +673,7 @@ function SuccessContent() {
                         <button
                           onClick={handleSaveEdit}
                           disabled={editSaving}
-                          className="px-3 py-1 bg-orange-500 text-white rounded-lg text-xs font-semibold hover:bg-orange-600 disabled:opacity-60 transition"
+                          className="px-3 py-1 bg-[#5B21B6] text-white rounded-lg text-xs font-semibold hover:bg-violet-700 disabled:opacity-60 transition"
                         >
                           {editSaving
                             ? t("orders.saving")
@@ -666,7 +684,7 @@ function SuccessContent() {
 
                     <div className="max-h-[60vh] overflow-y-auto p-2.5 space-y-2.5">
                       {/* Delivery address */}
-                      <div className="bg-white rounded-xl border border-orange-100 p-2.5 space-y-1.5">
+                      <div className="bg-white rounded-xl border border-gray-100 p-2.5 space-y-1.5">
                         <p className="text-xs font-semibold text-gray-500">
                           {t("orders.edit_address")}
                         </p>
@@ -689,7 +707,7 @@ function SuccessContent() {
                                 }))
                               }
                               placeholder={ph}
-                              className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"
+                              className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-500 outline-none"
                             />
                           ))}
                         </div>
@@ -702,7 +720,7 @@ function SuccessContent() {
                             }))
                           }
                           placeholder={t("orders.address_ph")}
-                          className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"
+                          className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-500 outline-none"
                         />
                         <input
                           value={editBilling.note}
@@ -713,12 +731,12 @@ function SuccessContent() {
                             }))
                           }
                           placeholder={t("orders.note_ph")}
-                          className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"
+                          className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-500 outline-none"
                         />
                       </div>
 
                       {/* Existing items */}
-                      <div className="bg-white rounded-xl border border-orange-100 p-2.5 space-y-2">
+                      <div className="bg-white rounded-xl border border-gray-100 p-2.5 space-y-2">
                         <p className="text-xs font-semibold text-gray-500">
                           {t("orders.edit_items")}
                         </p>
@@ -744,7 +762,7 @@ function SuccessContent() {
                                   <p className="text-xs font-medium truncate">
                                     {item.title}
                                   </p>
-                                  <p className="text-xs text-orange-600 font-semibold">
+                                  <p className="text-xs text-[#5B21B6] font-semibold">
                                     ৳{item.price}
                                   </p>
                                 </div>
@@ -811,7 +829,7 @@ function SuccessContent() {
                                           }),
                                         )
                                       }
-                                      className={`px-1.5 py-0.5 rounded-full text-xs border transition ${item.color === c ? "bg-orange-500 text-white border-orange-500" : "border-gray-300 text-gray-600 hover:border-orange-400"}`}
+                                      className={`px-1.5 py-0.5 rounded-full text-xs border transition ${item.color === c ? "bg-[#5B21B6] text-white border-[#5B21B6]" : "border-gray-300 text-gray-600 hover:border-violet-400"}`}
                                     >
                                       {c}
                                     </button>
@@ -913,12 +931,12 @@ function SuccessContent() {
                       )}
 
                       {/* Add products */}
-                      <div className="bg-white rounded-xl border border-orange-100 p-2.5 space-y-2">
+                      <div className="bg-white rounded-xl border border-gray-100 p-2.5 space-y-2">
                         <p className="text-xs font-semibold text-gray-500">
                           Add New Product
                         </p>
                         <input
-                          className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-400 outline-none"
+                          className="w-full px-2 py-1.5 text-xs border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-500 outline-none"
                           placeholder={t("orders.search_placeholder")}
                           value={productSearch}
                           onChange={(e) => {
@@ -963,7 +981,7 @@ function SuccessContent() {
                   <div className="flex gap-2 mt-2">
                     <button
                       onClick={openEdit}
-                      className="flex-1 py-2 border border-orange-400 text-orange-700 rounded-lg text-xs font-semibold hover:bg-orange-100"
+                      className="flex-1 py-2 border border-violet-300 text-[#5B21B6] rounded-lg text-xs font-semibold hover:bg-violet-50"
                     >
                       {t("orders.edit_order")}
                     </button>
@@ -983,14 +1001,14 @@ function SuccessContent() {
           {/* Help */}
           <div className="py-4 text-sm flex items-center justify-between">
             <div>
-              <p className="text-gray-500 text-xs mb-1">
+              <p className="text-gray-400 text-xs mb-1">
                 {t("success.need_help")}
               </p>
-              <p className="font-semibold text-gray-800">{PHONE}</p>
+              <p className="font-semibold text-[#1F2937]">{PHONE}</p>
             </div>
             <a
               href={`tel:${PHONE}`}
-              className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-200 transition"
+              className="w-10 h-10 bg-violet-50 rounded-full flex items-center justify-center text-[#5B21B6] hover:bg-violet-100 transition"
             >
               <svg
                 className="w-5 h-5"
@@ -1074,10 +1092,10 @@ function SuccessContent() {
         {showCancelModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
             <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 space-y-4">
-              <h3 className="text-base font-bold text-gray-900">
+              <h3 className="text-base font-semibold text-[#1F2937]">
                 {t("orders.cancel_reason_title")}
               </h3>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-400">
                 {t("orders.cancel_confirm")}
               </p>
               <textarea
@@ -1120,7 +1138,7 @@ function SuccessContent() {
         <div className="px-6 pb-6 pt-2">
           <Link
             href="/"
-            className="flex items-center justify-center gap-2 w-full py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition text-sm"
+            className="flex items-center justify-center gap-2 w-full py-3 bg-[#5B21B6] text-white rounded-xl font-semibold hover:bg-violet-700 transition text-sm"
           >
             {t("success.continue_shopping")}
           </Link>
