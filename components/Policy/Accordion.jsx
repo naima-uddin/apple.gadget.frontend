@@ -15,15 +15,15 @@ export default function Accordion({ items = [] }) {
             key={i}
             className={`border rounded-xl overflow-hidden transition-all duration-200 ${
               isOpen
-                ? 'border-orange-400 shadow-md shadow-orange-100'
-                : 'border-gray-200 hover:border-orange-300'
+                ? 'border-violet-300 shadow-md shadow-violet-100'
+                : 'border-gray-200 hover:border-violet-200'
             }`}
           >
             <button
               onClick={() => toggle(i)}
               className={`w-full flex justify-between items-center px-4 py-3 text-left transition-colors duration-200 ${
                 isOpen
-                  ? 'bg-orange-50 text-orange-700'
+                  ? 'bg-violet-50 text-[#5B21B6]'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -31,7 +31,7 @@ export default function Accordion({ items = [] }) {
               <span
                 className={`shrink-0 flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-200 ${
                   isOpen
-                    ? 'bg-orange-500 border-orange-500 text-white rotate-180'
+                    ? 'bg-[#5B21B6] border-[#5B21B6] text-white rotate-180'
                     : 'bg-white border-gray-300 text-gray-500'
                 }`}
               >
@@ -52,7 +52,7 @@ export default function Accordion({ items = [] }) {
                 isOpen ? 'max-h-96' : 'max-h-0'
               }`}
             >
-              <div className="px-4 py-3 bg-white border-t border-orange-100">
+              <div className="px-4 py-3 bg-white border-t border-violet-100">
                 <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
                   {it.answer || '—'}
                 </p>
