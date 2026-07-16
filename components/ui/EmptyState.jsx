@@ -50,7 +50,7 @@ export default function EmptyState({
         {buttonText && onButtonClick && (
           <button
             onClick={onButtonClick}
-            className="bg-red-600 text-white px-8 py-3 rounded-lg hover:bg-red-700 transition"
+            className="bg-[#b386fc] text-white px-8 py-3 rounded-lg hover:bg-[#4a1a9e] transition"
           >
             {buttonText}
           </button>

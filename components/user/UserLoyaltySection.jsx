@@ -7,21 +7,21 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
 const TIER_STYLE = {
   silver: {
-    badge: "bg-gradient-to-br from-slate-300 to-slate-500 text-white",
+    badge: "bg-linear-to-br from-slate-300 to-slate-500 text-white",
     card: "from-slate-50 to-slate-100 border-slate-200",
     text: "text-slate-700",
     bar: "bg-slate-400",
     icon: "🥈",
   },
   gold: {
-    badge: "bg-gradient-to-br from-amber-300 to-amber-500 text-white",
+    badge: "bg-linear-to-br from-amber-300 to-amber-500 text-white",
     card: "from-amber-50 to-amber-100 border-amber-200",
     text: "text-amber-700",
     bar: "bg-amber-400",
     icon: "🥇",
   },
   platinum: {
-    badge: "bg-gradient-to-br from-indigo-400 to-purple-600 text-white",
+    badge: "bg-linear-to-br from-indigo-400 to-purple-600 text-white",
     card: "from-indigo-50 to-purple-100 border-indigo-200",
     text: "text-indigo-700",
     bar: "bg-indigo-500",
@@ -43,7 +43,7 @@ export default function UserLoyaltySection() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow p-10 text-center text-gray-400">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center text-gray-400">
         Loading loyalty tier…
       </div>
     );
@@ -51,8 +51,8 @@ export default function UserLoyaltySection() {
 
   if (!data || !data.ok) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-2">Loyalty Tier</h2>
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <h2 className="text-xl font-bold text-[#1F2937] mb-2">Loyalty Tier</h2>
         <p className="text-gray-600">
           Please log in to view your loyalty tier.
         </p>
@@ -73,14 +73,16 @@ export default function UserLoyaltySection() {
 
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl md:text-2xl font-semibold mb-1">Loyalty Tier</h2>
-        <p className="text-sm text-gray-500 mb-6">
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <h2 className="text-xl md:text-2xl font-bold text-[#1F2937] mb-1">
+          Loyalty Tier
+        </h2>
+        <p className="text-sm text-[#6B7280] mb-6">
           Your tier is based on lifetime spend across delivered orders.
         </p>
 
         <div
-          className={`rounded-2xl border bg-gradient-to-br ${style.card} p-5 flex items-center gap-4`}
+          className={`rounded-2xl border bg-linear-to-br ${style.card} p-5 flex items-center gap-4`}
         >
           <div
             className={`w-16 h-16 rounded-full ${style.badge} flex items-center justify-center text-3xl shrink-0 shadow`}
@@ -139,8 +141,8 @@ export default function UserLoyaltySection() {
       </div>
 
       {/* Tier ladder */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="font-semibold text-gray-800 mb-4">Tier Benefits</h3>
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+        <h3 className="font-semibold text-[#1F2937] mb-4">Tier Benefits</h3>
         <div className="grid sm:grid-cols-3 gap-4">
           {allTiers.map((t) => {
             const tStyle = TIER_STYLE[t.key] || TIER_STYLE.silver;
@@ -150,7 +152,7 @@ export default function UserLoyaltySection() {
             return (
               <div
                 key={t.key}
-                className={`rounded-xl border p-4 ${isCurrent ? `bg-gradient-to-br ${tStyle.card}` : "border-gray-100"}`}
+                className={`rounded-xl border p-4 ${isCurrent ? `bg-linear-to-br ${tStyle.card}` : "border-gray-100"}`}
               >
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-xl">{tStyle.icon}</span>
@@ -189,7 +191,7 @@ export default function UserLoyaltySection() {
         </div>
         <p className="text-xs text-gray-400 mt-4">
           Want more perks?{" "}
-          <Link href="/" className="text-rose-600 hover:underline">
+          <Link href="/" className="text-[#5B21B6] hover:underline">
             Keep shopping
           </Link>{" "}
           to level up your tier.

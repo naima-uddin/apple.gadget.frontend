@@ -204,7 +204,7 @@ export default function CartPage({ embedded = false }) {
           </div>
         )}
         {/* Cart Items */}
-        <div className="bg-white rounded-lg shadow mb-8">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm mb-8">
           {cartItems.map((item) => {
             const { product, quantity, cartKey, selectedColor, selectedSize } =
               item;
@@ -250,7 +250,7 @@ export default function CartPage({ embedded = false }) {
                   {/* Product Details */}
                   <div className="flex-1">
                     <a href={`/product/${product._id}/`} className="block">
-                      <h3 className="text-base md:text-lg font-semibold mb-1 pr-10 md:pr-0 hover:text-red-600 transition-colors">
+                      <h3 className="text-base md:text-lg font-semibold mb-1 pr-10 md:pr-0 hover:text-[#5B21B6] transition-colors">
                         {title}
                       </h3>
                     </a>
@@ -325,7 +325,7 @@ export default function CartPage({ embedded = false }) {
                         <span className="text-sm text-gray-600">
                           {t("cart.price")}
                         </span>
-                        <span className="text-base md:text-lg font-bold text-red-600">
+                        <span className="text-base md:text-lg font-bold text-[#5B21B6]">
                           ৳{price.toFixed(2)}
                         </span>
                         {compareAt > price && (
@@ -355,7 +355,7 @@ export default function CartPage({ embedded = false }) {
                           onClick={() =>
                             updateQty(cartKey, Math.max(1, quantity - 1))
                           }
-                          className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 text-base md:text-lg font-semibold"
+                          className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-violet-50 hover:border-violet-300 text-base md:text-lg font-semibold"
                         >
                           -
                         </button>
@@ -364,7 +364,7 @@ export default function CartPage({ embedded = false }) {
                         </span>
                         <button
                           onClick={() => updateQty(cartKey, quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100 text-base md:text-lg font-semibold"
+                          className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-violet-50 hover:border-violet-300 text-base md:text-lg font-semibold"
                         >
                           +
                         </button>
@@ -403,13 +403,13 @@ export default function CartPage({ embedded = false }) {
         </div>
 
         {/* Cart Summary */}
-        <div className="bg-[#FFF5ED] rounded-lg shadow p-6 mb-6 -mt-6">
+        <div className="bg-violet-50 rounded-2xl border border-violet-100 p-6 mb-6 -mt-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-2 md:mb-6">
             <div>
-              <h2 className="text-2xl font-bold mb-2">
+              <h2 className="text-2xl font-bold text-[#1F2937] mb-2">
                 {t("cart.cart_total")}
               </h2>
-              <p className="text-3xl font-bold text-red-600">
+              <p className="text-3xl font-bold text-[#5B21B6]">
                 ৳{subtotal.toFixed(2)}
               </p>
               {saved > 0 && (
@@ -428,14 +428,14 @@ export default function CartPage({ embedded = false }) {
               <button
                 onClick={handleShare}
                 disabled={sharing}
-                className="flex items-center justify-center gap-2 border border-gray-300 text-gray-700 px-2 py-2 rounded-lg font-medium hover:bg-gray-50 transition disabled:opacity-50"
+                className="flex items-center justify-center gap-2 border border-violet-200 text-[#5B21B6] bg-white px-2 py-2 rounded-lg font-medium hover:bg-violet-50 transition disabled:opacity-50"
                 title="Share this cart"
               >
                 <FaShareAlt className="w-4 h-4" /> {t("cart.share_cart")}
               </button>
               <button
                 onClick={handleCheckout}
-                className="flex-1 md:flex-none bg-rose-500 text-white px-2 py-2 rounded-md font-semibold hover:bg-rose-700 transition text-base md:text-lg"
+                className="flex-1 md:flex-none bg-[#5B21B6] text-white px-2 py-2 rounded-md font-semibold hover:bg-violet-700 transition text-base md:text-lg"
               >
                 {t("cart.proceed_checkout")}
               </button>
