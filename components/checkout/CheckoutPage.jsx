@@ -700,22 +700,22 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-10">
         {/* Header */}
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#1F2937] transition mb-5"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#1F2937] transition mb-3 sm:mb-5"
         >
           <FiArrowLeft className="w-4 h-4" />
           {t("cart.continue")}
         </button>
-        <h1 className="text-2xl sm:text-3xl font-semibold text-[#1F2937] tracking-tight mb-8">
+        <h1 className="text-xl sm:text-3xl font-semibold text-[#1F2937] tracking-tight mb-5 sm:mb-8">
           {t("checkout.title")}
         </h1>
 
         {/* Guest login nudge */}
         {!user && (
-          <div className="mb-8 pb-6 border-b border-gray-100 text-sm text-gray-500">
+          <div className="mb-5 pb-4 sm:mb-8 sm:pb-6 border-b border-gray-100 text-sm text-gray-500">
             Sign in for faster checkout, reward points & saved addresses —{" "}
             <button
               type="button"
@@ -732,7 +732,7 @@ export default function CheckoutPage() {
           user.createdAt &&
           Date.now() - new Date(user.createdAt).getTime() <
             30 * 24 * 60 * 60 * 1000 && (
-            <div className="mb-8 pb-6 border-b border-gray-100 text-sm text-gray-500">
+            <div className="mb-5 pb-4 sm:mb-8 sm:pb-6 border-b border-gray-100 text-sm text-gray-500">
               {t("checkout.new_user_welcome")}{" "}
               {t("checkout.new_user_desc_prefix")}{" "}
               <strong className="text-[#1F2937]">newUser26</strong>{" "}
@@ -744,17 +744,17 @@ export default function CheckoutPage() {
             </div>
           )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 sm:gap-8 lg:gap-14 items-start">
           {/* ── Left — form ──────────────────────────────────────────────── */}
-          <form onSubmit={handlePlaceOrder} className="space-y-10">
+          <form onSubmit={handlePlaceOrder} className="space-y-6 sm:space-y-10">
             {/* Contact Information */}
             <section>
-              <h2 className="text-base font-semibold text-[#1F2937] pb-3 mb-5 border-b border-gray-100">
+              <h2 className="text-base font-semibold text-[#1F2937] pb-2.5 mb-4 sm:pb-3 sm:mb-5 border-b border-gray-100">
                 Contact Information
               </h2>
 
               {previousAddresses.length > 0 && (
-                <div className="mb-6">
+                <div className="mb-4 sm:mb-6">
                   <label className="block text-xs font-medium text-gray-500 mb-1.5">
                     {t("checkout.use_prev_address")}
                   </label>
@@ -782,7 +782,7 @@ export default function CheckoutPage() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-medium text-gray-500 mb-1.5">
                     {t("checkout.name")}
@@ -827,11 +827,11 @@ export default function CheckoutPage() {
 
             {/* Delivery Address */}
             <section>
-              <h2 className="text-base font-semibold text-[#1F2937] pb-3 mb-5 border-b border-gray-100">
+              <h2 className="text-base font-semibold text-[#1F2937] pb-2.5 mb-4 sm:pb-3 sm:mb-5 border-b border-gray-100">
                 Delivery Address
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 mb-4 sm:mb-5">
                 <div>
                   <label className="block text-xs font-medium text-gray-500 mb-1.5">
                     {t("checkout.city")}
@@ -869,8 +869,7 @@ export default function CheckoutPage() {
                     required
                     disabled={!formData.city || formData.city === "other"}
                   />
-                  {(formData.zone === "other" ||
-                    formData.city === "other") && (
+                  {(formData.zone === "other" || formData.city === "other") && (
                     <input
                       type="text"
                       value={customZone}
@@ -912,7 +911,7 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="mb-5">
+              <div className="mb-4 sm:mb-5">
                 <label className="block text-xs font-medium text-gray-500 mb-1.5">
                   {t("checkout.address")}
                 </label>
@@ -921,7 +920,7 @@ export default function CheckoutPage() {
                   value={formData.address}
                   onChange={handleInputChange}
                   placeholder={t("checkout.address_ph")}
-                  rows={3}
+                  rows={2}
                   className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition resize-none"
                   required
                 />
@@ -936,7 +935,7 @@ export default function CheckoutPage() {
                   value={formData.note}
                   onChange={handleInputChange}
                   placeholder={t("checkout.note_ph")}
-                  rows={2}
+                  rows={1}
                   className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition resize-none"
                 />
               </div>
@@ -945,8 +944,8 @@ export default function CheckoutPage() {
 
           {/* ── Right — sticky summary ───────────────────────────────────── */}
           <aside className="lg:sticky lg:top-8 space-y-6">
-            <div className="border border-gray-200 rounded-xl p-5 sm:p-6">
-              <div className="flex items-center justify-between mb-4">
+            <div className="border border-gray-200 rounded-xl p-4 sm:p-6">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <h2 className="text-base font-semibold text-[#1F2937]">
                   {t("checkout.order_summary")}
                 </h2>
@@ -963,20 +962,22 @@ export default function CheckoutPage() {
               </div>
 
               {/* Order items — compact list */}
-              <div className="relative mb-4 pb-4 border-b border-gray-100">
+              <div className="relative mb-3 pb-3 sm:mb-4 sm:pb-4 border-b border-gray-100">
                 {cartItems.length > 2 && (
-                  <div className="absolute right-0 top-0 bottom-4 w-0.5 rounded-full bg-gray-100 overflow-hidden">
+                  <div className="absolute right-0 top-0 bottom-4 w-1 rounded-full bg-gray-300 overflow-hidden">
                     <div
                       className="absolute left-0 right-0 top-0 rounded-full bg-gray-400 transition-all duration-100"
-                      style={{ height: `${itemsScrollPct * 100}%`, width: "100%" }}
+                      style={{
+                        height: `${itemsScrollPct * 100}%`,
+                        width: "100%",
+                      }}
                     />
                   </div>
                 )}
                 <div
                   ref={itemsScrollRef}
                   onScroll={handleItemsScroll}
-                  className="space-y-3 overflow-y-auto no-scrollbar pr-2"
-                  style={{ maxHeight: "220px" }}
+                  className="space-y-2.5 sm:space-y-3 overflow-y-auto no-scrollbar pr-2 max-h-20 md:max-h-25"
                 >
                   {cartItems.map((item) => {
                     const { product, quantity, selectedColor, selectedSize } =
@@ -1114,7 +1115,7 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                <div className="flex justify-between items-center pt-3 mt-1 border-t border-gray-100">
+                <div className="flex justify-between items-center pt-1 md:pt-2  border-t border-gray-100">
                   <span className="text-sm font-semibold text-[#1F2937]">
                     {t("checkout.total")}
                   </span>
@@ -1161,7 +1162,7 @@ export default function CheckoutPage() {
               </div>
 
               {/* Coupon code — always visible, one line */}
-              <div className="pt-4 mt-4 border-t border-gray-100">
+              <div className="pt-3 mt-3 sm:pt-4 sm:mt-4 border-t border-gray-100">
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -1216,37 +1217,40 @@ export default function CheckoutPage() {
               </div>
 
               {/* Reward points — simple toggle row, only when relevant */}
-              {user && (quote.availablePoints ?? 0) >= (quote.pointsPerTk || 100) && (
-                <div className="flex items-center justify-between gap-3 pt-4 mt-4 border-t border-gray-100">
-                  <div className="min-w-0">
-                    <p className="text-sm text-gray-700">
-                      {t("checkout.reward_points")}
-                    </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      {quote.availablePoints} pts = ৳
-                      {Math.floor(
-                        (quote.availablePoints || 0) /
-                          (quote.pointsPerTk || 100),
-                      )}{" "}
-                      off
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleToggleRewardPoints(!useRewardPoints)}
-                    aria-pressed={useRewardPoints}
-                    className={`relative w-9 h-5 rounded-full shrink-0 transition-colors duration-200 ${
-                      useRewardPoints ? "bg-[#5B21B6]" : "bg-gray-200"
-                    }`}
-                  >
-                    <span
-                      className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
-                        useRewardPoints ? "translate-x-4.5" : "translate-x-0.5"
+              {user &&
+                (quote.availablePoints ?? 0) >= (quote.pointsPerTk || 100) && (
+                  <div className="flex items-center justify-between gap-3 pt-3 mt-3 sm:pt-4 sm:mt-4 border-t border-gray-100">
+                    <div className="min-w-0">
+                      <p className="text-sm text-gray-700">
+                        {t("checkout.reward_points")}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-0.5">
+                        {quote.availablePoints} pts = ৳
+                        {Math.floor(
+                          (quote.availablePoints || 0) /
+                            (quote.pointsPerTk || 100),
+                        )}{" "}
+                        off
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleRewardPoints(!useRewardPoints)}
+                      aria-pressed={useRewardPoints}
+                      className={`relative w-9 h-5 rounded-full shrink-0 transition-colors duration-200 ${
+                        useRewardPoints ? "bg-[#5B21B6]" : "bg-gray-200"
                       }`}
-                    />
-                  </button>
-                </div>
-              )}
+                    >
+                      <span
+                        className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                          useRewardPoints
+                            ? "translate-x-4.5"
+                            : "translate-x-0.5"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                )}
 
               {/* Earn points hint */}
               {user && (quote.rewardPointsEarned ?? 0) > 0 && (
@@ -1260,7 +1264,7 @@ export default function CheckoutPage() {
               )}
 
               {/* Payment Method */}
-              <div className="pt-4 mt-4 border-t border-gray-100">
+              <div className="pt-3 mt-3 sm:pt-4 sm:mt-4 border-t border-gray-100">
                 <h2 className="text-sm font-semibold text-[#1F2937] mb-3">
                   {t("checkout.payment")}
                 </h2>
