@@ -1490,17 +1490,12 @@ export default function UserSectionPage() {
     }
   };
 
-  if (!user) {
-    return (
+  return (
+    <div className="min-h-screen bg-gray-50">
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
       />
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-2 -mb-2 md:-mb-5">
         {/* always-visible back button */}
         <button
@@ -1546,366 +1541,394 @@ export default function UserSectionPage() {
 
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
-            {section === "profile" && (
-              <div className="bg-white rounded-lg shadow">
-                <div className="p-4 md:p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <h2 className="text-xl md:text-2xl font-semibold">
-                    {t("profile_page.title")}
-                  </h2>
-                  {!isEditing ? (
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="w-full sm:w-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                    >
-                      {t("profile_page.edit")}
-                    </button>
-                  ) : (
-                    <div className="flex w-full sm:w-auto gap-2">
-                      <button
-                        onClick={() => setIsEditing(false)}
-                        className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
-                      >
-                        {t("common.cancel")}
-                      </button>
-                      <button
-                        onClick={handleSaveProfile}
-                        className="flex-1 sm:flex-none px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                      >
-                        Save
-                      </button>
+            {!user ? (
+              <div className="bg-white rounded-lg shadow p-10 text-center">
+                <p className="text-gray-500">
+                  Please sign in to view your account.
+                </p>
+              </div>
+            ) : (
+              <>
+                {section === "profile" && (
+                  <div className="bg-white rounded-lg shadow">
+                    <div className="p-4 md:p-6 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <h2 className="text-xl md:text-2xl font-semibold">
+                        {t("profile_page.title")}
+                      </h2>
+                      {!isEditing ? (
+                        <button
+                          onClick={() => setIsEditing(true)}
+                          className="w-full sm:w-auto px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                          {t("profile_page.edit")}
+                        </button>
+                      ) : (
+                        <div className="flex w-full sm:w-auto gap-2">
+                          <button
+                            onClick={() => setIsEditing(false)}
+                            className="flex-1 sm:flex-none px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+                          >
+                            {t("common.cancel")}
+                          </button>
+                          <button
+                            onClick={handleSaveProfile}
+                            className="flex-1 sm:flex-none px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                <div className="p-4 md:p-6 space-y-6">
-                  {/* avatar + upload row shown only while editing */}
-                  {isEditing && (
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                      <div className="w-20 h-20">
-                        {previewImage ? (
-                          <Image
-                            src={previewImage}
-                            alt={user.name || "User"}
-                            width={80}
-                            height={80}
-                            className="w-20 h-20 rounded-full object-cover"
+                    <div className="p-4 md:p-6 space-y-6">
+                      {/* avatar + upload row shown only while editing */}
+                      {isEditing && (
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                          <div className="w-20 h-20">
+                            {previewImage ? (
+                              <Image
+                                src={previewImage}
+                                alt={user.name || "User"}
+                                width={80}
+                                height={80}
+                                className="w-20 h-20 rounded-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-20 h-20 rounded-full bg-orange-400 flex items-center justify-center text-white text-2xl font-semibold">
+                                {(user.name || user.email || "U")
+                                  .charAt(0)
+                                  .toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            <label className="cursor-pointer text-sm text-blue-600 hover:underline">
+                              Select image
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={(e) => {
+                                  const f = e.target.files && e.target.files[0];
+                                  if (f) {
+                                    setSelectedImageFile(f);
+                                    setPreviewImage(URL.createObjectURL(f));
+                                    setRemoveImage(false);
+                                  }
+                                }}
+                              />
+                            </label>
+                            {previewImage && !selectedImageFile && (
+                              <button
+                                type="button"
+                                className="text-sm text-red-500 hover:underline"
+                                onClick={() => {
+                                  setRemoveImage(true);
+                                  setPreviewImage(gravatarUrl);
+                                  setSelectedImageFile(null);
+                                }}
+                              >
+                                Remove image
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <div>
+                        <label className="block text-sm text-gray-600 mb-2">
+                          Name
+                        </label>
+                        {isEditing ? (
+                          <input
+                            type="text"
+                            value={editForm.name}
+                            onChange={(e) =>
+                              setEditForm({ ...editForm, name: e.target.value })
+                            }
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                           />
                         ) : (
-                          <div className="w-20 h-20 rounded-full bg-orange-400 flex items-center justify-center text-white text-2xl font-semibold">
-                            {(user.name || user.email || "U")
-                              .charAt(0)
-                              .toUpperCase()}
-                          </div>
+                          <p className="text-lg">
+                            {user.name || "Project Toktik"}
+                          </p>
                         )}
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <label className="cursor-pointer text-sm text-blue-600 hover:underline">
-                          Select image
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={(e) => {
-                              const f = e.target.files && e.target.files[0];
-                              if (f) {
-                                setSelectedImageFile(f);
-                                setPreviewImage(URL.createObjectURL(f));
-                                setRemoveImage(false);
-                              }
-                            }}
-                          />
+
+                      <div className="border-t border-gray-100 pt-6">
+                        <label className="block text-sm text-gray-600 mb-2">
+                          Mail Address
                         </label>
-                        {previewImage && !selectedImageFile && (
-                          <button
-                            type="button"
-                            className="text-sm text-red-500 hover:underline"
-                            onClick={() => {
-                              setRemoveImage(true);
-                              setPreviewImage(gravatarUrl);
-                              setSelectedImageFile(null);
-                            }}
-                          >
-                            Remove image
-                          </button>
+                        {isEditing ? (
+                          <input
+                            type="email"
+                            value={editForm.email}
+                            onChange={(e) =>
+                              setEditForm({
+                                ...editForm,
+                                email: e.target.value,
+                              })
+                            }
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                          />
+                        ) : (
+                          <p className="text-lg">{user.email}</p>
                         )}
                       </div>
-                    </div>
-                  )}
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-2">
-                      Name
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={editForm.name}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, name: e.target.value })
-                        }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      />
-                    ) : (
-                      <p className="text-lg">{user.name || "Project Toktik"}</p>
-                    )}
-                  </div>
 
-                  <div className="border-t border-gray-100 pt-6">
-                    <label className="block text-sm text-gray-600 mb-2">
-                      Mail Address
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="email"
-                        value={editForm.email}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, email: e.target.value })
-                        }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      />
-                    ) : (
-                      <p className="text-lg">{user.email}</p>
-                    )}
-                  </div>
+                      {Array.isArray(user.tags) && user.tags.length > 0 && (
+                        <div className="border-t border-gray-100 pt-6">
+                          <label className="block text-sm text-gray-600 mb-2">
+                            Tags
+                          </label>
+                          <div className="flex flex-wrap gap-2">
+                            {user.tags.map((tag) => (
+                              <span
+                                key={tag._id || tag.name || tag}
+                                className="rounded-full px-3 py-1 text-xs font-semibold text-white"
+                                style={{
+                                  backgroundColor: tag.color || "#3B82F6",
+                                }}
+                              >
+                                {tag.name || tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
-                  {Array.isArray(user.tags) && user.tags.length > 0 && (
-                    <div className="border-t border-gray-100 pt-6">
-                      <label className="block text-sm text-gray-600 mb-2">
-                        Tags
-                      </label>
-                      <div className="flex flex-wrap gap-2">
-                        {user.tags.map((tag) => (
-                          <span
-                            key={tag._id || tag.name || tag}
-                            className="rounded-full px-3 py-1 text-xs font-semibold text-white"
-                            style={{ backgroundColor: tag.color || "#3B82F6" }}
-                          >
-                            {tag.name || tag}
-                          </span>
-                        ))}
+                      <div className="border-t border-gray-100 pt-6">
+                        <label className="block text-sm text-gray-600 mb-2">
+                          Mobile Number
+                        </label>
+                        {isEditing ? (
+                          <input
+                            type="tel"
+                            value={editForm.mobile}
+                            onChange={(e) =>
+                              setEditForm({
+                                ...editForm,
+                                mobile: e.target.value,
+                              })
+                            }
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                            placeholder="Not Provided"
+                          />
+                        ) : (
+                          <p className="text-lg">
+                            {user.mobile || "Not Provided"}
+                          </p>
+                        )}
                       </div>
-                    </div>
-                  )}
 
-                  <div className="border-t border-gray-100 pt-6">
-                    <label className="block text-sm text-gray-600 mb-2">
-                      Mobile Number
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="tel"
-                        value={editForm.mobile}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, mobile: e.target.value })
-                        }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                        placeholder="Not Provided"
-                      />
-                    ) : (
-                      <p className="text-lg">{user.mobile || "Not Provided"}</p>
-                    )}
-                  </div>
-
-                  <div className="border-t border-gray-100 pt-6">
-                    <label className="block text-sm text-gray-600 mb-2">
-                      Date Of Birth
-                    </label>
-                    {isEditing ? (
-                      <input
-                        type="date"
-                        value={editForm.dob}
-                        onChange={(e) =>
-                          setEditForm({ ...editForm, dob: e.target.value })
-                        }
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      />
-                    ) : (
-                      <p className="text-lg">{user.dob || "Not Provided"}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {section === "orders" && (
-              <OrdersSection
-                API={
-                  process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com"
-                }
-              />
-            )}
-
-            {section === "wishlist" && (
-              <div className="bg-white rounded-lg shadow">
-                <div className="p-4 md:p-6 border-b border-gray-200">
-                  <h2 className="text-xl md:text-2xl font-semibold">
-                    My Wishlist
-                  </h2>
-                </div>
-                <div className="p-3 md:p-6">
-                  <WishlistPage embedded={true} />
-                </div>
-              </div>
-            )}
-
-            {section === "cart" && (
-              <div className="bg-white rounded-lg shadow">
-                <div className="p-4 md:p-6 border-b border-gray-200">
-                  <h2 className="text-xl md:text-2xl font-semibold">
-                    {t("profile.cart")}
-                  </h2>
-                </div>
-                <div className="p-3 md:p-6">
-                  <CartPage embedded={true} />
-                </div>
-              </div>
-            )}
-
-            {section === "address" && (
-              <div className="bg-white rounded-lg shadow p-3 md:p-6">
-                <AddressManager />
-              </div>
-            )}
-
-            {section === "reviews" && (
-              <MyReviewsSection
-                API={
-                  process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com"
-                }
-              />
-            )}
-
-            {section === "rewards" && <UserRewardsSection />}
-
-            {section === "loyalty" && <UserLoyaltySection />}
-
-            {section === "coupons" && (
-              <div className="bg-white rounded-lg shadow p-4 md:p-6">
-                <h2 className="text-xl md:text-2xl font-semibold mb-2">
-                  My Coupons
-                </h2>
-                <p className="text-sm text-gray-500 mb-6">
-                  Apply these codes at checkout to unlock discounts and perks.
-                </p>
-
-                {/* New-user banner */}
-                {isNewUser(user) && (
-                  <div className="mb-6 p-4 bg-blue-50 border border-blue-300 rounded-lg flex items-start gap-3">
-                    <span className="text-2xl">🎉</span>
-                    <div>
-                      <p className="font-semibold text-blue-800">
-                        You&apos;re a new user!
-                      </p>
-                      <p className="text-sm text-blue-700 mt-0.5">
-                        You are eligible for <strong>Free Delivery</strong> on
-                        your first order. Use coupon code{" "}
-                        <strong>newUser26</strong> at checkout (min. order
-                        ৳800).
-                      </p>
+                      <div className="border-t border-gray-100 pt-6">
+                        <label className="block text-sm text-gray-600 mb-2">
+                          Date Of Birth
+                        </label>
+                        {isEditing ? (
+                          <input
+                            type="date"
+                            value={editForm.dob}
+                            onChange={(e) =>
+                              setEditForm({ ...editForm, dob: e.target.value })
+                            }
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+                          />
+                        ) : (
+                          <p className="text-lg">
+                            {user.dob || "Not Provided"}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
 
-                {/* Auto-discount tiers info */}
-                <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                  <h3 className="font-semibold text-gray-800 mb-3">
-                    🛒 Automatic Discounts (No Code Needed)
-                  </h3>
-                  <div className="space-y-2 text-sm text-gray-700">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-pink-500 shrink-0"></span>
-                      Spend <strong>৳999+</strong> →{" "}
-                      <span className="text-green-700 font-medium">
-                        Free Delivery
-                      </span>
+                {section === "orders" && (
+                  <OrdersSection
+                    API={
+                      process.env.NEXT_PUBLIC_API_URL ||
+                      "https://api.pickob.com"
+                    }
+                  />
+                )}
+
+                {section === "wishlist" && (
+                  <div className="bg-white rounded-lg shadow">
+                    <div className="p-4 md:p-6 border-b border-gray-200">
+                      <h2 className="text-xl md:text-2xl font-semibold">
+                        My Wishlist
+                      </h2>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
-                      Spend <strong>৳2,000+</strong> →{" "}
-                      <span className="text-green-700 font-medium">
-                        ৳150 Off
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-green-500 shrink-0"></span>
-                      Spend <strong>৳3,000+</strong> →{" "}
-                      <span className="text-green-700 font-medium">
-                        ৳250 Off total (৳150 + ৳100)
-                      </span>
+                    <div className="p-3 md:p-6">
+                      <WishlistPage embedded={true} />
                     </div>
                   </div>
-                </div>
+                )}
 
-                {/* Coupon cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {COUPONS.map((coupon) => {
-                    const eligible = !coupon.isNewUserOnly || isNewUser(user);
-                    return (
-                      <div
-                        key={coupon.code}
-                        className={`relative border-2 ${coupon.color.border} rounded-lg overflow-hidden bg-linear-to-br ${coupon.color.bg}`}
-                      >
-                        {/* Eligibility badge */}
-                        <div
-                          className={`absolute top-3 right-3 text-xs px-2 py-0.5 rounded-full font-medium ${
-                            eligible
-                              ? "bg-green-100 text-green-700"
-                              : "bg-gray-100 text-gray-500"
-                          }`}
-                        >
-                          {eligible ? "✓ Eligible" : "Not Eligible"}
-                        </div>
+                {section === "cart" && (
+                  <div className="bg-white rounded-lg shadow">
+                    <div className="p-4 md:p-6 border-b border-gray-200">
+                      <h2 className="text-xl md:text-2xl font-semibold">
+                        {t("profile.cart")}
+                      </h2>
+                    </div>
+                    <div className="p-3 md:p-6">
+                      <CartPage embedded={true} />
+                    </div>
+                  </div>
+                )}
 
-                        {/* Ticket notches */}
-                        <div
-                          className={`absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white border-2 ${coupon.color.border} rounded-full`}
-                        ></div>
-                        <div
-                          className={`absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white border-2 ${coupon.color.border} rounded-full`}
-                        ></div>
-                        {/* Divider */}
-                        <div className="absolute left-0 right-0 top-1/2 border-t-2 border-dashed border-gray-300 mx-4"></div>
+                {section === "address" && (
+                  <div className="bg-white rounded-lg shadow p-3 md:p-6">
+                    <AddressManager />
+                  </div>
+                )}
 
-                        {/* Top section */}
-                        <div className="px-6 pt-5 pb-3">
-                          <p
-                            className={`text-4xl font-extrabold ${coupon.color.text}`}
-                          >
-                            {coupon.headline}
-                          </p>
-                          <p className="text-sm text-gray-700 mt-1 font-medium">
-                            {coupon.title}
-                          </p>
-                          <p className="text-xs text-gray-500 mt-0.5">
-                            Min. order: ৳{coupon.minOrder || 0}
-                          </p>
-                        </div>
+                {section === "reviews" && (
+                  <MyReviewsSection
+                    API={
+                      process.env.NEXT_PUBLIC_API_URL ||
+                      "https://api.pickob.com"
+                    }
+                  />
+                )}
 
-                        {/* Bottom section */}
-                        <div className="px-6 pt-4 pb-5">
-                          <p className="text-xs text-gray-600 mb-3 leading-relaxed">
-                            {coupon.description}
+                {section === "rewards" && <UserRewardsSection />}
+
+                {section === "loyalty" && <UserLoyaltySection />}
+
+                {section === "coupons" && (
+                  <div className="bg-white rounded-lg shadow p-4 md:p-6">
+                    <h2 className="text-xl md:text-2xl font-semibold mb-2">
+                      My Coupons
+                    </h2>
+                    <p className="text-sm text-gray-500 mb-6">
+                      Apply these codes at checkout to unlock discounts and
+                      perks.
+                    </p>
+
+                    {/* New-user banner */}
+                    {isNewUser(user) && (
+                      <div className="mb-6 p-4 bg-blue-50 border border-blue-300 rounded-lg flex items-start gap-3">
+                        <span className="text-2xl">🎉</span>
+                        <div>
+                          <p className="font-semibold text-blue-800">
+                            You&apos;re a new user!
                           </p>
-                          <div className="flex items-center gap-2">
-                            <span
-                              className={`font-mono font-bold text-sm px-3 py-1 rounded border-2 border-dashed ${coupon.color.border} ${coupon.color.text} ${coupon.color.light} tracking-widest`}
-                            >
-                              {coupon.code}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                navigator.clipboard?.writeText(coupon.code);
-                              }}
-                              className="text-xs text-gray-500 hover:text-gray-700 underline"
-                            >
-                              Copy
-                            </button>
-                          </div>
+                          <p className="text-sm text-blue-700 mt-0.5">
+                            You are eligible for <strong>Free Delivery</strong>{" "}
+                            on your first order. Use coupon code{" "}
+                            <strong>newUser26</strong> at checkout (min. order
+                            ৳800).
+                          </p>
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
+                    )}
+
+                    {/* Auto-discount tiers info */}
+                    <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                      <h3 className="font-semibold text-gray-800 mb-3">
+                        🛒 Automatic Discounts (No Code Needed)
+                      </h3>
+                      <div className="space-y-2 text-sm text-gray-700">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-pink-500 shrink-0"></span>
+                          Spend <strong>৳999+</strong> →{" "}
+                          <span className="text-green-700 font-medium">
+                            Free Delivery
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span>
+                          Spend <strong>৳2,000+</strong> →{" "}
+                          <span className="text-green-700 font-medium">
+                            ৳150 Off
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-green-500 shrink-0"></span>
+                          Spend <strong>৳3,000+</strong> →{" "}
+                          <span className="text-green-700 font-medium">
+                            ৳250 Off total (৳150 + ৳100)
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Coupon cards */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {COUPONS.map((coupon) => {
+                        const eligible =
+                          !coupon.isNewUserOnly || isNewUser(user);
+                        return (
+                          <div
+                            key={coupon.code}
+                            className={`relative border-2 ${coupon.color.border} rounded-lg overflow-hidden bg-linear-to-br ${coupon.color.bg}`}
+                          >
+                            {/* Eligibility badge */}
+                            <div
+                              className={`absolute top-3 right-3 text-xs px-2 py-0.5 rounded-full font-medium ${
+                                eligible
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-gray-100 text-gray-500"
+                              }`}
+                            >
+                              {eligible ? "✓ Eligible" : "Not Eligible"}
+                            </div>
+
+                            {/* Ticket notches */}
+                            <div
+                              className={`absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white border-2 ${coupon.color.border} rounded-full`}
+                            ></div>
+                            <div
+                              className={`absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-white border-2 ${coupon.color.border} rounded-full`}
+                            ></div>
+                            {/* Divider */}
+                            <div className="absolute left-0 right-0 top-1/2 border-t-2 border-dashed border-gray-300 mx-4"></div>
+
+                            {/* Top section */}
+                            <div className="px-6 pt-5 pb-3">
+                              <p
+                                className={`text-4xl font-extrabold ${coupon.color.text}`}
+                              >
+                                {coupon.headline}
+                              </p>
+                              <p className="text-sm text-gray-700 mt-1 font-medium">
+                                {coupon.title}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                Min. order: ৳{coupon.minOrder || 0}
+                              </p>
+                            </div>
+
+                            {/* Bottom section */}
+                            <div className="px-6 pt-4 pb-5">
+                              <p className="text-xs text-gray-600 mb-3 leading-relaxed">
+                                {coupon.description}
+                              </p>
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`font-mono font-bold text-sm px-3 py-1 rounded border-2 border-dashed ${coupon.color.border} ${coupon.color.text} ${coupon.color.light} tracking-widest`}
+                                >
+                                  {coupon.code}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    navigator.clipboard?.writeText(coupon.code);
+                                  }}
+                                  className="text-xs text-gray-500 hover:text-gray-700 underline"
+                                >
+                                  Copy
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
