@@ -16,6 +16,7 @@ import { getStoreName } from "@/lib/storeMeta";
 import { CompareProvider } from "@/components/context/CompareContext";
 import CompareBar from "@/components/product/CompareBar";
 import GlobalScrollFix from "@/components/ui/GlobalScrollFix";
+import RemoveChildDebugger from "@/components/dev/RemoveChildDebugger";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://pickob.com";
@@ -141,6 +142,10 @@ export default async function RootLayout({ children }) {
         {/* <Script id="ms-clarity" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/${process.env.NEXT_PUBLIC_CLARITY_ID}";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script");` }} /> */}
       </head>
       <body className={`${workSans.variable} antialiased`}>
+        {/* Dedicated, React-owned mount points for admin custom-code injection —
+            see TrackingCodeInjector.jsx for why these can't be document.body itself. */}
+        <div id="tracking-body-start" style={{ display: "contents" }} />
+        <RemoveChildDebugger />
         <TrackingCodeInjector />
         <LanguageProvider>
           <UserProvider>
@@ -162,6 +167,7 @@ export default async function RootLayout({ children }) {
             </CartProvider>
           </UserProvider>
         </LanguageProvider>
+        <div id="tracking-body-end" style={{ display: "contents" }} />
       </body>
     </html>
   );

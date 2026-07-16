@@ -8,8 +8,8 @@ const CACHE_TTL = 5 * 60 * 1000;
 
 let injected = false;
 
-function injectHTML(html, parent, position) {
-  if (!html?.trim()) return;
+function injectHTML(html, container) {
+  if (!html?.trim() || !container) return;
   const tmp = document.createElement("template");
   tmp.innerHTML = html;
   Array.from(tmp.content.childNodes).forEach((node) => {
@@ -21,11 +21,7 @@ function injectHTML(html, parent, position) {
     } else {
       el = node.cloneNode(true);
     }
-    if (position === "start") {
-      parent.insertBefore(el, parent.firstChild);
-    } else {
-      parent.appendChild(el);
-    }
+    container.appendChild(el);
   });
 }
 
@@ -52,6 +48,20 @@ function writeCache(data) {
   }
 }
 
+// Body-code/footer-code must land inside these two React-owned marker divs
+// (rendered in app/layout.js), never appended straight onto document.body —
+// Next.js's whole page tree also lives directly under <body>, so a raw
+// insertBefore/appendChild there desyncs React's child bookkeeping from the
+// real DOM and throws "Failed to execute 'removeChild'" on the next route
+// change. document.head isn't part of that reconciled subtree, so it's safe
+// to keep injecting header code straight into it (also needed for real
+// <meta>/<link> tags to have any effect).
+function injectAll(data) {
+  injectHTML(data.headerCode, document.head);
+  injectHTML(data.bodyCode, document.getElementById("tracking-body-start"));
+  injectHTML(data.footerCode, document.getElementById("tracking-body-end"));
+}
+
 export default function TrackingCodeInjector() {
   useEffect(() => {
     if (injected) return;
@@ -59,9 +69,7 @@ export default function TrackingCodeInjector() {
 
     const cached = readCache();
     if (cached) {
-      injectHTML(cached.headerCode, document.head, "end");
-      injectHTML(cached.bodyCode, document.body, "start");
-      injectHTML(cached.footerCode, document.body, "end");
+      injectAll(cached);
       return;
     }
 
@@ -69,9 +77,7 @@ export default function TrackingCodeInjector() {
       .then((r) => r.json())
       .then((data) => {
         writeCache(data);
-        injectHTML(data.headerCode, document.head, "end");
-        injectHTML(data.bodyCode, document.body, "start");
-        injectHTML(data.footerCode, document.body, "end");
+        injectAll(data);
       })
       .catch(() => {});
   }, []);

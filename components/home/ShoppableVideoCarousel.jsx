@@ -175,9 +175,19 @@ function YouTubeVideoFace({
   // scrolls out of the visible coverflow window).
   useEffect(() => {
     let cancelled = false;
+    const host = containerRef.current;
     loadYouTubeAPI().then((YT) => {
-      if (cancelled || !YT || !containerRef.current) return;
-      playerRef.current = new YT.Player(containerRef.current, {
+      if (cancelled || !YT || !host) return;
+      // YT.Player REPLACES the element it's given with an <iframe>. It must
+      // never be handed the React-rendered div — React still owns that node
+      // and crashes with removeChild NotFoundError when this card unmounts
+      // (coverflow auto-advance or route change). Hand it a throwaway child
+      // instead; React only tracks the host div, which stays untouched.
+      const target = document.createElement("div");
+      host.appendChild(target);
+      playerRef.current = new YT.Player(target, {
+        width: "100%",
+        height: "100%",
         videoId: video.youtubeId,
         playerVars: {
           autoplay: 1,
@@ -213,6 +223,11 @@ function YouTubeVideoFace({
         playerRef.current?.destroy();
       } catch {}
       playerRef.current = null;
+      // Clear whatever YT left inside the host (iframe, or the bare target
+      // div if the API never finished loading) so nothing leaks between mounts.
+      if (host) {
+        while (host.firstChild) host.removeChild(host.firstChild);
+      }
     };
   }, [video.youtubeId]);
 

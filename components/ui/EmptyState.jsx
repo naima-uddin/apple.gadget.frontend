@@ -41,6 +41,7 @@ export default function EmptyState({
               animationData={data}
               loop
               autoplay
+              renderer="canvas"
               style={{ width: "100%", height: "100%" }}
             />
           </div>
