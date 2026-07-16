@@ -24,8 +24,6 @@ export default function VideoCarouselEditor({
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
   const isEdit = !!sectionId;
 
-  const [title, setTitle] = useState("");
-  const [titleBn, setTitleBn] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [subtitleBn, setSubtitleBn] = useState("");
   const [isActive, setIsActive] = useState(true);
@@ -50,8 +48,6 @@ export default function VideoCarouselEditor({
       .then((r) => r.json())
       .then(async (b) => {
         const s = b.section || {};
-        setTitle(s.title || "");
-        setTitleBn(s.titleBn || "");
         setSubtitle(s.subtitle || "");
         setSubtitleBn(s.subtitleBn || "");
         setIsActive(s.isActive !== false);
@@ -188,8 +184,8 @@ export default function VideoCarouselEditor({
     );
 
   const handleSave = async () => {
-    if (!title.trim()) {
-      alert("Title is required");
+    if (!subtitle.trim()) {
+      alert("Tagline is required");
       return;
     }
     if (videos.length === 0) {
@@ -200,8 +196,6 @@ export default function VideoCarouselEditor({
     try {
       const body = {
         type: "video",
-        title: title.trim(),
-        titleBn: titleBn.trim(),
         subtitle: subtitle.trim(),
         subtitleBn: subtitleBn.trim(),
         isActive,
@@ -250,11 +244,11 @@ export default function VideoCarouselEditor({
         {isEdit ? "Edit Video Carousel" : "New Shoppable Video Carousel"}
       </h2>
 
-      {/* Subtitle (small tagline above the title) */}
+      {/* Tagline — this is the section's heading on the homepage */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Tagline (English)
+            Tagline * (English)
           </label>
           <input
             value={subtitle}
@@ -271,32 +265,6 @@ export default function VideoCarouselEditor({
             value={subtitleBn}
             onChange={(e) => setSubtitleBn(e.target.value)}
             placeholder="ছোট ট্যাগলাইন (ঐচ্ছিক)"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
-          />
-        </div>
-      </div>
-
-      {/* Title */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Section Title * (English)
-          </label>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. #Haircare #Skincare"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Section Title (বাংলা)
-          </label>
-          <input
-            value={titleBn}
-            onChange={(e) => setTitleBn(e.target.value)}
-            placeholder="যেমন: #হেয়ারকেয়ার #স্কিনকেয়ার"
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
           />
         </div>

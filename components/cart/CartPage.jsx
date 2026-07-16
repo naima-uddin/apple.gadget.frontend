@@ -20,7 +20,7 @@ import VariantEditModal, {
 import WaitlistModal from "@/components/cart/WaitlistModal";
 import { useLanguage } from "@/components/context/LanguageContext";
 
-export default function CartPage() {
+export default function CartPage({ embedded = false }) {
   const router = useRouter();
   const {
     cartItems,
@@ -121,7 +121,13 @@ export default function CartPage() {
   // Wait for localStorage hydration before deciding cart is empty
   if (!cartHydrated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div
+        className={
+          embedded
+            ? "flex items-center justify-center py-8"
+            : "min-h-screen bg-gray-50 flex items-center justify-center"
+        }
+      >
         <div className="flex flex-col items-center gap-3 text-gray-400">
           <svg className="animate-spin w-8 h-8" viewBox="0 0 24 24" fill="none">
             <circle
@@ -151,49 +157,52 @@ export default function CartPage() {
         description={t("cart.cart_empty_msg")}
         buttonText={t("success.continue_shopping")}
         onButtonClick={() => router.push("/")}
+        className={embedded ? "py-8" : ""}
       />
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-3 md:px-4">
+    <div className={embedded ? "" : "min-h-screen bg-gray-50 py-8"}>
+      <div className={embedded ? "" : "max-w-7xl mx-auto px-3 md:px-4"}>
         {/* Back & Home */}
-        <div className="flex items-center gap-2 mb-4">
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
-          >
-            <svg
-              className="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+        {!embedded && (
+          <div className="flex items-center gap-2 mb-4">
+            <button
+              onClick={() => router.back()}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
             >
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
-          </button>
-          <button
-            onClick={() => router.push("/")}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
-          >
-            <svg
-              className="w-4 h-4"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              <svg
+                className="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M19 12H5M12 5l-7 7 7 7" />
+              </svg>
+            </button>
+            <button
+              onClick={() => router.push("/")}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
             >
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-          </button>
-        </div>
+              <svg
+                className="w-4 h-4"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </button>
+          </div>
+        )}
         {/* Cart Items */}
         <div className="bg-white rounded-lg shadow mb-8">
           {cartItems.map((item) => {

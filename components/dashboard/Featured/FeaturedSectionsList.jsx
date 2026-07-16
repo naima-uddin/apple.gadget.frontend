@@ -190,7 +190,7 @@ export default function FeaturedSectionsList() {
                       Video
                     </span>
                   )}
-                  {sec.title}
+                  {sec.type === "video" ? sec.subtitle || sec.title : sec.title}
                 </p>
                 <p className="text-xs text-gray-400 mt-0.5">
                   {sec.type === "video" ? (

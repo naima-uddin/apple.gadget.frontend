@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { getDisplayPrice } from "@/lib/pricing";
+import SectionHeader from "./SectionHeader";
 
 const FOOTER_H = 72; // product footer height inside each card
 
@@ -87,7 +88,14 @@ function SoundButton({ muted, onClick }) {
 
 // Uploaded/direct video card. Sits paused on its admin-chosen preview frame
 // by default; clicking the (center) card plays it from 0:00.
-function UploadedVideoFace({ video, active, paused, muted, onToggleSound, onEnded }) {
+function UploadedVideoFace({
+  video,
+  active,
+  paused,
+  muted,
+  onToggleSound,
+  onEnded,
+}) {
   const videoRef = useRef(null);
   const previewTime = Number(video.previewTime) || 0;
   const playing = active && !paused;
@@ -145,7 +153,14 @@ function UploadedVideoFace({ video, active, paused, muted, onToggleSound, onEnde
 // YouTube card, driven by the real IFrame Player API (not a static thumbnail)
 // so it can freeze on the admin-chosen preview second while paused, and
 // resume playback from 0:00 when the card is turned on.
-function YouTubeVideoFace({ video, active, paused, muted, onToggleSound, onEnded }) {
+function YouTubeVideoFace({
+  video,
+  active,
+  paused,
+  muted,
+  onToggleSound,
+  onEnded,
+}) {
   const containerRef = useRef(null);
   const playerRef = useRef(null);
   const previewTime = Number(video.previewTime) || 0;
@@ -182,10 +197,7 @@ function YouTubeVideoFace({ video, active, paused, muted, onToggleSound, onEnded
             }
           },
           onStateChange: (e) => {
-            if (
-              e.data === YT.PlayerState.PLAYING &&
-              !latest.current.playing
-            ) {
+            if (e.data === YT.PlayerState.PLAYING && !latest.current.playing) {
               // freeze on the preview frame instead of actually playing
               e.target.pauseVideo();
             } else if (e.data === YT.PlayerState.ENDED) {
@@ -350,22 +362,15 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
     return () => clearInterval(id);
   }, [paused, n, center]);
 
-  const subtitle =
+  const heading =
     lang === "bn" ? section.subtitleBn || section.subtitle : section.subtitle;
-  const title =
-    lang === "bn" ? section.titleBn || section.title : section.title;
-  const heading = subtitle || title;
 
   if (n === 0) return null;
 
   return (
-    <div className="w-full bg-white py-8 md:py-12 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4">
-        {heading && (
-          <h2 className="mb-6 md:mb-8 text-2xl sm:text-3xl font-extrabold uppercase tracking-tight text-[#1F2937] work-sans">
-            {heading}
-          </h2>
-        )}
+    <div className="w-full bg-white py-3 md:py-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-2">
+        {heading && <SectionHeader title={heading} />}
       </div>
 
       {/* Coverflow stage — drag/swipe with mouse or touch via Pointer Events */}

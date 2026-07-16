@@ -8,7 +8,9 @@ import { useParams, useRouter } from "next/navigation";
 import AuthModal from "@/components/auth/AuthModal";
 import { useLanguage } from "@/components/context/LanguageContext";
 import WishlistPage from "@/components/cart/WishlistPage";
+import CartPage from "@/components/cart/CartPage";
 import AddressManager from "@/components/user/AddressManager";
+import AccountSidebar from "@/components/user/AccountSidebar";
 import UserRewardsSection from "@/components/user/UserRewardsSection";
 import UserLoyaltySection from "@/components/user/UserLoyaltySection";
 import OrderTrackingTimeline from "@/components/order/OrderTrackingTimeline";
@@ -1458,7 +1460,10 @@ export default function UserSectionPage() {
       if (selectedImageFile) {
         // Upload the avatar straight to Cloudinary (bypasses Vercel's 4.5MB body
         // cap; anything up to 10MB works) and send just the resulting URL.
-        const asset = await uploadUserImage(selectedImageFile, "appleProduct/profiles");
+        const asset = await uploadUserImage(
+          selectedImageFile,
+          "appleProduct/profiles",
+        );
         formData.append("imageUrl", asset.url);
         if (asset.public_id) formData.append("imagePublicId", asset.public_id);
       }
@@ -1510,286 +1515,34 @@ export default function UserSectionPage() {
           <button
             type="button"
             onClick={() => setShowMobileMenu(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-red-200 bg-white text-gray-800"
+            className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white px-4 py-2 text-[#5B21B6] shadow-sm transition hover:border-[#5B21B6] hover:bg-violet-50"
           >
-            <span className="text-sm">☰</span>
-            <span className="text-sm font-medium">{t("user.profile")}</span>
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <span className="text-sm font-semibold">{t("user.profile")}</span>
           </button>
         </div>
 
-        {showMobileMenu && (
-          <button
-            type="button"
-            className="fixed inset-0 z-40 bg-black/35 lg:hidden"
-            onClick={() => setShowMobileMenu(false)}
-            aria-label="Close account menu"
-          />
-        )}
-
         <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
           {/* Left Sidebar */}
-          <div
-            className={`${showMobileMenu ? "fixed inset-y-0 left-0 z-50 w-[85%] max-w-[340px] overflow-y-auto" : "hidden lg:block lg:w-80 lg:max-w-none lg:overflow-visible lg:sticky lg:top-24"} bg-white rounded-lg shadow h-fit`}
-          >
-            <div className="lg:hidden p-3 border-b border-gray-200 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setShowMobileMenu(false)}
-                className="h-8 w-8 rounded bg-rose-500 text-white flex items-center justify-center"
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
-            </div>
-            {/* User Profile Section */}
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center gap-3 mb-2">
-                {previewImage ? (
-                  <Image
-                    src={previewImage}
-                    alt={user.name || "User"}
-                    width={56}
-                    height={56}
-                    className="w-14 h-14 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-14 h-14 rounded-full bg-orange-400 flex items-center justify-center text-white text-xl font-semibold">
-                    {(user.name || user.email || "U").charAt(0).toUpperCase()}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-lg truncate">
-                    {user.name || "User"}
-                  </h3>
-                  <p className="text-sm text-gray-600 truncate">{user.email}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation Menu */}
-            <div className="py-4">
-              {/* PROFILE Section */}
-              <div className="mb-6">
-                <h4 className="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                  {t("profile.section_profile")}
-                </h4>
-                <button
-                  onClick={() => handleSectionClick("profile")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "profile"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                  <span>{t("profile.general_info")}</span>
-                </button>
-                <button
-                  onClick={() => handleSectionClick("wishlist")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "wishlist"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 6.3l-1.7-1.7a5 5 0 0 0-7.1 7.1L12 21l8.8-9.3a5 5 0 0 0 0-7.1z" />
-                  </svg>
-                  <span>{t("profile.favourites")}</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setShowMobileMenu(false);
-                    router.push("/cart");
-                  }}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle cx="9" cy="20" r="1" />
-                    <circle cx="20" cy="20" r="1" />
-                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                  </svg>
-                  <span>{t("profile.cart")}</span>
-                </button>
-              </div>
-
-              {/* ORDERS Section */}
-              <div className="mb-6">
-                <h4 className="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                  {t("profile.section_orders")}
-                </h4>
-                <button
-                  onClick={() => handleSectionClick("orders")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "orders"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M9 2H4a2 2 0 0 0-2 2v5m0 9v3a2 2 0 0 0 2 2h5M15 2h5a2 2 0 0 1 2 2v5m0 9v3a2 2 0 0 1-2 2h-5" />
-                  </svg>
-                  <span>{t("user.orders")}</span>
-                </button>
-                <button
-                  onClick={() => handleSectionClick("address")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "address"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  <span>{t("profile.my_address")}</span>
-                </button>
-              </div>
-
-              {/* OTHER Section */}
-              <div className="mb-6">
-                <h4 className="px-6 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                  {t("profile.section_other")}
-                </h4>
-                <button
-                  onClick={() => handleSectionClick("reviews")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "reviews"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
-                  </svg>
-                  <span>{t("profile.my_reviews")}</span>
-                </button>
-                <button
-                  onClick={() => handleSectionClick("rewards")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "rewards"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <span>{t("profile.my_rewards")}</span>
-                </button>
-                <button
-                  onClick={() => handleSectionClick("loyalty")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "loyalty"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M8 21h8M12 17v4M6.5 3h11l-1 6.5a5 5 0 0 1-9 0L6.5 3z" />
-                    <path d="M6.5 5H3.5a1 1 0 0 0-1 1.2l.6 2.4A3 3 0 0 0 6 11" />
-                    <path d="M17.5 5h3a1 1 0 0 1 1 1.2l-.6 2.4A3 3 0 0 1 18 11" />
-                  </svg>
-                  <span>Loyalty Tier</span>
-                </button>
-                <button
-                  onClick={() => handleSectionClick("coupons")}
-                  className={`w-full text-left px-6 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                    section === "coupons"
-                      ? "bg-gray-100 border-l-4 border-red-600"
-                      : ""
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M21 8.5a2.5 2.5 0 0 1 0 5M3 8.5a2.5 2.5 0 0 0 0 5" />
-                    <path d="M3 3h18v18H3z" />
-                    <line x1="9" y1="9" x2="15" y2="15" />
-                    <line x1="15" y1="9" x2="9" y2="15" />
-                  </svg>
-                  <span>{t("profile.my_coupons")}</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Logout Button */}
-            <div className="p-4 border-t border-gray-200">
-              <button
-                onClick={handleLogout}
-                className="w-full px-4 py-3 border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition-colors flex items-center justify-center gap-2"
-              >
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-                <span>{t("user.logout")}</span>
-              </button>
-            </div>
-          </div>
+          <AccountSidebar
+            user={user}
+            avatarUrl={previewImage}
+            section={section}
+            open={showMobileMenu}
+            onClose={() => setShowMobileMenu(false)}
+            onNavigate={handleSectionClick}
+            onLogout={handleLogout}
+          />
 
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
@@ -1989,6 +1742,19 @@ export default function UserSectionPage() {
                 </div>
                 <div className="p-3 md:p-6">
                   <WishlistPage embedded={true} />
+                </div>
+              </div>
+            )}
+
+            {section === "cart" && (
+              <div className="bg-white rounded-lg shadow">
+                <div className="p-4 md:p-6 border-b border-gray-200">
+                  <h2 className="text-xl md:text-2xl font-semibold">
+                    {t("profile.cart")}
+                  </h2>
+                </div>
+                <div className="p-3 md:p-6">
+                  <CartPage embedded={true} />
                 </div>
               </div>
             )}
