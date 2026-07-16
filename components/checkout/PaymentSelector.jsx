@@ -131,7 +131,7 @@ export default function PaymentSelector({
 }) {
   return (
     <div>
-      <h3 className="font-semibold mb-3 text-gray-800">Payment Method</h3>
+      <h3 className="font-semibold mb-3 text-[#1F2937]">Payment Method</h3>
 
       {/* ── Cash on Delivery ──────────────────────────────────────────────── */}
       <label
@@ -240,7 +240,7 @@ export default function PaymentSelector({
         type="button"
         onClick={onSubmit}
         disabled={isLoading}
-        className="mt-5 w-full bg-green-700 text-white py-3.5 rounded-md font-semibold hover:bg-[#16162a] transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+        className="mt-5 w-full bg-[#5B21B6] text-white py-3.5 rounded-xl font-semibold hover:bg-violet-700 transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm shadow-lg shadow-violet-200"
       >
         {isLoading ? (
           <>

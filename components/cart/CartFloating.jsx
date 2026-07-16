@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useCart, getItemPrice } from "@/components/context/CartContext";
-import { FaShoppingBag, FaShoppingCart, FaChevronRight } from "react-icons/fa";
+import { FiShoppingBag } from "react-icons/fi";
 import { useLanguage } from "@/components/context/LanguageContext";
 
 export default function CartFloating() {
@@ -34,15 +34,15 @@ export default function CartFloating() {
       {/* Mobile: floating cart icon above WhatsApp */}
       <span className="md:hidden fixed z-50" style={{ bottom: 60, right: 16 }}>
         {/* ping ring — always active like a map marker */}
-        <span className="absolute inset-0 rounded-full bg-[#f32424] opacity-40 animate-ping" />
+        <span className="absolute inset-0 rounded-full bg-[#5B21B6] opacity-30 animate-ping" />
         <button
           onClick={toggleSidebar}
           aria-label={label}
-          className="relative flex items-center justify-center bg-[#f32424] text-white rounded-full shadow-xl w-9 h-9 active:scale-95 transition-transform"
+          className={`relative flex items-center justify-center bg-[#5B21B6] text-white rounded-full shadow-lg shadow-violet-300 w-11 h-11 active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
         >
           <span className="relative">
-            <FaShoppingCart className="w-4 h-4" />
-            <span className="absolute -top-2.5 -right-2 bg-white text-[#f32424] text-[9px] font-bold min-w-3.5 h-3.5 rounded-full flex items-center justify-center leading-none px-0.5">
+            <FiShoppingBag className="w-4.5 h-4.5" />
+            <span className="absolute -top-2.5 -right-2.5 bg-white text-[#5B21B6] text-[10px] font-bold min-w-4 h-4 rounded-full flex items-center justify-center leading-none px-0.5 border border-violet-100 shadow-sm">
               {count}
             </span>
           </span>
@@ -53,14 +53,19 @@ export default function CartFloating() {
       <button
         onClick={toggleSidebar}
         aria-label={label}
-        className={`hidden md:flex fixed right-0 top-1/2 -translate-y-1/2 items-center gap-1 bg-[#f32424] text-white pl-2 pr-1 py-2.5 rounded-l-xl shadow-lg z-50 hover:bg-[#16162a] transition-all ${bump ? "scale-110" : "scale-100"}`}
+        className={`hidden md:flex fixed right-0 top-1/2 -translate-y-1/2 items-center gap-2 bg-[#5B21B6] text-white pl-3 pr-2.5 py-3 rounded-l-2xl shadow-lg shadow-violet-300 z-50 hover:bg-violet-700 transition-all ${bump ? "scale-110" : "scale-100"}`}
       >
-        <FaShoppingCart className="w-5 h-5" />
+        <span className="relative">
+          <FiShoppingBag className="w-5 h-5" />
+          <span className="absolute -top-2 -right-2 bg-white text-[#5B21B6] text-[10px] font-bold min-w-4 h-4 rounded-full flex items-center justify-center leading-none px-0.5">
+            {count}
+          </span>
+        </span>
         <div className="flex flex-col items-start text-xs leading-tight">
-          <span>
+          <span className="opacity-90">
             {count} {t("cart.items_label")}
           </span>
-          <span>৳{total}</span>
+          <span className="font-semibold">৳{total}</span>
         </div>
       </button>
     </>

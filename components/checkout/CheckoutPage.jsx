@@ -14,7 +14,6 @@ import { useUser } from "@/components/context/UserContext";
 import AuthModal from "@/components/auth/AuthModal";
 import Image from "next/image";
 import {
-  FaChevronDown,
   FaTag,
   FaCheckCircle,
   FaTimesCircle,
@@ -26,7 +25,6 @@ import PaymentSelector from "@/components/checkout/PaymentSelector";
 import SearchableSelect from "@/components/ui/SearchableSelect";
 import { toast } from "react-hot-toast";
 import { useLanguage } from "@/components/context/LanguageContext";
-import "animate.css";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -710,7 +708,7 @@ export default function CheckoutPage() {
         <div className="flex items-center gap-2 mb-4">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-[#5B21B6] bg-white border border-gray-200 rounded-lg hover:border-violet-300 transition"
           >
             <svg
               className="w-4 h-4"
@@ -726,7 +724,7 @@ export default function CheckoutPage() {
           </button>
           <button
             onClick={() => router.push("/")}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-500 hover:text-[#5B21B6] bg-white border border-gray-200 rounded-lg hover:border-violet-300 transition"
           >
             <svg
               className="w-4 h-4"
@@ -742,24 +740,26 @@ export default function CheckoutPage() {
             </svg>
           </button>
         </div>
-        <h1 className="text-3xl font-bold mb-8">{t("checkout.title")}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-6">
+          {t("checkout.title")}
+        </h1>
 
         {/* Guest login nudge */}
         {!user && (
-          <div className="mb-6 border border-purple-200 rounded-xl overflow-hidden">
+          <div className="mb-5 border border-violet-100 bg-violet-50/60 rounded-xl overflow-hidden">
             <button
               type="button"
               onClick={() => setNudgeOpen((v) => !v)}
-              className="w-full flex items-center justify-between gap-3 px-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition"
+              className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-violet-50 transition"
             >
               <div className="flex items-center gap-2">
-                <span className="text-lg">🎁</span>
-                <span className="font-semibold text-purple-900 text-sm">
+                <span className="text-base">🎁</span>
+                <span className="font-semibold text-[#5B21B6] text-sm">
                   Login করুন — আরও সুবিধা পান!
                 </span>
               </div>
               <svg
-                className={`w-4 h-4 text-purple-400 transition-transform duration-200 ${nudgeOpen ? "rotate-180" : ""}`}
+                className={`w-4 h-4 text-[#5B21B6]/50 transition-transform duration-200 ${nudgeOpen ? "rotate-180" : ""}`}
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -771,29 +771,29 @@ export default function CheckoutPage() {
               </svg>
             </button>
             {nudgeOpen && (
-              <div className="px-4 py-3 bg-white">
-                <ul className="space-y-1.5 text-xs text-purple-700 mb-3">
+              <div className="px-4 py-3 bg-white border-t border-violet-100">
+                <ul className="space-y-1.5 text-xs text-[#6B7280] mb-3">
                   <li className="flex items-center gap-1.5">
-                    <span className="text-yellow-500">★</span> Reward Points
+                    <span className="text-[#5B21B6]">✦</span> Reward Points
                     earn করুন এবং পরের order এ discount পান
                   </li>
                   <li className="flex items-center gap-1.5">
-                    <span className="text-green-500">✓</span> আগের address
+                    <span className="text-[#5B21B6]">✦</span> আগের address
                     auto-fill হবে
                   </li>
                   <li className="flex items-center gap-1.5">
-                    <span className="text-blue-500">📦</span> Order history ও
+                    <span className="text-[#5B21B6]">✦</span> Order history ও
                     tracking সহজে দেখুন
                   </li>
                   <li className="flex items-center gap-1.5">
-                    <span className="text-pink-500">🎟</span> Exclusive coupon ও
+                    <span className="text-[#5B21B6]">✦</span> Exclusive coupon ও
                     special offer পাবেন
                   </li>
                 </ul>
                 <button
                   type="button"
                   onClick={() => setShowAuthModal(true)}
-                  className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-full transition"
+                  className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#5B21B6] hover:bg-violet-700 text-white text-xs font-semibold rounded-full transition"
                 >
                   Login / Sign up
                   <svg
@@ -818,17 +818,19 @@ export default function CheckoutPage() {
           user.createdAt &&
           Date.now() - new Date(user.createdAt).getTime() <
             30 * 24 * 60 * 60 * 1000 && (
-            <div className="mb-6 flex items-start gap-3 p-4 bg-blue-50 border border-blue-300 rounded-lg">
-              <FaTag className="text-blue-600 mt-0.5 shrink-0" />
+            <div className="mb-5 flex items-start gap-3 p-4 bg-violet-50/60 border border-violet-100 rounded-xl">
+              <FaTag className="text-[#5B21B6] mt-0.5 shrink-0" />
               <div>
-                <p className="font-semibold text-blue-800">
+                <p className="font-semibold text-[#1F2937] text-sm">
                   {t("checkout.new_user_welcome")}
                 </p>
-                <p className="text-sm text-blue-700 mt-0.5">
+                <p className="text-sm text-[#6B7280] mt-0.5">
                   {t("checkout.new_user_desc_prefix")}{" "}
-                  <strong>newUser26</strong>{" "}
+                  <strong className="text-[#5B21B6]">newUser26</strong>{" "}
                   {t("checkout.new_user_desc_middle")}{" "}
-                  <strong>{t("checkout.new_user_desc_perk")}</strong>{" "}
+                  <strong className="text-[#5B21B6]">
+                    {t("checkout.new_user_desc_perk")}
+                  </strong>{" "}
                   {t("checkout.new_user_desc_suffix")}
                 </p>
               </div>
@@ -841,7 +843,7 @@ export default function CheckoutPage() {
             {/* Order Items Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-                <h2 className="text-sm font-bold text-gray-900">
+                <h2 className="text-sm font-bold text-[#1F2937]">
                   {t("checkout.order_items")}{" "}
                   <span className="text-gray-400 font-normal">
                     ({cartItems.length})
@@ -851,9 +853,9 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={handleViewRewards}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 hover:text-rose-600 transition animate__animated animate__heartBeat animate__infinite animate__slow"
+                    className="flex items-center gap-1.5 text-xs font-semibold text-[#5B21B6] hover:text-violet-700 transition"
                   >
-                    <FaGift className="text-rose-500" />
+                    <FaGift className="text-[#5B21B6]" />
                     {t("checkout.unlock_rewards")}
                   </button>
                 )}
@@ -864,11 +866,11 @@ export default function CheckoutPage() {
                 {cartItems.length > 2 && (
                   <div className="absolute right-2 top-2 bottom-2 w-0.75 rounded-full bg-gray-100 z-10 overflow-hidden">
                     <div
-                      className="absolute left-0 right-0 top-0 rounded-full bg-amber-400 transition-all duration-100"
+                      className="absolute left-0 right-0 top-0 rounded-full bg-violet-300 transition-all duration-100"
                       style={{ height: `${itemsScrollPct * 100}%` }}
                     />
                     <div
-                      className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-amber-400 border-2 border-white shadow-sm transition-all duration-100"
+                      className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-[#5B21B6] border-2 border-white shadow-sm transition-all duration-100"
                       style={{ top: `calc(${itemsScrollPct * 100}% - 5px)` }}
                     />
                   </div>
@@ -912,10 +914,10 @@ export default function CheckoutPage() {
                           className="object-cover rounded-lg border border-gray-100 w-13 h-13 shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-gray-800 line-clamp-2 leading-snug">
+                          <p className="text-sm font-semibold text-[#1F2937] line-clamp-2 leading-snug">
                             {title}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-[#6B7280] mt-1">
                             {quantity} ×{" "}
                             <span className="font-semibold text-gray-700">
                               ৳{price.toFixed(0)}
@@ -942,7 +944,7 @@ export default function CheckoutPage() {
                             </div>
                           )}
                         </div>
-                        <p className="text-sm font-bold text-gray-800 shrink-0 mt-0.5">
+                        <p className="text-sm font-bold text-[#5B21B6] shrink-0 mt-0.5">
                           ৳{(price * quantity).toFixed(0)}
                         </p>
                       </div>
@@ -957,7 +959,7 @@ export default function CheckoutPage() {
               onSubmit={handlePlaceOrder}
               className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
             >
-              <h2 className="text-sm font-bold text-gray-900 mb-5">
+              <h2 className="text-sm font-bold text-[#1F2937] mb-5">
                 {t("checkout.billing_details")}
               </h2>
 
@@ -972,7 +974,7 @@ export default function CheckoutPage() {
                         key={`${billing.address}-${idx}`}
                         type="button"
                         onClick={() => applyPreviousAddress(billing)}
-                        className="text-left border border-gray-200 rounded-lg p-3 hover:border-red-300 hover:bg-red-50 transition"
+                        className="text-left border border-gray-200 rounded-lg p-3 hover:border-violet-300 hover:bg-violet-50 transition"
                       >
                         <span className="block text-sm font-semibold text-gray-900 truncate">
                           {billing.name || t("checkout.saved_address")}
@@ -1006,7 +1008,7 @@ export default function CheckoutPage() {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder={t("checkout.name_ph")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none"
                   required
                 />
               </div>
@@ -1019,7 +1021,7 @@ export default function CheckoutPage() {
                   value={formData.phone}
                   onChange={handleInputChange}
                   placeholder={t("checkout.phone_ph")}
-                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none"
                   required
                 />
                 <input
@@ -1028,7 +1030,7 @@ export default function CheckoutPage() {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder={t("checkout.email_ph")}
-                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                  className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none"
                   required
                 />
               </div>
@@ -1051,7 +1053,7 @@ export default function CheckoutPage() {
                       value={customCity}
                       onChange={(e) => setCustomCity(e.target.value)}
                       placeholder={t("checkout.enter_city")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none mt-2"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none mt-2"
                       required
                     />
                   )}
@@ -1074,7 +1076,7 @@ export default function CheckoutPage() {
                       value={customZone}
                       onChange={(e) => setCustomZone(e.target.value)}
                       placeholder={t("checkout.enter_zone")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none mt-2"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none mt-2"
                       required
                     />
                   )}
@@ -1102,7 +1104,7 @@ export default function CheckoutPage() {
                       value={customArea}
                       onChange={(e) => setCustomArea(e.target.value)}
                       placeholder={t("checkout.enter_area")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none mt-2"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none mt-2"
                     />
                   )}
                 </div>
@@ -1116,7 +1118,7 @@ export default function CheckoutPage() {
                   onChange={handleInputChange}
                   placeholder={t("checkout.address_ph")}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none resize-none"
                   required
                 />
               </div>
@@ -1129,7 +1131,7 @@ export default function CheckoutPage() {
                   onChange={handleInputChange}
                   placeholder={t("checkout.note_ph")}
                   rows={2}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none resize-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none resize-none"
                 />
               </div>
             </form>
@@ -1139,20 +1141,10 @@ export default function CheckoutPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-4">
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-                <h2 className="text-sm font-bold text-gray-900">
+              <div className="px-5 py-4 border-b border-gray-100">
+                <h2 className="text-sm font-bold text-[#1F2937]">
                   {t("checkout.order_summary")}
                 </h2>
-                {/* {progressItems.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleViewRewards}
-                    className="flex items-center gap-1.5 text-xs font-semibold text-rose-500 hover:text-rose-600 transition animate__animated animate__heartBeat animate__infinite animate__slow"
-                  >
-                    <FaGift className="text-rose-500" />
-                    Unlock Rewards
-                  </button>
-                )} */}
               </div>
 
               {/* Price Breakdown */}
@@ -1160,7 +1152,7 @@ export default function CheckoutPage() {
                 {quoteLoading && (
                   <div className="absolute inset-0 bg-white/75 flex items-center justify-center rounded z-10">
                     <svg
-                      className="animate-spin w-5 h-5 text-rose-500"
+                      className="animate-spin w-5 h-5 text-[#5B21B6]"
                       viewBox="0 0 24 24"
                       fill="none"
                     >
@@ -1248,10 +1240,10 @@ export default function CheckoutPage() {
                 )}
 
                 <div className="flex justify-between items-center pt-2 border-t border-dashed border-gray-200">
-                  <span className="text-sm font-bold text-gray-900">
+                  <span className="text-sm font-bold text-[#1F2937]">
                     {t("checkout.total")}
                   </span>
-                  <span className="text-xl font-extrabold text-gray-900">
+                  <span className="text-xl font-extrabold text-[#5B21B6]">
                     ৳{displayTotal.toFixed(0)}
                   </span>
                 </div>
@@ -1352,7 +1344,7 @@ export default function CheckoutPage() {
                         }}
                         className={`flex items-center gap-3 p-3 rounded-xl border-2 transition-all cursor-pointer select-none ${
                           useRewardPoints
-                            ? "border-amber-400 bg-gradient-to-r from-amber-50 to-yellow-50"
+                            ? "border-amber-300 bg-amber-50"
                             : (quote.availablePoints ?? 0) >=
                                 (quote.pointsPerTk || 100)
                               ? "border-gray-200 hover:border-amber-300 hover:bg-amber-50/30"
@@ -1405,15 +1397,15 @@ export default function CheckoutPage() {
                         {(quote.availablePoints ?? 0) >=
                         (quote.pointsPerTk || 100) ? (
                           <div
-                            className={`relative w-10 h-5.5 h-[22px] rounded-full shrink-0 transition-colors duration-200 ${
+                            className={`relative w-10 h-5.5 rounded-full shrink-0 transition-colors duration-200 ${
                               useRewardPoints ? "bg-amber-400" : "bg-gray-200"
                             }`}
                           >
                             <span
-                              className={`absolute top-[3px] w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
+                              className={`absolute top-0.75 w-4 h-4 bg-white rounded-full shadow-sm transition-transform duration-200 ${
                                 useRewardPoints
-                                  ? "translate-x-[22px]"
-                                  : "translate-x-[3px]"
+                                  ? "translate-x-5.5"
+                                  : "translate-x-0.75"
                               }`}
                             />
                           </div>
@@ -1471,7 +1463,7 @@ export default function CheckoutPage() {
                           onChange={handleInputChange}
                           placeholder={t("checkout.enter_code_ph")}
                           disabled={appliedCoupons.length >= 2}
-                          className="w-full px-3 pr-20 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-rose-300 focus:border-rose-300 disabled:bg-gray-100 font-mono tracking-widest placeholder:text-gray-300 placeholder:tracking-widest"
+                          className="w-full px-3 pr-20 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-violet-300 focus:border-violet-300 disabled:bg-gray-100 font-mono tracking-widest placeholder:text-gray-300 placeholder:tracking-widest"
                         />
                         <button
                           type="button"
@@ -1510,7 +1502,7 @@ export default function CheckoutPage() {
                       ) : (
                         <Link
                           href="/user/coupons"
-                          className="mt-1 text-[11px] text-blue-500 hover:underline inline-block"
+                          className="mt-1 text-[11px] text-[#5B21B6] hover:underline inline-block"
                         >
                           {t("checkout.browse_coupons")}
                         </Link>
@@ -1547,15 +1539,15 @@ export default function CheckoutPage() {
       {/* Rewards Modal */}
       {showRewardsModal && (
         <div className="fixed inset-0 bg-black/30 bg-opacity-60 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b p-4 flex justify-between items-center">
-              <h3 className="text-xl font-bold flex items-center gap-2">
-                <FaGift className="text-red-500" />
+          <div className="bg-white rounded-2xl max-w-md w-full max-h-[80vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b border-gray-100 p-4 flex justify-between items-center">
+              <h3 className="text-lg font-bold text-[#1F2937] flex items-center gap-2">
+                <FaGift className="text-[#5B21B6]" />
                 {t("checkout.available_rewards")}
               </h3>
               <button
                 onClick={() => setShowRewardsModal(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-400 hover:text-gray-700"
               >
                 <FaTimes className="w-5 h-5" />
               </button>
@@ -1566,16 +1558,16 @@ export default function CheckoutPage() {
                   {progressItems.map((item, idx) => (
                     <div
                       key={idx}
-                      className="border rounded-lg p-4 bg-gradient-to-r from-orange-40 to-rose-100"
+                      className="border border-violet-100 rounded-xl p-4 bg-violet-50/60"
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1">
-                          <p className="font-semibold text-orange-800">
+                          <p className="font-semibold text-[#1F2937]">
                             {item.message}
                           </p>
                           {item.couponCode && (
                             <div className="mt-2">
-                              <span className="text-xs font-mono bg-orange-100 px-2 py-1 rounded text-orange-800">
+                              <span className="text-xs font-mono bg-white border border-violet-200 px-2 py-1 rounded text-[#5B21B6]">
                                 {item.couponCode}
                               </span>
                             </div>
@@ -1584,14 +1576,14 @@ export default function CheckoutPage() {
                       </div>
                       <div className="mt-3">
                         <div className="flex justify-between text-sm mb-1">
-                          <span className="text-gray-600">Progress</span>
-                          <span className="font-medium">
+                          <span className="text-[#6B7280]">Progress</span>
+                          <span className="font-medium text-[#1F2937]">
                             ৳{quote.subtotal} / ৳{item.minOrderAmount}
                           </span>
                         </div>
-                        <div className="w-full bg-orange-100 rounded-full h-2">
+                        <div className="w-full bg-white border border-violet-100 rounded-full h-2">
                           <div
-                            className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                            className="bg-[#5B21B6] h-2 rounded-full transition-all duration-300"
                             style={{
                               width: `${Math.min(100, (quote.subtotal / item.minOrderAmount) * 100)}%`,
                             }}
@@ -1613,13 +1605,13 @@ export default function CheckoutPage() {
                 </p>
               )}
             </div>
-            <div className="sticky bottom-0 bg-white border-t p-2">
+            <div className="sticky bottom-0 bg-white border-t border-gray-100 p-3">
               <button
                 onClick={() => {
                   setShowRewardsModal(false);
                   router.push("/user/coupons");
                 }}
-                className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-sm hover:bg-red-800 transition font-semibold"
+                className="w-full bg-[#5B21B6] text-white py-2.5 rounded-xl hover:bg-violet-700 transition font-semibold"
               >
                 {t("checkout.explore_coupons")}
               </button>
