@@ -138,7 +138,7 @@ export default function CartSidebar() {
         <div className="p-3.5 grow overflow-y-auto">
           {cartItems.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center px-4">
-              <EmptyCartAnimation className="w-32 h-32 mb-2" />
+              <EmptyCartAnimation className="w-52 h-52 mb-2" />
               <p className="font-semibold text-[#1F2937] mb-1">
                 {t("cart.cart_empty_title")}
               </p>

@@ -1,4 +1,4 @@
-import PolicySidebar from "@/components/Policy/Sidebar";
+import PolicyTabs from "@/components/Policy/Sidebar";
 import { siteTitle, getStoreName } from "@/lib/storeMeta";
 
 export async function generateMetadata() {
@@ -67,12 +67,10 @@ function FeatureIcon({ path }) {
 export default async function AboutPage() {
   const storeName = await getStoreName();
   return (
-    <main className="max-w-7xl mx-auto px-4 py-10 sm:py-16 grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-      <aside className="md:col-span-1">
-        <PolicySidebar />
-      </aside>
+    <main className="max-w-5xl mx-auto px-4 py-10 sm:py-16">
+      <PolicyTabs />
 
-      <div className="md:col-span-3 space-y-6">
+      <div className="space-y-6">
         <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#5B21B6] via-violet-700 to-purple-600 p-8 text-white shadow-lg shadow-violet-200 sm:p-12">
           <div
             className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"

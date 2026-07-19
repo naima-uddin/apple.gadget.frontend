@@ -1,4 +1,4 @@
-import PolicySidebar from "@/components/Policy/Sidebar";
+import PolicyTabs from "@/components/Policy/Sidebar";
 import ContactContent from "@/components/ContactContent";
 import { siteTitle, getStoreName } from "@/lib/storeMeta";
 
@@ -21,13 +21,9 @@ export async function generateMetadata() {
 
 export default function ContactPage() {
   return (
-    <main className="max-w-7xl mx-auto px-4 py-10 sm:py-16 grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
-      <aside className="md:col-span-1">
-        <PolicySidebar />
-      </aside>
-      <div className="md:col-span-3">
-        <ContactContent />
-      </div>
+    <main className="max-w-6xl mx-auto px-4 py-10 sm:py-16">
+      <PolicyTabs />
+      <ContactContent />
     </main>
   );
 }
