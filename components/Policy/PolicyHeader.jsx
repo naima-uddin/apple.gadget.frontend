@@ -18,7 +18,7 @@ function Icon({ path, className = "h-5 w-5" }) {
 export default function PolicyHeader({ icon, title, subtitle }) {
   return (
     <div className="mb-6 flex items-center gap-4">
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-[#5B21B6] shadow-sm shadow-violet-100">
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gray-100 text-[#1D1D1F] shadow-sm shadow-gray-100">
         <Icon path={icon} className="h-6 w-6" />
       </span>
       <div>

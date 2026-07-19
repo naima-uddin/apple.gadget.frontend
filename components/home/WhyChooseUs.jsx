@@ -105,7 +105,7 @@ export default function WhyChooseUs() {
                       </span>
                       <span
                         className={`shrink-0 text-[#6B7280] text-xl leading-none transition-transform duration-200 ${
-                          open ? "rotate-45 text-[#5B21B6]" : ""
+                          open ? "rotate-45 text-[#1D1D1F]" : ""
                         }`}
                       >
                         +
@@ -135,7 +135,7 @@ export default function WhyChooseUs() {
         <div className="flex justify-end mt-4">
           <Link
             href="/about"
-            className="bg-white border border-[#5B21B6] text-[#5B21B6] hover:bg-[#5B21B6] hover:text-white rounded-full px-5 py-2 text-xs font-semibold transition-colors shadow-sm"
+            className="bg-white border border-[#1D1D1F] text-[#1D1D1F] hover:bg-[#1D1D1F] hover:text-white rounded-full px-5 py-2 text-xs font-semibold transition-colors shadow-sm"
           >
             {t("footer.about")}
           </Link>

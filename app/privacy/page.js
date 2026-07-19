@@ -40,7 +40,7 @@ export default async function PrivacyPage() {
             </p>
             <div className="space-y-6">
               {sections.map((sec, i) => (
-                <section key={i} className="border-l-4 border-violet-200 pl-4">
+                <section key={i} className="border-l-4 border-gray-300 pl-4">
                   <h2 className="text-base font-semibold text-[#1F2937] mb-2">{sec.heading}</h2>
                   <p className="text-sm text-[#6B7280] leading-relaxed whitespace-pre-line">{sec.content}</p>
                 </section>

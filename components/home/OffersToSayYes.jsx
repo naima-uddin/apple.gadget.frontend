@@ -166,7 +166,7 @@ export default function OffersToSayYes() {
       <SectionHeader
         title={
           <>
-            <span className="text-[#5B21B6]">
+            <span className="text-[#1D1D1F]">
               {t("offers.title_highlight")}
             </span>{" "}
             {t("offers.title_rest")}
@@ -178,13 +178,13 @@ export default function OffersToSayYes() {
       <div className="relative md:hidden">
         <button
           onClick={prevMobile}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#5B21B6] transition"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#1D1D1F] transition"
         >
           <FaChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextMobile}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#5B21B6] transition"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#1D1D1F] transition"
         >
           <FaChevronRight className="w-4 h-4" />
         </button>
@@ -211,7 +211,7 @@ export default function OffersToSayYes() {
               onClick={() => setMobileIndex(index)}
               className={`h-2 rounded-full transition-all ${
                 index === mobileIndex
-                  ? "bg-[#5B21B6] w-8"
+                  ? "bg-[#1D1D1F] w-8"
                   : "bg-gray-300 w-2 hover:bg-gray-400"
               }`}
               aria-label={`Go to offer ${index + 1}`}
@@ -224,13 +224,13 @@ export default function OffersToSayYes() {
       <div className="relative hidden md:block">
         <button
           onClick={prevSlide}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#5B21B6] transition"
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#1D1D1F] transition"
         >
           <FaChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#5B21B6] transition"
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#1D1D1F] transition"
         >
           <FaChevronRight className="w-4 h-4" />
         </button>
@@ -248,7 +248,7 @@ export default function OffersToSayYes() {
               onClick={() => setCurrentSlide(index)}
               className={`h-2 rounded-full transition-all ${
                 index === currentSlide
-                  ? "bg-[#5B21B6] w-8"
+                  ? "bg-[#1D1D1F] w-8"
                   : "bg-gray-300 w-2 hover:bg-gray-400"
               }`}
               aria-label={`Go to slide ${index + 1}`}

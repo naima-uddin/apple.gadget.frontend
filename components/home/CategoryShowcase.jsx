@@ -13,7 +13,7 @@ function Tile({ tile, big = false, className = "", delay = 0 }) {
     <Link
       href={tile.link || "/"}
       style={{ animationDelay: `${delay}ms` }}
-      className={`showcase-tile group relative bg-[#F5F6F7] overflow-hidden ring-1 ring-black/5 shadow-[0_10px_28px_rgba(15,23,42,0.10)] hover:shadow-[0_22px_48px_rgba(91,33,182,0.22)] hover:-translate-y-1.5 transition-all duration-500 ${
+      className={`showcase-tile group relative bg-[#F5F6F7] overflow-hidden ring-1 ring-black/5 shadow-[0_10px_28px_rgba(15,23,42,0.10)] hover:shadow-[0_22px_48px_rgba(29,29,31,0.22)] hover:-translate-y-1.5 transition-all duration-500 ${
         big ? "max-md:min-h-74" : "max-md:h-46"
       } ${className}`}
     >
@@ -132,7 +132,7 @@ export default function CategoryShowcase() {
 
         {/* dots */}
         {total > 1 && (
-          <div className="flex justify-center items-center gap-2.5 mt-3 bg-[#faebfd] py-1.5 px-6 rounded-full w-fit mx-auto">
+          <div className="flex justify-center items-center gap-2.5 mt-3 bg-[#F3F4F6] py-1.5 px-6 rounded-full w-fit mx-auto">
             {pages.map((_, i) => (
               <button
                 key={i}
@@ -143,8 +143,8 @@ export default function CategoryShowcase() {
                 }}
                 className={`rounded-full transition-all duration-300 ${
                   i === current
-                    ? "w-3 h-3 border-1 border-[#ca63fa] bg-white ring-2 ring-white"
-                    : "w-2 h-2 bg-gray-400 hover:bg-[#5B21B6]"
+                    ? "w-3 h-3 border-1 border-gray-400 bg-white ring-2 ring-white"
+                    : "w-2 h-2 bg-gray-400 hover:bg-[#1D1D1F]"
                 }`}
               />
             ))}

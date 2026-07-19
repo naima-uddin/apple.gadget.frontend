@@ -71,7 +71,7 @@ export default function ContactContent() {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
       <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8 lg:col-span-3">
         <div className="mb-6 flex items-center gap-4">
-          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-[#5B21B6] shadow-sm shadow-violet-100">
+          <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gray-100 text-[#1D1D1F] shadow-sm shadow-gray-100">
             <Icon path={CONTACT_ICON} className="h-6 w-6" />
           </span>
           <div>
@@ -101,7 +101,7 @@ export default function ContactContent() {
                 value={form.name}
                 onChange={handleChange}
                 required
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm transition focus:border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-200"
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm transition focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
                 placeholder={t("contact.name_ph")}
               />
             </div>
@@ -115,7 +115,7 @@ export default function ContactContent() {
                 value={form.email}
                 onChange={handleChange}
                 required
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm transition focus:border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-200"
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm transition focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
                 placeholder={t("contact.email_ph")}
               />
             </div>
@@ -129,7 +129,7 @@ export default function ContactContent() {
                 onChange={handleChange}
                 required
                 rows={5}
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm transition focus:border-violet-300 focus:outline-none focus:ring-2 focus:ring-violet-200"
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm transition focus:border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300"
                 placeholder={t("contact.message_ph")}
               />
             </div>
@@ -139,7 +139,7 @@ export default function ContactContent() {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="rounded-full bg-[#5B21B6] px-6 py-2.5 text-sm font-medium text-white shadow-sm shadow-violet-200 transition hover:bg-violet-700 disabled:opacity-60"
+              className="rounded-full bg-[#1D1D1F] px-6 py-2.5 text-sm font-medium text-white shadow-sm shadow-gray-300 transition hover:bg-black disabled:opacity-60"
             >
               {status === "loading" ? t("contact.sending") : t("contact.send")}
             </button>
@@ -147,7 +147,7 @@ export default function ContactContent() {
         )}
       </div>
 
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#5B21B6] via-violet-700 to-purple-600 p-6 text-white shadow-lg shadow-violet-200 lg:col-span-2">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#1D1D1F] via-gray-800 to-gray-700 p-6 text-white shadow-lg shadow-gray-300 lg:col-span-2">
         <div
           className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10"
           aria-hidden="true"
@@ -156,7 +156,7 @@ export default function ContactContent() {
           className="pointer-events-none absolute -bottom-10 -left-6 h-24 w-24 rounded-full bg-white/10"
           aria-hidden="true"
         />
-        <p className="text-xs font-semibold uppercase tracking-wider text-violet-200">
+        <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
           {t("contact.title")}
         </p>
         <h2 className="mt-1 text-lg font-bold">যোগাযোগের তথ্য</h2>
@@ -204,7 +204,7 @@ export default function ContactContent() {
             )}
           </div>
         ) : (
-          <p className="mt-6 text-sm text-violet-100">
+          <p className="mt-6 text-sm text-gray-100">
             {t("contact.desc")}
           </p>
         )}

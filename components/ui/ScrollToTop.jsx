@@ -79,7 +79,7 @@ const ScrollToTop = () => {
             onClick={scrollToTop}
             className="relative flex items-center justify-center
                        w-8 h-8 rounded-full
-                       bg-gradient-to-br from-[#5B21B6] to-[#4C1D95]
+                       bg-gradient-to-br from-[#1D1D1F] to-black
                        text-white shadow-2xl
                        hover:shadow-primary/30
                        transition-all duration-300

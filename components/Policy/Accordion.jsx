@@ -15,15 +15,15 @@ export default function Accordion({ items = [] }) {
             key={i}
             className={`border rounded-xl overflow-hidden transition-all duration-200 ${
               isOpen
-                ? 'border-violet-300 shadow-md shadow-violet-100'
-                : 'border-gray-200 hover:border-violet-200'
+                ? 'border-gray-300 shadow-md shadow-gray-100'
+                : 'border-gray-200 hover:border-gray-300'
             }`}
           >
             <button
               onClick={() => toggle(i)}
               className={`w-full flex justify-between items-center px-4 py-3 text-left transition-colors duration-200 ${
                 isOpen
-                  ? 'bg-violet-50 text-[#5B21B6]'
+                  ? 'bg-gray-100 text-[#1D1D1F]'
                   : 'bg-white text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -31,7 +31,7 @@ export default function Accordion({ items = [] }) {
               <span
                 className={`shrink-0 flex items-center justify-center w-6 h-6 rounded-full border transition-all duration-200 ${
                   isOpen
-                    ? 'bg-[#5B21B6] border-[#5B21B6] text-white rotate-180'
+                    ? 'bg-[#1D1D1F] border-[#1D1D1F] text-white rotate-180'
                     : 'bg-white border-gray-300 text-gray-500'
                 }`}
               >
@@ -52,7 +52,7 @@ export default function Accordion({ items = [] }) {
                 isOpen ? 'max-h-96' : 'max-h-0'
               }`}
             >
-              <div className="px-4 py-3 bg-white border-t border-violet-100">
+              <div className="px-4 py-3 bg-white border-t border-gray-100">
                 <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
                   {it.answer || '—'}
                 </p>

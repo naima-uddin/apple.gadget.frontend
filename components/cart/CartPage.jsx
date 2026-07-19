@@ -139,8 +139,8 @@ export default function CartPage({ embedded = false }) {
       >
         <div className="flex flex-col items-center gap-4">
           <div className="relative w-14 h-14">
-            <div className="absolute inset-0 rounded-full border-4 border-violet-100" />
-            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#5B21B6] animate-spin" />
+            <div className="absolute inset-0 rounded-full border-4 border-gray-100" />
+            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#1D1D1F] animate-spin" />
           </div>
           <span className="text-sm text-[#6B7280]">{t("cart.loading")}</span>
         </div>
@@ -165,7 +165,7 @@ export default function CartPage({ embedded = false }) {
           <p className="text-[#6B7280] mb-8">{t("cart.cart_empty_msg")}</p>
           <button
             onClick={() => router.push("/")}
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-[#5B21B6] text-white px-8 py-3 rounded-xl font-semibold hover:bg-violet-700 active:scale-[0.98] transition shadow-lg shadow-violet-200"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-[#1D1D1F] text-white px-8 py-3 rounded-xl font-semibold hover:bg-black active:scale-[0.98] transition shadow-lg shadow-gray-300"
           >
             {t("success.continue_shopping")}
             <FiArrowRight className="w-4 h-4" />
@@ -184,7 +184,7 @@ export default function CartPage({ embedded = false }) {
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] flex items-center gap-3">
                 {t("cart.my_cart")}
-                <span className="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-violet-100 text-[#5B21B6] text-sm font-bold">
+                <span className="inline-flex items-center justify-center min-w-8 h-8 px-2 rounded-full bg-gray-100 text-[#1D1D1F] text-sm font-bold">
                   {totalQty}
                 </span>
               </h1>
@@ -196,14 +196,14 @@ export default function CartPage({ embedded = false }) {
               <button
                 onClick={() => router.back()}
                 aria-label="Go back"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-[#6B7280] hover:text-[#5B21B6] hover:border-violet-300 transition"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-[#6B7280] hover:text-[#1D1D1F] hover:border-gray-300 transition"
               >
                 <FiArrowLeft className="w-4.5 h-4.5" />
               </button>
               <button
                 onClick={() => router.push("/")}
                 aria-label="Go home"
-                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-[#6B7280] hover:text-[#5B21B6] hover:border-violet-300 transition"
+                className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-gray-200 text-[#6B7280] hover:text-[#1D1D1F] hover:border-gray-300 transition"
               >
                 <FiHome className="w-4.5 h-4.5" />
               </button>
@@ -248,7 +248,7 @@ export default function CartPage({ embedded = false }) {
               return (
                 <div
                   key={cartKey}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-violet-200 hover:shadow-md transition p-3.5 md:p-5"
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-gray-300 hover:shadow-md transition p-3.5 md:p-5"
                 >
                   <div className="flex gap-3.5 md:gap-5">
                     {/* Product Image */}
@@ -274,7 +274,7 @@ export default function CartPage({ embedded = false }) {
                           href={`/product/${product._id}/`}
                           className="block min-w-0"
                         >
-                          <h3 className="text-sm md:text-base font-semibold text-[#1F2937] leading-snug line-clamp-2 hover:text-[#5B21B6] transition-colors">
+                          <h3 className="text-sm md:text-base font-semibold text-[#1F2937] leading-snug line-clamp-2 hover:text-[#1D1D1F] transition-colors">
                             {title}
                           </h3>
                         </a>
@@ -291,7 +291,7 @@ export default function CartPage({ embedded = false }) {
                       {selectedColor || selectedSize ? (
                         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                           {selectedColor && (
-                            <span className="inline-flex items-center gap-1.5 text-xs bg-violet-50 border border-violet-100 text-[#5B21B6] font-medium px-2 py-1 rounded-full">
+                            <span className="inline-flex items-center gap-1.5 text-xs bg-gray-100 border border-gray-100 text-[#1D1D1F] font-medium px-2 py-1 rounded-full">
                               {colorHex && (
                                 <span
                                   className="w-3.5 h-3.5 rounded-full border border-white shadow-sm inline-block"
@@ -302,7 +302,7 @@ export default function CartPage({ embedded = false }) {
                             </span>
                           )}
                           {selectedSize && (
-                            <span className="inline-flex items-center text-xs bg-violet-50 border border-violet-100 text-[#5B21B6] font-medium px-2 py-1 rounded-full">
+                            <span className="inline-flex items-center text-xs bg-gray-100 border border-gray-100 text-[#1D1D1F] font-medium px-2 py-1 rounded-full">
                               {selectedSize}
                             </span>
                           )}
@@ -313,7 +313,7 @@ export default function CartPage({ embedded = false }) {
                                 setEditMode("edit");
                               }}
                               title="Edit variant"
-                              className="w-6 h-6 flex items-center justify-center rounded-full text-gray-400 hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                              className="w-6 h-6 flex items-center justify-center rounded-full text-gray-400 hover:text-[#1D1D1F] hover:bg-gray-100 transition"
                             >
                               <FiEdit2 className="w-3 h-3" />
                             </button>
@@ -326,7 +326,7 @@ export default function CartPage({ embedded = false }) {
                               setEditItem(item);
                               setEditMode("edit");
                             }}
-                            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-[#5B21B6] bg-violet-50 border border-violet-100 px-2.5 py-1 rounded-full hover:bg-violet-100 transition"
+                            className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-[#1D1D1F] bg-gray-100 border border-gray-100 px-2.5 py-1 rounded-full hover:bg-gray-200 transition"
                           >
                             <FiEdit2 className="w-3 h-3" />
                             {t("cart.select_option")}
@@ -341,7 +341,7 @@ export default function CartPage({ embedded = false }) {
                             setEditItem(item);
                             setEditMode("add");
                           }}
-                          className="flex items-center gap-1 mt-1.5 text-xs text-[#6B7280] hover:text-[#5B21B6] transition"
+                          className="flex items-center gap-1 mt-1.5 text-xs text-[#6B7280] hover:text-[#1D1D1F] transition"
                         >
                           <FiPlus className="w-3 h-3" />
                           {t("cart.add_size_color")}
@@ -371,7 +371,7 @@ export default function CartPage({ embedded = false }) {
                               updateQty(cartKey, Math.max(1, quantity - 1))
                             }
                             aria-label="Decrease quantity"
-                            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition"
                           >
                             <FiMinus className="w-3.5 h-3.5" />
                           </button>
@@ -381,7 +381,7 @@ export default function CartPage({ embedded = false }) {
                           <button
                             onClick={() => updateQty(cartKey, quantity + 1)}
                             aria-label="Increase quantity"
-                            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                            className="w-8 h-8 md:w-9 md:h-9 flex items-center justify-center text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition"
                           >
                             <FiPlus className="w-3.5 h-3.5" />
                           </button>
@@ -394,7 +394,7 @@ export default function CartPage({ embedded = false }) {
                                 ৳{(compareAt * quantity).toFixed(2)}
                               </span>
                             )}
-                            <span className="text-base md:text-lg font-bold text-[#5B21B6]">
+                            <span className="text-base md:text-lg font-bold text-[#1D1D1F]">
                               ৳{(price * quantity).toFixed(2)}
                             </span>
                           </div>
@@ -418,7 +418,7 @@ export default function CartPage({ embedded = false }) {
           {/* ── Order Summary (sticky) ─────────────────────────────────── */}
           <aside className="mt-6 lg:mt-0 lg:sticky lg:top-24">
             <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <div className="h-1.5 bg-linear-to-r from-[#5B21B6] via-violet-500 to-violet-300" />
+              <div className="h-1.5 bg-linear-to-r from-[#1D1D1F] via-gray-500 to-gray-300" />
               <div className="p-5 md:p-6">
                 <h2 className="text-lg font-bold text-[#1F2937] mb-4">
                   {t("cart.order_summary")}
@@ -459,14 +459,14 @@ export default function CartPage({ embedded = false }) {
                   <span className="font-bold text-[#1F2937]">
                     {t("cart.total")}
                   </span>
-                  <span className="text-2xl font-bold text-[#5B21B6]">
+                  <span className="text-2xl font-bold text-[#1D1D1F]">
                     ৳{subtotal.toFixed(2)}
                   </span>
                 </div>
 
                 <button
                   onClick={handleCheckout}
-                  className="w-full flex items-center justify-center gap-2 bg-[#5B21B6] text-white py-3 rounded-xl font-semibold hover:bg-violet-700 active:scale-[0.99] transition shadow-lg shadow-violet-200"
+                  className="w-full flex items-center justify-center gap-2 bg-[#1D1D1F] text-white py-3 rounded-xl font-semibold hover:bg-black active:scale-[0.99] transition shadow-lg shadow-gray-300"
                 >
                   {t("cart.proceed_checkout")}
                   <FiArrowRight className="w-4 h-4" />
@@ -475,14 +475,14 @@ export default function CartPage({ embedded = false }) {
                   onClick={handleShare}
                   disabled={sharing}
                   title="Share this cart"
-                  className="w-full flex items-center justify-center gap-2 mt-3 border border-violet-200 text-[#5B21B6] bg-violet-50/50 py-2.5 rounded-xl font-medium hover:bg-violet-50 transition disabled:opacity-50"
+                  className="w-full flex items-center justify-center gap-2 mt-3 border border-gray-300 text-[#1D1D1F] bg-gray-100/50 py-2.5 rounded-xl font-medium hover:bg-gray-100 transition disabled:opacity-50"
                 >
                   <FiShare2 className="w-4 h-4" />
                   {t("cart.share_cart")}
                 </button>
                 <button
                   onClick={() => router.push("/")}
-                  className="w-full text-center text-sm text-[#6B7280] hover:text-[#5B21B6] mt-4 transition"
+                  className="w-full text-center text-sm text-[#6B7280] hover:text-[#1D1D1F] mt-4 transition"
                 >
                   {t("cart.continue")}
                 </button>
@@ -495,7 +495,7 @@ export default function CartPage({ embedded = false }) {
         {fbtProducts.length > 0 && (
           <div className="mt-10 md:mt-12">
             <div className="flex items-center gap-2.5 mb-1">
-              <span className="w-1.5 h-6 rounded-full bg-[#5B21B6]" />
+              <span className="w-1.5 h-6 rounded-full bg-[#1D1D1F]" />
               <h2 className="text-lg md:text-2xl font-bold text-[#1F2937]">
                 {t("cart.fbt_title")}
               </h2>
@@ -520,7 +520,7 @@ export default function CartPage({ embedded = false }) {
         {/* ── Picked For You (Recommended) ─────────────────────────────── */}
         <div className="mt-10 md:mt-12">
           <div className="flex items-center gap-2.5 mb-4">
-            <span className="w-1.5 h-6 rounded-full bg-[#5B21B6]" />
+            <span className="w-1.5 h-6 rounded-full bg-[#1D1D1F]" />
             <h2 className="text-lg md:text-2xl font-bold text-[#1F2937]">
               {t("cart.picked_for_you")}
             </h2>

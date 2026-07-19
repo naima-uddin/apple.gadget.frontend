@@ -274,7 +274,7 @@ function QAEditor({ items, onChange }) {
               <input
                 value={item.question}
                 onChange={(e) => update(i, "question", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
                 placeholder="প্রশ্ন লিখুন…"
               />
             </div>
@@ -286,7 +286,7 @@ function QAEditor({ items, onChange }) {
                 value={item.answer}
                 onChange={(e) => update(i, "answer", e.target.value)}
                 rows={4}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400 resize-y"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 resize-y"
                 placeholder="উত্তর লিখুন…"
               />
             </div>
@@ -296,7 +296,7 @@ function QAEditor({ items, onChange }) {
       <button
         type="button"
         onClick={add}
-        className="w-full border-2 border-dashed border-gray-300 hover:border-violet-400 text-gray-500 hover:text-violet-700 rounded-xl py-3 text-sm transition"
+        className="w-full border-2 border-dashed border-gray-300 hover:border-gray-400 text-gray-500 hover:text-gray-800 rounded-xl py-3 text-sm transition"
       >
         + নতুন প্রশ্ন যোগ করুন
       </button>
@@ -337,7 +337,7 @@ function SectionEditor({ items, onChange }) {
               <input
                 value={item.heading}
                 onChange={(e) => update(i, "heading", e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
                 placeholder="বিভাগের শিরোনাম লিখুন…"
               />
             </div>
@@ -349,7 +349,7 @@ function SectionEditor({ items, onChange }) {
                 value={item.content}
                 onChange={(e) => update(i, "content", e.target.value)}
                 rows={5}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-violet-400 resize-y"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 resize-y"
                 placeholder="বিষয়বস্তু লিখুন…"
               />
             </div>

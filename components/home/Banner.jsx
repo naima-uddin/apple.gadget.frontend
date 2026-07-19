@@ -54,13 +54,13 @@ const Banner = () => {
     startAuto();
   };
 
-  // words wrapped in *asterisks* render in the violet highlight color
+  // words wrapped in *asterisks* render in the black highlight color
   const renderHighlight = (text) =>
     String(text)
       .split(/(\*[^*]+\*)/g)
       .map((part, i) =>
         part.startsWith("*") && part.endsWith("*") ? (
-          <span key={i} className="text-[#5B21B6]">
+          <span key={i} className="text-[#1D1D1F]">
             {part.slice(1, -1)}
           </span>
         ) : (
@@ -117,7 +117,7 @@ const Banner = () => {
             {slide.buttonText && slide.buttonLink && (
               <Link
                 href={slide.buttonLink}
-                className="inline-block bg-[#5B21B6] hover:bg-[#4C1D95] text-[#FFFFFF] text-xs md:text-sm font-semibold uppercase tracking-wider px-7 py-3 rounded-md transition"
+                className="inline-block bg-[#1D1D1F] hover:bg-black text-[#FFFFFF] text-xs md:text-sm font-semibold uppercase tracking-wider px-7 py-3 rounded-md transition"
               >
                 {slide.buttonText}
               </Link>
@@ -133,14 +133,14 @@ const Banner = () => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
             }}
           >
-            {/* Luminous halo behind the product image — bright white core melting into violet */}
+            {/* Luminous halo behind the product image — bright white core melting into soft black/gray */}
             {hasSideText && (
               <div
                 aria-hidden="true"
                 className="banner-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-4/5 rounded-full blur-2xl"
                 style={{
                   background:
-                    "radial-gradient(closest-side, rgba(255,255,255,0.95) 0%, rgba(250,248,255,0.85) 30%, rgba(221,214,254,0.55) 60%, rgba(196,181,253,0.25) 80%, transparent 100%)",
+                    "radial-gradient(closest-side, rgba(255,255,255,0.95) 0%, rgba(248,248,248,0.85) 30%, rgba(209,213,219,0.55) 60%, rgba(209,213,219,0.25) 80%, transparent 100%)",
                 }}
               />
             )}
@@ -178,7 +178,7 @@ const Banner = () => {
             <button
               onClick={() => go(-1)}
               aria-label="Previous slide"
-              className="absolute left-4 md:left-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#5B21B6] hover:-translate-x-0.5 transition z-20"
+              className="absolute left-4 md:left-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#1D1D1F] hover:-translate-x-0.5 transition z-20"
             >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"
@@ -197,7 +197,7 @@ const Banner = () => {
             <button
               onClick={() => go(1)}
               aria-label="Next slide"
-              className="absolute right-4 md:right-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#5B21B6] hover:translate-x-0.5 transition z-20"
+              className="absolute right-4 md:right-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#1D1D1F] hover:translate-x-0.5 transition z-20"
             >
               <svg
                 className="w-5 h-5 md:w-6 md:h-6"
@@ -235,7 +235,7 @@ const Banner = () => {
         .banner-image {
           filter: brightness(1.06) saturate(1.1) contrast(1.03)
             drop-shadow(0 0 22px rgba(255, 255, 255, 0.7))
-            drop-shadow(0 0 45px rgba(196, 181, 253, 0.35))
+            drop-shadow(0 0 45px rgba(209, 213, 219, 0.35))
             drop-shadow(0 22px 26px rgba(15, 23, 42, 0.16));
           animation:
             bannerImageIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,

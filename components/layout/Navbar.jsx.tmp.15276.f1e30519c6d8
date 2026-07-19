@@ -125,7 +125,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/profile"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -141,7 +141,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/wishlist"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -163,7 +163,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/orders"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -178,7 +178,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/address"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -201,7 +201,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/reviews"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -216,7 +216,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/rewards"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -231,7 +231,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/coupons"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -249,7 +249,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/cart"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"

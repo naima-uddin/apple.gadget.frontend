@@ -100,8 +100,8 @@ function StockBadge({ inventory, availability }) {
     );
   }
   return (
-    <span className=" items-center gap-1.5 text-xs font-semibold text-[#5B21B6] hidden md:block">
-      <span className="w-2 h-2 rounded-full bg-[#5B21B6] inline-block ml-1" />
+    <span className=" items-center gap-1.5 text-xs font-semibold text-[#1D1D1F] hidden md:block">
+      <span className="w-2 h-2 rounded-full bg-[#1D1D1F] inline-block ml-1" />
       Only{inventory != null ? ` ${inventory}` : ""} items left in Stock
     </span>
   );
@@ -472,11 +472,11 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
       <nav className="flex items-center flex-wrap gap-1.5 text-sm text-[#6B7280] mb-5">
         <button
           onClick={() => router.back()}
-          className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-[#6B7280] hover:text-[#5B21B6] hover:border-[#5B21B6] shadow-sm transition-colors mr-2"
+          className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-[#6B7280] hover:text-[#1D1D1F] hover:border-[#1D1D1F] shadow-sm transition-colors mr-2"
         >
           <FaChevronLeft className="w-2.5 h-2.5" /> Back
         </button>
-        <Link href="/" className="hover:text-[#5B21B6] transition-colors">
+        <Link href="/" className="hover:text-[#1D1D1F] transition-colors">
           Home
         </Link>
         {category && (
@@ -485,7 +485,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             {typeof category === "object" && category.slug ? (
               <Link
                 href={`/category/${category.slug}/`}
-                className="hover:text-[#5B21B6] transition-colors"
+                className="hover:text-[#1D1D1F] transition-colors"
               >
                 {category.name}
               </Link>
@@ -497,7 +497,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
           </>
         )}
         <span className="text-gray-300">/</span>
-        <span className="text-[#5B21B6] font-medium truncate max-w-[200px] sm:max-w-xs">
+        <span className="text-[#1D1D1F] font-medium truncate max-w-[200px] sm:max-w-xs">
           {title}
         </span>
       </nav>
@@ -518,7 +518,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               {images.length > 1 && (
                 <button
                   onClick={prevImage}
-                  className="absolute left-1 md:left-2 z-20 p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#5B21B6] hover:text-white text-gray-600 transition-colors"
+                  className="absolute left-1 md:left-2 z-20 p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#1D1D1F] hover:text-white text-gray-600 transition-colors"
                 >
                   <FaChevronLeft className="w-3 h-3" />
                 </button>
@@ -539,7 +539,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               {/* Magnifier lens — highlights the area being zoomed */}
               {magnify && isDesktop && (
                 <span
-                  className="absolute z-10 pointer-events-none rounded-lg border-2 border-[#5B21B6]/50 bg-violet-500/10 hidden lg:block"
+                  className="absolute z-10 pointer-events-none rounded-lg border-2 border-[#1D1D1F]/50 bg-gray-500/10 hidden lg:block"
                   style={{
                     width: "40%",
                     height: "40%",
@@ -551,7 +551,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               {images.length > 1 && (
                 <button
                   onClick={nextImage}
-                  className="absolute right-1 md:right-2 z-20 p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#5B21B6] hover:text-white text-gray-600 transition-colors"
+                  className="absolute right-1 md:right-2 z-20 p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#1D1D1F] hover:text-white text-gray-600 transition-colors"
                 >
                   <FaChevronRight className="w-3 h-3" />
                 </button>
@@ -643,7 +643,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             {/* Magnifier result panel — floats over the info column (desktop) */}
             {magnify && isDesktop && (
               <div
-                className="hidden lg:block absolute top-0 left-full ml-4 z-30 h-full w-[480px] rounded-2xl border border-violet-100 bg-white shadow-2xl pointer-events-none bg-no-repeat"
+                className="hidden lg:block absolute top-0 left-full ml-4 z-30 h-full w-[480px] rounded-2xl border border-gray-100 bg-white shadow-2xl pointer-events-none bg-no-repeat"
                 style={{
                   backgroundImage: `url("${encodeURI(currentImage)}")`,
                   backgroundSize: "250%",
@@ -663,8 +663,8 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   onMouseEnter={() => setCurrentIndex(idx)}
                   className={`w-14 h-14 md:w-16 md:h-16 shrink-0 rounded-xl border-2 overflow-hidden transition bg-white ${
                     currentIndex === idx
-                      ? "border-[#5B21B6] ring-2 ring-violet-100 shadow-md"
-                      : "border-gray-100 hover:border-violet-300"
+                      ? "border-[#1D1D1F] ring-2 ring-gray-100 shadow-md"
+                      : "border-gray-100 hover:border-gray-300"
                   }`}
                 >
                   <Image
@@ -693,7 +693,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             <span className="text-gray-300">|</span>
             <button
               onClick={scrollToReviews}
-              className="text-xs text-[#6B7280] hover:text-[#5B21B6] underline underline-offset-3 transition-colors"
+              className="text-xs text-[#6B7280] hover:text-[#1D1D1F] underline underline-offset-3 transition-colors"
             >
               Write a review
             </button>
@@ -701,7 +701,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
           {/* Price */}
           <div className="flex items-center gap-3 flex-wrap mb-3 mt-1">
-            <span className="text-2xl md:text-3xl font-bold text-[#5B21B6]">
+            <span className="text-2xl md:text-3xl font-bold text-[#1D1D1F]">
               ৳{price?.toLocaleString()}
             </span>
             {compareAtPrice && compareAtPrice > price && (
@@ -710,7 +710,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               </span>
             )}
             {discountPct && (
-              <span className="bg-violet-50 text-[#5B21B6] text-xs font-bold px-2.5 py-1 rounded-full border border-violet-100">
+              <span className="bg-gray-50 text-[#1D1D1F] text-xs font-bold px-2.5 py-1 rounded-full border border-gray-200">
                 Save {discountPct}%
               </span>
             )}
@@ -738,7 +738,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   type="button"
                   onClick={() => setDescOpen((v) => !v)}
                   aria-expanded={descOpen}
-                  className="mt-0.5 inline-flex items-center gap-1 text-xs font-semibold text-[#5B21B6] hover:text-[#4C1D95] transition-colors"
+                  className="mt-0.5 inline-flex items-center gap-1 text-xs font-semibold text-[#1D1D1F] hover:text-black transition-colors"
                 >
                   {descOpen ? "Less" : "More"}
                   <FaChevronDown
@@ -783,7 +783,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                       <span
                         className={`w-12 h-12 rounded-full block transition-all relative ${
                           isSelected
-                            ? "scale-110 ring-2 ring-offset-2 ring-[#5B21B6]"
+                            ? "scale-110 ring-2 ring-offset-2 ring-[#1D1D1F]"
                             : "hover:scale-105"
                         }`}
                         style={{
@@ -813,7 +813,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                       <span
                         className={`text-xs text-center max-w-[50px] truncate transition-colors ${
                           isSelected
-                            ? "font-bold text-[#5B21B6]"
+                            ? "font-bold text-[#1D1D1F]"
                             : "text-gray-500 group-hover:text-gray-700"
                         }`}
                       >
@@ -848,8 +848,8 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     }
                     className={`min-w-[48px] h-11 px-4 text-sm font-semibold rounded-xl border-2 transition-all ${
                       selectedSize === size
-                        ? "bg-[#5B21B6] text-white border-[#5B21B6] shadow-md scale-105"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-[#5B21B6] hover:bg-violet-50"
+                        ? "bg-[#1D1D1F] text-white border-[#1D1D1F] shadow-md scale-105"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-[#1D1D1F] hover:bg-gray-50"
                     }`}
                   >
                     {size}
@@ -873,8 +873,8 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
           {/* Shipping / trust info */}
           <div className="grid grid-cols-2 gap-2 mb-4">
             <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
-              <span className="w-8 h-8 rounded-full bg-violet-50 flex items-center justify-center shrink-0">
-                <FaClock className="w-3.5 h-3.5 text-[#5B21B6]" />
+              <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                <FaClock className="w-3.5 h-3.5 text-[#1D1D1F]" />
               </span>
               <span className="text-xs text-[#6B7280] leading-snug">
                 Delivers in{" "}
@@ -883,15 +883,15 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 </strong>
                 <a
                   href="/shipping"
-                  className="underline underline-offset-2 text-[#5B21B6] hover:text-[#4C1D95] transition-colors"
+                  className="underline underline-offset-2 text-[#1D1D1F] hover:text-black transition-colors"
                 >
                   Shipping &amp; Return
                 </a>
               </span>
             </div>
             <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
-              <span className="w-8 h-8 rounded-full bg-violet-50 flex items-center justify-center shrink-0">
-                <FaCartShopping className="w-3.5 h-3.5 text-[#5B21B6]" />
+              <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                <FaCartShopping className="w-3.5 h-3.5 text-[#1D1D1F]" />
               </span>
               <span className="text-xs text-[#6B7280] leading-snug">
                 <strong className="text-[#1F2937] font-semibold block">
@@ -963,20 +963,20 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
           <div className="border border-gray-100 rounded-2xl overflow-hidden bg-white shadow-sm">
             <button
               onClick={() => setOffersOpen((v) => !v)}
-              className="lg:cursor-default w-full bg-[#F5F3FF] border-b border-violet-100 px-4 py-2.5 flex items-center justify-between"
+              className="lg:cursor-default w-full bg-gray-50 border-b border-gray-200 px-4 py-2.5 flex items-center justify-between"
             >
-              <p className="text-xs font-bold text-[#5B21B6] uppercase tracking-wide">
+              <p className="text-xs font-bold text-[#1D1D1F] uppercase tracking-wide">
                 Available Offer
               </p>
               <FaChevronRight
-                className={`lg:hidden w-3 h-3 text-[#5B21B6] transition-transform duration-200 ${offersOpen ? "rotate-90" : ""}`}
+                className={`lg:hidden w-3 h-3 text-[#1D1D1F] transition-transform duration-200 ${offersOpen ? "rotate-90" : ""}`}
               />
             </button>
             <div className={`lg:block ${offersOpen ? "block" : "hidden"}`}>
               {/* Reward Points */}
               <div className="px-3 py-3 flex items-start gap-3 border-b border-gray-100">
-                <div className="w-9 h-9 rounded-full bg-violet-50 flex items-center justify-center shrink-0">
-                  <FaGift className="text-[#5B21B6] w-4 h-4" />
+                <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                  <FaGift className="text-[#1D1D1F] w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
                   <p className="text-[11px] font-bold text-[#1F2937]">
@@ -985,7 +985,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   {product.rewardPoints > 0 ? (
                     <p className="text-xs text-[#6B7280] font-medium mt-0.5">
                       Earn{" "}
-                      <strong className="text-[#5B21B6]">
+                      <strong className="text-[#1D1D1F]">
                         {product.rewardPoints}
                       </strong>{" "}
                       points on this order
@@ -1006,9 +1006,9 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                     window.dispatchEvent(new Event("openQuestions"));
                   }}
-                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#5B21B6] bg-[#FAFAFB] hover:bg-violet-50 border border-gray-100 hover:border-violet-200 rounded-xl px-3 py-2 transition-all"
+                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#1D1D1F] bg-[#FAFAFB] hover:bg-gray-50 border border-gray-100 hover:border-gray-300 rounded-xl px-3 py-2 transition-all"
                 >
-                  <FaCommentDots className="text-[#5B21B6] w-3.5 h-3.5 shrink-0" />
+                  <FaCommentDots className="text-[#1D1D1F] w-3.5 h-3.5 shrink-0" />
                   Ask about this product
                 </button>
               </div>

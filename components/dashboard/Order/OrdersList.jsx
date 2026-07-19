@@ -164,7 +164,7 @@ function DateFilter({ value, onChange }) {
           key={p.key}
           type="button"
           onClick={() => onChange(p.key)}
-          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition ${value === p.key ? "bg-violet-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+          className={`shrink-0 px-2.5 py-1 rounded-full text-xs font-medium transition ${value === p.key ? "bg-gray-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
         >
           {p.label}
         </button>
@@ -388,7 +388,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm capitalize focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="w-full border rounded-lg px-3 py-2 text-sm capitalize focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             {ORDER_STATUSES.map((s) => (
               <option key={s} value={s} className="capitalize">
@@ -399,7 +399,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">
-            Reason <span className="text-violet-700">*</span>
+            Reason <span className="text-gray-800">*</span>
           </label>
           <textarea
             autoFocus
@@ -410,7 +410,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
               setError("");
             }}
             placeholder="Why are you changing this status? The customer can see this."
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 resize-none"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
           />
         </div>
         {error && <p className="text-xs text-red-500">{error}</p>}
@@ -427,7 +427,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
             type="button"
             onClick={submit}
             disabled={submitting}
-            className="flex-1 py-2 bg-violet-700 text-white rounded-lg text-sm font-semibold hover:bg-violet-800 transition disabled:opacity-60"
+            className="flex-1 py-2 bg-gray-800 text-white rounded-lg text-sm font-semibold hover:bg-[#1D1D1F] transition disabled:opacity-60"
           >
             {submitting ? "Saving…" : "Update"}
           </button>
@@ -501,7 +501,7 @@ function OrdersTable({
             <tr
               key={order._id}
               onClick={() => onRowClick(order._id)}
-              className={`hover:bg-violet-50 transition cursor-pointer ${checked ? "bg-violet-50/60" : ""}`}
+              className={`hover:bg-gray-50 transition cursor-pointer ${checked ? "bg-gray-50/60" : ""}`}
             >
               {selectable && (
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
@@ -978,7 +978,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
                   onChange={(e) =>
                     setRefundAmount(Math.max(0, Number(e.target.value)))
                   }
-                  className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
+                  className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
                 />
                 <p className="text-xs text-gray-400 mt-1">
                   Order total: ৳{modal.order.total?.toLocaleString()}
@@ -998,7 +998,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
                     ? "Internal note…"
                     : "Explain why the return is rejected…"
                 }
-                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 resize-none"
+                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
               />
             </div>
           </div>
@@ -1116,7 +1116,7 @@ function AddReturnModal({ onClose, onSave }) {
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder="e.g. Rina Khatun or 017…"
                     autoFocus
-                    className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 pr-8"
+                    className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 pr-8"
                   />
                   {searching && (
                     <svg
@@ -1203,7 +1203,7 @@ function AddReturnModal({ onClose, onSave }) {
                 onChange={(e) => setReason(e.target.value)}
                 rows={3}
                 placeholder="Describe why the item is being returned…"
-                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300 resize-none"
+                className="w-full border rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
               />
             </div>
             {err && (
@@ -1576,7 +1576,7 @@ function ReturnsRefundsSection() {
               setPage(1);
             }}
             placeholder="Search by customer name, phone, or order ID…"
-            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-gray-300"
           />
         </div>
 
@@ -1589,7 +1589,7 @@ function ReturnsRefundsSection() {
                 setActiveTab(tab);
                 setPage(1);
               }}
-              className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-violet-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-gray-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
             >
               {tab === "all"
                 ? "All"
@@ -1916,7 +1916,7 @@ function AllOrdersSection() {
                 setPage(1);
               }}
               placeholder="Search by name, phone, order ID…"
-              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-violet-300"
+              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-gray-300"
             />
             <div className="flex items-center gap-2 sm:ml-auto shrink-0">
               <span className="text-xs text-gray-400">
@@ -1958,7 +1958,7 @@ function AllOrdersSection() {
                   setActiveTab(tab);
                   setPage(1);
                 }}
-                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-violet-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+                className={`shrink-0 px-3 py-1 rounded-full text-xs font-medium capitalize transition ${activeTab === tab ? "bg-gray-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
               >
                 {ALL_ORDERS_LABELS[tab]}
                 {stats[tab] != null && (
@@ -2181,7 +2181,7 @@ function FilteredOrdersSection({
                 setPage(1);
               }}
               placeholder="Search by name, phone, order ID…"
-              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-violet-300"
+              className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-gray-300"
             />
             <span className="text-xs text-gray-400 sm:ml-auto shrink-0">
               {total} result{total !== 1 ? "s" : ""}

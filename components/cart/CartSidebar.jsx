@@ -101,8 +101,8 @@ export default function CartSidebar() {
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-gray-100 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-full bg-[#af82f8] flex items-center justify-center">
-              <FiShoppingBag className="w-4 h-4 text-[#5B21B6]" />
+            <div className="w-9 h-9 rounded-full bg-[#D1D5DB] flex items-center justify-center">
+              <FiShoppingBag className="w-4 h-4 text-[#1D1D1F]" />
             </div>
             <div>
               <h2 className="text-sm font-bold text-[#1F2937] leading-tight">
@@ -119,7 +119,7 @@ export default function CartSidebar() {
                 onClick={handleShare}
                 disabled={sharing}
                 title="Share cart"
-                className="w-8 h-8 flex items-center justify-center rounded-full text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition disabled:opacity-50"
+                className="w-8 h-8 flex items-center justify-center rounded-full text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition disabled:opacity-50"
               >
                 <FiShare2 className="w-4 h-4" />
               </button>
@@ -150,7 +150,7 @@ export default function CartSidebar() {
                   toggleSidebar();
                   router.push("/");
                 }}
-                className="inline-flex items-center gap-2 bg-[#5B21B6] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-violet-700 transition"
+                className="inline-flex items-center gap-2 bg-[#1D1D1F] text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-black transition"
               >
                 {t("success.continue_shopping")}
                 <FiArrowRight className="w-3.5 h-3.5" />
@@ -207,7 +207,7 @@ export default function CartSidebar() {
                       <a
                         href={`/product/${product._id}/`}
                         onClick={toggleSidebar}
-                        className="font-semibold text-sm text-[#1F2937] hover:text-[#5B21B6] transition-colors line-clamp-2 leading-snug"
+                        className="font-semibold text-sm text-[#1F2937] hover:text-[#1D1D1F] transition-colors line-clamp-2 leading-snug"
                       >
                         {product.title || product.name}
                       </a>
@@ -223,7 +223,7 @@ export default function CartSidebar() {
                     {selectedColor || selectedSize ? (
                       <div className="flex items-center gap-1 mt-1.5 flex-wrap">
                         {selectedColor && (
-                          <span className="inline-flex items-center gap-1 text-[11px] bg-violet-50 text-[#5B21B6] font-medium px-1.5 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] bg-gray-100 text-[#1D1D1F] font-medium px-1.5 py-0.5 rounded-full">
                             {colorHex && (
                               <span
                                 className="w-2.5 h-2.5 rounded-full border border-white shadow-sm inline-block"
@@ -234,7 +234,7 @@ export default function CartSidebar() {
                           </span>
                         )}
                         {selectedSize && (
-                          <span className="text-[11px] bg-violet-50 text-[#5B21B6] font-medium px-1.5 py-0.5 rounded-full">
+                          <span className="text-[11px] bg-gray-100 text-[#1D1D1F] font-medium px-1.5 py-0.5 rounded-full">
                             {selectedSize}
                           </span>
                         )}
@@ -245,7 +245,7 @@ export default function CartSidebar() {
                               setEditMode("edit");
                             }}
                             title="Edit variant"
-                            className="text-gray-400 hover:text-[#5B21B6] p-0.5"
+                            className="text-gray-400 hover:text-[#1D1D1F] p-0.5"
                           >
                             <FiEdit2 className="w-2.5 h-2.5" />
                           </button>
@@ -258,7 +258,7 @@ export default function CartSidebar() {
                             setEditItem(item);
                             setEditMode("edit");
                           }}
-                          className="flex items-center gap-1 mt-1.5 text-[11px] text-[#5B21B6] font-medium hover:underline"
+                          className="flex items-center gap-1 mt-1.5 text-[11px] text-[#1D1D1F] font-medium hover:underline"
                         >
                           <FiEdit2 className="w-2.5 h-2.5" />
                           {t("cart.select_option")}
@@ -272,7 +272,7 @@ export default function CartSidebar() {
                           setEditItem(item);
                           setEditMode("add");
                         }}
-                        className="mt-1 flex items-center gap-1 text-[11px] text-[#6B7280] hover:text-[#5B21B6] transition"
+                        className="mt-1 flex items-center gap-1 text-[11px] text-[#6B7280] hover:text-[#1D1D1F] transition"
                       >
                         <FiPlus className="w-2.5 h-2.5" />
                         {t("cart.add_size_color")}
@@ -300,7 +300,7 @@ export default function CartSidebar() {
                             updateQty(cartKey, Math.max(1, quantity - 1))
                           }
                           aria-label="Decrease quantity"
-                          className="w-6.5 h-6.5 flex items-center justify-center text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                          className="w-6.5 h-6.5 flex items-center justify-center text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition"
                         >
                           <FiMinus className="w-3 h-3" />
                         </button>
@@ -310,13 +310,13 @@ export default function CartSidebar() {
                         <button
                           onClick={() => updateQty(cartKey, quantity + 1)}
                           aria-label="Increase quantity"
-                          className="w-6.5 h-6.5 flex items-center justify-center text-[#6B7280] hover:text-[#5B21B6] hover:bg-violet-50 transition"
+                          className="w-6.5 h-6.5 flex items-center justify-center text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition"
                         >
                           <FiPlus className="w-3 h-3" />
                         </button>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-bold text-[#5B21B6]">
+                        <p className="text-sm font-bold text-[#1D1D1F]">
                           ৳{(price * quantity).toFixed(2)}
                         </p>
                         {itemSaved > 0 && (
@@ -369,7 +369,7 @@ export default function CartSidebar() {
                   toggleSidebar();
                   router.push("/checkout");
                 }}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-[#5B21B6] text-white text-sm font-semibold py-2.5 rounded-xl hover:bg-violet-700 transition"
+                className="flex-1 flex items-center justify-center gap-1.5 bg-[#1D1D1F] text-white text-sm font-semibold py-2.5 rounded-xl hover:bg-black transition"
               >
                 {t("cart.proceed_checkout")}
                 <FiArrowRight className="w-3.5 h-3.5" />

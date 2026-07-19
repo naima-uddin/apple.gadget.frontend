@@ -75,8 +75,8 @@ export default function SearchableSelect({
         type="button"
         onClick={toggleDropdown}
         disabled={disabled}
-        className={`w-full px-4 py-3 border border-gray-300 rounded-xl text-left focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none bg-white flex items-center justify-between ${
-          disabled ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-violet-300'
+        className={`w-full px-4 py-3 border border-gray-300 rounded-xl text-left focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none bg-white flex items-center justify-between ${
+          disabled ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-300'
         }`}
       >
         <span className={displayValue ? 'text-gray-900' : 'text-gray-400'}>
@@ -106,7 +106,7 @@ export default function SearchableSelect({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Type to search..."
-              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent outline-none text-sm"
+              className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none text-sm"
               onClick={(e) => e.stopPropagation()}
             />
           </div>
@@ -119,8 +119,8 @@ export default function SearchableSelect({
                   key={idx}
                   type="button"
                   onClick={() => handleSelect(option)}
-                  className={`w-full px-4 py-2 text-left hover:bg-violet-50 transition-colors ${
-                    value === option ? 'bg-violet-50 text-[#5B21B6] font-medium' : 'text-gray-700'
+                  className={`w-full px-4 py-2 text-left hover:bg-gray-100 transition-colors ${
+                    value === option ? 'bg-gray-100 text-[#1D1D1F] font-medium' : 'text-gray-700'
                   }`}
                 >
                   {option}
@@ -137,8 +137,8 @@ export default function SearchableSelect({
               <button
                 type="button"
                 onClick={() => handleSelect('other')}
-                className={`w-full px-4 py-2 text-left border-t border-gray-100 hover:bg-violet-50 transition-colors ${
-                  value === 'other' ? 'bg-violet-50 text-[#5B21B6] font-medium' : 'text-gray-700'
+                className={`w-full px-4 py-2 text-left border-t border-gray-100 hover:bg-gray-100 transition-colors ${
+                  value === 'other' ? 'bg-gray-100 text-[#1D1D1F] font-medium' : 'text-gray-700'
                 }`}
               >
                 Other (Type your own)

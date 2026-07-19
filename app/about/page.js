@@ -71,7 +71,7 @@ export default async function AboutPage() {
       <PolicyTabs />
 
       <div className="space-y-6">
-        <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#5B21B6] via-violet-700 to-purple-600 p-8 text-white shadow-lg shadow-violet-200 sm:p-12">
+        <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-[#1D1D1F] via-gray-800 to-gray-700 p-8 text-white shadow-lg shadow-gray-300 sm:p-12">
           <div
             className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10"
             aria-hidden="true"
@@ -80,11 +80,11 @@ export default async function AboutPage() {
             className="pointer-events-none absolute -bottom-14 -left-10 h-36 w-36 rounded-full bg-white/10"
             aria-hidden="true"
           />
-          <p className="text-xs font-semibold uppercase tracking-wider text-violet-200">
+          <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
             Our Story
           </p>
           <h1 className="mt-2 text-2xl font-bold sm:text-3xl">About {storeName}</h1>
-          <p className="mt-3 max-w-xl text-sm text-violet-100 sm:text-base">
+          <p className="mt-3 max-w-xl text-sm text-gray-100 sm:text-base">
             {storeName} brings you curated gadgets and electronics with fast shipping
             and reliable customer service. We believe everyone deserves access to
             quality tech at budget-friendly prices.
@@ -102,9 +102,9 @@ export default async function AboutPage() {
             {FEATURES.map((f) => (
               <div
                 key={f.title}
-                className="flex gap-3 rounded-xl border border-gray-100 p-4 transition hover:border-violet-200 hover:bg-violet-50/40"
+                className="flex gap-3 rounded-xl border border-gray-100 p-4 transition hover:border-gray-300 hover:bg-gray-100/40"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-[#5B21B6]">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-[#1D1D1F]">
                   <FeatureIcon path={f.icon} />
                 </span>
                 <div>
@@ -122,7 +122,7 @@ export default async function AboutPage() {
               key={s.label}
               className="rounded-2xl border border-gray-100 bg-white p-4 text-center shadow-sm"
             >
-              <p className="text-xl font-bold text-[#5B21B6] sm:text-2xl">{s.value}</p>
+              <p className="text-xl font-bold text-[#1D1D1F] sm:text-2xl">{s.value}</p>
               <p className="mt-1 text-[11px] text-[#6B7280] sm:text-xs">{s.label}</p>
             </div>
           ))}

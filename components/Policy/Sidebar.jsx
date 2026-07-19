@@ -29,8 +29,8 @@ export default function PolicyTabs() {
             href={item.href}
             className={`shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               active
-                ? "bg-[#5B21B6] text-white shadow-sm shadow-violet-200"
-                : "text-[#6B7280] hover:bg-violet-50 hover:text-[#5B21B6]"
+                ? "bg-[#1D1D1F] text-white shadow-sm shadow-gray-300"
+                : "text-[#6B7280] hover:bg-gray-100 hover:text-[#1D1D1F]"
             }`}
           >
             {item.label}

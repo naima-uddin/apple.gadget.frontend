@@ -313,7 +313,7 @@ function ProductFooter({ product }) {
           )}
         </p>
       </div>
-      <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#1F2937] shrink-0 hover:bg-[#5B21B6] hover:text-white transition">
+      <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#1F2937] shrink-0 hover:bg-[#1D1D1F] hover:text-white transition">
         <svg
           viewBox="0 0 24 24"
           fill="none"

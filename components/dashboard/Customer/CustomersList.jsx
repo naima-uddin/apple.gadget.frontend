@@ -92,7 +92,7 @@ export default function CustomersList() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search name, email, mobile…"
-            className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-gray-300"
           />
         </div>
 
@@ -103,7 +103,7 @@ export default function CustomersList() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+              <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                 <tr>
                   <th className="px-3 py-3">Customer</th>
                   <th className="px-3 py-3">Mobile</th>
@@ -120,7 +120,7 @@ export default function CustomersList() {
                 {items.map((u) => {
                   const s = u.orderSummary;
                   return (
-                    <tr key={u._id} className="hover:bg-violet-50/30">
+                    <tr key={u._id} className="hover:bg-gray-50/30">
                       <td className="px-3 py-3">
                         <p className="font-medium text-gray-800">
                           {u.name || "—"}
@@ -154,7 +154,7 @@ export default function CustomersList() {
                         <div className="flex flex-wrap gap-2">
                           <Link
                             href={`/dashboard/customers/${u._id}/profile`}
-                            className="px-2 py-1 border border-gray-200 rounded-lg text-xs font-medium text-violet-800 border-violet-200 hover:bg-violet-50"
+                            className="px-2 py-1 border border-gray-200 rounded-lg text-xs font-medium text-[#1D1D1F] border-gray-300 hover:bg-gray-50"
                           >
                             Profile
                           </Link>

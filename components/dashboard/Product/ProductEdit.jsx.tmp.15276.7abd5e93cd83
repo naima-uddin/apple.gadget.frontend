@@ -1410,7 +1410,7 @@ export default function ProductEdit({ productId }) {
                 </div>
 
                 {showBadgeManager && (
-                  <div className="mt-3 rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
+                  <div className="mt-3 rounded-xl border border-gray-300 bg-gray-50 p-4 space-y-3">
                     {(badgeOptions || []).map((item, index) => (
                       <div
                         key={`${item.key}-${index}`}
