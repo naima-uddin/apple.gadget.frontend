@@ -5,58 +5,6 @@ import { useUser } from "@/components/context/UserContext";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
-export const COLOR_THEMES = {
-  pink: {
-    bgColor: "from-pink-50 to-white",
-    textColor: "text-pink-600",
-    borderColor: "border-pink-400",
-    label: "Pink",
-    swatch: "bg-pink-400",
-  },
-  blue: {
-    bgColor: "from-blue-50 to-white",
-    textColor: "text-blue-600",
-    borderColor: "border-blue-400",
-    label: "Blue",
-    swatch: "bg-blue-400",
-  },
-  orange: {
-    bgColor: "from-orange-50 to-white",
-    textColor: "text-orange-600",
-    borderColor: "border-orange-400",
-    label: "Orange",
-    swatch: "bg-orange-400",
-  },
-  green: {
-    bgColor: "from-green-50 to-white",
-    textColor: "text-green-600",
-    borderColor: "border-green-400",
-    label: "Green",
-    swatch: "bg-green-400",
-  },
-  purple: {
-    bgColor: "from-purple-50 to-white",
-    textColor: "text-purple-600",
-    borderColor: "border-purple-400",
-    label: "Purple",
-    swatch: "bg-purple-400",
-  },
-  red: {
-    bgColor: "from-red-50 to-white",
-    textColor: "text-red-600",
-    borderColor: "border-red-400",
-    label: "Red",
-    swatch: "bg-red-400",
-  },
-  teal: {
-    bgColor: "from-teal-50 to-white",
-    textColor: "text-teal-600",
-    borderColor: "border-teal-400",
-    label: "Teal",
-    swatch: "bg-teal-400",
-  },
-};
-
 const BLANK = {
   title: "",
   subtitle: "",
@@ -65,7 +13,6 @@ const BLANK = {
   highlightSecondary: "",
   description: "",
   couponCode: "",
-  theme: "pink",
   isActive: true,
   // Functional coupon fields
   discountType: "fixed",
@@ -81,54 +28,45 @@ const BLANK = {
 };
 
 function OfferCard({ offer }) {
-  const t = COLOR_THEMES[offer.theme] || COLOR_THEMES.pink;
   return (
-    <div
-      className={`relative border-2 ${t.borderColor} rounded-lg px-4 py-5 bg-linear-to-br ${t.bgColor} overflow-hidden h-44`}
-    >
-      <div
-        className={`absolute -top-3 left-2/3 -translate-x-1/2 w-6 h-6 bg-white border-2 ${t.borderColor} rounded-full z-10`}
-      />
-      <div
-        className={`absolute -bottom-3 left-2/3 -translate-x-1/2 w-6 h-6 bg-white border-2 ${t.borderColor} rounded-full z-10`}
-      />
-      <div className="absolute left-2/3 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-orange-300" />
-      <div className="flex h-full">
-        <div className="w-2/3 pr-4 flex flex-col justify-center">
-          <p className="text-sm text-gray-600 mb-1">
-            Spend: {offer.spend || "—"}
+    <div className="relative flex bg-[#1D1D1F] rounded-2xl overflow-hidden h-44 shadow-lg">
+      {/* Ticket-perforation notches on the seam between the stub and the body */}
+      <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
+      <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
+      <div className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-[#5B21B6]/50" />
+
+      {/* Ticket stub: vertical COUPON label */}
+      <div className="w-16 shrink-0 flex items-center justify-center">
+        <span
+          className="text-[10px] font-bold tracking-[0.3em] text-white/25 uppercase whitespace-nowrap"
+          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+        >
+          COUPON • COUPON • COUPON
+        </span>
+      </div>
+
+      {/* Ticket body */}
+      <div className="flex-1 min-w-0 flex flex-col justify-center px-5 py-4">
+        {(offer.title || offer.spend) && (
+          <p className="text-[11px] font-semibold tracking-wide text-white/45 uppercase mb-1 truncate">
+            {offer.title || `Spend: ${offer.spend}`}
           </p>
-          {offer.highlightSecondary ? (
-            <>
-              <h2 className={`text-3xl font-bold ${t.textColor} mb-1`}>
-                {offer.highlight}
-              </h2>
-              <h3 className={`text-2xl font-bold ${t.textColor}`}>
-                {offer.highlightSecondary}
-              </h3>
-            </>
-          ) : (
-            <h2 className={`text-5xl font-bold ${t.textColor}`}>
-              {offer.highlight || "—"}
-            </h2>
-          )}
-          <p className="text-sm text-gray-600 mt-1">{offer.subtitle}</p>
-        </div>
-        <div className="w-1/3 pl-3 flex flex-col justify-center">
-          <h3 className="text-sm font-semibold text-gray-900 mb-1">
-            {offer.title}
-          </h3>
-          {offer.description && (
-            <p className="text-xs text-gray-600 leading-relaxed mb-1">
-              {offer.description}
-            </p>
-          )}
-          {offer.couponCode && (
-            <span className="inline-block bg-white border border-dashed border-gray-400 rounded-lg px-2 py-0.5 text-xs font-mono font-bold text-gray-700 truncate">
-              {offer.couponCode}
-            </span>
-          )}
-        </div>
+        )}
+        <h2 className="text-xl sm:text-2xl font-extrabold text-white uppercase leading-tight">
+          {offer.highlight || "—"}
+          {offer.highlightSecondary ? ` ${offer.highlightSecondary}` : ""}
+        </h2>
+        {(offer.subtitle || offer.description) && (
+          <p className="text-xs text-white/55 mt-1 truncate">
+            {offer.subtitle || offer.description}
+          </p>
+        )}
+        {offer.couponCode && (
+          <span className="mt-2 inline-flex items-center gap-1.5 self-start bg-[#5B21B6] rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white">
+            <span className="opacity-80">USE CODE:</span>
+            <span className="truncate max-w-[8rem]">{offer.couponCode}</span>
+          </span>
+        )}
       </div>
     </div>
   );
@@ -369,26 +307,6 @@ export default function DiscountsManager() {
                   }
                   placeholder="e.g. Delivery"
                 />
-              </div>
-              <div>
-                <label className={lbl}>Color Theme</label>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {Object.entries(COLOR_THEMES).map(([key, t]) => (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => setForm((p) => ({ ...p, theme: key }))}
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border-2 text-xs font-medium transition-all ${
-                        form.theme === key
-                          ? "border-gray-800 shadow"
-                          : "border-gray-200 hover:border-gray-400"
-                      }`}
-                    >
-                      <span className={`w-3 h-3 rounded-full ${t.swatch}`} />
-                      {t.label}
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
 

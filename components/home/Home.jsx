@@ -8,6 +8,8 @@ import DealsOfDay from "./DealsOfDay";
 import CTASection from "./CTASection";
 import Newsletter from "@/components/layout/Newsletter";
 import AdSlot from "@/components/ui/AdSlot";
+import OffersToSayYes from "./OffersToSayYes";
+import DiscountsManager from "../dashboard/Discount/DiscountsManager";
 
 export default function Home() {
   return (
@@ -20,6 +22,7 @@ export default function Home() {
       <WhyChooseUs />
       <DealsOfDay />
       <CTASection />
+      <OffersToSayYes />
       {/* newsletter band — homepage only, sits right above the footer */}
       <Newsletter />
     </>

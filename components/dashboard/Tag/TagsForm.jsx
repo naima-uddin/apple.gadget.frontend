@@ -389,7 +389,7 @@ export default function TagsForm() {
         {user?.role === "admin" ? (
           <button
             onClick={handleSave}
-            className="px-4 py-2 bg-violet-700 text-white rounded-lg"
+            className="px-4 py-2 bg-gray-800 text-white rounded-lg"
             disabled={saving}
           >
             {saving ? "Saving…" : "Save tags"}

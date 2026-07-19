@@ -188,13 +188,13 @@ export default function CategoryManager() {
           placeholder="Search categories by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-100"
+          className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
         />
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-purple-50">
+          <thead className="bg-gray-50">
             <tr>
               <th className="text-left px-4 py-3 text-sm font-medium">#</th>
               <th className="text-left px-4 py-3 text-sm font-medium">
@@ -332,7 +332,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-violet-50 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-gray-50 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h3 className="text-xl font-semibold mb-4">Create Main Category</h3>
 
@@ -345,7 +345,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter category name"
-                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-100"
+                className="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
                 autoFocus
               />
             </div>
@@ -361,7 +361,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder={`e.g. Browse our best ${name || "products"} with fast delivery across Bangladesh.`}
-                className="w-full border px-3 py-2 rounded-lg h-20 resize-none focus:outline-none focus:ring-2 focus:ring-violet-100"
+                className="w-full border px-3 py-2 rounded-lg h-20 resize-none focus:outline-none focus:ring-2 focus:ring-gray-300"
               />
             </div>
 
@@ -414,7 +414,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 disabled:opacity-50"
+              className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] disabled:opacity-50"
             >
               {saving ? "Creating..." : "Create"}
             </button>
@@ -603,7 +603,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-violet-50 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-gray-50 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h3 className="text-xl font-semibold mb-4">
             Edit{" "}
@@ -840,7 +840,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
             <button
               onClick={handleUpdate}
               disabled={saving}
-              className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 disabled:opacity-50"
+              className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save All Changes"}
             </button>
