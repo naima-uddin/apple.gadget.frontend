@@ -282,7 +282,7 @@ export default function OrderDetails({ orderId }) {
         <div>
           <Link
             href="/dashboard/orders"
-            className="text-sm text-gray-500 hover:text-violet-700 inline-flex items-center gap-1"
+            className="text-sm text-gray-500 hover:text-gray-800 inline-flex items-center gap-1"
           >
             ← Back
           </Link>
@@ -290,7 +290,7 @@ export default function OrderDetails({ orderId }) {
             <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
               {formatOrderId(order._id)}
             </h1>
-            <span className="text-xs font-medium px-2 py-1 rounded-full bg-violet-100 text-violet-800">
+            <span className="text-xs font-medium px-2 py-1 rounded-full bg-gray-100 text-[#1D1D1F]">
               Online Store
             </span>
             <span
@@ -497,7 +497,7 @@ export default function OrderDetails({ orderId }) {
                       type="button"
                       onClick={saveShipping}
                       disabled={saving}
-                      className="text-xs text-violet-700 hover:underline"
+                      className="text-xs text-gray-800 hover:underline"
                     >
                       Save
                     </button>
@@ -516,7 +516,7 @@ export default function OrderDetails({ orderId }) {
                   <button
                     type="button"
                     onClick={() => setShippingEdit(true)}
-                    className="text-violet-700 hover:underline"
+                    className="text-gray-800 hover:underline"
                   >
                     Edit Shipping Charge
                   </button>
@@ -542,7 +542,7 @@ export default function OrderDetails({ orderId }) {
                       type="button"
                       onClick={saveDiscount}
                       disabled={saving}
-                      className="text-xs text-violet-700 hover:underline"
+                      className="text-xs text-gray-800 hover:underline"
                     >
                       Save
                     </button>
@@ -561,7 +561,7 @@ export default function OrderDetails({ orderId }) {
                   <button
                     type="button"
                     onClick={() => setDiscountEdit(true)}
-                    className="text-violet-700 hover:underline"
+                    className="text-gray-800 hover:underline"
                   >
                     Apply Discount
                   </button>
@@ -615,7 +615,7 @@ export default function OrderDetails({ orderId }) {
                   href={order.shipment.trackingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-violet-700 hover:underline font-medium"
+                  className="text-sm text-gray-800 hover:underline font-medium"
                 >
                   Open live tracking link ↗
                 </a>
@@ -625,7 +625,7 @@ export default function OrderDetails({ orderId }) {
               </div>
               <Link
                 href={`/dashboard/shipment-tracking?order=${order._id}`}
-                className="inline-block mt-3 text-sm text-purple-700 hover:underline"
+                className="inline-block mt-3 text-sm text-gray-800 hover:underline"
               >
                 Manage tracking →
               </Link>
@@ -788,7 +788,7 @@ export default function OrderDetails({ orderId }) {
                     type="button"
                     disabled={saving}
                     onClick={saveCustomerDetails}
-                    className="px-3 py-1.5 text-xs font-medium rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
+                    className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-800 text-white hover:bg-[#1D1D1F] disabled:opacity-60"
                   >
                     {saving ? "Saving…" : "Save"}
                   </button>
@@ -847,7 +847,7 @@ export default function OrderDetails({ orderId }) {
             </div>
             <div>
               <label className="block text-xs text-gray-500 mb-1">
-                Reason <span className="text-violet-700">*</span>
+                Reason <span className="text-gray-800">*</span>
               </label>
               <textarea
                 value={statusModal.reason}
@@ -881,7 +881,7 @@ export default function OrderDetails({ orderId }) {
                 type="button"
                 onClick={updateStatus}
                 disabled={statusModal.submitting}
-                className="px-4 py-2 text-sm rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
+                className="px-4 py-2 text-sm rounded-lg bg-gray-800 text-white hover:bg-[#1D1D1F] disabled:opacity-60"
               >
                 {statusModal.submitting ? "Saving…" : "Update"}
               </button>

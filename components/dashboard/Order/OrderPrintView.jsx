@@ -218,7 +218,7 @@ export default function OrderPrintView({
       <div className="no-print sticky top-0 z-10 border-b bg-white/95 backdrop-blur px-4 py-3 flex items-center justify-between flex-wrap gap-2">
         <Link
           href={backHref || `/dashboard/orders/${orderId}`}
-          className="text-sm text-gray-500 hover:text-violet-700 shrink-0"
+          className="text-sm text-gray-500 hover:text-gray-800 shrink-0"
         >
           ← Back to order
         </Link>
@@ -245,7 +245,7 @@ export default function OrderPrintView({
               type="button"
               onClick={handleDownloadPdf}
               disabled={pdfLoading}
-              className="px-4 py-2 text-sm font-semibold rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
+              className="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-800 text-white hover:bg-[#1D1D1F] disabled:opacity-60"
             >
               {pdfLoading ? "Generating…" : "Download PDF"}
             </button>

@@ -97,7 +97,7 @@ function OrderTrackingCard({
   return (
     <article
       className={`bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition ${
-        highlighted ? "border-violet-400 ring-2 ring-violet-100" : "border-gray-200"
+        highlighted ? "border-gray-400 ring-2 ring-gray-100" : "border-gray-200"
       }`}
     >
       <button
@@ -106,7 +106,7 @@ function OrderTrackingCard({
         className="w-full flex items-center gap-4 px-4 py-3.5 hover:bg-gray-50 text-left transition"
       >
         <span
-          className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition ${expanded ? "bg-violet-100 text-violet-700" : "bg-gray-100 text-gray-500"}`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition ${expanded ? "bg-gray-100 text-gray-800" : "bg-gray-100 text-gray-500"}`}
         >
           <svg
             className={`w-4 h-4 transition-transform ${expanded ? "rotate-90" : ""}`}
@@ -152,11 +152,11 @@ function OrderTrackingCard({
       </button>
 
       {expanded && (
-        <div className="px-4 pb-4 pt-0 border-t border-gray-100 space-y-4 bg-linear-to-b from-violet-50/30 to-white">
+        <div className="px-4 pb-4 pt-0 border-t border-gray-100 space-y-4 bg-linear-to-b from-gray-50/30 to-white">
           <div className="flex flex-wrap gap-2 pt-4">
             <Link
               href={`/dashboard/orders/${order._id}`}
-              className="text-xs font-medium text-violet-700 hover:underline"
+              className="text-xs font-medium text-gray-800 hover:underline"
             >
               Full order details →
             </Link>
@@ -226,7 +226,7 @@ function OrderTrackingCard({
               type="button"
               onClick={saveShipment}
               disabled={saving}
-              className="px-4 py-2 text-sm font-semibold rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-60"
+              className="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60"
             >
               {saving ? "Saving…" : "Save & sync tracking"}
             </button>
@@ -358,7 +358,7 @@ export default function ShipmentTrackingManager() {
             onClick={() => setFilter(tab.key)}
             className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
               filter === tab.key
-                ? "bg-violet-500 text-white"
+                ? "bg-gray-500 text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -368,7 +368,7 @@ export default function ShipmentTrackingManager() {
         <button
           type="button"
           onClick={loadOrders}
-          className="text-xs text-violet-700 hover:text-violet-800 font-medium ml-auto"
+          className="text-xs text-gray-800 hover:text-[#1D1D1F] font-medium ml-auto"
         >
           Refresh
         </button>

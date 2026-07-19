@@ -720,7 +720,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={() => setShowAuthModal(true)}
-              className="font-medium text-[#5B21B6] hover:underline"
+              className="font-medium text-[#1D1D1F] hover:underline"
             >
               Sign in
             </button>
@@ -765,7 +765,7 @@ export default function CheckoutPage() {
                       applyPreviousAddress(previousAddresses[e.target.value]);
                       e.target.value = "";
                     }}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition"
                   >
                     <option value="" disabled>
                       {t("checkout.saved_address")}
@@ -792,7 +792,7 @@ export default function CheckoutPage() {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition"
                     required
                   />
                 </div>
@@ -805,7 +805,7 @@ export default function CheckoutPage() {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition"
                     required
                   />
                 </div>
@@ -818,7 +818,7 @@ export default function CheckoutPage() {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition"
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition"
                     required
                   />
                 </div>
@@ -850,7 +850,7 @@ export default function CheckoutPage() {
                       value={customCity}
                       onChange={(e) => setCustomCity(e.target.value)}
                       placeholder={t("checkout.enter_city")}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition mt-2"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition mt-2"
                       required
                     />
                   )}
@@ -875,7 +875,7 @@ export default function CheckoutPage() {
                       value={customZone}
                       onChange={(e) => setCustomZone(e.target.value)}
                       placeholder={t("checkout.enter_zone")}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition mt-2"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition mt-2"
                       required
                     />
                   )}
@@ -905,7 +905,7 @@ export default function CheckoutPage() {
                       value={customArea}
                       onChange={(e) => setCustomArea(e.target.value)}
                       placeholder={t("checkout.enter_area")}
-                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition mt-2"
+                      className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition mt-2"
                     />
                   )}
                 </div>
@@ -921,7 +921,7 @@ export default function CheckoutPage() {
                   onChange={handleInputChange}
                   placeholder={t("checkout.address_ph")}
                   rows={2}
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition resize-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition resize-none"
                   required
                 />
               </div>
@@ -936,7 +936,7 @@ export default function CheckoutPage() {
                   onChange={handleInputChange}
                   placeholder={t("checkout.note_ph")}
                   rows={1}
-                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 transition resize-none"
+                  className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition resize-none"
                 />
               </div>
             </section>
@@ -953,7 +953,7 @@ export default function CheckoutPage() {
                   <button
                     type="button"
                     onClick={handleViewRewards}
-                    className="flex items-center gap-1 text-xs font-medium text-[#5B21B6] hover:underline"
+                    className="flex items-center gap-1 text-xs font-medium text-[#1D1D1F] hover:underline"
                   >
                     <FaGift className="w-3 h-3" />
                     {t("checkout.unlock_rewards")}
@@ -1032,7 +1032,7 @@ export default function CheckoutPage() {
                 {quoteLoading && (
                   <div className="absolute inset-0 bg-white/75 flex items-center justify-center rounded z-10">
                     <svg
-                      className="animate-spin w-5 h-5 text-[#5B21B6]"
+                      className="animate-spin w-5 h-5 text-[#1D1D1F]"
                       viewBox="0 0 24 24"
                       fill="none"
                     >
@@ -1171,7 +1171,7 @@ export default function CheckoutPage() {
                     onChange={handleInputChange}
                     placeholder={t("checkout.coupon_label")}
                     disabled={appliedCoupons.length >= 2}
-                    className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500 disabled:bg-gray-50 transition"
+                    className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 disabled:bg-gray-50 transition"
                   />
                   <button
                     type="button"
@@ -1209,7 +1209,7 @@ export default function CheckoutPage() {
                 ) : (
                   <Link
                     href="/user/coupons"
-                    className="mt-1.5 text-xs text-[#5B21B6] hover:underline inline-block"
+                    className="mt-1.5 text-xs text-[#1D1D1F] hover:underline inline-block"
                   >
                     {t("checkout.browse_coupons")}
                   </Link>
@@ -1238,7 +1238,7 @@ export default function CheckoutPage() {
                       onClick={() => handleToggleRewardPoints(!useRewardPoints)}
                       aria-pressed={useRewardPoints}
                       className={`relative w-9 h-5 rounded-full shrink-0 transition-colors duration-200 ${
-                        useRewardPoints ? "bg-[#5B21B6]" : "bg-gray-200"
+                        useRewardPoints ? "bg-[#1D1D1F]" : "bg-gray-200"
                       }`}
                     >
                       <span
@@ -1296,7 +1296,7 @@ export default function CheckoutPage() {
           <div className="bg-white rounded-2xl max-w-md w-full max-h-[80vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-100 p-4 flex justify-between items-center">
               <h3 className="text-lg font-semibold text-[#1F2937] flex items-center gap-2">
-                <FaGift className="text-[#5B21B6] w-4 h-4" />
+                <FaGift className="text-[#1D1D1F] w-4 h-4" />
                 {t("checkout.available_rewards")}
               </h3>
               <button
@@ -1321,7 +1321,7 @@ export default function CheckoutPage() {
                           </p>
                           {item.couponCode && (
                             <div className="mt-2">
-                              <span className="text-xs font-mono bg-gray-50 border border-gray-200 px-2 py-1 rounded text-[#5B21B6]">
+                              <span className="text-xs font-mono bg-gray-50 border border-gray-200 px-2 py-1 rounded text-[#1D1D1F]">
                                 {item.couponCode}
                               </span>
                             </div>
@@ -1337,7 +1337,7 @@ export default function CheckoutPage() {
                         </div>
                         <div className="w-full bg-gray-100 rounded-full h-1.5">
                           <div
-                            className="bg-[#5B21B6] h-1.5 rounded-full transition-all duration-300"
+                            className="bg-[#1D1D1F] h-1.5 rounded-full transition-all duration-300"
                             style={{
                               width: `${Math.min(100, (quote.subtotal / item.minOrderAmount) * 100)}%`,
                             }}
@@ -1365,7 +1365,7 @@ export default function CheckoutPage() {
                   setShowRewardsModal(false);
                   router.push("/user/coupons");
                 }}
-                className="w-full bg-[#5B21B6] text-white py-2.5 rounded-lg hover:bg-violet-700 transition font-medium text-sm"
+                className="w-full bg-[#1D1D1F] text-white py-2.5 rounded-lg hover:bg-black transition font-medium text-sm"
               >
                 {t("checkout.explore_coupons")}
               </button>

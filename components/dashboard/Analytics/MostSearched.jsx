@@ -118,7 +118,7 @@ export default function MostSearched() {
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+              <tr className="text-left bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                 <th className="py-2.5 px-4 w-8">#</th>
                 <th className="py-2.5 px-4">Search Term</th>
                 <th className="py-2.5 px-4 text-right">Count</th>
@@ -139,7 +139,7 @@ export default function MostSearched() {
                     {item.term}
                   </td>
                   <td className="py-2.5 px-4 text-right">
-                    <span className="inline-flex items-center gap-1 bg-violet-50 text-violet-800 font-semibold text-xs px-2 py-0.5 rounded-full">
+                    <span className="inline-flex items-center gap-1 bg-gray-100 text-[#1D1D1F] font-semibold text-xs px-2 py-0.5 rounded-full">
                       {item.count.toLocaleString("en-BD")}
                     </span>
                   </td>

@@ -106,7 +106,7 @@ export default function DealOfDayEditor() {
 
       {/* Current selection */}
       {selected ? (
-        <div className="flex items-center gap-4 p-4 border border-violet-200 bg-violet-50 rounded-xl">
+        <div className="flex items-center gap-4 p-4 border border-gray-300 bg-gray-50 rounded-xl">
           <Image
             src={selected.images?.[0]?.url || "/assets/placeholder.svg"}
             alt={selected.title}
@@ -115,7 +115,7 @@ export default function DealOfDayEditor() {
             className="w-16 h-16 object-contain rounded-lg bg-white border"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-[#5B21B6] uppercase tracking-wide">
+            <p className="text-xs font-bold text-[#1D1D1F] uppercase tracking-wide">
               Current Deal of the Day
             </p>
             <p className="font-semibold text-[#1F2937] truncate">
@@ -156,12 +156,12 @@ export default function DealOfDayEditor() {
             value={query}
             onChange={handleInput}
             placeholder="Search products by name…"
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 pr-8"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 pr-8"
           />
           {searching && (
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
               <svg
-                className="animate-spin w-4 h-4 text-[#5B21B6]"
+                className="animate-spin w-4 h-4 text-[#1D1D1F]"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -198,8 +198,8 @@ export default function DealOfDayEditor() {
                   key={id}
                   onClick={() => !isCurrent && save(p)}
                   disabled={saving}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-violet-50 transition text-sm disabled:opacity-50 ${
-                    isCurrent ? "bg-violet-50" : ""
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-gray-50 transition text-sm disabled:opacity-50 ${
+                    isCurrent ? "bg-gray-50" : ""
                   }`}
                 >
                   <Image
@@ -215,7 +215,7 @@ export default function DealOfDayEditor() {
                     </p>
                     <div className="flex items-center gap-2 mt-0.5 text-xs">
                       {price ? (
-                        <span className="font-semibold text-[#5B21B6]">
+                        <span className="font-semibold text-[#1D1D1F]">
                           ৳{price}
                         </span>
                       ) : null}
@@ -239,7 +239,7 @@ export default function DealOfDayEditor() {
                     </div>
                   </div>
                   {isCurrent ? (
-                    <span className="text-[#5B21B6] font-bold text-xs shrink-0">
+                    <span className="text-[#1D1D1F] font-bold text-xs shrink-0">
                       ✓ Selected
                     </span>
                   ) : (

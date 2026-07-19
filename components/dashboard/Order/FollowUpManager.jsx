@@ -84,7 +84,7 @@ export default function FollowUpManager() {
         </div>
         <Link
           href="/dashboard/orders"
-          className="text-sm text-violet-700 hover:underline"
+          className="text-sm text-gray-800 hover:underline"
         >
           ← All Orders
         </Link>
@@ -147,7 +147,7 @@ export default function FollowUpManager() {
                           type="button"
                           disabled={assigning}
                           onClick={() => assignToOrder(p._id)}
-                          className="text-xs font-medium px-3 py-1 rounded-lg bg-violet-700 text-white hover:bg-violet-800 disabled:opacity-60"
+                          className="text-xs font-medium px-3 py-1 rounded-lg bg-gray-800 text-white hover:bg-[#1D1D1F] disabled:opacity-60"
                         >
                           Assign
                         </button>
@@ -165,7 +165,7 @@ export default function FollowUpManager() {
                     No active authorized persons.{" "}
                     <Link
                       href="/dashboard/authorized"
-                      className="text-violet-700 hover:underline"
+                      className="text-gray-800 hover:underline"
                     >
                       Add one
                     </Link>

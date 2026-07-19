@@ -135,7 +135,7 @@ export default function PaymentSelector({
       <label
         className={`flex items-center gap-3 px-3.5 py-3 border rounded-lg cursor-pointer transition-colors ${
           value === "cash-on-delivery"
-            ? "border-violet-400 bg-violet-50/40"
+            ? "border-gray-400 bg-gray-100/40"
             : "border-gray-200 hover:border-gray-300"
         }`}
       >
@@ -145,7 +145,7 @@ export default function PaymentSelector({
           value="cash-on-delivery"
           checked={value === "cash-on-delivery"}
           onChange={() => onChange("cash-on-delivery")}
-          className="w-4 h-4 accent-[#5B21B6] shrink-0"
+          className="w-4 h-4 accent-[#1D1D1F] shrink-0"
         />
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-[#1F2937]">
@@ -219,7 +219,7 @@ export default function PaymentSelector({
         type="button"
         onClick={onSubmit}
         disabled={isLoading}
-        className="mt-4 w-full bg-[#5B21B6] text-white py-3 rounded-lg font-medium hover:bg-violet-700 transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+        className="mt-4 w-full bg-[#1D1D1F] text-white py-3 rounded-lg font-medium hover:bg-black transition disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
       >
         {isLoading ? (
           <>

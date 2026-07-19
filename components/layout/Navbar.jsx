@@ -75,7 +75,7 @@ function ProfileMenu() {
               onError={() => setImgError(true)}
             />
           ) : user && user.email ? (
-            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#5B21B6] text-white text-xs font-semibold">
+            <span className="w-6 h-6 flex items-center justify-center rounded-full bg-[#1D1D1F] text-white text-xs font-semibold">
               {user.email.charAt(0).toUpperCase()}
             </span>
           ) : (
@@ -125,7 +125,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/profile"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -141,7 +141,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/wishlist"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -163,7 +163,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/orders"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -178,7 +178,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/address"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -201,7 +201,7 @@ function ProfileMenu() {
                   </div>
                   <Link
                     href="/user/reviews"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -216,7 +216,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/rewards"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -231,7 +231,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/user/coupons"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -249,7 +249,7 @@ function ProfileMenu() {
                   </Link>
                   <Link
                     href="/cart"
-                    className="flex items-center gap-3 px-4 py-2 hover:bg-violet-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 transition-colors"
                   >
                     <svg
                       className="w-4 h-4 text-gray-600"
@@ -383,7 +383,7 @@ export default function Navbar() {
                   href={link.href}
                   className={`flex items-center gap-1 text-sm font-medium transition-colors ${
                     isActive(link.href)
-                      ? "text-[#5B21B6]"
+                      ? "text-[#1D1D1F]"
                       : "text-gray-800 hover:text-[#1D1D1F]"
                   }`}
                 >
@@ -439,7 +439,7 @@ export default function Navbar() {
                 href={link.href}
                 className={`text-sm font-medium transition-colors ${
                   isActive(link.href)
-                    ? "text-[#5B21B6]"
+                    ? "text-[#1D1D1F]"
                     : "text-gray-800 hover:text-[#1D1D1F]"
                 }`}
               >
@@ -519,7 +519,7 @@ export default function Navbar() {
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
             {getCartCount() > 0 && (
-              <span className="absolute top-0.5 right-0.5 inline-flex items-center justify-center px-1 text-[10px] font-bold leading-none text-white bg-[#5B21B6] rounded-full min-w-4 h-4">
+              <span className="absolute top-0.5 right-0.5 inline-flex items-center justify-center px-1 text-[10px] font-bold leading-none text-white bg-[#1D1D1F] rounded-full min-w-4 h-4">
                 {getCartCount()}
               </span>
             )}

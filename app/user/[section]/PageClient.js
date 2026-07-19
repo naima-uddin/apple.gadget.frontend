@@ -120,7 +120,7 @@ function ProductAddCard({ product, onAdd }) {
           <p className="text-xs font-semibold text-gray-800 truncate">
             {product.title}
           </p>
-          <p className="text-xs text-[#5B21B6] font-bold">৳{getPrice()}</p>
+          <p className="text-xs text-[#1D1D1F] font-bold">৳{getPrice()}</p>
         </div>
         <div className="flex items-center gap-1 shrink-0">
           <button
@@ -151,8 +151,8 @@ function ProductAddCard({ product, onAdd }) {
               onClick={() => setSelectedColor((prev) => (prev === c ? "" : c))}
               className={`px-2 py-0.5 rounded-full text-xs border transition ${
                 selectedColor === c
-                  ? "bg-[#5B21B6] text-white border-[#5B21B6]"
-                  : "border-gray-300 text-gray-600 hover:border-violet-400"
+                  ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                  : "border-gray-300 text-gray-600 hover:border-gray-400"
               }`}
             >
               {c}
@@ -184,7 +184,7 @@ function ProductAddCard({ product, onAdd }) {
       <button
         type="button"
         onClick={() => onAdd(selectedColor, selectedSize, qty, getPrice())}
-        className="w-full py-1.5 bg-[#5B21B6] text-white rounded-lg text-xs font-semibold hover:bg-violet-700 transition"
+        className="w-full py-1.5 bg-[#1D1D1F] text-white rounded-lg text-xs font-semibold hover:bg-black transition"
       >
         {t("orders.add_to_order")}
       </button>
@@ -474,7 +474,7 @@ function OrdersSection({ API }) {
     return (
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 flex justify-center">
         <svg
-          className="animate-spin w-8 h-8 text-[#5B21B6]"
+          className="animate-spin w-8 h-8 text-[#1D1D1F]"
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -509,7 +509,7 @@ function OrdersSection({ API }) {
       {orders.length === 0 && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center text-gray-500">
           <svg
-            className="w-16 h-16 mx-auto mb-4 text-violet-200"
+            className="w-16 h-16 mx-auto mb-4 text-gray-300"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -535,7 +535,7 @@ function OrdersSection({ API }) {
             <textarea
               autoFocus
               rows={3}
-              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-400 outline-none resize-none"
+              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none resize-none"
               placeholder={t("orders.cancel_reason_placeholder")}
               value={cancelReason}
               onChange={(e) => {
@@ -590,7 +590,7 @@ function OrdersSection({ API }) {
           >
             {/* Order header row */}
             <button
-              className="w-full flex items-center gap-3 p-4 hover:bg-violet-50/40 text-left"
+              className="w-full flex items-center gap-3 p-4 hover:bg-gray-100/40 text-left"
               onClick={() => setExpanded(isOpen ? null : order._id)}
             >
               {/* Item image strip (up to 3) */}
@@ -833,10 +833,10 @@ function OrdersSection({ API }) {
 
                 {/* Edit form */}
                 {isEditing ? (
-                  <div className="border border-violet-200 rounded-xl bg-violet-50 overflow-hidden">
+                  <div className="border border-gray-300 rounded-xl bg-gray-100 overflow-hidden">
                     {/* Sticky header */}
-                    <div className="sticky top-0 z-10 bg-violet-100 border-b border-violet-200 px-4 py-2.5 flex items-center justify-between">
-                      <p className="text-sm font-bold text-violet-900">
+                    <div className="sticky top-0 z-10 bg-gray-200 border-b border-gray-300 px-4 py-2.5 flex items-center justify-between">
+                      <p className="text-sm font-bold text-black">
                         {t("orders.edit_title")}
                       </p>
                       <div className="flex gap-2">
@@ -849,7 +849,7 @@ function OrdersSection({ API }) {
                         <button
                           onClick={handleSaveEdit}
                           disabled={saving}
-                          className="px-4 py-1 bg-[#5B21B6] text-white rounded-lg text-xs font-semibold hover:bg-violet-700 disabled:opacity-60 transition"
+                          className="px-4 py-1 bg-[#1D1D1F] text-white rounded-lg text-xs font-semibold hover:bg-black disabled:opacity-60 transition"
                         >
                           {saving ? t("orders.saving") : t("orders.edit_save")}
                         </button>
@@ -859,7 +859,7 @@ function OrdersSection({ API }) {
                     {/* Scrollable body */}
                     <div className="max-h-[70vh] overflow-y-auto p-3 space-y-3">
                       {/* Delivery address */}
-                      <div className="bg-white rounded-xl border border-violet-100 p-3 space-y-2">
+                      <div className="bg-white rounded-xl border border-gray-100 p-3 space-y-2">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                           {t("orders.edit_address")}
                         </p>
@@ -874,7 +874,7 @@ function OrdersSection({ API }) {
                           ].map(({ key, placeholder }) => (
                             <input
                               key={key}
-                              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-400 outline-none"
+                              className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none"
                               placeholder={placeholder}
                               value={editBilling[key]}
                               onChange={(e) =>
@@ -887,7 +887,7 @@ function OrdersSection({ API }) {
                           ))}
                         </div>
                         <textarea
-                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-400 outline-none resize-none"
+                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none resize-none"
                           rows={2}
                           placeholder={t("orders.address_ph")}
                           value={editBilling.address}
@@ -899,7 +899,7 @@ function OrdersSection({ API }) {
                           }
                         />
                         <textarea
-                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-400 outline-none resize-none"
+                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none resize-none"
                           rows={2}
                           placeholder={t("orders.note_ph")}
                           value={editBilling.note}
@@ -913,7 +913,7 @@ function OrdersSection({ API }) {
                       </div>
 
                       {/* Existing items */}
-                      <div className="bg-white rounded-xl border border-violet-100 p-3 space-y-2">
+                      <div className="bg-white rounded-xl border border-gray-100 p-3 space-y-2">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                           {t("orders.edit_items")}
                         </p>
@@ -939,7 +939,7 @@ function OrdersSection({ API }) {
                                   <p className="text-xs font-medium text-gray-800 truncate">
                                     {item.title}
                                   </p>
-                                  <p className="text-xs text-[#5B21B6] font-semibold">
+                                  <p className="text-xs text-[#1D1D1F] font-semibold">
                                     ৳{item.price}
                                   </p>
                                 </div>
@@ -1033,7 +1033,7 @@ function OrdersSection({ API }) {
                                           }),
                                         )
                                       }
-                                      className={`px-2 py-0.5 rounded-full text-xs border transition ${item.color === c ? "bg-[#5B21B6] text-white border-[#5B21B6]" : "border-gray-300 text-gray-600 hover:border-violet-400"}`}
+                                      className={`px-2 py-0.5 rounded-full text-xs border transition ${item.color === c ? "bg-[#1D1D1F] text-white border-[#1D1D1F]" : "border-gray-300 text-gray-600 hover:border-gray-400"}`}
                                     >
                                       {c}
                                     </button>
@@ -1145,12 +1145,12 @@ function OrdersSection({ API }) {
                       )}
 
                       {/* Add more products */}
-                      <div className="bg-white rounded-xl border border-violet-100 p-3 space-y-2">
+                      <div className="bg-white rounded-xl border border-gray-100 p-3 space-y-2">
                         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                           {t("orders.add_product_title")}
                         </p>
                         <input
-                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-400 outline-none"
+                          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none"
                           placeholder={t("orders.search_placeholder")}
                           value={productSearch}
                           onChange={(e) => {
@@ -1197,7 +1197,7 @@ function OrdersSection({ API }) {
                       <button
                         onClick={() => handleRetryPayment(order._id)}
                         disabled={retrying === order._id}
-                        className="w-full py-2.5 bg-[#5B21B6] text-white rounded-lg text-sm font-semibold hover:bg-violet-700 disabled:opacity-60 transition"
+                        className="w-full py-2.5 bg-[#1D1D1F] text-white rounded-lg text-sm font-semibold hover:bg-black disabled:opacity-60 transition"
                       >
                         {retrying === order._id
                           ? t("orders.retrying")
@@ -1208,7 +1208,7 @@ function OrdersSection({ API }) {
                       <div className="flex gap-2">
                         <button
                           onClick={() => openEdit(order)}
-                          className="flex-1 py-2 border border-violet-300 text-[#5B21B6] rounded-lg text-sm font-medium hover:bg-violet-50 transition"
+                          className="flex-1 py-2 border border-gray-300 text-[#1D1D1F] rounded-lg text-sm font-medium hover:bg-gray-100 transition"
                         >
                           {t("orders.edit_order")}
                         </button>
@@ -1232,7 +1232,7 @@ function OrdersSection({ API }) {
                       <Link
                         href={`/user/orders/${order._id}/invoice`}
                         target="_blank"
-                        className="w-full flex items-center justify-center gap-2 py-2 border border-violet-200 text-[#5B21B6] rounded-lg text-sm font-medium hover:bg-violet-50 transition"
+                        className="w-full flex items-center justify-center gap-2 py-2 border border-gray-300 text-[#1D1D1F] rounded-lg text-sm font-medium hover:bg-gray-100 transition"
                       >
                         <svg
                           className="w-4 h-4"
@@ -1289,7 +1289,7 @@ function MyReviewsSection({ API }) {
     return (
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 flex justify-center">
         <svg
-          className="animate-spin w-8 h-8 text-[#5B21B6]"
+          className="animate-spin w-8 h-8 text-[#1D1D1F]"
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -1323,7 +1323,7 @@ function MyReviewsSection({ API }) {
             <Link
               key={`${rev.productId}-${rev.reviewIndex}`}
               href={`/product/${rev.productSlug || rev.productId}`}
-              className="flex gap-3 p-3 border border-gray-100 rounded-xl hover:bg-violet-50/40 hover:border-violet-100 transition"
+              className="flex gap-3 p-3 border border-gray-100 rounded-xl hover:bg-gray-100/40 hover:border-gray-100 transition"
             >
               {rev.productImage ? (
                 <Image
@@ -1514,7 +1514,7 @@ export default function UserSectionPage() {
           <button
             type="button"
             onClick={() => setShowMobileMenu(true)}
-            className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white px-4 py-2 text-[#5B21B6] shadow-sm transition hover:border-[#5B21B6] hover:bg-violet-50"
+            className="inline-flex items-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-2 text-[#1D1D1F] shadow-sm transition hover:border-[#1D1D1F] hover:bg-gray-100"
           >
             <svg
               className="h-4 w-4"
@@ -1562,7 +1562,7 @@ export default function UserSectionPage() {
                       {!isEditing ? (
                         <button
                           onClick={() => setIsEditing(true)}
-                          className="w-full sm:w-auto px-6 py-2 bg-[#5B21B6] text-white rounded-full font-medium hover:bg-violet-700 transition-colors"
+                          className="w-full sm:w-auto px-6 py-2 bg-[#1D1D1F] text-white rounded-full font-medium hover:bg-black transition-colors"
                         >
                           {t("profile_page.edit")}
                         </button>
@@ -1576,7 +1576,7 @@ export default function UserSectionPage() {
                           </button>
                           <button
                             onClick={handleSaveProfile}
-                            className="flex-1 sm:flex-none px-6 py-2 bg-[#5B21B6] text-white rounded-full font-medium hover:bg-violet-700"
+                            className="flex-1 sm:flex-none px-6 py-2 bg-[#1D1D1F] text-white rounded-full font-medium hover:bg-black"
                           >
                             Save
                           </button>
@@ -1597,7 +1597,7 @@ export default function UserSectionPage() {
                                 className="w-20 h-20 rounded-full object-cover"
                               />
                             ) : (
-                              <div className="w-20 h-20 rounded-full bg-linear-to-br from-[#5B21B6] via-violet-700 to-purple-600 flex items-center justify-center text-white text-2xl font-semibold">
+                              <div className="w-20 h-20 rounded-full bg-linear-to-br from-[#1D1D1F] via-gray-800 to-black flex items-center justify-center text-white text-2xl font-semibold">
                                 {(user.name || user.email || "U")
                                   .charAt(0)
                                   .toUpperCase()}
@@ -1605,7 +1605,7 @@ export default function UserSectionPage() {
                             )}
                           </div>
                           <div className="flex flex-col gap-1">
-                            <label className="cursor-pointer text-sm text-[#5B21B6] hover:underline">
+                            <label className="cursor-pointer text-sm text-[#1D1D1F] hover:underline">
                               Select image
                               <input
                                 type="file"
@@ -1648,7 +1648,7 @@ export default function UserSectionPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, name: e.target.value })
                             }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6]"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
                           />
                         ) : (
                           <p className="text-lg">
@@ -1671,7 +1671,7 @@ export default function UserSectionPage() {
                                 email: e.target.value,
                               })
                             }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6]"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
                           />
                         ) : (
                           <p className="text-lg">{user.email}</p>
@@ -1713,7 +1713,7 @@ export default function UserSectionPage() {
                                 mobile: e.target.value,
                               })
                             }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6]"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
                             placeholder="Not Provided"
                           />
                         ) : (
@@ -1734,7 +1734,7 @@ export default function UserSectionPage() {
                             onChange={(e) =>
                               setEditForm({ ...editForm, dob: e.target.value })
                             }
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#5B21B6]"
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
                           />
                         ) : (
                           <p className="text-lg">
@@ -1812,13 +1812,13 @@ export default function UserSectionPage() {
 
                     {/* New-user banner */}
                     {isNewUser(user) && (
-                      <div className="mb-6 p-4 bg-violet-50 border border-violet-200 rounded-xl flex items-start gap-3">
+                      <div className="mb-6 p-4 bg-gray-100 border border-gray-300 rounded-xl flex items-start gap-3">
                         <span className="text-2xl">🎉</span>
                         <div>
-                          <p className="font-semibold text-violet-900">
+                          <p className="font-semibold text-black">
                             You&apos;re a new user!
                           </p>
-                          <p className="text-sm text-violet-700 mt-0.5">
+                          <p className="text-sm text-gray-700 mt-0.5">
                             You are eligible for <strong>Free Delivery</strong>{" "}
                             on your first order. Use coupon code{" "}
                             <strong>newUser26</strong> at checkout (min. order
@@ -1835,14 +1835,14 @@ export default function UserSectionPage() {
                       </h3>
                       <div className="space-y-2 text-sm text-gray-700">
                         <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-violet-300 shrink-0"></span>
+                          <span className="w-2 h-2 rounded-full bg-gray-300 shrink-0"></span>
                           Spend <strong>৳999+</strong> →{" "}
                           <span className="text-green-700 font-medium">
                             Free Delivery
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-violet-500 shrink-0"></span>
+                          <span className="w-2 h-2 rounded-full bg-gray-500 shrink-0"></span>
                           Spend <strong>৳2,000+</strong> →{" "}
                           <span className="text-green-700 font-medium">
                             ৳150 Off

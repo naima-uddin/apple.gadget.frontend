@@ -155,7 +155,7 @@ function OccasionSlider({ section }) {
                   </div>
 
                   {/* Label bar */}
-                  <div className="bg-violet-100 text-[#5B21B6] text-xs sm:text-sm font-semibold text-center py-2 px-2 truncate group-hover:bg-violet-200 transition-colors flex-shrink-0">
+                  <div className="bg-gray-100 text-[#1D1D1F] text-xs sm:text-sm font-semibold text-center py-2 px-2 truncate group-hover:bg-gray-300 transition-colors flex-shrink-0">
                     {card.label || "\u00A0"}
                   </div>
                 </div>
@@ -172,7 +172,7 @@ function OccasionSlider({ section }) {
             <button
               key={i}
               onClick={() => setCurrent(i)}
-              className={`w-1.5 h-1.5 rounded-full transition-all ${i === current ? "bg-[#5B21B6] w-4" : "bg-gray-300"}`}
+              className={`w-1.5 h-1.5 rounded-full transition-all ${i === current ? "bg-[#1D1D1F] w-4" : "bg-gray-300"}`}
             />
           ))}
         </div>

@@ -262,7 +262,7 @@ export default function BookWithCourierModal({
             type="button"
             onClick={submit}
             disabled={submitting || options.length === 0 || alreadyBooked}
-            className="px-4 py-2 text-sm rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-50"
+            className="px-4 py-2 text-sm rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-50"
           >
             {submitting ? "Booking…" : "Book parcel"}
           </button>

@@ -226,7 +226,7 @@ export default function AddressManager() {
   };
 
   const inputClass =
-    "w-full border border-gray-200 px-3 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-violet-400 focus:border-transparent transition";
+    "w-full border border-gray-200 px-3 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition";
 
   return (
     <div>
@@ -241,7 +241,7 @@ export default function AddressManager() {
         </div>
         <button
           onClick={() => openForm(null)}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-[#5B21B6] text-white rounded-full font-medium hover:bg-violet-700 transition"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-5 py-2.5 bg-[#1D1D1F] text-white rounded-full font-medium hover:bg-black transition"
         >
           <svg
             className="w-4 h-4"
@@ -259,7 +259,7 @@ export default function AddressManager() {
 
       {/* inline form */}
       {formOpen && (
-        <div className="bg-violet-50/60 border border-violet-100 p-4 md:p-6 rounded-2xl w-full mb-6">
+        <div className="bg-gray-100/60 border border-gray-100 p-4 md:p-6 rounded-2xl w-full mb-6">
           <h3 className="text-lg font-bold text-[#1F2937] mb-5">
             {editingId ? "Edit Address" : "Add New Address"}
           </h3>
@@ -374,8 +374,8 @@ export default function AddressManager() {
                   onClick={() => setFormData({ ...formData, type: opt })}
                   className={`px-4 py-2 rounded-full text-sm font-medium border transition ${
                     formData.type === opt
-                      ? "bg-[#5B21B6] text-white border-[#5B21B6]"
-                      : "border-gray-200 text-gray-600 hover:border-violet-300"
+                      ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                      : "border-gray-200 text-gray-600 hover:border-gray-300"
                   }`}
                 >
                   {opt}
@@ -392,7 +392,7 @@ export default function AddressManager() {
               </button>
               <button
                 type="submit"
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#5B21B6] text-white rounded-full text-sm font-semibold hover:bg-violet-700 transition"
+                className="w-full sm:w-auto px-6 py-2.5 bg-[#1D1D1F] text-white rounded-full text-sm font-semibold hover:bg-black transition"
               >
                 Save Address
               </button>
@@ -404,7 +404,7 @@ export default function AddressManager() {
       {loading && (
         <div className="flex items-center justify-center py-10">
           <svg
-            className="animate-spin w-7 h-7 text-[#5B21B6]"
+            className="animate-spin w-7 h-7 text-[#1D1D1F]"
             viewBox="0 0 24 24"
             fill="none"
           >
@@ -434,7 +434,7 @@ export default function AddressManager() {
             {orderAddresses.map((addr, idx) => (
               <div
                 key={idx}
-                className="p-3.5 border border-dashed border-violet-200 rounded-xl bg-violet-50/40"
+                className="p-3.5 border border-dashed border-gray-300 rounded-xl bg-gray-100/40"
               >
                 <p className="font-semibold text-sm text-[#1F2937]">
                   {addr.fullName || "Unnamed"}
@@ -446,7 +446,7 @@ export default function AddressManager() {
                 <button
                   onClick={() => saveOrderAddress(addr, idx)}
                   disabled={savingOrderAddr === idx}
-                  className="mt-2 text-sm font-medium text-[#5B21B6] hover:underline disabled:opacity-50"
+                  className="mt-2 text-sm font-medium text-[#1D1D1F] hover:underline disabled:opacity-50"
                 >
                   {savingOrderAddr === idx
                     ? "Saving..."
@@ -461,7 +461,7 @@ export default function AddressManager() {
       {!loading && addresses.length === 0 && (
         <div className="text-center py-10 text-gray-500">
           <svg
-            className="w-16 h-16 mx-auto mb-4 text-violet-200"
+            className="w-16 h-16 mx-auto mb-4 text-gray-300"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -482,7 +482,7 @@ export default function AddressManager() {
             {addresses.map((addr) => (
               <div
                 key={addr._id}
-                className="p-4 border border-gray-100 rounded-xl bg-white hover:border-violet-200 transition"
+                className="p-4 border border-gray-100 rounded-xl bg-white hover:border-gray-300 transition"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -490,7 +490,7 @@ export default function AddressManager() {
                       <p className="font-semibold text-[#1F2937] truncate">
                         {addr.fullName}
                       </p>
-                      <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-violet-50 text-[#5B21B6]">
+                      <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-gray-100 text-[#1D1D1F]">
                         {addr.type}
                       </span>
                     </div>
@@ -504,7 +504,7 @@ export default function AddressManager() {
                 <div className="flex gap-3 mt-3 pt-3 border-t border-gray-100">
                   <button
                     onClick={() => openForm(addr)}
-                    className="text-sm font-medium text-[#5B21B6] hover:underline"
+                    className="text-sm font-medium text-[#1D1D1F] hover:underline"
                   >
                     Edit
                   </button>

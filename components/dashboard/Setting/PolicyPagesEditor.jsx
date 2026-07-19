@@ -359,7 +359,7 @@ function SectionEditor({ items, onChange }) {
       <button
         type="button"
         onClick={add}
-        className="w-full border-2 border-dashed border-gray-300 hover:border-violet-400 text-gray-500 hover:text-violet-700 rounded-xl py-3 text-sm transition"
+        className="w-full border-2 border-dashed border-gray-300 hover:border-gray-400 text-gray-500 hover:text-gray-800 rounded-xl py-3 text-sm transition"
       >
         + নতুন বিভাগ যোগ করুন
       </button>
@@ -512,7 +512,7 @@ export default function PolicyPagesEditor() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-4 py-2 bg-violet-700 hover:bg-violet-800 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
+              className="px-4 py-2 bg-gray-800 hover:bg-[#1D1D1F] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
             >
               {saving ? "সেভ হচ্ছে…" : "সেভ করুন"}
             </button>
@@ -527,7 +527,7 @@ export default function PolicyPagesEditor() {
               onClick={() => setActiveTab(tab.key)}
               className={`px-4 py-2 text-sm font-medium rounded-t-lg whitespace-nowrap transition border-b-2 ${
                 activeTab === tab.key
-                  ? "border-violet-500 text-violet-800 bg-violet-50"
+                  ? "border-gray-500 text-[#1D1D1F] bg-gray-50"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -559,7 +559,7 @@ export default function PolicyPagesEditor() {
             </div>
             <button
               onClick={handleLoadTabDefault}
-              className="text-xs text-violet-700 hover:text-violet-800 border border-violet-200 hover:bg-violet-50 px-3 py-1 rounded-lg transition"
+              className="text-xs text-gray-800 hover:text-[#1D1D1F] border border-gray-300 hover:bg-gray-50 px-3 py-1 rounded-lg transition"
             >
               এই ট্যাবে default কনটেন্ট লোড করুন
             </button>
@@ -591,7 +591,7 @@ export default function PolicyPagesEditor() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 bg-violet-700 hover:bg-violet-800 disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
+            className="px-4 py-2 bg-gray-800 hover:bg-[#1D1D1F] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
           >
             {saving ? "সেভ হচ্ছে…" : "সেভ করুন"}
           </button>

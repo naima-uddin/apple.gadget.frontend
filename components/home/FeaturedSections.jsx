@@ -66,17 +66,17 @@ function FeaturedSlider({ products }) {
       {maxIndex > 0 && (
         <button
           onClick={() => go(-1)}
-          className="absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#5B21B6] hover:text-white transition sm:-translate-x-4"
+          className="absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#1D1D1F] hover:text-white transition sm:-translate-x-4"
           aria-label="Previous"
         >
           ‹
         </button>
       )}
 
-      {/* Track */}
-      <div className="overflow-hidden">
+      {/* Track — clip horizontally only so card shadows aren't cut off vertically */}
+      <div className="overflow-x-hidden overflow-y-visible">
         <div
-          className="flex transition-transform duration-500 ease-in-out"
+          className="flex transition-transform duration-500 ease-in-out pb-3"
           style={{ transform: `translateX(-${currentIndex * pct}%)` }}
         >
           {products.map((product, i) => (
@@ -100,7 +100,7 @@ function FeaturedSlider({ products }) {
       {maxIndex > 0 && (
         <button
           onClick={() => go(1)}
-          className="absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#5B21B6] hover:text-white transition sm:translate-x-4"
+          className="absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#1D1D1F] hover:text-white transition sm:translate-x-4"
           aria-label="Next"
         >
           ›
@@ -117,7 +117,7 @@ function FeaturedSlider({ products }) {
                 setCurrentIndex(i);
                 startAuto();
               }}
-              className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? "bg-[#5B21B6] w-4" : "bg-gray-300"}`}
+              className={`w-2 h-2 rounded-full transition-all ${i === currentIndex ? "bg-[#1D1D1F] w-4" : "bg-gray-300"}`}
             />
           ))}
         </div>

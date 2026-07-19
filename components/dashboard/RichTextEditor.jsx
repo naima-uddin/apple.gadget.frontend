@@ -8,7 +8,7 @@ const CSS = `
   .rte-area h2 { font-size: 1.4rem !important; font-weight: 700 !important; margin: 0.6rem 0 0.3rem !important; line-height: 1.3 !important; }
   .rte-area h3 { font-size: 1.15rem !important; font-weight: 600 !important; margin: 0.5rem 0 0.25rem !important; line-height: 1.3 !important; }
   .rte-area p  { margin: 0.3rem 0 !important; }
-  .rte-area a  { color: #5B21B6 !important; text-decoration: underline !important; }
+  .rte-area a  { color: #1D1D1F !important; text-decoration: underline !important; }
   .rte-area strong, .rte-area b { font-weight: 700 !important; }
   .rte-area em, .rte-area i     { font-style: italic !important; }
   .rte-area u { text-decoration: underline !important; }
@@ -79,7 +79,7 @@ export default function RichTextEditor({
   const btn =
     "px-2 py-1 border border-gray-300 rounded-lg text-sm hover:bg-gray-100 transition select-none";
   const activeBtn =
-    "px-2 py-1 border border-gray-200 rounded-lg text-sm transition select-none bg-violet-100 border-violet-400 text-violet-800";
+    "px-2 py-1 border border-gray-200 rounded-lg text-sm transition select-none bg-gray-100 border-gray-400 text-[#1D1D1F]";
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">
@@ -130,7 +130,7 @@ export default function RichTextEditor({
                 const url = window.prompt("Enter link URL:", "https://");
                 if (url?.trim()) exec("createLink", url.trim());
               }}
-              className={`${btn} text-violet-700`} title="Insert link">🔗 Link</button>
+              className={`${btn} text-gray-800`} title="Insert link">🔗 Link</button>
             <button type="button" onMouseDown={saveSelection} onClick={() => exec("unlink")}
               className={`${btn} text-red-500`} title="Remove link">⛓ Unlink</button>
           </>

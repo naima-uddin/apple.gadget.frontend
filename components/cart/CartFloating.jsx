@@ -33,15 +33,15 @@ export default function CartFloating() {
     // Same floating icon on every screen size — mobile and desktop.
     <span className="fixed z-50" style={{ bottom: 104, right: 16 }}>
       {/* ping ring — always active like a map marker */}
-      <span className="absolute inset-0 rounded-full bg-[#5B21B6] opacity-30 animate-ping" />
+      <span className="absolute inset-0 rounded-full bg-[#1D1D1F] opacity-30 animate-ping" />
       <button
         onClick={toggleSidebar}
         aria-label={label}
-        className={`relative flex items-center justify-center bg-[#5B21B6] text-white rounded-full shadow-lg shadow-violet-300 w-12 h-12 hover:bg-violet-700 active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
+        className={`relative flex items-center justify-center bg-[#1D1D1F] text-white rounded-full shadow-lg shadow-gray-300 w-12 h-12 hover:bg-black active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
       >
         <span className="relative">
           <FiShoppingBag className="w-5 h-5" />
-          <span className="absolute -top-2.5 -right-2.5 bg-white text-[#5B21B6] text-[10px] font-bold min-w-4.5 h-4.5 rounded-full flex items-center justify-center leading-none px-0.5 border border-violet-100 shadow-sm">
+          <span className="absolute -top-2.5 -right-2.5 bg-white text-[#1D1D1F] text-[10px] font-bold min-w-4.5 h-4.5 rounded-full flex items-center justify-center leading-none px-0.5 border border-gray-100 shadow-sm">
             {count}
           </span>
         </span>

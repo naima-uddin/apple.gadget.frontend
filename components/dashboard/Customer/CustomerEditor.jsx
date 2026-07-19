@@ -165,7 +165,7 @@ export default function CustomerEditor({ userId }) {
               return (
                 <label
                   key={tag._id}
-                  className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${selected ? "border-violet-300 bg-violet-50" : "border-gray-200 bg-white"}`}
+                  className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${selected ? "border-gray-300 bg-gray-50" : "border-gray-200 bg-white"}`}
                 >
                   <input
                     type="checkbox"
@@ -199,7 +199,7 @@ export default function CustomerEditor({ userId }) {
         <div className="flex gap-2">
           <button
             onClick={handleSave}
-            className="px-3 py-2 bg-violet-700 text-white rounded-lg"
+            className="px-3 py-2 bg-gray-800 text-white rounded-lg"
             disabled={saving}
           >
             {saving ? "Saving…" : "Save"}

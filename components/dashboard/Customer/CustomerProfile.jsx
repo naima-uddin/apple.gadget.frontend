@@ -394,7 +394,7 @@ export default function CustomerProfile({ userId }) {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+                <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                   <tr>
                     <th className="px-4 py-3">Courier</th>
                     <th className="px-4 py-3">Total</th>

@@ -1017,9 +1017,9 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               <div className="px-3 pb-3">
                 <button
                   onClick={scrollToReviews}
-                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#5B21B6] bg-[#FAFAFB] hover:bg-violet-50 border border-gray-100 hover:border-violet-200 rounded-xl px-3 py-2 transition-all"
+                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#1D1D1F] bg-[#FAFAFB] hover:bg-gray-50 border border-gray-100 hover:border-gray-300 rounded-xl px-3 py-2 transition-all"
                 >
-                  <FaPencilAlt className="text-[#5B21B6] w-3 h-3 shrink-0" />
+                  <FaPencilAlt className="text-[#1D1D1F] w-3 h-3 shrink-0" />
                   Write your Awesome Review
                 </button>
               </div>

@@ -61,12 +61,12 @@ export default function UserRewardsSection() {
         </p>
 
         <div className="grid sm:grid-cols-3 gap-4">
-          <div className="rounded-xl bg-violet-50 border border-violet-100 p-4">
-            <p className="text-xs text-[#5B21B6] uppercase font-semibold">
+          <div className="rounded-xl bg-gray-100 border border-gray-100 p-4">
+            <p className="text-xs text-[#1D1D1F] uppercase font-semibold">
               {t("rewards.available")}
             </p>
-            <p className="text-3xl font-bold text-violet-900 mt-1">{balance}</p>
-            <p className="text-sm text-[#5B21B6] mt-0.5">
+            <p className="text-3xl font-bold text-black mt-1">{balance}</p>
+            <p className="text-sm text-[#1D1D1F] mt-0.5">
               ≈ ৳{balanceValueTk} off
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function UserRewardsSection() {
         {orders.length === 0 ? (
           <p className="text-center py-10 text-gray-400 text-sm">
             {t("rewards.no_orders")}{" "}
-            <Link href="/" className="text-[#5B21B6] hover:underline">
+            <Link href="/" className="text-[#1D1D1F] hover:underline">
               {t("rewards.start_shopping")}
             </Link>
           </p>
@@ -136,7 +136,7 @@ export default function UserRewardsSection() {
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-lg font-bold text-[#5B21B6]">
+                    <p className="text-lg font-bold text-[#1D1D1F]">
                       +{order.orderPoints} pts
                     </p>
                     {order.rewardPointsRedeemed > 0 && (
@@ -147,7 +147,7 @@ export default function UserRewardsSection() {
                   </div>
                 </button>
                 {expanded === order._id && (
-                  <div className="px-6 pb-4 bg-violet-50/40">
+                  <div className="px-6 pb-4 bg-gray-100/40">
                     <ul className="space-y-2 text-sm">
                       {order.items.map((item, i) => (
                         <li
@@ -160,7 +160,7 @@ export default function UserRewardsSection() {
                               {item.rewardPoints} {t("rewards.pts_each")}
                             </span>
                           </span>
-                          <span className="font-semibold text-[#5B21B6]">
+                          <span className="font-semibold text-[#1D1D1F]">
                             {item.lineRewardPoints} pts
                           </span>
                         </li>

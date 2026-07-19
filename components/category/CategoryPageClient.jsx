@@ -358,7 +358,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           type="button"
           disabled={currentPage === 1}
           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
           aria-label="Previous page"
         >
           ‹
@@ -381,8 +381,8 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 onClick={() => setCurrentPage(page)}
                 className={`h-9 min-w-9 px-3 rounded-full text-sm font-medium transition-colors ${
                   page === currentPage
-                    ? "bg-[#5B21B6] text-white shadow-sm"
-                    : "bg-white border border-gray-200 text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                    ? "bg-[#1D1D1F] text-white shadow-sm"
+                    : "bg-white border border-gray-200 text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
                 }`}
               >
                 {page}
@@ -394,7 +394,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           type="button"
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#5B21B6] hover:text-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
+          className="h-9 px-3 bg-white border border-gray-200 rounded-full text-sm text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:border-gray-200 disabled:hover:text-[#1F2937]"
           aria-label="Next page"
         >
           ›
@@ -405,21 +405,21 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   return (
     <>
       {/* ── Hero header ── */}
-      <div className="bg-gradient-to-b from-[#F5F3FF] to-white border-b border-violet-100/60">
+      <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-200/60">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pt-6 pb-8 relative overflow-hidden">
           {/* decorative blobs */}
-          <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-violet-200/30 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-purple-100/40 blur-3xl" />
+          <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-gray-200/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 left-1/4 w-64 h-64 rounded-full bg-gray-100/40 blur-3xl" />
 
           {/* Breadcrumb row */}
           <nav className="relative flex items-center flex-wrap gap-1.5 text-sm text-[#6B7280] mb-6">
             <button
               onClick={() => router.back()}
-              className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-[#6B7280] hover:text-[#5B21B6] hover:border-[#5B21B6] shadow-sm transition-colors mr-2"
+              className="inline-flex items-center gap-1 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-medium text-[#6B7280] hover:text-[#1D1D1F] hover:border-[#1D1D1F] shadow-sm transition-colors mr-2"
             >
               <span className="text-[10px]">‹</span> Back
             </button>
-            <Link href="/" className="hover:text-[#5B21B6] transition-colors">
+            <Link href="/" className="hover:text-[#1D1D1F] transition-colors">
               Home
             </Link>
             {category && category.name ? (
@@ -429,17 +429,17 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                   <>
                     <Link
                       href={`/category/${parentCategory.slug || (parentCategory.name || "").toLowerCase().replace(/\s+/g, "-")}/`}
-                      className="hover:text-[#5B21B6] transition-colors"
+                      className="hover:text-[#1D1D1F] transition-colors"
                     >
                       {parentCategory.name}
                     </Link>
                     <span className="text-gray-300">/</span>
-                    <span className="text-[#5B21B6] font-medium">
+                    <span className="text-[#1D1D1F] font-medium">
                       {category.name}
                     </span>
                   </>
                 ) : (
-                  <span className="text-[#5B21B6] font-medium">
+                  <span className="text-[#1D1D1F] font-medium">
                     {category.name}
                   </span>
                 )}
@@ -481,7 +481,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                   height="14"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#5B21B6"
+                  stroke="#1D1D1F"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -500,7 +500,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 className="w-full"
               />
 
-              <div className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center text-xs font-semibold text-[#5B21B6]">
+              <div className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center text-xs font-semibold text-[#1D1D1F]">
                 {totalProducts > 0 ? totalProducts : "—"}
               </div>
             </div>
@@ -519,7 +519,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 <button
                   type="button"
                   onClick={() => setShowMobileFilters(false)}
-                  className="absolute top-3 right-3 h-8 w-8 bg-[#5B21B6] text-white rounded-full flex items-center justify-center shadow-sm hover:bg-[#4C1D95] transition-colors"
+                  className="absolute top-3 right-3 h-8 w-8 bg-[#1D1D1F] text-white rounded-full flex items-center justify-center shadow-sm hover:bg-black transition-colors"
                   aria-label="Close filters panel"
                 >
                   ✕
@@ -573,8 +573,8 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                     aria-expanded={showDesktopFilters}
                     className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium border shadow-sm transition-colors ${
                       showDesktopFilters
-                        ? "bg-[#5B21B6] text-white border-[#5B21B6]"
-                        : "bg-white text-[#1F2937] border-gray-200 hover:border-[#5B21B6] hover:text-[#5B21B6]"
+                        ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                        : "bg-white text-[#1F2937] border-gray-200 hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
                     }`}
                   >
                     <svg
@@ -657,7 +657,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           <SectionHeader
             title={
               <>
-                Best <span className="text-[#5B21B6]">Selling</span>
+                Best <span className="text-[#1D1D1F]">Selling</span>
               </>
             }
             seeMoreHref="/tag/best-seller"
@@ -682,7 +682,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                       setBestSellingStartIndex((i) => Math.max(0, i - 1))
                     }
                     disabled={bestSellingStartIndex === 0}
-                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#5B21B6] shadow-sm hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#5B21B6] disabled:hover:border-gray-200"
+                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
                     aria-label="Previous best selling products"
                   >
                     ‹
@@ -696,7 +696,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                       )
                     }
                     disabled={bestSellingStartIndex >= maxBestSellingStart}
-                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#5B21B6] shadow-sm hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#5B21B6] disabled:hover:border-gray-200"
+                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
                     aria-label="Next best selling products"
                   >
                     ›

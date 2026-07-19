@@ -191,7 +191,7 @@ export default function UserLoyaltySection() {
         </div>
         <p className="text-xs text-gray-400 mt-4">
           Want more perks?{" "}
-          <Link href="/" className="text-[#5B21B6] hover:underline">
+          <Link href="/" className="text-[#1D1D1F] hover:underline">
             Keep shopping
           </Link>{" "}
           to level up your tier.

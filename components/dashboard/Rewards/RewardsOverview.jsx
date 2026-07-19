@@ -54,7 +54,7 @@ export default function RewardsOverview() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="bg-white rounded-2xl border border-gray-100 p-4">
           <p className="text-xs text-gray-500 uppercase">Total balance</p>
-          <p className="text-2xl font-bold text-violet-700">
+          <p className="text-2xl font-bold text-[#1D1D1F]">
             {stats.totalBalance}
           </p>
           <p className="text-xs text-gray-400">≈ ৳{stats.totalBalanceTk}</p>
@@ -85,7 +85,7 @@ export default function RewardsOverview() {
           onClick={() => setTab("orders")}
           className={`px-4 py-2 rounded-full text-sm font-medium ${
             tab === "orders"
-              ? "bg-violet-500 text-white"
+              ? "bg-gray-700 text-white"
               : "bg-gray-100 text-gray-600"
           }`}
         >
@@ -96,7 +96,7 @@ export default function RewardsOverview() {
           onClick={() => setTab("users")}
           className={`px-4 py-2 rounded-full text-sm font-medium ${
             tab === "users"
-              ? "bg-violet-500 text-white"
+              ? "bg-gray-700 text-white"
               : "bg-gray-100 text-gray-600"
           }`}
         >
@@ -113,7 +113,7 @@ export default function RewardsOverview() {
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-left">
-                <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+                <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                   <tr>
                     <th className="px-4 py-3">Order</th>
                     <th className="px-4 py-3">Customer</th>
@@ -125,11 +125,11 @@ export default function RewardsOverview() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {orders.map((o) => (
-                    <tr key={o._id} className="hover:bg-violet-50/30">
+                    <tr key={o._id} className="hover:bg-gray-50/30">
                       <td className="px-4 py-3">
                         <Link
                           href={`/dashboard/orders/${o._id}`}
-                          className="font-mono text-xs text-violet-700 hover:underline"
+                          className="font-mono text-xs text-[#1D1D1F] hover:underline"
                         >
                           {formatOrderId(o._id)}
                         </Link>
@@ -160,7 +160,7 @@ export default function RewardsOverview() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+              <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                 <tr>
                   <th className="px-4 py-3">Name</th>
                   <th className="px-4 py-3">Email</th>
@@ -173,7 +173,7 @@ export default function RewardsOverview() {
                   <tr key={u._id}>
                     <td className="px-4 py-3 font-medium">{u.name || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{u.email}</td>
-                    <td className="px-4 py-3 font-bold text-violet-700">
+                    <td className="px-4 py-3 font-bold text-[#1D1D1F]">
                       {u.rewardPointsBalance}
                     </td>
                     <td className="px-4 py-3">

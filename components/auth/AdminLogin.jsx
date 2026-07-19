@@ -73,7 +73,7 @@ export default function AdminLogin() {
               className="h-14 w-14 rounded-2xl object-contain bg-white border border-gray-200 p-1 shadow-sm"
             />
           ) : (
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#5B21B6] text-lg font-bold text-white shadow-sm">
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1D1D1F] text-lg font-bold text-white shadow-sm">
               {storeName
                 ? storeName.replace(/\s+/g, "").slice(0, 2).toUpperCase()
                 : "SB"}
@@ -98,7 +98,7 @@ export default function AdminLogin() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#5B21B6] focus:ring-2 focus:ring-violet-100 transition"
+                className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#1D1D1F] focus:ring-2 focus:ring-gray-100 transition"
                 disabled={loading}
                 required
               />
@@ -114,7 +114,7 @@ export default function AdminLogin() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#5B21B6] focus:ring-2 focus:ring-violet-100 transition"
+                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3.5 py-2.5 rounded-xl text-sm focus:outline-none focus:border-[#1D1D1F] focus:ring-2 focus:ring-gray-100 transition"
                   disabled={loading}
                   required
                 />
@@ -123,7 +123,7 @@ export default function AdminLogin() {
                   onClick={() => setShowPassword((s) => !s)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   disabled={loading}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#5B21B6] transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1D1D1F] transition-colors"
                 >
                   {showPassword ? (
                     <svg
@@ -161,7 +161,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#5B21B6] hover:bg-violet-800 text-white px-4 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors shadow-sm"
+              className="w-full bg-[#1D1D1F] hover:bg-black text-white px-4 py-2.5 rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-colors shadow-sm"
             >
               {loading && (
                 <svg
@@ -249,7 +249,7 @@ export default function AdminLogin() {
 
         <div className="mt-4 flex items-start gap-2.5 rounded-2xl border border-gray-200 bg-white p-4 text-xs text-[#6B7280]">
           <svg
-            className="w-4 h-4 text-[#5B21B6] shrink-0 mt-0.5"
+            className="w-4 h-4 text-[#1D1D1F] shrink-0 mt-0.5"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

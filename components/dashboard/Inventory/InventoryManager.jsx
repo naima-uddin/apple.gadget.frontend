@@ -90,7 +90,7 @@ function InlineStockEditor({ value, onSave, disabled }) {
               setEditing(false);
             }
           }}
-          className="w-16 border border-violet-400 rounded-lg px-1.5 py-0.5 text-sm text-center focus:outline-none focus:ring-1 focus:ring-violet-400"
+          className="w-16 border border-gray-400 rounded-lg px-1.5 py-0.5 text-sm text-center focus:outline-none focus:ring-1 focus:ring-gray-400"
         />
       </div>
     );
@@ -100,7 +100,7 @@ function InlineStockEditor({ value, onSave, disabled }) {
     <button
       onClick={() => !disabled && setEditing(true)}
       title="Click to edit stock"
-      className={`min-w-[2.5rem] px-2 py-0.5 rounded-lg text-sm font-semibold border border-dashed transition ${disabled ? "opacity-40 cursor-not-allowed border-gray-200 text-gray-400" : "border-gray-300 text-gray-800 hover:border-violet-400 hover:text-violet-700 hover:bg-violet-50 cursor-text"}`}
+      className={`min-w-[2.5rem] px-2 py-0.5 rounded-lg text-sm font-semibold border border-dashed transition ${disabled ? "opacity-40 cursor-not-allowed border-gray-200 text-gray-400" : "border-gray-300 text-gray-800 hover:border-gray-400 hover:text-gray-800 hover:bg-gray-50 cursor-text"}`}
     >
       {value}
     </button>
@@ -327,7 +327,7 @@ export default function InventoryManager() {
               setStockFilter(f.key);
               setPage(1);
             }}
-            className={`rounded-xl p-4 text-left border transition shadow-sm hover:shadow-md ${stockFilter === f.key ? "ring-2 ring-violet-400 border-violet-200" : "border-gray-100 bg-white"}`}
+            className={`rounded-xl p-4 text-left border transition shadow-sm hover:shadow-md ${stockFilter === f.key ? "ring-2 ring-gray-400 border-gray-300" : "border-gray-100 bg-white"}`}
           >
             <p className="text-xs text-gray-500 mb-1">{f.label}</p>
             <div
@@ -374,7 +374,7 @@ export default function InventoryManager() {
               setPage(1);
             }}
             placeholder="Search product name or SKU…"
-            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-gray-300"
           />
           <select
             value={sort}
@@ -382,7 +382,7 @@ export default function InventoryManager() {
               setSort(e.target.value);
               setPage(1);
             }}
-            className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-300"
+            className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             <option value="stock_asc">Stock: Low → High</option>
             <option value="stock_desc">Stock: High → Low</option>
@@ -454,7 +454,7 @@ export default function InventoryManager() {
                     <div className="flex-1 min-w-0">
                       <Link
                         href={`/dashboard/products/${product._id}`}
-                        className="text-sm font-medium text-gray-800 hover:text-violet-700 truncate block"
+                        className="text-sm font-medium text-gray-800 hover:text-gray-800 truncate block"
                       >
                         {product.title}
                       </Link>
@@ -534,7 +534,7 @@ export default function InventoryManager() {
                     {/* Edit link */}
                     <Link
                       href={`/dashboard/products/${product._id}`}
-                      className="shrink-0 text-xs text-gray-400 hover:text-violet-500 px-2 py-1 rounded-lg border border-transparent hover:border-violet-200"
+                      className="shrink-0 text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded-lg border border-transparent hover:border-gray-300"
                     >
                       Edit
                     </Link>

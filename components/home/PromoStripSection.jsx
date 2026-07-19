@@ -24,18 +24,18 @@ export default function PromoStripSection() {
 
   return (
     <section className="max-w-7xl mx-auto px-5 md:px-4 py-2 md:py-3">
-      <div className="relative bg-linear-to-r from-violet-50 via-white to-violet-50 border border-violet-200/60 rounded-2xl overflow-visible shadow-[0_4px_24px_rgba(91,33,182,0.10)]">
+      <div className="relative bg-linear-to-r from-gray-50 via-white to-gray-50 border border-gray-300/60 rounded-2xl overflow-visible shadow-[0_4px_24px_rgba(29,29,31,0.10)]">
         {/* top glow layer */}
 
         {/* subtle inner glow beneath the bar */}
-        <div className="absolute inset-x-4 top-1.5 h-[6px] bg-linear-to-r from-violet-400/25 via-violet-300/15 to-violet-400/25 blur-sm rounded-full" />
+        <div className="absolute inset-x-4 top-1.5 h-[6px] bg-linear-to-r from-gray-400/25 via-gray-300/15 to-gray-400/25 blur-sm rounded-full" />
         {/* Left / Right controls */}
         {items.length > 1 && (
           <>
             <button
               type="button"
               onClick={() => scrollByAmount(-1)}
-              className="flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-violet-100 text-[#5B21B6] items-center justify-center hover:text-[#4C1D95] hover:border-violet-200 transition shadow"
+              className="flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-gray-100 text-[#1D1D1F] items-center justify-center hover:text-black hover:border-gray-300 transition shadow"
               aria-label="Scroll promo left"
             >
               <svg
@@ -55,7 +55,7 @@ export default function PromoStripSection() {
             <button
               type="button"
               onClick={() => scrollByAmount(1)}
-              className="flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-violet-100 text-[#5B21B6] items-center justify-center hover:text-[#4C1D95] hover:border-violet-200 transition shadow"
+              className="flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-gray-100 text-[#1D1D1F] items-center justify-center hover:text-black hover:border-gray-300 transition shadow"
               aria-label="Scroll promo right"
             >
               <svg
@@ -85,7 +85,7 @@ export default function PromoStripSection() {
               href={item.link || "#"}
               className="group shrink-0 min-w-[33.333%] md:min-w-[16.666%] flex items-center gap-1.5 px-1.5 py-0.5"
             >
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-white border border-violet-100 shadow-[0_1px_4px_rgba(91,33,182,0.10)] shrink-0">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-white border border-gray-100 shadow-[0_1px_4px_rgba(29,29,31,0.10)] shrink-0">
                 {item.image?.url ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
@@ -103,8 +103,8 @@ export default function PromoStripSection() {
                 )}
               </div>
 
-              <div className="min-w-0 flex-1 bg-white/70 backdrop-blur-sm border border-transparent group-hover:border-violet-100 rounded-lg px-0.5 py-1 transition-all duration-200 group-hover:shadow-[0_2px_8px_rgba(91,33,182,0.12)] group-hover:bg-white">
-                <p className="text-[13px] font-extrabold leading-none tracking-tight uppercase bg-linear-to-r from-[#5B21B6] to-[#7C3AED] bg-clip-text text-transparent">
+              <div className="min-w-0 flex-1 bg-white/70 backdrop-blur-sm border border-transparent group-hover:border-gray-100 rounded-lg px-0.5 py-1 transition-all duration-200 group-hover:shadow-[0_2px_8px_rgba(29,29,31,0.12)] group-hover:bg-white">
+                <p className="text-[13px] font-extrabold leading-none tracking-tight uppercase bg-linear-to-r from-[#1D1D1F] to-[#374151] bg-clip-text text-transparent">
                   {item.title}
                 </p>
                 {item.subtitle && (
@@ -115,7 +115,7 @@ export default function PromoStripSection() {
               </div>
 
               {idx < items.length - 1 && (
-                <div className="hidden md:block h-12 w-px bg-linear-to-b from-transparent via-violet-200 to-transparent shrink-0" />
+                <div className="hidden md:block h-12 w-px bg-linear-to-b from-transparent via-gray-300 to-transparent shrink-0" />
               )}
             </Link>
           ))}

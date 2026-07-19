@@ -211,7 +211,7 @@ export default function AdSenseForm() {
         <button
           onClick={handleSave}
           disabled={saving}
-          className="px-5 py-2 bg-violet-700 text-white rounded-lg font-medium hover:bg-violet-800 disabled:opacity-50 transition-colors"
+          className="px-5 py-2 bg-gray-800 text-white rounded-lg font-medium hover:bg-[#1D1D1F] disabled:opacity-50 transition-colors"
         >
           {saving ? "Saving…" : "Save Changes"}
         </button>

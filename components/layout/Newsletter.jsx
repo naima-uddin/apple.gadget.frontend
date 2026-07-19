@@ -47,7 +47,7 @@ export default function Newsletter() {
                 toast.dismiss(toastObj.id);
                 setShowAuthModal(true);
               }}
-              className="font-semibold text-[#5B21B6] underline hover:text-[#4C1D95]"
+              className="font-semibold text-[#1D1D1F] underline hover:text-black"
             >
               {t("auth.login")}
             </button>
@@ -158,7 +158,7 @@ export default function Newsletter() {
               className={`shrink-0 px-4 sm:px-5 py-2 rounded-md text-xs font-semibold text-white whitespace-nowrap transition ${
                 subscribed
                   ? "bg-gray-400 hover:bg-gray-400"
-                  : "bg-[#5B21B6] hover:bg-[#4C1D95]"
+                  : "bg-[#1D1D1F] hover:bg-black"
               }`}
             >
               {toggling

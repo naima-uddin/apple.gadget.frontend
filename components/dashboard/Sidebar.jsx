@@ -619,19 +619,19 @@ export default function Sidebar({
         title={collapsed ? item.label : undefined}
         className={`group relative flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
           active
-            ? "bg-violet-50 font-semibold text-[#5B21B6]"
-            : "text-gray-600 hover:bg-gray-50 hover:text-[#5B21B6]"
+            ? "bg-gray-100 font-semibold text-[#1D1D1F]"
+            : "text-gray-600 hover:bg-gray-50 hover:text-[#1D1D1F]"
         }`}
       >
         {active && (
           <span
-            className="absolute -left-[14px] top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full bg-[#5B21B6]"
+            className="absolute -left-[14px] top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full bg-[#1D1D1F]"
             aria-hidden="true"
           />
         )}
         {item.icon ? (
           <svg
-            className={`h-4 w-4 shrink-0 transition-colors ${active ? "text-[#5B21B6]" : "text-gray-400 group-hover:text-[#5B21B6]"}`}
+            className={`h-4 w-4 shrink-0 transition-colors ${active ? "text-[#1D1D1F]" : "text-gray-400 group-hover:text-[#1D1D1F]"}`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -644,7 +644,7 @@ export default function Sidebar({
           </svg>
         ) : (
           <span
-            className={`h-1.5 w-1.5 shrink-0 rounded-full ${active ? "bg-[#5B21B6]" : "bg-gray-300 group-hover:bg-[#5B21B6]"}`}
+            className={`h-1.5 w-1.5 shrink-0 rounded-full ${active ? "bg-[#1D1D1F]" : "bg-gray-300 group-hover:bg-[#1D1D1F]"}`}
             aria-hidden="true"
           />
         )}
@@ -671,8 +671,8 @@ export default function Sidebar({
     if (collapsed) {
       const tileClass = `mx-auto flex h-10 w-10 items-center justify-center rounded-xl transition ${
         sectionActive
-          ? "bg-[#5B21B6] text-white shadow-md shadow-violet-200"
-          : "bg-violet-50 text-[#5B21B6] hover:bg-violet-100"
+          ? "bg-[#1D1D1F] text-white shadow-md shadow-gray-300"
+          : "bg-gray-100 text-[#1D1D1F] hover:bg-gray-200"
       }`;
       const tileIcon = (
         <svg
@@ -720,14 +720,14 @@ export default function Sidebar({
           key={section.key}
           href={directHref}
           className={`flex w-full items-center gap-3 rounded-xl px-2 py-2 transition ${
-            sectionActive ? "bg-violet-50" : "hover:bg-gray-50"
+            sectionActive ? "bg-gray-100" : "hover:bg-gray-50"
           }`}
         >
           <span
             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition ${
               sectionActive
-                ? "bg-[#5B21B6] text-white shadow-sm shadow-violet-200"
-                : "bg-violet-50 text-[#5B21B6]"
+                ? "bg-[#1D1D1F] text-white shadow-sm shadow-gray-300"
+                : "bg-gray-100 text-[#1D1D1F]"
             }`}
           >
             <svg
@@ -744,7 +744,7 @@ export default function Sidebar({
             </svg>
           </span>
           <span
-            className={`min-w-0 flex-1 truncate text-sm font-semibold ${sectionActive ? "text-[#5B21B6]" : "text-[#1F2937]"}`}
+            className={`min-w-0 flex-1 truncate text-sm font-semibold ${sectionActive ? "text-[#1D1D1F]" : "text-[#1F2937]"}`}
           >
             {section.label}
           </span>
@@ -763,8 +763,8 @@ export default function Sidebar({
           <span
             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition ${
               sectionActive
-                ? "bg-[#5B21B6] text-white shadow-sm shadow-violet-200"
-                : "bg-violet-50 text-[#5B21B6]"
+                ? "bg-[#1D1D1F] text-white shadow-sm shadow-gray-300"
+                : "bg-gray-100 text-[#1D1D1F]"
             }`}
           >
             <svg
@@ -781,7 +781,7 @@ export default function Sidebar({
             </svg>
           </span>
           <span
-            className={`min-w-0 flex-1 truncate text-sm font-semibold ${sectionActive ? "text-[#5B21B6]" : "text-[#1F2937]"}`}
+            className={`min-w-0 flex-1 truncate text-sm font-semibold ${sectionActive ? "text-[#1D1D1F]" : "text-[#1F2937]"}`}
           >
             {section.label}
           </span>
@@ -800,7 +800,7 @@ export default function Sidebar({
         </button>
 
         {sectionOpen && (
-          <div className="mb-2 ml-6 mt-1 space-y-0.5 border-l-2 border-violet-100 pl-3">
+          <div className="mb-2 ml-6 mt-1 space-y-0.5 border-l-2 border-gray-200 pl-3">
             {visibleItems.map((item) => renderLeafLink(item))}
           </div>
         )}
@@ -835,7 +835,7 @@ export default function Sidebar({
                 className="h-10 w-10 rounded-xl border border-gray-200 bg-white object-contain p-1"
               />
             ) : (
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#5B21B6] text-sm font-bold text-white">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1D1D1F] text-sm font-bold text-white">
                 {storeName
                   ? storeName.replace(/\s+/g, "").slice(0, 2).toUpperCase()
                   : "SB"}
@@ -843,7 +843,7 @@ export default function Sidebar({
             )}
             <button
               type="button"
-              className="hidden rounded-lg p-2 text-gray-400 transition hover:bg-violet-50 hover:text-[#5B21B6] md:inline-flex"
+              className="hidden rounded-lg p-2 text-gray-400 transition hover:bg-gray-100 hover:text-[#1D1D1F] md:inline-flex"
               onClick={() => setCollapsed(false)}
               aria-label="Expand sidebar"
               title="Expand sidebar"
@@ -859,7 +859,7 @@ export default function Sidebar({
             </button>
           </div>
         ) : (
-          <div className="m-3 rounded-2xl bg-linear-to-br from-[#5B21B6] via-violet-700 to-purple-600 p-4 text-white shadow-lg shadow-violet-200">
+          <div className="m-3 rounded-2xl bg-linear-to-br from-[#1D1D1F] via-gray-800 to-black p-4 text-white shadow-lg shadow-gray-300">
             <div className="flex items-start justify-between gap-2">
               <Link href="/" className="flex min-w-0 items-center gap-3">
                 {logoUrl ? (
@@ -880,7 +880,7 @@ export default function Sidebar({
                   <span className="block truncate text-base font-bold text-white">
                     {storeName || "My Store"}
                   </span>
-                  <span className="block text-xs font-medium text-violet-200">
+                  <span className="block text-xs font-medium text-gray-300">
                     Control Center
                   </span>
                 </span>
@@ -888,7 +888,7 @@ export default function Sidebar({
               <div className="flex shrink-0 items-center">
                 <button
                   type="button"
-                  className="hidden rounded-lg p-1.5 text-violet-200 transition hover:bg-white/15 hover:text-white md:inline-flex"
+                  className="hidden rounded-lg p-1.5 text-gray-300 transition hover:bg-white/15 hover:text-white md:inline-flex"
                   onClick={() => setCollapsed(true)}
                   aria-label="Collapse sidebar"
                   title="Collapse sidebar"
@@ -903,7 +903,7 @@ export default function Sidebar({
                   </svg>
                 </button>
                 <button
-                  className="rounded-lg p-1.5 text-violet-200 transition hover:bg-white/15 hover:text-white md:hidden"
+                  className="rounded-lg p-1.5 text-gray-300 transition hover:bg-white/15 hover:text-white md:hidden"
                   onClick={onClose}
                   aria-label="Close menu"
                 >
@@ -931,7 +931,7 @@ export default function Sidebar({
                 <span className="block truncate text-sm font-semibold text-white">
                   {user?.name || user?.email || "Admin"}
                 </span>
-                <span className="block truncate text-[11px] capitalize text-violet-200">
+                <span className="block truncate text-[11px] capitalize text-gray-300">
                   {user?.role || "admin"}
                 </span>
               </span>
@@ -960,14 +960,14 @@ export default function Sidebar({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Find a menu…"
-                className="w-full rounded-full bg-[#d6d5d6] py-2.5 pl-10 pr-9 text-sm text-gray-900 placeholder-gray-600 outline-none transition focus:bg-white focus:ring-2 focus:ring-[#5B21B6]"
+                className="w-full rounded-full bg-[#d6d5d6] py-2.5 pl-10 pr-9 text-sm text-gray-900 placeholder-gray-600 outline-none transition focus:bg-white focus:ring-2 focus:ring-[#1D1D1F]"
               />
               {query && (
                 <button
                   type="button"
                   onClick={() => setQuery("")}
                   aria-label="Clear search"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#5B21B6]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#1D1D1F]"
                 >
                   <svg
                     className="h-4 w-4"
@@ -1013,8 +1013,8 @@ export default function Sidebar({
             title="Visit store"
             className={
               collapsed
-                ? "flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-[#5B21B6] transition hover:bg-violet-100"
-                : "flex flex-1 items-center justify-center gap-2 rounded-full border border-violet-200 py-2 text-sm font-medium text-[#5B21B6] transition hover:border-[#5B21B6] hover:bg-violet-50"
+                ? "flex h-10 w-10 items-center justify-center rounded-xl bg-gray-100 text-[#1D1D1F] transition hover:bg-gray-200"
+                : "flex flex-1 items-center justify-center gap-2 rounded-full border border-gray-300 py-2 text-sm font-medium text-[#1D1D1F] transition hover:border-[#1D1D1F] hover:bg-gray-100"
             }
           >
             <svg

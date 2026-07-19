@@ -143,7 +143,7 @@ export default function CategoryShowcaseEditor() {
         {/* Image uploader */}
         <div
           onClick={() => fileRefs.current[i]?.click()}
-          className="relative h-24 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-violet-400 transition flex items-center justify-center bg-gray-50"
+          className="relative h-24 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition flex items-center justify-center bg-gray-50"
         >
           {tile.image?.url ? (
             /* eslint-disable-next-line @next/next/no-img-element */
@@ -157,7 +157,7 @@ export default function CategoryShowcaseEditor() {
           )}
           {uploadingIdx === i && (
             <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
-              <span className="text-violet-600 font-semibold text-xs">
+              <span className="text-[#1D1D1F] font-semibold text-xs">
                 Uploading…
               </span>
             </div>
@@ -197,13 +197,13 @@ export default function CategoryShowcaseEditor() {
           value={tile.label}
           onChange={(e) => patchTile(i, { label: e.target.value })}
           placeholder="Label — e.g. Headsets"
-          className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
         />
         <input
           value={tile.link}
           onChange={(e) => patchTile(i, { link: e.target.value })}
           placeholder="Link — e.g. /category/headsets/"
-          className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          className="w-full border border-gray-300 rounded-lg px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
         />
       </div>
     );
@@ -229,7 +229,7 @@ export default function CategoryShowcaseEditor() {
             onClick={() => setActive(i)}
             className={`px-4 py-1.5 rounded-full text-sm font-semibold transition ${
               i === active
-                ? "bg-[#5B21B6] text-white"
+                ? "bg-[#1D1D1F] text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -238,7 +238,7 @@ export default function CategoryShowcaseEditor() {
         ))}
         <button
           onClick={addPage}
-          className="px-4 py-1.5 rounded-full text-sm font-semibold border border-dashed border-[#5B21B6] text-[#5B21B6] hover:bg-violet-50 transition"
+          className="px-4 py-1.5 rounded-full text-sm font-semibold border border-dashed border-[#1D1D1F] text-[#1D1D1F] hover:bg-gray-50 transition"
         >
           + Add Page
         </button>
@@ -260,7 +260,7 @@ export default function CategoryShowcaseEditor() {
           value={page.title}
           onChange={(e) => patchPage({ title: e.target.value })}
           placeholder="e.g. Shop by Category"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
         />
       </div>
 
@@ -332,7 +332,7 @@ export default function CategoryShowcaseEditor() {
       <button
         onClick={handleSave}
         disabled={saving || uploadingIdx !== null}
-        className="px-6 py-2 bg-[#5B21B6] text-white rounded-lg font-semibold hover:bg-[#4C1D95] disabled:opacity-50 transition"
+        className="px-6 py-2 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black disabled:opacity-50 transition"
       >
         {saving ? "Saving…" : "Save All Pages"}
       </button>

@@ -1410,7 +1410,7 @@ export default function ProductEdit({ productId }) {
                 </div>
 
                 {showBadgeManager && (
-                  <div className="mt-3 rounded-xl border border-violet-200 bg-violet-50 p-4 space-y-3">
+                  <div className="mt-3 rounded-xl border border-gray-300 bg-gray-50 p-4 space-y-3">
                     {(badgeOptions || []).map((item, index) => (
                       <div
                         key={`${item.key}-${index}`}
@@ -1493,7 +1493,7 @@ export default function ProductEdit({ productId }) {
                       </div>
                     ))}
 
-                    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center pt-2 border-t border-violet-200">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center pt-2 border-t border-gray-300">
                       <input
                         type="text"
                         value={newBadgeLabel}
@@ -1516,7 +1516,7 @@ export default function ProductEdit({ productId }) {
                       />
                       <button
                         type="button"
-                        className="md:col-span-1 px-2 py-2 rounded-lg border border-violet-300 text-violet-800 hover:bg-violet-100"
+                        className="md:col-span-1 px-2 py-2 rounded-lg border border-gray-300 text-[#1D1D1F] hover:bg-gray-100"
                         onClick={() => {
                           const key = normalizeBadgeKey(
                             newBadgeKey || newBadgeLabel,
@@ -1542,7 +1542,7 @@ export default function ProductEdit({ productId }) {
                         type="button"
                         disabled={badgeSaving}
                         onClick={() => saveBadgeOptions(badgeOptions)}
-                        className="px-4 py-2 rounded-lg bg-violet-700 text-white text-sm hover:bg-violet-800 disabled:opacity-60"
+                        className="px-4 py-2 rounded-lg bg-gray-800 text-white text-sm hover:bg-[#1D1D1F] disabled:opacity-60"
                       >
                         {badgeSaving ? "Saving..." : "Save Badge Options"}
                       </button>
@@ -1676,7 +1676,7 @@ export default function ProductEdit({ productId }) {
                     <button
                       type="button"
                       onClick={generateBarcode}
-                      className="rounded-lg border border-violet-300 px-3 py-1.5 text-xs font-semibold text-violet-800 hover:bg-violet-50"
+                      className="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-[#1D1D1F] hover:bg-gray-100"
                     >
                       Generate Barcode
                     </button>
@@ -1896,7 +1896,7 @@ export default function ProductEdit({ productId }) {
                 main product image.
               </p>
 
-              <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-violet-500 hover:bg-violet-50 transition-all">
+              <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-gray-500 hover:bg-gray-100 transition-all">
                 <input
                   type="file"
                   accept="image/*"
@@ -1934,7 +1934,7 @@ export default function ProductEdit({ productId }) {
               <button
                 type="button"
                 onClick={() => setShowPicker(true)}
-                className="mt-3 flex items-center gap-2 px-4 py-2 border border-violet-200 rounded-lg text-sm text-violet-700 hover:bg-violet-50 transition"
+                className="mt-3 flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-800 hover:bg-gray-100 transition"
               >
                 🖼 Select from Media Library
               </button>
@@ -2025,7 +2025,7 @@ export default function ProductEdit({ productId }) {
                   if (spec.type === "header") {
                     return (
                       <div key={i} className="flex gap-2 items-center">
-                        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-violet-700 bg-violet-50 border border-violet-200 rounded-lg px-2 py-1">
+                        <span className="shrink-0 text-xs font-bold uppercase tracking-widest text-gray-800 bg-gray-50 border border-gray-300 rounded-lg px-2 py-1">
                           Header
                         </span>
                         <input
@@ -2033,7 +2033,7 @@ export default function ProductEdit({ productId }) {
                           value={spec.label || ""}
                           onChange={(e) => patch({ label: e.target.value })}
                           placeholder="e.g., Technical Specification"
-                          className="flex-1 rounded-lg border border-violet-300 bg-violet-50 px-3 py-2 text-sm font-semibold text-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-400"
+                          className="flex-1 rounded-lg border border-gray-300 bg-gray-50 px-3 py-2 text-sm font-semibold text-[#1D1D1F] focus:outline-none focus:ring-2 focus:ring-gray-400"
                         />
                         <button
                           type="button"
@@ -2086,7 +2086,7 @@ export default function ProductEdit({ productId }) {
                         ],
                       }))
                     }
-                    className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-700 font-medium text-sm"
+                    className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-800 font-medium text-sm"
                   >
                     + Add Row
                   </button>
@@ -2103,7 +2103,7 @@ export default function ProductEdit({ productId }) {
                         ],
                       }))
                     }
-                    className="px-4 py-2 bg-violet-100 text-violet-800 border border-violet-300 rounded-lg hover:bg-violet-200 font-medium text-sm"
+                    className="px-4 py-2 bg-gray-100 text-[#1D1D1F] border border-gray-300 rounded-lg hover:bg-gray-300 font-medium text-sm"
                   >
                     + Add Section Header
                   </button>
@@ -2151,7 +2151,7 @@ export default function ProductEdit({ productId }) {
                       faqs: [...(p.faqs || []), { question: "", answer: "" }],
                     }))
                   }
-                  className="px-4 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 transition-colors"
+                  className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] transition-colors"
                 >
                   + Add FAQ
                 </button>
@@ -2246,7 +2246,7 @@ export default function ProductEdit({ productId }) {
                                   return { ...p, faqs: arr };
                                 })
                               }
-                              className="shrink-0 px-4 py-2.5 border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50 whitespace-nowrap"
+                              className="shrink-0 px-4 py-2.5 border border-gray-300 text-[#1D1D1F] rounded-lg hover:bg-gray-100 whitespace-nowrap"
                             >
                               🎲 Random
                             </button>
@@ -2283,7 +2283,7 @@ export default function ProductEdit({ productId }) {
             </h2>
 
             {/* Add Review Form */}
-            <div className="bg-violet-50 rounded-xl p-6 border-2 border-violet-200">
+            <div className="bg-gray-50 rounded-xl p-6 border-2 border-gray-300">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Add New Review
               </h3>
@@ -2342,7 +2342,7 @@ export default function ProductEdit({ productId }) {
                           date: randomPastDateStr(),
                         }))
                       }
-                      className="shrink-0 px-4 py-2.5 border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50 whitespace-nowrap"
+                      className="shrink-0 px-4 py-2.5 border border-gray-300 text-[#1D1D1F] rounded-lg hover:bg-gray-100 whitespace-nowrap"
                     >
                       🎲 Random
                     </button>
@@ -2377,7 +2377,7 @@ export default function ProductEdit({ productId }) {
                 <button
                   type="button"
                   onClick={addReview}
-                  className="w-full px-6 py-3 bg-violet-700 text-white font-semibold rounded-lg hover:bg-violet-800 transition-colors shadow-md"
+                  className="w-full px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg hover:bg-[#1D1D1F] transition-colors shadow-md"
                 >
                   Add Review
                 </button>
@@ -2493,7 +2493,7 @@ export default function ProductEdit({ productId }) {
                                     date: randomPastDateStr(),
                                   }))
                                 }
-                                className="shrink-0 px-4 py-2.5 border border-violet-300 text-violet-800 rounded-lg hover:bg-violet-50 whitespace-nowrap"
+                                className="shrink-0 px-4 py-2.5 border border-gray-300 text-[#1D1D1F] rounded-lg hover:bg-gray-100 whitespace-nowrap"
                               >
                                 🎲 Random
                               </button>
@@ -2519,7 +2519,7 @@ export default function ProductEdit({ productId }) {
                                 });
                                 setEditingReviewIdx(null);
                               }}
-                              className="px-5 py-2 bg-violet-700 text-white rounded-lg hover:bg-violet-800 transition-colors text-sm font-semibold"
+                              className="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] transition-colors text-sm font-semibold"
                             >
                               Save
                             </button>
@@ -2741,7 +2741,7 @@ export default function ProductEdit({ productId }) {
               type="button"
               onClick={handleSave}
               disabled={saving}
-              className="px-8 py-3 bg-linear-to-r from-violet-700 to-purple-600 text-white font-semibold rounded-lg hover:from-violet-800 hover:to-purple-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-3 bg-linear-to-r from-gray-800 to-gray-700 text-white font-semibold rounded-lg hover:from-[#1D1D1F] hover:to-gray-800 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? "Saving..." : "Update Product"}
             </button>
@@ -2755,7 +2755,7 @@ export default function ProductEdit({ productId }) {
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="flex items-center gap-2 px-5 py-3 bg-violet-700 hover:bg-violet-800 text-white text-sm font-semibold rounded-full shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-5 py-3 bg-gray-800 hover:bg-[#1D1D1F] text-white text-sm font-semibold rounded-full shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? (
             <>

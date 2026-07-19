@@ -61,18 +61,18 @@ export default function RecentlyViewed({ currentProductId }) {
     <section className="max-w-7xl mx-auto  mt-12 mb-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg md:text-xl text-[#1F2937] tracking-tight work-sans">
-          Recently <span className="text-[#5B21B6]">Viewed</span>
+          Recently <span className="text-[#1D1D1F]">Viewed</span>
         </h2>
         <div className="flex items-center gap-2">
           <button
             onClick={() => scrollBy(-1)}
-            className="w-8 h-8 rounded-full border border-gray-200 bg-white text-[#5B21B6] flex items-center justify-center hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] shadow-sm transition-colors"
+            className="w-8 h-8 rounded-full border border-gray-200 bg-white text-[#1D1D1F] flex items-center justify-center hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] shadow-sm transition-colors"
           >
             <FaChevronLeft className="w-3 h-3" />
           </button>
           <button
             onClick={() => scrollBy(1)}
-            className="w-8 h-8 rounded-full border border-gray-200 bg-white text-[#5B21B6] flex items-center justify-center hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] shadow-sm transition-colors"
+            className="w-8 h-8 rounded-full border border-gray-200 bg-white text-[#1D1D1F] flex items-center justify-center hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] shadow-sm transition-colors"
           >
             <FaChevronRight className="w-3 h-3" />
           </button>
@@ -108,7 +108,7 @@ export default function RecentlyViewed({ currentProductId }) {
           return (
             <div
               key={item._id}
-              className="group shrink-0 w-40 md:w-44 bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md hover:border-violet-200 transition-all duration-200 flex flex-col"
+              className="group shrink-0 w-40 md:w-44 bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-md hover:border-gray-300 transition-all duration-200 flex flex-col"
             >
               {/* Image */}
               <Link
@@ -139,7 +139,7 @@ export default function RecentlyViewed({ currentProductId }) {
               <div className="p-2 flex flex-col gap-0.5 flex-1">
                 <Link
                   href={href}
-                  className="text-[11px] font-medium text-[#1F2937] line-clamp-2 leading-snug hover:text-[#5B21B6] transition-colors"
+                  className="text-[11px] font-medium text-[#1F2937] line-clamp-2 leading-snug hover:text-[#1D1D1F] transition-colors"
                 >
                   {item.title}
                 </Link>
@@ -161,7 +161,7 @@ export default function RecentlyViewed({ currentProductId }) {
                 )}
 
                 <div className="flex items-center gap-1 flex-wrap mt-auto pt-1">
-                  <span className="text-xs font-bold text-[#5B21B6]">
+                  <span className="text-xs font-bold text-[#1D1D1F]">
                     ৳{item.price?.toLocaleString()}
                   </span>
                   {item.compareAtPrice && item.compareAtPrice > item.price && (
@@ -175,7 +175,7 @@ export default function RecentlyViewed({ currentProductId }) {
                 {!isOutOfStock ? (
                   <button
                     onClick={() => addToCart(item, 1)}
-                    className="mt-1.5 w-full flex items-center justify-center gap-1.5 bg-[#5B21B6] hover:bg-[#4C1D95] text-white text-[10px] font-semibold py-1.5 rounded-lg transition-colors"
+                    className="mt-1.5 w-full flex items-center justify-center gap-1.5 bg-[#1D1D1F] hover:bg-black text-white text-[10px] font-semibold py-1.5 rounded-lg transition-colors"
                   >
                     <FaShoppingCart className="w-2.5 h-2.5" />
                     Add to Cart

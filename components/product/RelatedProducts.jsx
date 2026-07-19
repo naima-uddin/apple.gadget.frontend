@@ -15,7 +15,7 @@ export default function RelatedProducts({ products = [] }) {
       <SectionHeader
         title={
           <>
-            Related <span className="text-[#5B21B6]">Products</span>
+            Related <span className="text-[#1D1D1F]">Products</span>
           </>
         }
       />
@@ -47,7 +47,7 @@ export default function RelatedProducts({ products = [] }) {
                 behavior: "smooth",
               });
           }}
-          className="absolute top-1/2 -left-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-gray-200 bg-white text-[#5B21B6] shadow-md hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors z-10"
+          className="absolute top-1/2 -left-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-gray-200 bg-white text-[#1D1D1F] shadow-md hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors z-10"
           aria-label="Scroll related products left"
         >
           <FaChevronLeft className="w-4 h-4" />
@@ -62,7 +62,7 @@ export default function RelatedProducts({ products = [] }) {
                 behavior: "smooth",
               });
           }}
-          className="absolute top-1/2 -right-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-gray-200 bg-white text-[#5B21B6] shadow-md hover:bg-[#5B21B6] hover:text-white hover:border-[#5B21B6] transition-colors z-10"
+          className="absolute top-1/2 -right-4 transform -translate-y-1/2 p-1 md:p-2 rounded-full border border-gray-200 bg-white text-[#1D1D1F] shadow-md hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors z-10"
           aria-label="Scroll related products right"
         >
           <FaChevronRight className="w-4 h-4" />

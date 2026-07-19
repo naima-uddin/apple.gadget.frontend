@@ -135,7 +135,7 @@ export default function Dashboard() {
         <div className="mt-4 flex justify-center gap-3">
           <Link
             href="/adminlogin"
-            className="px-4 py-2 bg-[#5B21B6] text-white rounded-lg"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-lg"
           >
             Go to admin login
           </Link>
@@ -181,7 +181,7 @@ export default function Dashboard() {
     {
       label: "Total Sales",
       value: money(overview.totalSales),
-      accent: "text-[#5B21B6]",
+      accent: "text-[#1D1D1F]",
     },
     {
       label: "Estimated Profit",
@@ -538,7 +538,7 @@ export default function Dashboard() {
                             onChange={(event) =>
                               handleStatusUpdate(order._id, event.target.value)
                             }
-                            className={`text-xs font-medium px-2 py-1 rounded-full border-0 focus:ring-2 focus:ring-violet-200 ${STATUS_STYLE[order.status] || ""}`}
+                            className={`text-xs font-medium px-2 py-1 rounded-full border-0 focus:ring-2 focus:ring-gray-300 ${STATUS_STYLE[order.status] || ""}`}
                           >
                             <option value="pending">Pending</option>
                             <option value="confirmed">Confirmed</option>

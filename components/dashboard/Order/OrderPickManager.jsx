@@ -106,7 +106,7 @@ export default function OrderPickManager() {
         </div>
         <Link
           href="/dashboard/orders"
-          className="text-sm text-violet-700 hover:underline"
+          className="text-sm text-gray-800 hover:underline"
         >
           ← All Orders
         </Link>
@@ -130,7 +130,7 @@ export default function OrderPickManager() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+              <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                 <tr>
                   <th className="px-4 py-3 text-left w-10">
                     <input
@@ -172,7 +172,7 @@ export default function OrderPickManager() {
                         {isPicked ? (
                           <Link
                             href={`/dashboard/orders/${order._id}`}
-                            className="text-violet-700 hover:underline font-semibold"
+                            className="text-gray-800 hover:underline font-semibold"
                             onClick={(e) => e.stopPropagation()}
                           >
                             {formatOrderId(order._id)}
@@ -220,7 +220,7 @@ export default function OrderPickManager() {
                             disabled={picking === order._id}
                             onClick={() => togglePick(order, !isPicked)}
                             className={`relative w-10 h-5 rounded-full transition-colors ${
-                              isPicked ? "bg-violet-500" : "bg-gray-300"
+                              isPicked ? "bg-gray-700" : "bg-gray-300"
                             } disabled:opacity-50`}
                           >
                             <span

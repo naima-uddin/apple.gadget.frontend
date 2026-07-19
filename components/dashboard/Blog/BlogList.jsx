@@ -70,7 +70,7 @@ export default function BlogList() {
         <div className="flex flex-wrap gap-2">
           <Link
             href="/dashboard/blog/new"
-            className="px-3 py-2 bg-violet-700 text-white rounded-lg text-sm"
+            className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm"
           >
             New post
           </Link>

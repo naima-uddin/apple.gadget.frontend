@@ -110,7 +110,7 @@ export default function MostPopular() {
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+              <tr className="text-left bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                 <th className="py-2.5 px-4 w-8">#</th>
                 <th className="py-2.5 px-4">Product</th>
                 <th className="py-2.5 px-4 text-right">Views</th>
@@ -152,7 +152,7 @@ export default function MostPopular() {
                       </div>
                     </td>
                     <td className="py-2.5 px-4 text-right">
-                      <span className="inline-flex items-center gap-1 bg-purple-50 text-purple-700 font-semibold text-xs px-2 py-0.5 rounded-full">
+                      <span className="inline-flex items-center gap-1 bg-gray-100 text-[#1D1D1F] font-semibold text-xs px-2 py-0.5 rounded-full">
                         {(item.viewCount || 0).toLocaleString("en-BD")}
                       </span>
                     </td>

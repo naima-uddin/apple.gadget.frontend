@@ -135,7 +135,7 @@ export default function CourierScorePanel({
             icon="📦"
             label="Total Parcels"
             value={summary.totalParcels ?? 0}
-            tint="bg-violet-50 border-violet-100"
+            tint="bg-gray-50 border-gray-200"
           />
           <SummaryCard
             icon="🚚"

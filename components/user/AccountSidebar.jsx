@@ -106,21 +106,21 @@ export default function AccountSidebar({
         onClick={() => onNavigate(item.key)}
         className={`group relative flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition-colors ${
           active
-            ? "bg-violet-50 font-semibold text-[#5B21B6]"
-            : "text-[#6B7280] hover:bg-gray-50 hover:text-[#5B21B6]"
+            ? "bg-gray-100 font-semibold text-[#1D1D1F]"
+            : "text-[#6B7280] hover:bg-gray-50 hover:text-[#1D1D1F]"
         }`}
       >
         {active && (
           <span
-            className="absolute left-0 top-1/2 h-5 w-0.75 -translate-y-1/2 rounded-full bg-[#5B21B6]"
+            className="absolute left-0 top-1/2 h-5 w-0.75 -translate-y-1/2 rounded-full bg-[#1D1D1F]"
             aria-hidden="true"
           />
         )}
         <span
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition ${
             active
-              ? "bg-[#5B21B6] text-white shadow-sm shadow-violet-200"
-              : "bg-violet-50 text-[#5B21B6] group-hover:bg-violet-100"
+              ? "bg-[#1D1D1F] text-white shadow-sm shadow-gray-300"
+              : "bg-gray-100 text-[#1D1D1F] group-hover:bg-gray-200"
           }`}
         >
           <NavIcon path={item.icon} />
@@ -129,7 +129,7 @@ export default function AccountSidebar({
         <svg
           className={`h-4 w-4 shrink-0 transition ${
             active
-              ? "text-[#5B21B6]"
+              ? "text-[#1D1D1F]"
               : "text-gray-300 opacity-0 group-hover:opacity-100"
           }`}
           viewBox="0 0 24 24"
@@ -166,7 +166,7 @@ export default function AccountSidebar({
         } max-h-screen border border-gray-100 bg-white shadow-sm lg:max-h-[calc(100vh-7rem)]`}
       >
         {/* Profile hero */}
-        <div className="relative m-3 overflow-hidden rounded-2xl bg-linear-to-br from-[#5B21B6] via-violet-700 to-purple-600 p-4 text-white shadow-lg shadow-violet-200">
+        <div className="relative m-3 overflow-hidden rounded-2xl bg-linear-to-br from-[#1D1D1F] via-gray-800 to-black p-4 text-white shadow-lg shadow-gray-300">
           <div
             className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/10"
             aria-hidden="true"
@@ -179,7 +179,7 @@ export default function AccountSidebar({
           <button
             type="button"
             onClick={onClose}
-            className="absolute right-2 top-2 rounded-lg p-1.5 text-violet-200 transition hover:bg-white/15 hover:text-white lg:hidden"
+            className="absolute right-2 top-2 rounded-lg p-1.5 text-gray-300 transition hover:bg-white/15 hover:text-white lg:hidden"
             aria-label="Close menu"
           >
             <svg
@@ -212,7 +212,7 @@ export default function AccountSidebar({
               <p className="truncate text-base font-bold text-white">
                 {user?.name || "User"}
               </p>
-              <p className="truncate text-xs text-violet-200">{user?.email}</p>
+              <p className="truncate text-xs text-gray-300">{user?.email}</p>
               <span className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
                 <span
                   className="h-1.5 w-1.5 rounded-full bg-emerald-300"

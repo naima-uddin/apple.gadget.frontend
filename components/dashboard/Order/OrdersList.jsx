@@ -517,7 +517,7 @@ function OrdersTable({
               <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                 <Link
                   href={`/dashboard/orders/${order._id}`}
-                  className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:bg-violet-50 hover:underline"
+                  className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:bg-gray-50 hover:underline"
                 >
                   {formatOrderId(order._id)}
                 </Link>
@@ -532,7 +532,7 @@ function OrdersTable({
                     className="text-left"
                     onClick={() => onCustomerClick(order)}
                   >
-                    <p className="font-medium text-gray-800 hover:text-violet-700 hover:underline">
+                    <p className="font-medium text-gray-800 hover:text-gray-900 hover:underline">
                       {order.billingDetails?.name || "—"}
                     </p>
                     <p className="text-xs text-gray-400">
@@ -678,7 +678,7 @@ function CancelledOrdersTable({
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/dashboard/orders/${order._id}`}
-                    className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
+                    className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                   >
                     {formatOrderId(order._id)}
                   </Link>
@@ -695,7 +695,7 @@ function CancelledOrdersTable({
                       className="text-left"
                       onClick={() => onCustomerClick(order)}
                     >
-                      <p className="font-medium text-gray-800 hover:text-violet-700 hover:underline">
+                      <p className="font-medium text-gray-800 hover:text-gray-900 hover:underline">
                         {order.billingDetails?.name || "—"}
                       </p>
                       <p className="text-xs text-gray-400">
@@ -758,7 +758,7 @@ function CancelledOrdersTable({
                   <div className="flex items-center gap-2">
                     <Link
                       href={`/dashboard/orders/${order._id}`}
-                      className="text-xs text-violet-500 hover:underline"
+                      className="text-xs text-gray-500 hover:underline"
                     >
                       View
                     </Link>
@@ -950,7 +950,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
           <div className="px-6 py-4 space-y-4">
             <div className="bg-gray-50 rounded-xl px-4 py-3 text-sm">
               <span className="text-gray-500">Order:</span>{" "}
-              <span className="font-mono font-semibold text-violet-700">
+              <span className="font-mono font-semibold text-gray-800">
                 {formatOrderId(modal.order._id)}
               </span>
               <span className="ml-3 text-gray-500">
@@ -1141,10 +1141,10 @@ function AddReturnModal({ onClose, onSave }) {
                           setSearch("");
                           setResults([]);
                         }}
-                        className="w-full text-left px-4 py-3 hover:bg-violet-50 border-b last:border-0 transition"
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50 border-b last:border-0 transition"
                       >
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-xs text-violet-700 bg-violet-50 px-1.5 py-0.5 rounded-lg">
+                          <span className="font-mono text-xs text-gray-800 bg-gray-50 px-1.5 py-0.5 rounded-lg">
                             {formatOrderId(o._id)}
                           </span>
                           <span className="text-sm font-medium text-gray-800 flex-1">
@@ -1168,10 +1168,10 @@ function AddReturnModal({ onClose, onSave }) {
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-3 bg-violet-50 border border-violet-200 rounded-xl px-4 py-3">
+              <div className="flex items-center gap-3 bg-gray-50 border border-gray-300 rounded-xl px-4 py-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-mono text-xs text-violet-700 bg-white border border-violet-200 px-1.5 py-0.5 rounded-lg">
+                    <span className="font-mono text-xs text-gray-800 bg-white border border-gray-300 px-1.5 py-0.5 rounded-lg">
                       {formatOrderId(selected._id)}
                     </span>
                     <span className="text-sm font-medium text-gray-800">
@@ -1186,7 +1186,7 @@ function AddReturnModal({ onClose, onSave }) {
                 <button
                   type="button"
                   onClick={() => setSelected(null)}
-                  className="text-xs text-violet-700 hover:underline shrink-0"
+                  className="text-xs text-gray-800 hover:underline shrink-0"
                 >
                   Change
                 </button>
@@ -1224,7 +1224,7 @@ function AddReturnModal({ onClose, onSave }) {
               type="button"
               onClick={handleSave}
               disabled={saving || !selected}
-              className="px-4 py-2 text-sm font-semibold text-white bg-violet-500 hover:bg-violet-700 rounded-xl transition disabled:opacity-60"
+              className="px-4 py-2 text-sm font-semibold text-white bg-gray-500 hover:bg-gray-800 rounded-xl transition disabled:opacity-60"
             >
               {saving ? "Creating…" : "Create Request"}
             </button>
@@ -1520,8 +1520,8 @@ function ReturnsRefundsSection() {
           {
             label: "Total Refunded",
             val: `৳${(stats.totalRefund || 0).toLocaleString()}`,
-            color: "text-violet-700",
-            bg: "bg-violet-50 border-violet-100",
+            color: "text-gray-800",
+            bg: "bg-gray-50 border-gray-100",
           },
         ].map(({ label, val, color, bg }) => (
           <div key={label} className={`rounded-xl p-4 shadow-sm border ${bg}`}>
@@ -1554,7 +1554,7 @@ function ReturnsRefundsSection() {
               <button
                 type="button"
                 onClick={() => setAddModal(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-500 hover:bg-violet-700 text-white text-xs font-semibold rounded-lg transition"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-500 hover:bg-gray-800 text-white text-xs font-semibold rounded-lg transition"
               >
                 <svg
                   className="w-3.5 h-3.5"
@@ -1639,7 +1639,7 @@ function ReturnsRefundsSection() {
                     onClick={() =>
                       router.push(`/dashboard/orders/${order._id}`)
                     }
-                    className="hover:bg-violet-50 transition cursor-pointer"
+                    className="hover:bg-gray-50 transition cursor-pointer"
                   >
                     <td
                       className="px-4 py-3"
@@ -1647,7 +1647,7 @@ function ReturnsRefundsSection() {
                     >
                       <Link
                         href={`/dashboard/orders/${order._id}`}
-                        className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
+                        className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                       >
                         {formatOrderId(order._id)}
                       </Link>
@@ -1888,7 +1888,7 @@ function AllOrdersSection() {
               stats.revenue != null
                 ? `৳${stats.revenue.toLocaleString()}`
                 : "—",
-            color: "text-violet-700",
+            color: "text-gray-800",
           },
         ].map(({ label, val, color }) => (
           <div key={label} className="bg-white rounded-xl p-4 shadow-sm border">
@@ -1971,7 +1971,7 @@ function AllOrdersSection() {
 
         {/* Bulk action bar (admin only) */}
         {canPermanentDelete && selectedIds.length > 0 && (
-          <div className="flex flex-wrap items-center gap-3 px-5 py-3 bg-violet-50 border-b border-violet-100">
+          <div className="flex flex-wrap items-center gap-3 px-5 py-3 bg-gray-50 border-b border-gray-100">
             <span className="text-sm font-medium text-gray-700">
               {selectedIds.length} selected
             </span>
@@ -2230,7 +2230,7 @@ function FilteredOrdersSection({
                       onClick={() =>
                         router.push(`/dashboard/orders/${order._id}`)
                       }
-                      className={`hover:bg-violet-50 transition cursor-pointer ${age?.color?.includes("red") ? "bg-red-50/30" : ""}`}
+                      className={`hover:bg-gray-50 transition cursor-pointer ${age?.color?.includes("red") ? "bg-red-50/30" : ""}`}
                     >
                       <td
                         className="px-4 py-3"
@@ -2238,7 +2238,7 @@ function FilteredOrdersSection({
                       >
                         <Link
                           href={`/dashboard/orders/${order._id}`}
-                          className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
+                          className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                         >
                           {formatOrderId(order._id)}
                         </Link>
@@ -2252,7 +2252,7 @@ function FilteredOrdersSection({
                           className="text-left"
                           onClick={() => openCustomer(order)}
                         >
-                          <p className="font-medium text-gray-800 hover:text-violet-700 hover:underline">
+                          <p className="font-medium text-gray-800 hover:text-gray-900 hover:underline">
                             {order.billingDetails?.name || "—"}
                           </p>
                           <p className="text-xs text-gray-400">
@@ -2446,7 +2446,7 @@ function CustomerNoteModal({ order, onClose }) {
                 href={`/dashboard/orders/${order._id}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs text-violet-700 hover:underline font-mono"
+                className="text-xs text-gray-800 hover:underline font-mono"
               >
                 #{String(order._id).slice(-8).toUpperCase()} →
               </a>
@@ -2643,7 +2643,7 @@ function CustomerNotesSection() {
                     <div className="flex items-center gap-2 flex-wrap mb-1.5">
                       <Link
                         href={`/dashboard/orders/${order._id}`}
-                        className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-violet-700 hover:underline"
+                        className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                       >
                         {formatOrderId(order._id)}
                       </Link>
@@ -2655,7 +2655,7 @@ function CustomerNotesSection() {
                       {/* Customer name — clickable */}
                       <button
                         onClick={() => setSelectedOrder(order)}
-                        className="text-xs font-medium text-violet-700 hover:underline"
+                        className="text-xs font-medium text-gray-800 hover:underline"
                       >
                         {order.billingDetails?.name || "—"}
                       </button>
@@ -2728,7 +2728,7 @@ function CustomerNotesSection() {
               <button
                 key={n}
                 onClick={() => goPage(n)}
-                className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${page === n ? "bg-violet-700 text-white border-violet-700 font-semibold" : "hover:bg-gray-50"}`}
+                className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${page === n ? "bg-gray-800 text-white border-gray-800 font-semibold" : "hover:bg-gray-50"}`}
               >
                 {n}
               </button>
@@ -2883,7 +2883,7 @@ function OrderTimelineSection() {
                 <span onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/dashboard/orders/${order.orderId}`}
-                    className="font-mono text-xs text-violet-700 hover:underline bg-violet-50 px-1.5 py-0.5 rounded-lg"
+                    className="font-mono text-xs text-gray-800 hover:underline bg-gray-50 px-1.5 py-0.5 rounded-lg"
                   >
                     #{order.orderIdShort}
                   </Link>
@@ -2937,7 +2937,7 @@ function OrderTimelineSection() {
                           {ev.customerName && (
                             <button
                               type="button"
-                              className="text-xs text-gray-500 hover:text-violet-700 hover:underline mt-0.5"
+                              className="text-xs text-gray-500 hover:text-gray-800 hover:underline mt-0.5"
                               onClick={() =>
                                 setSelectedCustomer({
                                   name: ev.customerName,
@@ -3087,7 +3087,7 @@ function AbandonedCartModal({ user, onClose }) {
                   href={`/product/${item.productId}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-violet-300 hover:bg-violet-50/40 transition-colors group"
+                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-gray-300 hover:bg-gray-50/40 transition-colors group"
                 >
                   {item.image ? (
                     <img
@@ -3101,7 +3101,7 @@ function AbandonedCartModal({ user, onClose }) {
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-violet-800">
+                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-[#1D1D1F]">
                       {item.title || "—"}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -3310,7 +3310,7 @@ function AbandonedCartSection() {
           <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+            <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
               <tr>
                 <th className="px-4 py-3 text-left">#</th>
                 <th className="px-4 py-3 text-left">Customer</th>
@@ -3338,7 +3338,7 @@ function AbandonedCartSection() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => setSelectedUser(u)}
-                        className="font-medium text-violet-700 hover:text-violet-800 hover:underline text-left"
+                        className="font-medium text-gray-800 hover:text-[#1D1D1F] hover:underline text-left"
                       >
                         {u.name || (
                           <span className="text-gray-400 italic font-normal">
@@ -3368,7 +3368,7 @@ function AbandonedCartSection() {
                             target="_blank"
                             rel="noreferrer"
                             title={item.title}
-                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-violet-100 hover:text-violet-800 text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
+                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-gray-100 hover:text-[#1D1D1F] text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
                           >
                             {item.image && (
                               <img
@@ -3456,7 +3456,7 @@ function AbandonedCartSection() {
               <button
                 key={p}
                 onClick={() => goPage(p)}
-                className={`w-9 h-9 text-sm rounded-lg border transition-colors ${p === page ? "bg-violet-700 text-white border-violet-700 font-semibold" : "hover:bg-gray-50"}`}
+                className={`w-9 h-9 text-sm rounded-lg border transition-colors ${p === page ? "bg-gray-800 text-white border-gray-800 font-semibold" : "hover:bg-gray-50"}`}
               >
                 {p}
               </button>
@@ -3791,10 +3791,10 @@ function CheckoutSessionModal({ session, onClose }) {
                   href={`/product/${item.productId}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-violet-300 hover:bg-violet-50/40 transition-colors group"
+                  className="flex items-center gap-3 p-2.5 rounded-xl border hover:border-gray-300 hover:bg-gray-50/40 transition-colors group"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-violet-800">
+                    <p className="text-sm font-medium text-gray-800 truncate group-hover:text-[#1D1D1F]">
                       {item.title || "—"}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -4011,7 +4011,7 @@ function AbandonCheckoutSection() {
           <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+            <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
               <tr>
                 <th className="px-4 py-3 text-left">#</th>
                 <th className="px-4 py-3 text-left">Customer</th>
@@ -4039,7 +4039,7 @@ function AbandonCheckoutSection() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => setSelectedSession(s)}
-                        className="font-medium text-violet-700 hover:text-violet-800 hover:underline text-left"
+                        className="font-medium text-gray-800 hover:text-[#1D1D1F] hover:underline text-left"
                       >
                         {s.userName || (
                           <span className="text-gray-400 italic font-normal">
@@ -4070,7 +4070,7 @@ function AbandonCheckoutSection() {
                             target="_blank"
                             rel="noreferrer"
                             title={item.title}
-                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-violet-100 hover:text-violet-800 text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
+                            className="inline-flex items-center gap-1 text-xs bg-gray-100 hover:bg-gray-100 hover:text-[#1D1D1F] text-gray-700 rounded-full px-2.5 py-1 transition-colors max-w-[140px]"
                           >
                             {item.image && (
                               <img
@@ -4177,7 +4177,7 @@ function AbandonCheckoutSection() {
                 onClick={() => goPage(p)}
                 className={`w-9 h-9 text-sm rounded-lg border transition-colors ${
                   p === page
-                    ? "bg-violet-700 text-white border-violet-700 font-semibold"
+                    ? "bg-gray-800 text-white border-gray-800 font-semibold"
                     : "hover:bg-gray-50"
                 }`}
               >
@@ -4485,7 +4485,7 @@ function AllWishlistSection() {
           <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-violet-50/60 text-xs font-semibold uppercase tracking-wider text-[#5B21B6]">
+            <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
               <tr>
                 <th className="px-4 py-3 text-left w-8">#</th>
                 <th className="px-4 py-3 text-left">Product</th>
@@ -4521,7 +4521,7 @@ function AllWishlistSection() {
                           </div>
                         )}
                         <div>
-                          <p className="font-medium text-gray-800 max-w-[200px] truncate group-hover:text-violet-700 transition-colors">
+                          <p className="font-medium text-gray-800 max-w-[200px] truncate group-hover:text-gray-800 transition-colors">
                             {item.product?.title || item.productId}
                           </p>
                           {item.product?.price != null && (
@@ -4536,7 +4536,7 @@ function AllWishlistSection() {
                       </a>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-violet-50 text-violet-700 font-bold text-sm">
+                      <span className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-50 text-gray-800 font-bold text-sm">
                         {item.count}
                       </span>
                     </td>
@@ -4573,7 +4573,7 @@ function AllWishlistSection() {
                                     productId: item.productId,
                                   })
                                 }
-                                className="text-violet-700 hover:underline font-medium"
+                                className="text-gray-800 hover:underline font-medium"
                               >
                                 {c.name || c.email || "Unknown"}
                               </button>
@@ -4655,7 +4655,7 @@ function AllWishlistSection() {
                 onClick={() => goPage(n)}
                 className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                   page === n
-                    ? "bg-violet-700 text-white border-violet-700 font-semibold"
+                    ? "bg-gray-800 text-white border-gray-800 font-semibold"
                     : "hover:bg-gray-50"
                 }`}
               >

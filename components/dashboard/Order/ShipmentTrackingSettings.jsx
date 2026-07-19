@@ -163,7 +163,7 @@ function CourierManager({ couriers, onChange }) {
           type="button"
           onClick={createCourier}
           disabled={saving}
-          className="px-4 py-2 text-sm font-medium rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-60"
+          className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60"
         >
           Add courier
         </button>
@@ -360,7 +360,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
       >
         <div className="flex items-center gap-3">
           <span
-            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-gray-500 ${expanded ? "bg-violet-100 text-violet-700" : "bg-gray-200"}`}
+            className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-gray-500 ${expanded ? "bg-gray-100 text-gray-800" : "bg-gray-200"}`}
           >
             <svg
               className={`w-3.5 h-3.5 transition-transform ${expanded ? "rotate-90" : ""}`}
@@ -548,7 +548,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                   type="button"
                   onClick={save}
                   disabled={saving}
-                  className="px-3 py-1.5 text-sm font-medium rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:opacity-60"
+                  className="px-3 py-1.5 text-sm font-medium rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60"
                 >
                   {saving ? "Saving…" : "Save credentials"}
                 </button>
@@ -556,7 +556,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                   type="button"
                   onClick={testConnection}
                   disabled={testing}
-                  className="px-3 py-1.5 text-sm font-medium rounded-lg border border-purple-200 text-purple-700 hover:bg-purple-50 disabled:opacity-60"
+                  className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50 disabled:opacity-60"
                 >
                   {testing ? "Testing…" : "Test connection"}
                 </button>
@@ -667,7 +667,7 @@ function ShopShipmentConfig({ onSaved }) {
         type="button"
         onClick={save}
         disabled={saving}
-        className="px-4 py-2 text-sm font-medium rounded-lg border border-purple-200 text-purple-700 hover:bg-purple-50 disabled:opacity-60"
+        className="px-4 py-2 text-sm font-medium rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50 disabled:opacity-60"
       >
         {saving ? "Saving…" : "Save shop settings"}
       </button>
@@ -700,7 +700,7 @@ export default function ShipmentTrackingSettings() {
       <div>
         <Link
           href="/dashboard/shipment-tracking"
-          className="text-sm text-gray-500 hover:text-violet-700"
+          className="text-sm text-gray-500 hover:text-gray-800"
         >
           ← Back to tracking orders
         </Link>
