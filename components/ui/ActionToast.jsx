@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { FaShoppingBag, FaHeart, FaCheck } from "react-icons/fa";
 
 const ACCENTS = {
-  violet: { bg: "bg-violet-100", text: "text-violet-700", bar: "bg-violet-600" },
+  violet: { bg: "bg-gray-100", text: "text-[#1D1D1F]", bar: "bg-gray-700" },
   rose: { bg: "bg-rose-100", text: "text-rose-600", bar: "bg-rose-500" },
 };
 

@@ -143,7 +143,7 @@ export default function CategoryManager() {
 
             <button
               onClick={() => setEditingCategory(cat)}
-              className="p-2 text-violet-700 hover:bg-violet-50 rounded-lg"
+              className="p-2 text-gray-800 hover:bg-gray-100 rounded-lg"
               title="Edit & manage children"
             >
               <FaEdit />

@@ -414,7 +414,7 @@ export default function AuthModal({ isOpen, onClose }) {
           ✕
         </button>
         {/* header area */}
-        <div className="bg-gradient-to-r from-pink-100 to-white px-6 py-5 text-center">
+        <div className="bg-gradient-to-r from-gray-100 to-white px-6 py-5 text-center">
           <p className="text-lg font-semibold text-gray-800">
             Hello Trendsetter!
           </p>
@@ -436,7 +436,7 @@ export default function AuthModal({ isOpen, onClose }) {
               <button
                 onClick={handleGoogle}
                 disabled={isLoading || isLockedOut}
-                className="w-full border border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-gray-800 bg-white hover:bg-rose-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="w-full border border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-gray-800 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
               >
                 {isLoading ? (
                   <svg
@@ -494,7 +494,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   setView("email-login");
                 }}
                 disabled={isLoading}
-                className="w-full border border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-gray-800 bg-white hover:bg-rose-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="w-full border border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-gray-800 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
               >
                 <svg
                   className="w-5 h-5 text-gray-800"
@@ -534,7 +534,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
                   disabled={isLoading}
                 />
               </div>
@@ -545,7 +545,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
                   disabled={isLoading}
                 />
               </div>
@@ -556,7 +556,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
                   disabled={isLoading}
                 />
                 <button
@@ -601,7 +601,7 @@ export default function AuthModal({ isOpen, onClose }) {
                 <button
                   type="submit"
                   disabled={isLoading || isLockedOut}
-                  className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-opacity"
+                  className="bg-[#1D1D1F] hover:bg-black text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-opacity"
                 >
                   {isLoading && (
                     <svg
@@ -647,7 +647,7 @@ export default function AuthModal({ isOpen, onClose }) {
                     clearMessages();
                     setView("email-login");
                   }}
-                  className="text-indigo-600 hover:text-indigo-800 font-medium"
+                  className="text-[#1D1D1F] hover:text-black font-medium underline"
                 >
                   Login here
                 </button>
@@ -674,7 +674,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
                   disabled={isLoading || isLockedOut}
                 />
               </div>
@@ -685,7 +685,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-100"
+                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
                   disabled={isLoading || isLockedOut}
                 />
                 <button
@@ -730,7 +730,7 @@ export default function AuthModal({ isOpen, onClose }) {
                 <button
                   type="submit"
                   disabled={isLoading || isLockedOut}
-                  className="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-opacity"
+                  className="bg-[#1D1D1F] hover:bg-black text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-opacity"
                 >
                   {isLoading && (
                     <svg
@@ -773,7 +773,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   type="button"
                   onClick={handleForgot}
                   disabled={isLoading || isLockedOut}
-                  className="text-sm text-indigo-600 hover:text-indigo-800 disabled:opacity-50"
+                  className="text-sm text-[#1D1D1F] hover:text-black disabled:opacity-50"
                 >
                   Forgot password?
                 </button>

@@ -199,22 +199,24 @@ export default function LayoutWrapper({ children }) {
 
   return (
     <StoreSettingsProvider>
-      {/* Tracking pixels — only on storefront, not dashboard */}
-      {!hideNav && <TrackingScripts />}
+      <div className="min-h-screen flex flex-col">
+        {/* Tracking pixels — only on storefront, not dashboard */}
+        {!hideNav && <TrackingScripts />}
 
-      {/* TopBanner sits BEFORE the sticky wrapper → scrolls away on page scroll */}
-      {!hideNav && <TopBanner />}
+        {/* TopBanner sits BEFORE the sticky wrapper → scrolls away on page scroll */}
+        {!hideNav && <TopBanner />}
 
-      {!hideNav && (
-        <div className="sticky top-0 z-50 bg-[#FFFFFF]">
-          <Navbar />
-          {/* <MegaMenuNavbar /> */}
-        </div>
-      )}
+        {!hideNav && (
+          <div className="sticky top-0 z-50 bg-[#FFFFFF]">
+            <Navbar />
+            {/* <MegaMenuNavbar /> */}
+          </div>
+        )}
 
-      {children}
+        <main className="flex-1">{children}</main>
 
-      {!hideNav && <Footer />}
+        {!hideNav && <Footer />}
+      </div>
     </StoreSettingsProvider>
   );
 }

@@ -326,7 +326,7 @@ export default function ProductsList() {
 
       {/* Bulk action bar — appears once one or more rows are selected (admin only) */}
       {user?.role === "admin" && selectedIds.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-violet-50 border border-violet-100 rounded-lg">
+        <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
           <span className="text-sm font-medium text-gray-700">
             {selectedIds.length} selected
           </span>
@@ -404,7 +404,7 @@ export default function ProductsList() {
                 return (
                   <tr
                     key={p._id}
-                    className={`border-t ${checked ? "bg-violet-50/50" : ""}`}
+                    className={`border-t ${checked ? "bg-gray-50" : ""}`}
                     onMouseDown={(e) => {
                       if (e.button === 1 && !viewTrash) {
                         e.preventDefault();
@@ -513,7 +513,7 @@ export default function ProductsList() {
                               title="Duplicate this product"
                               onClick={() => handleDuplicate(p._id)}
                               disabled={duplicatingId === p._id}
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700 disabled:opacity-50"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800 disabled:opacity-50"
                             >
                               <FaClone className="inline-block mr-1" />
                               {duplicatingId === p._id
@@ -538,7 +538,7 @@ export default function ProductsList() {
                                   `/dashboard/waitlist?productId=${p._id}`,
                                 )
                               }
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800"
                             >
                               <FaBell className="inline-block mr-1" />
                               Waitlist
@@ -550,7 +550,7 @@ export default function ProductsList() {
                                   `/dashboard/reviews?productId=${p._id}`,
                                 )
                               }
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800"
                             >
                               <FaStar className="inline-block mr-1" />
                               Reviews
@@ -562,7 +562,7 @@ export default function ProductsList() {
                                   `/dashboard/questions?productId=${p._id}`,
                                 )
                               }
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-violet-700"
+                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800"
                             >
                               <FaQuestionCircle className="inline-block mr-1" />
                               Q&A
