@@ -8,7 +8,6 @@ import AuthModal from "@/components/auth/AuthModal";
 import {
   FaTicketAlt,
   FaCheckCircle,
-  FaCopy,
   FaClock,
   FaUser,
   FaShoppingCart,
@@ -18,6 +17,26 @@ import {
 import { useLanguage } from "@/components/context/LanguageContext";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+
+// Same three constants OffersToSayYes uses for its ticket cards, so the
+// coupons page renders with an identical color combination.
+const BG = "#1D1D1F";
+const BUTTON = "#5B21B6";
+const TEXT = "#FFFFFF";
+
+const EDGE_NOTCHES = [8, 26, 44, 62, 80, 98];
+
+function TicketEdge({ side }) {
+  return EDGE_NOTCHES.map((top) => (
+    <div
+      key={`${side}-${top}`}
+      className={`absolute w-3.5 h-3.5 bg-white rounded-full z-10 -translate-y-1/2 ${
+        side === "left" ? "-left-1.75" : "-right-1.75"
+      }`}
+      style={{ top: `${top}%` }}
+    />
+  ));
+}
 
 function CouponCard({ coupon, cartSubtotal = 0 }) {
   const [copied, setCopied] = useState(false);
@@ -35,101 +54,149 @@ function CouponCard({ coupon, cartSubtotal = 0 }) {
 
   return (
     <div
-      className={`relative rounded-2xl border overflow-hidden bg-white shadow-sm transition ${
-        ready
-          ? "border-[#5B21B6]/30 bg-gradient-to-br from-violet-50/60 to-white"
-          : "border-gray-100"
-      } ${!coupon.eligible ? "opacity-60" : ""}`}
+      className={`relative flex rounded-2xl overflow-hidden shadow-lg transition ${
+        !coupon.eligible ? "opacity-55" : ""
+      }`}
+      style={{ backgroundColor: BG }}
     >
-      {/* Top notch */}
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-[#FAFAFC] border border-gray-100 rounded-full z-10" />
+      {/* Scalloped tear edges on the two outer short sides */}
+      <TicketEdge side="left" />
+      <TicketEdge side="right" />
 
-      {/* Eligibility badge */}
-      {ready && (
-        <div className="absolute top-2 right-2 z-10">
-          <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-            <FaCheckCircle className="w-3 h-3" /> {tr("coupons.ready")}
+      {/* Ticket-perforation notches on the seam between the stub and the body */}
+      <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
+      <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
+      <div
+        className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed"
+        style={{ borderColor: `${BUTTON}80` }}
+      />
+
+      {/* Ticket stub: vertical COUPON label */}
+      <div className="w-16 shrink-0 flex items-center justify-center">
+        <span
+          className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap opacity-30"
+          style={{
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+            color: TEXT,
+          }}
+        >
+          {tr("offers.coupon_label")} • {tr("offers.coupon_label")} •{" "}
+          {tr("offers.coupon_label")}
+        </span>
+      </div>
+
+      {/* Ticket body */}
+      <div className="flex-1 min-w-0 flex flex-col justify-center px-5 py-4">
+        {ready && (
+          <span
+            className="self-start mb-1.5 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
+            style={{ backgroundColor: BUTTON, color: TEXT }}
+          >
+            <FaCheckCircle className="w-2.5 h-2.5" /> {tr("coupons.ready")}
           </span>
-        </div>
-      )}
+        )}
 
-      {/* Offer details */}
-      <div className="px-5 pt-6 pb-4">
-        <p className="text-xs text-[#6B7280] mb-1">
+        <p className="text-xs opacity-70" style={{ color: TEXT }}>
           {coupon.spend || `Min. ৳${coupon.minOrderAmount || 0}`}
         </p>
-        <div className="text-4xl font-extrabold text-[#5B21B6] leading-tight mb-1">
+        <h3
+          className="text-xl sm:text-2xl font-extrabold uppercase leading-tight"
+          style={{ color: TEXT }}
+        >
           {coupon.highlight}
           {coupon.highlightSecondary && (
-            <span className="block text-3xl">{coupon.highlightSecondary}</span>
+            <span className="block text-lg sm:text-xl">
+              {coupon.highlightSecondary}
+            </span>
           )}
-        </div>
-        <p className="text-sm font-semibold text-[#1F2937] mt-1">
+        </h3>
+        <p className="text-xs mt-1 opacity-70" style={{ color: TEXT }}>
           {coupon.title}
         </p>
         {coupon.description && (
-          <p className="text-xs text-[#6B7280] mt-0.5">{coupon.description}</p>
+          <p className="text-xs mt-0.5 opacity-70" style={{ color: TEXT }}>
+            {coupon.description}
+          </p>
         )}
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-1 mt-2">
-          {coupon.isNewUserOnly && (
-            <span className="text-xs border border-violet-200 bg-violet-50 text-[#5B21B6] px-2 py-0.5 rounded-full flex items-center gap-1">
-              <FaUser className="w-2.5 h-2.5" /> New Users
-            </span>
-          )}
-          {coupon.isFirstOrderOnly && (
-            <span className="text-xs bg-[#5B21B6] text-white px-2 py-0.5 rounded-full flex items-center gap-1">
-              <FaGift className="w-2.5 h-2.5" /> First Order
-            </span>
-          )}
-          {coupon.stackable && (
-            <span className="text-xs bg-gray-100 text-gray-600 border border-gray-200 px-2 py-0.5 rounded-full">
-              allowMultiple
-            </span>
-          )}
-          {coupon.expiresAt && (
-            <span className="text-xs bg-gray-50 text-[#6B7280] border border-gray-100 px-2 py-0.5 rounded-full flex items-center gap-1">
-              <FaClock className="w-2.5 h-2.5" />
-              {tr("coupons.expires")}{" "}
-              {new Date(coupon.expiresAt).toLocaleDateString()}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Progress bar (if not yet unlocked) */}
-      {coupon.progress && coupon.progress.remaining > 0 && (
-        <div className="px-5 pb-3">
-          <div className="flex justify-between text-xs text-[#6B7280] mb-1">
-            <span>{coupon.progress.message}</span>
-            <span>{Math.round(progressPercent)}%</span>
+        {(coupon.isNewUserOnly ||
+          coupon.isFirstOrderOnly ||
+          coupon.stackable ||
+          coupon.expiresAt) && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {coupon.isNewUserOnly && (
+              <span
+                className="text-[10px] border px-2 py-0.5 rounded-full flex items-center gap-1 opacity-80"
+                style={{ borderColor: `${TEXT}30`, color: TEXT }}
+              >
+                <FaUser className="w-2.5 h-2.5" /> New Users
+              </span>
+            )}
+            {coupon.isFirstOrderOnly && (
+              <span
+                className="text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1"
+                style={{ backgroundColor: BUTTON, color: TEXT }}
+              >
+                <FaGift className="w-2.5 h-2.5" /> First Order
+              </span>
+            )}
+            {coupon.stackable && (
+              <span
+                className="text-[10px] border px-2 py-0.5 rounded-full opacity-70"
+                style={{ borderColor: `${TEXT}30`, color: TEXT }}
+              >
+                allowMultiple
+              </span>
+            )}
+            {coupon.expiresAt && (
+              <span
+                className="text-[10px] border px-2 py-0.5 rounded-full flex items-center gap-1 opacity-60"
+                style={{ borderColor: `${TEXT}30`, color: TEXT }}
+              >
+                <FaClock className="w-2.5 h-2.5" />
+                {tr("coupons.expires")}{" "}
+                {new Date(coupon.expiresAt).toLocaleDateString()}
+              </span>
+            )}
           </div>
-          <div className="w-full bg-gray-100 rounded-full h-2">
+        )}
+
+        {/* Progress bar (if not yet unlocked) */}
+        {coupon.progress && coupon.progress.remaining > 0 && (
+          <div className="mt-2.5">
             <div
-              className="bg-[#5B21B6] h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progressPercent}%` }}
-            />
+              className="flex justify-between text-[10px] mb-1 opacity-70"
+              style={{ color: TEXT }}
+            >
+              <span>{coupon.progress.message}</span>
+              <span>{Math.round(progressPercent)}%</span>
+            </div>
+            <div
+              className="w-full rounded-full h-1.5"
+              style={{ backgroundColor: `${TEXT}20` }}
+            >
+              <div
+                className="h-1.5 rounded-full transition-all duration-300"
+                style={{ width: `${progressPercent}%`, backgroundColor: BUTTON }}
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Dashed separator */}
-      <div className="border-t-2 border-dashed border-violet-200 mx-0" />
-
-      {/* Bottom notch */}
-      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-[#FAFAFC] border border-gray-100 rounded-full z-10" />
-
-      {/* Coupon code section */}
-      <div className="px-5 py-4">
+        {/* Coupon code / lock state */}
         {!coupon.eligible ? (
-          <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <FaLock className="shrink-0" />
+          <div
+            className="flex items-center gap-2 text-xs mt-2 opacity-70"
+            style={{ color: TEXT }}
+          >
+            <FaLock className="shrink-0 w-3 h-3" />
             <span>{coupon.eligibilityReason}</span>
           </div>
         ) : (
           <>
-            <p className="text-xs text-[#6B7280] mb-2">
+            <p className="text-xs mt-2 mb-1 opacity-70" style={{ color: TEXT }}>
               {isUnlocked
                 ? tr("coupons.use_at_checkout")
                 : tr("coupons.add_more")}
@@ -137,22 +204,21 @@ function CouponCard({ coupon, cartSubtotal = 0 }) {
             <button
               onClick={copy}
               disabled={!isUnlocked}
-              className={`w-full flex items-center justify-between gap-3 border-2 border-dashed border-violet-300 bg-violet-50 rounded-lg px-4 py-2.5 transition ${isUnlocked ? "hover:bg-violet-100 cursor-pointer" : "cursor-not-allowed opacity-70"}`}
+              style={{ backgroundColor: BUTTON }}
+              className={`mt-2 inline-flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white transition ${
+                isUnlocked
+                  ? "hover:opacity-90 cursor-pointer"
+                  : "opacity-40 cursor-not-allowed"
+              }`}
             >
-              <span className="text-lg font-mono font-extrabold tracking-widest text-[#5B21B6]">
-                {coupon.couponCode}
-              </span>
-              <span className="text-xs font-semibold shrink-0 px-2 py-1 rounded-md bg-white border border-violet-200 text-[#5B21B6] transition flex items-center gap-1">
-                {copied ? (
-                  <>
-                    <FaCheckCircle className="w-3 h-3" /> {tr("coupons.copied")}
-                  </>
-                ) : (
-                  <>
-                    <FaCopy className="w-3 h-3" /> {tr("coupons.copy")}
-                  </>
-                )}
-              </span>
+              {copied ? (
+                <span>{tr("coupons.copied")}</span>
+              ) : (
+                <>
+                  <span className="opacity-80">{tr("offers.use_code")}:</span>
+                  <span>{coupon.couponCode}</span>
+                </>
+              )}
             </button>
           </>
         )}

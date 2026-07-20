@@ -158,7 +158,7 @@ export default function CartPage({ embedded = false }) {
         }
       >
         <div className="text-center max-w-sm w-full">
-          <EmptyCartAnimation className="w-44 h-44 mx-auto mb-4" />
+          <EmptyCartAnimation className="w-64 h-64 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-[#1F2937] mb-2">
             {t("cart.cart_empty_title")}
           </h1>
