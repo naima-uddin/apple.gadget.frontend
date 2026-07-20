@@ -13,8 +13,14 @@ const items = [
   { key: "about", label: "আমাদের সম্পর্কে", href: "/about" },
 ];
 
+// next.config.mjs sets trailingSlash: true, so usePathname() returns paths
+// like "/shipping/" — strip the trailing slash before comparing hrefs.
+function normalize(path) {
+  return path.length > 1 ? path.replace(/\/+$/, "") : path;
+}
+
 export default function PolicyTabs() {
-  const pathname = usePathname() || "";
+  const pathname = normalize(usePathname() || "");
 
   return (
     <nav
@@ -22,7 +28,7 @@ export default function PolicyTabs() {
       className="no-scrollbar mb-6 flex gap-2 overflow-x-auto rounded-2xl border border-gray-100 bg-white p-2 shadow-sm"
     >
       {items.map((item) => {
-        const active = pathname === item.href;
+        const active = pathname === normalize(item.href);
         return (
           <Link
             key={item.key}

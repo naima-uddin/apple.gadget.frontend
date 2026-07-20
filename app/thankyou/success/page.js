@@ -444,7 +444,11 @@ function SuccessContent() {
                 stroke="currentColor"
                 strokeWidth="2.5"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 6l12 12M18 6L6 18"
+                />
               </svg>
             ) : order?.paymentStatus === "paid" ? (
               <svg
@@ -997,95 +1001,6 @@ function SuccessContent() {
               </div>
             </div>
           )}
-
-          {/* Help */}
-          <div className="py-4 text-sm flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-xs mb-1">
-                {t("success.need_help")}
-              </p>
-              <p className="font-semibold text-[#1F2937]">{PHONE}</p>
-            </div>
-            <a
-              href={`tel:${PHONE}`}
-              className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-[#1D1D1F] hover:bg-gray-200 transition"
-            >
-              <svg
-                className="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 11.1 19.79 19.79 0 01.04 2.4 2 2 0 012 .22h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-              </svg>
-            </a>
-          </div>
-
-          {/* Social icons */}
-          <div className="py-4 flex justify-center gap-5 text-gray-500">
-            {process.env.NEXT_PUBLIC_WHATSAPP && (
-              <a
-                href={process.env.NEXT_PUBLIC_WHATSAPP}
-                className="hover:text-green-500"
-              >
-                <WhatsApp />
-              </a>
-            )}
-            {process.env.NEXT_PUBLIC_FACEBOOK && (
-              <a
-                href={process.env.NEXT_PUBLIC_FACEBOOK}
-                className="hover:text-blue-600"
-              >
-                <Facebook />
-              </a>
-            )}
-            {process.env.NEXT_PUBLIC_INSTAGRAM && (
-              <a
-                href={process.env.NEXT_PUBLIC_INSTAGRAM}
-                className="hover:text-pink-500"
-              >
-                <Instagram />
-              </a>
-            )}
-            {process.env.NEXT_PUBLIC_YOUTUBE && (
-              <a
-                href={process.env.NEXT_PUBLIC_YOUTUBE}
-                className="hover:text-red-600"
-              >
-                <YouTube />
-              </a>
-            )}
-            {process.env.NEXT_PUBLIC_TWITTER && (
-              <a
-                href={process.env.NEXT_PUBLIC_TWITTER}
-                className="hover:text-gray-900"
-              >
-                <Twitter />
-              </a>
-            )}
-            {/* fallback if none configured */}
-            {!process.env.NEXT_PUBLIC_WHATSAPP &&
-              !process.env.NEXT_PUBLIC_FACEBOOK && (
-                <>
-                  <span className="text-gray-300">
-                    <WhatsApp />
-                  </span>
-                  <span className="text-gray-300">
-                    <Facebook />
-                  </span>
-                  <span className="text-gray-300">
-                    <Instagram />
-                  </span>
-                  <span className="text-gray-300">
-                    <YouTube />
-                  </span>
-                  <span className="text-gray-300">
-                    <Twitter />
-                  </span>
-                </>
-              )}
-          </div>
         </div>
 
         {/* Cancel reason modal */}
