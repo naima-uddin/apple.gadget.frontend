@@ -871,38 +871,6 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             />
           </div>
 
-          {/* Shipping / trust info */}
-          <div className="grid grid-cols-2 gap-2 mb-4">
-            <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
-              <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                <FaClock className="w-3.5 h-3.5 text-[#1D1D1F]" />
-              </span>
-              <span className="text-xs text-[#6B7280] leading-snug">
-                Delivers in{" "}
-                <strong className="text-[#1F2937] font-semibold block">
-                  3–5 Working Days
-                </strong>
-                <a
-                  href="/shipping"
-                  className="underline underline-offset-2 text-[#1D1D1F] hover:text-black transition-colors"
-                >
-                  Shipping &amp; Return
-                </a>
-              </span>
-            </div>
-            <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
-              <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                <FaCartShopping className="w-3.5 h-3.5 text-[#1D1D1F]" />
-              </span>
-              <span className="text-xs text-[#6B7280] leading-snug">
-                <strong className="text-[#1F2937] font-semibold block">
-                  Safe Checkout
-                </strong>
-                100% guaranteed
-              </span>
-            </div>
-          </div>
-
           <hr className="border-gray-100 mb-3 hidden md:block" />
 
           {/* SKU / Category / Share */}
@@ -1026,6 +994,39 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               </div>
             </div>
           </div>
+
+          {/* Shipping / trust info */}
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
+              <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                <FaClock className="w-3.5 h-3.5 text-[#1D1D1F]" />
+              </span>
+              <span className="text-xs text-[#6B7280] leading-snug">
+                Delivers in{" "}
+                <strong className="text-[#1F2937] font-semibold block">
+                  3–5 Working Days
+                </strong>
+                <a
+                  href="/shipping"
+                  className="underline underline-offset-2 text-[#1D1D1F] hover:text-black transition-colors"
+                >
+                  Shipping &amp; Return
+                </a>
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
+              <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                <FaCartShopping className="w-3.5 h-3.5 text-[#1D1D1F]" />
+              </span>
+              <span className="text-xs text-[#6B7280] leading-snug">
+                <strong className="text-[#1F2937] font-semibold block">
+                  Safe Checkout
+                </strong>
+                100% guaranteed
+              </span>
+            </div>
+          </div>
+
           <AdSlot page="productPage" format="rectangle" className="w-full" />
         </div>
       </div>
