@@ -566,18 +566,26 @@ export default function CheckoutPage() {
     const finalZone = formData.zone === "other" ? customZone : formData.zone;
     const finalArea = formData.area === "other" ? customArea : formData.area;
 
-    // Validate required fields
-    const requiredFields = {
-      name: formData.name,
-      phone: formData.phone,
-      email: formData.email,
-      city: finalCity,
-      zone: finalZone,
-    };
+    // Validate required fields — show a field-specific message for the first one missing
+    const requiredFields = [
+      { value: formData.name, message: t("checkout.please_fill_name") },
+      { value: formData.phone, message: t("checkout.please_fill_phone") },
+      { value: finalCity, message: t("checkout.please_fill_city") },
+      { value: finalZone, message: t("checkout.please_fill_zone") },
+      { value: formData.address, message: t("checkout.please_fill_address") },
+    ];
 
-    const missingFields = Object.entries(requiredFields).filter(([, v]) => !v);
-    if (missingFields.length > 0) {
-      toast.error(t("checkout.required_fields"));
+    const firstMissing = requiredFields.find((f) => !f.value?.toString().trim());
+    if (firstMissing) {
+      toast.error(firstMissing.message);
+      return;
+    }
+
+    // Bangladeshi mobile number — "+880"/"880" country code is optional, but
+    // once stripped the number must start with 01 and be 11 digits total.
+    const bdPhoneRegex = /^(?:\+?880|0)1[3-9]\d{8}$/;
+    if (!bdPhoneRegex.test(formData.phone.trim())) {
+      toast.error(t("checkout.invalid_phone"));
       return;
     }
 
@@ -819,7 +827,6 @@ export default function CheckoutPage() {
                     value={formData.email}
                     onChange={handleInputChange}
                     className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition"
-                    required
                   />
                 </div>
               </div>
