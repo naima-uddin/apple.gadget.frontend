@@ -166,13 +166,12 @@ export default function OffersToSayYes() {
     t("offers.title_rest");
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-3 md:px-6 lg:px-8 py-8">
+    <div className="w-full max-w-7xl mx-auto px-1 md:px-2 lg:px-3 py-8">
       {/* Header */}
       <SectionHeader
         title={
           <>
-            <span className="text-[#1D1D1F]">{titleHighlight}</span>{" "}
-            {titleRest}
+            <span className="text-[#1D1D1F]">{titleHighlight}</span> {titleRest}
           </>
         }
       />
@@ -224,27 +223,14 @@ export default function OffersToSayYes() {
       </div>
 
       {/* ── Desktop slider: groups of 3 (shown on md+) ── */}
-      <div className="relative hidden md:block px-9">
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:shadow-xl hover:border-[#1D1D1F] transition"
-        >
-          <FaChevronLeft className="w-4 h-4" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:shadow-xl hover:border-[#1D1D1F] transition"
-        >
-          <FaChevronRight className="w-4 h-4" />
-        </button>
-
+      <div className="relative hidden md:block px-2">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
           {visibleOffers.map((offer) => (
             <OfferCard key={offer._id} offer={offer} />
           ))}
         </div>
 
-        <div className="flex justify-center gap-2 mt-6">
+        <div className="flex justify-center gap-2 mt-2">
           {Array.from({ length: totalSlides }).map((_, index) => (
             <button
               key={index}
