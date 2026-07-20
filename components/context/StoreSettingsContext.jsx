@@ -13,6 +13,7 @@ const EMPTY_POLICY = {
 };
 
 const EMPTY_FOOTER_LINKS = { quickLinks: [], customerService: [] };
+const EMPTY_ABOUT = { hero: {}, features: [], stats: [] };
 
 const StoreSettingsContext = createContext({
   storeName: "",
@@ -22,6 +23,7 @@ const StoreSettingsContext = createContext({
   socialLinks: {},
   policyContent: EMPTY_POLICY,
   footerLinks: EMPTY_FOOTER_LINKS,
+  aboutContent: EMPTY_ABOUT,
 });
 
 export function StoreSettingsProvider({ children }) {
@@ -33,6 +35,7 @@ export function StoreSettingsProvider({ children }) {
     socialLinks: {},
     policyContent: EMPTY_POLICY,
     footerLinks: EMPTY_FOOTER_LINKS,
+    aboutContent: EMPTY_ABOUT,
   });
 
   useEffect(() => {
@@ -47,6 +50,7 @@ export function StoreSettingsProvider({ children }) {
           socialLinks: d.socialLinks || {},
           policyContent: d.policyContent || EMPTY_POLICY,
           footerLinks: d.footerLinks || EMPTY_FOOTER_LINKS,
+          aboutContent: d.aboutContent || EMPTY_ABOUT,
         }),
       )
       .catch(() => {});

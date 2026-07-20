@@ -7,7 +7,13 @@ import SectionHeader from "./SectionHeader";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
-function CouponCopy({ code }) {
+const DEFAULT_BG = "#1D1D1F";
+const DEFAULT_BUTTON = "#5B21B6";
+const DEFAULT_TEXT = "#FFFFFF";
+const HEX_RE = /^#[0-9a-fA-F]{6}$/;
+const safeColor = (value, fallback) => (HEX_RE.test(value) ? value : fallback);
+
+function CouponCopy({ code, buttonColor }) {
   const [copied, setCopied] = useState(false);
   const { t } = useLanguage();
   const copy = () => {
@@ -18,7 +24,8 @@ function CouponCopy({ code }) {
   return (
     <button
       onClick={copy}
-      className="mt-2 inline-flex items-center gap-1.5 self-start bg-[#5B21B6] hover:bg-[#4C1D95] rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white transition"
+      style={{ backgroundColor: buttonColor }}
+      className="mt-2 inline-flex items-center gap-1.5 self-start hover:opacity-90 rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white transition"
     >
       {copied ? (
         <span>{t("offers.copied")}</span>
@@ -35,40 +42,55 @@ function CouponCopy({ code }) {
 function OfferCard({ offer }) {
   const { t: tr } = useLanguage();
   const couponLabel = tr("offers.coupon_label");
+  const bg = safeColor(offer.bgColor, DEFAULT_BG);
+  const buttonColor = safeColor(offer.buttonColor, DEFAULT_BUTTON);
+  const textColor = safeColor(offer.textColor, DEFAULT_TEXT);
   return (
-    <div className="relative flex bg-[#1D1D1F] rounded-2xl overflow-hidden h-44 shadow-lg">
+    <div
+      className="relative flex rounded-2xl overflow-hidden h-44 shadow-lg"
+      style={{ backgroundColor: bg }}
+    >
       {/* Ticket-perforation notches on the seam between the stub and the body */}
       <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
       <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
-      <div className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-[#5B21B6]/50" />
+      <div
+        className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed"
+        style={{ borderColor: `${buttonColor}80` }}
+      />
 
       {/* Ticket stub: vertical COUPON label */}
       <div className="w-16 shrink-0 flex items-center justify-center">
         <span
-          className="text-[10px] font-bold tracking-[0.3em] text-white/25 uppercase whitespace-nowrap"
-          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap opacity-30"
+          style={{
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+            color: textColor,
+          }}
         >
           {couponLabel} • {couponLabel} • {couponLabel}
         </span>
       </div>
 
-      {/* Ticket body */}
+      {/* Ticket body: title, subtitle, coupon code */}
       <div className="flex-1 min-w-0 flex flex-col justify-center px-5 py-4">
-        {(offer.title || offer.spend) && (
-          <p className="text-[11px] font-semibold tracking-wide text-white/45 uppercase mb-1 truncate">
-            {offer.title || `${tr("offers.spend_label")} ${offer.spend}`}
-          </p>
-        )}
-        <h2 className="text-xl sm:text-2xl font-extrabold text-white uppercase leading-tight">
+        <h2
+          className="text-xl sm:text-2xl font-extrabold uppercase leading-tight"
+          style={{ color: textColor }}
+        >
           {offer.highlight}
-          {offer.highlightSecondary ? ` ${offer.highlightSecondary}` : ""}
         </h2>
-        {(offer.subtitle || offer.description) && (
-          <p className="text-xs text-white/55 mt-1 truncate">
-            {offer.subtitle || offer.description}
+        {offer.subtitle && (
+          <p
+            className="text-xs mt-1 truncate opacity-70"
+            style={{ color: textColor }}
+          >
+            {offer.subtitle}
           </p>
         )}
-        {offer.couponCode && <CouponCopy code={offer.couponCode} />}
+        {offer.couponCode && (
+          <CouponCopy code={offer.couponCode} buttonColor={buttonColor} />
+        )}
       </div>
     </div>
   );
@@ -83,30 +105,7 @@ export default function OffersToSayYes() {
   useEffect(() => {
     fetch(`${API}/api/discounts`)
       .then((r) => r.json())
-      .then((d) =>
-        setOffers(
-          d.items && d.items.length
-            ? d.items
-            : [
-                {
-                  _id: "tmp1",
-                  title: "On purchase of 2+ styles",
-                  highlight: "Get Extra 15% Off",
-                  subtitle: "Limited time offer",
-                  couponCode: "TWO15",
-                },
-                {
-                  _id: "tmp2",
-                  spend: "1999 TK",
-                  highlight: "Free",
-                  highlightSecondary: "Delivery",
-                  subtitle: "On all prepaid orders",
-                  title: "Auto Applied",
-                  couponCode: "FREESHIP",
-                },
-              ],
-        ),
-      )
+      .then((d) => setOffers(d.items || []))
       .catch(() => setOffers([]));
   }, []);
 

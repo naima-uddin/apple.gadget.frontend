@@ -12,7 +12,7 @@ import TrackingCodeInjector from "@/components/layout/TrackingCodeInjector";
 import ScrollToTop from "@/components/ui/ScrollToTop";
 // import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import PopupBanner from "@/components/ui/PopupBanner";
-import { getStoreName } from "@/lib/storeMeta";
+import { getStoreName, getFaviconUrl } from "@/lib/storeMeta";
 import { CompareProvider } from "@/components/context/CompareContext";
 import CompareBar from "@/components/product/CompareBar";
 import GlobalScrollFix from "@/components/ui/GlobalScrollFix";
@@ -28,9 +28,13 @@ const workSans = Work_Sans({
 });
 
 export async function generateMetadata() {
-  const storeName = await getStoreName();
+  const [storeName, faviconUrl] = await Promise.all([
+    getStoreName(),
+    getFaviconUrl(),
+  ]);
   return {
     metadataBase: new URL(SITE_URL),
+    ...(faviconUrl ? { icons: { icon: faviconUrl } } : {}),
     title: {
       default: `${storeName} — Gadgets & Electronics Online Shop in Bangladesh`,
       template: `%s | ${storeName}`,

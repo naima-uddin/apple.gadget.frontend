@@ -5,14 +5,19 @@ import { useUser } from "@/components/context/UserContext";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
+const DEFAULT_BG = "#1D1D1F";
+const DEFAULT_BUTTON = "#5B21B6";
+const DEFAULT_TEXT = "#FFFFFF";
+const HEX_RE = /^#[0-9a-fA-F]{6}$/;
+const safeColor = (value, fallback) => (HEX_RE.test(value) ? value : fallback);
+
 const BLANK = {
-  title: "",
-  subtitle: "",
-  spend: "",
   highlight: "",
-  highlightSecondary: "",
-  description: "",
+  subtitle: "",
   couponCode: "",
+  bgColor: DEFAULT_BG,
+  buttonColor: DEFAULT_BUTTON,
+  textColor: DEFAULT_TEXT,
   isActive: true,
   // Functional coupon fields
   discountType: "fixed",
@@ -27,42 +32,90 @@ const BLANK = {
   expiresAt: "",
 };
 
-function OfferCard({ offer }) {
+const inp =
+  "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400";
+const lbl = "block text-sm font-medium text-gray-700 mb-1";
+
+function ColorField({ label, value, onChange, fallback }) {
+  const handleTextChange = (raw) => {
+    const hex = raw.replace(/[^0-9a-fA-F]/g, "").slice(0, 6);
+    onChange(hex ? `#${hex}` : "");
+  };
   return (
-    <div className="relative flex bg-[#1D1D1F] rounded-2xl overflow-hidden h-44 shadow-lg">
+    <div>
+      <label className={lbl}>{label}</label>
+      <div className="flex items-center gap-2">
+        <input
+          type="color"
+          value={safeColor(value, fallback)}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-10 h-10 rounded-lg border border-gray-300 cursor-pointer p-0.5 shrink-0"
+        />
+        <input
+          type="text"
+          className={`${inp} font-mono uppercase`}
+          value={value}
+          onChange={(e) => handleTextChange(e.target.value)}
+          autoComplete="off"
+          placeholder="#000000"
+        />
+      </div>
+    </div>
+  );
+}
+
+function OfferCard({ offer }) {
+  const bg = safeColor(offer.bgColor, DEFAULT_BG);
+  const buttonColor = safeColor(offer.buttonColor, DEFAULT_BUTTON);
+  const textColor = safeColor(offer.textColor, DEFAULT_TEXT);
+  return (
+    <div
+      className="relative flex rounded-2xl overflow-hidden h-44 shadow-lg"
+      style={{ backgroundColor: bg }}
+    >
       {/* Ticket-perforation notches on the seam between the stub and the body */}
       <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
       <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
-      <div className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed border-[#5B21B6]/50" />
+      <div
+        className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed"
+        style={{ borderColor: `${buttonColor}80` }}
+      />
 
       {/* Ticket stub: vertical COUPON label */}
       <div className="w-16 shrink-0 flex items-center justify-center">
         <span
-          className="text-[10px] font-bold tracking-[0.3em] text-white/25 uppercase whitespace-nowrap"
-          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+          className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap opacity-30"
+          style={{
+            writingMode: "vertical-rl",
+            transform: "rotate(180deg)",
+            color: textColor,
+          }}
         >
           COUPON • COUPON • COUPON
         </span>
       </div>
 
-      {/* Ticket body */}
+      {/* Ticket body: title, subtitle, coupon code */}
       <div className="flex-1 min-w-0 flex flex-col justify-center px-5 py-4">
-        {(offer.title || offer.spend) && (
-          <p className="text-[11px] font-semibold tracking-wide text-white/45 uppercase mb-1 truncate">
-            {offer.title || `Spend: ${offer.spend}`}
-          </p>
-        )}
-        <h2 className="text-xl sm:text-2xl font-extrabold text-white uppercase leading-tight">
+        <h2
+          className="text-xl sm:text-2xl font-extrabold uppercase leading-tight"
+          style={{ color: textColor }}
+        >
           {offer.highlight || "—"}
-          {offer.highlightSecondary ? ` ${offer.highlightSecondary}` : ""}
         </h2>
-        {(offer.subtitle || offer.description) && (
-          <p className="text-xs text-white/55 mt-1 truncate">
-            {offer.subtitle || offer.description}
+        {offer.subtitle && (
+          <p
+            className="text-xs mt-1 truncate opacity-70"
+            style={{ color: textColor }}
+          >
+            {offer.subtitle}
           </p>
         )}
         {offer.couponCode && (
-          <span className="mt-2 inline-flex items-center gap-1.5 self-start bg-[#5B21B6] rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white">
+          <span
+            className="mt-2 inline-flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white"
+            style={{ backgroundColor: buttonColor }}
+          >
             <span className="opacity-80">USE CODE:</span>
             <span className="truncate max-w-[8rem]">{offer.couponCode}</span>
           </span>
@@ -121,8 +174,8 @@ export default function DiscountsManager() {
   };
 
   const handleSave = async () => {
-    if (!form.title.trim() || !form.highlight.trim()) {
-      alert("Title and Highlight are required.");
+    if (!form.highlight.trim()) {
+      alert("Title is required.");
       return;
     }
     setSaving(true);
@@ -132,7 +185,12 @@ export default function DiscountsManager() {
         ? `${API}/api/admin/discounts`
         : `${API}/api/admin/discounts/${editing}`;
 
-      const payload = { ...form };
+      const payload = {
+        ...form,
+        bgColor: safeColor(form.bgColor, DEFAULT_BG),
+        buttonColor: safeColor(form.buttonColor, DEFAULT_BUTTON),
+        textColor: safeColor(form.textColor, DEFAULT_TEXT),
+      };
       if (payload.expiresAt) {
         payload.expiresAt = new Date(payload.expiresAt).toISOString();
       } else {
@@ -206,10 +264,6 @@ export default function DiscountsManager() {
     }
   };
 
-  const inp =
-    "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400";
-  const lbl = "block text-sm font-medium text-gray-700 mb-1";
-
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6 space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -249,78 +303,56 @@ export default function DiscountsManager() {
                 </label>
                 <input
                   className={inp}
-                  value={form.title}
+                  value={form.highlight}
                   onChange={(e) =>
-                    setForm((p) => ({ ...p, title: e.target.value }))
+                    setForm((p) => ({ ...p, highlight: e.target.value }))
                   }
-                  placeholder="e.g. Free Delivery"
+                  placeholder="e.g. Get Extra 15% Off"
                 />
               </div>
               <div>
-                <label className={lbl}>Subtitle / Badge</label>
+                <label className={lbl}>Subtitle</label>
                 <input
                   className={inp}
                   value={form.subtitle}
                   onChange={(e) =>
                     setForm((p) => ({ ...p, subtitle: e.target.value }))
                   }
-                  placeholder="e.g. Auto Applied"
-                />
-              </div>
-              <div>
-                <label className={lbl}>Spend Threshold (display text)</label>
-                <input
-                  className={inp}
-                  value={form.spend}
-                  onChange={(e) =>
-                    setForm((p) => ({ ...p, spend: e.target.value }))
-                  }
-                  placeholder="e.g. 999 TK"
-                />
-              </div>
-              <div>
-                <label className={lbl}>
-                  Highlight (big text) <span className="text-red-500">*</span>
-                </label>
-                <input
-                  className={inp}
-                  value={form.highlight}
-                  onChange={(e) =>
-                    setForm((p) => ({ ...p, highlight: e.target.value }))
-                  }
-                  placeholder="e.g. Free  or  ৳150"
-                />
-              </div>
-              <div>
-                <label className={lbl}>
-                  Highlight Line 2{" "}
-                  <span className="text-xs text-gray-400">(optional)</span>
-                </label>
-                <input
-                  className={inp}
-                  value={form.highlightSecondary}
-                  onChange={(e) =>
-                    setForm((p) => ({
-                      ...p,
-                      highlightSecondary: e.target.value,
-                    }))
-                  }
-                  placeholder="e.g. Delivery"
+                  placeholder="e.g. On purchase of 2+ styles"
                 />
               </div>
             </div>
 
             <div>
-              <label className={lbl}>Description</label>
-              <textarea
-                className={inp}
-                rows={2}
-                value={form.description}
-                onChange={(e) =>
-                  setForm((p) => ({ ...p, description: e.target.value }))
-                }
-                placeholder="Short description shown on the card"
-              />
+              <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                Card Colors
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <ColorField
+                  label="Card Background"
+                  value={form.bgColor}
+                  fallback={DEFAULT_BG}
+                  onChange={(v) =>
+                    setForm((p) => ({ ...p, bgColor: v }))
+                  }
+                />
+                <ColorField
+                  label="Button Color"
+                  value={form.buttonColor}
+                  fallback={DEFAULT_BUTTON}
+                  onChange={(v) =>
+                    setForm((p) => ({ ...p, buttonColor: v }))
+                  }
+                />
+                <ColorField
+                  label="Text Color"
+                  value={form.textColor}
+                  fallback={DEFAULT_TEXT}
+                  onChange={(v) =>
+                    setForm((p) => ({ ...p, textColor: v }))
+                  }
+                />
+              </div>
             </div>
           </div>
 

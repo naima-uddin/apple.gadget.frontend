@@ -10,6 +10,28 @@ const TABS = [
   { key: "faq", label: "FAQ", type: "qa", icon: "❓" },
   { key: "privacy", label: "প্রাইভেসি", type: "section", icon: "🔒" },
   { key: "terms", label: "শর্তাবলী", type: "section", icon: "📄" },
+  { key: "footer", label: "ফুটার", type: "footer", icon: "🦶" },
+  { key: "contact", label: "যোগাযোগ", type: "contact", icon: "📞" },
+  { key: "about", label: "আমাদের সম্পর্কে", type: "about", icon: "ℹ️" },
+];
+
+const POLICY_KEYS = ["shipping", "return", "faq", "privacy", "terms"];
+
+const EMPTY_FOOTER_INFO = { phone: "", email: "", address: "" };
+const EMPTY_CONTACT_INFO = { phone: "", email: "", address: "" };
+const EMPTY_FOOTER_LINKS = { quickLinks: [], customerService: [] };
+const EMPTY_ABOUT = {
+  hero: { title: "", description: "" },
+  features: [],
+  stats: [],
+};
+
+const SOCIAL_PLATFORMS = [
+  { key: "facebook", label: "Facebook", color: "#1877F2", placeholder: "https://facebook.com/yourpage" },
+  { key: "instagram", label: "Instagram", color: "#E1306C", placeholder: "https://instagram.com/yourprofile" },
+  { key: "twitter", label: "Twitter / X", color: "#000000", placeholder: "https://twitter.com/yourhandle" },
+  { key: "tiktok", label: "TikTok", color: "#010101", placeholder: "https://tiktok.com/@yourprofile" },
+  { key: "youtube", label: "YouTube", color: "#FF0000", placeholder: "https://youtube.com/@yourchannel" },
 ];
 
 /* ───────────── Default Bengali content ───────────── */
@@ -241,6 +263,20 @@ const DEFAULT_CONTENT = {
 };
 /* ─────────────────────────────────────────────────── */
 
+const INPUT =
+  "w-full border border-gray-200 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300";
+
+function Field({ label, children }) {
+  return (
+    <div>
+      <label className="block text-xs font-medium text-gray-600 mb-1">
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
+
 function QAEditor({ items, onChange }) {
   const add = () => onChange([...items, { question: "", answer: "" }]);
   const remove = (i) => onChange(items.filter((_, idx) => idx !== i));
@@ -367,6 +403,333 @@ function SectionEditor({ items, onChange }) {
   );
 }
 
+function FooterEditor({ footerInfo, socialLinks, footerLinks, onChange }) {
+  const setInfo = (key, val) =>
+    onChange({ footerInfo: { ...footerInfo, [key]: val } });
+
+  const setSocial = (platform, field, val) =>
+    onChange({
+      socialLinks: {
+        ...socialLinks,
+        [platform]: { ...(socialLinks?.[platform] || {}), [field]: val },
+      },
+    });
+
+  const setLinks = (listKey, updater) =>
+    onChange({
+      footerLinks: {
+        ...footerLinks,
+        [listKey]:
+          typeof updater === "function"
+            ? updater(footerLinks?.[listKey] || [])
+            : updater,
+      },
+    });
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার — যোগাযোগের তথ্য</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="ফোন নম্বর">
+            <input
+              value={footerInfo?.phone || ""}
+              onChange={(e) => setInfo("phone", e.target.value)}
+              className={INPUT}
+              placeholder="+880 1700-000000"
+            />
+          </Field>
+          <Field label="ইমেইল">
+            <input
+              value={footerInfo?.email || ""}
+              onChange={(e) => setInfo("email", e.target.value)}
+              className={INPUT}
+              placeholder="info@example.com"
+            />
+          </Field>
+          <Field label="ঠিকানা">
+            <input
+              value={footerInfo?.address || ""}
+              onChange={(e) => setInfo("address", e.target.value)}
+              className={`${INPUT} sm:col-span-2`}
+              placeholder="Mirpur, Dhaka-1216, Bangladesh"
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">সোশ্যাল মিডিয়া লিংক</p>
+        <div className="space-y-2">
+          {SOCIAL_PLATFORMS.map(({ key, label, color, placeholder }) => {
+            const link = socialLinks?.[key] || {};
+            return (
+              <div
+                key={key}
+                className="flex items-center gap-3 px-3 py-2.5 border border-gray-200 rounded-lg bg-gray-50"
+              >
+                <span
+                  className="w-3 h-3 rounded-full shrink-0"
+                  style={{ backgroundColor: color }}
+                />
+                <span className="text-xs font-medium text-gray-700 w-20 shrink-0">
+                  {label}
+                </span>
+                <input
+                  type="url"
+                  value={link.url || ""}
+                  onChange={(e) => setSocial(key, "url", e.target.value)}
+                  className="flex-1 border border-gray-200 px-2.5 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300 bg-white"
+                  placeholder={placeholder}
+                />
+                <label className="flex items-center gap-1.5 text-xs cursor-pointer shrink-0 text-gray-600">
+                  <input
+                    type="checkbox"
+                    checked={link.enabled !== false}
+                    onChange={(e) => setSocial(key, "enabled", e.target.checked)}
+                    className="w-3.5 h-3.5 accent-gray-800"
+                  />
+                  Show
+                </label>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার নেভিগেশন লিংক</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {[
+            { key: "quickLinks", title: "Quick Links" },
+            { key: "customerService", title: "Customer Service" },
+          ].map(({ key, title }) => {
+            const links = footerLinks?.[key] || [];
+            const update = (updater) => setLinks(key, updater);
+
+            return (
+              <div key={key}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-semibold text-gray-700">{title}</span>
+                  <button
+                    type="button"
+                    onClick={() => update((prev) => [...prev, { label: "", href: "" }])}
+                    className="flex items-center gap-1 text-xs px-2.5 py-1 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Add
+                  </button>
+                </div>
+
+                {links.length === 0 ? (
+                  <p className="text-[11px] text-gray-400 italic py-3 text-center border border-dashed border-gray-200 rounded-lg">
+                    কোনো link নেই
+                  </p>
+                ) : (
+                  <div className="space-y-1.5">
+                    {links.map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-1.5">
+                        <input
+                          value={item.label}
+                          onChange={(e) =>
+                            update((prev) =>
+                              prev.map((l, i) => (i === idx ? { ...l, label: e.target.value } : l)),
+                            )
+                          }
+                          placeholder="Label"
+                          className="w-24 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100"
+                        />
+                        <input
+                          value={item.href}
+                          onChange={(e) =>
+                            update((prev) =>
+                              prev.map((l, i) => (i === idx ? { ...l, href: e.target.value } : l)),
+                            )
+                          }
+                          onBlur={(e) => {
+                            const val = e.target.value.trim();
+                            if (val && !val.startsWith("/") && !val.startsWith("http://") && !val.startsWith("https://")) {
+                              update((prev) =>
+                                prev.map((l, i) => (i === idx ? { ...l, href: `/${val}` } : l)),
+                              );
+                            }
+                          }}
+                          placeholder="/path"
+                          className="flex-1 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => update((prev) => prev.filter((_, i) => i !== idx))}
+                          className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50"
+                          title="Remove"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                            <path d="M10 11v6M14 11v6" />
+                            <path d="M9 6V4h6v2" />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ContactEditor({ contactInfo, onChange }) {
+  const setInfo = (key, val) =>
+    onChange({ contactInfo: { ...contactInfo, [key]: val } });
+
+  return (
+    <div>
+      <p className="text-sm font-semibold text-gray-700 mb-2">
+        Contact Us পেজে দেখানো যোগাযোগের তথ্য
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Field label="ফোন নম্বর">
+          <input
+            value={contactInfo?.phone || ""}
+            onChange={(e) => setInfo("phone", e.target.value)}
+            className={INPUT}
+            placeholder="+880 1700-000000"
+          />
+        </Field>
+        <Field label="ইমেইল">
+          <input
+            value={contactInfo?.email || ""}
+            onChange={(e) => setInfo("email", e.target.value)}
+            className={INPUT}
+            placeholder="support@example.com"
+          />
+        </Field>
+        <Field label="ঠিকানা">
+          <input
+            value={contactInfo?.address || ""}
+            onChange={(e) => setInfo("address", e.target.value)}
+            className={`${INPUT} sm:col-span-2`}
+            placeholder="Mirpur, Dhaka-1216, Bangladesh"
+          />
+        </Field>
+      </div>
+    </div>
+  );
+}
+
+function AboutEditor({ aboutContent, onChange }) {
+  const hero = aboutContent?.hero || {};
+  const features = aboutContent?.features?.length
+    ? aboutContent.features
+    : [{ title: "", desc: "" }, { title: "", desc: "" }, { title: "", desc: "" }, { title: "", desc: "" }];
+  const stats = aboutContent?.stats?.length
+    ? aboutContent.stats
+    : [{ value: "", label: "" }, { value: "", label: "" }, { value: "", label: "" }, { value: "", label: "" }];
+
+  const setHero = (key, val) =>
+    onChange({ aboutContent: { ...aboutContent, hero: { ...hero, [key]: val } } });
+
+  const setFeature = (i, key, val) =>
+    onChange({
+      aboutContent: {
+        ...aboutContent,
+        features: features.map((f, idx) => (idx === i ? { ...f, [key]: val } : f)),
+      },
+    });
+
+  const setStat = (i, key, val) =>
+    onChange({
+      aboutContent: {
+        ...aboutContent,
+        stats: stats.map((s, idx) => (idx === i ? { ...s, [key]: val } : s)),
+      },
+    });
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">হিরো সেকশন</p>
+        <div className="space-y-3">
+          <Field label="শিরোনাম">
+            <input
+              value={hero.title || ""}
+              onChange={(e) => setHero("title", e.target.value)}
+              className={INPUT}
+              placeholder="About আমাদের স্টোর"
+            />
+          </Field>
+          <Field label="বিবরণ">
+            <textarea
+              value={hero.description || ""}
+              onChange={(e) => setHero("description", e.target.value)}
+              rows={3}
+              className={`${INPUT} resize-y`}
+              placeholder="আমাদের স্টোর সম্পর্কে সংক্ষিপ্ত বিবরণ লিখুন…"
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">
+          Why Shop With Us — ৪টি ফিচার
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {features.map((f, i) => (
+            <div key={i} className="border border-gray-200 rounded-xl p-3 bg-gray-50">
+              <p className="text-[11px] font-mono text-gray-400 mb-1.5">#{i + 1}</p>
+              <input
+                value={f.title || ""}
+                onChange={(e) => setFeature(i, "title", e.target.value)}
+                className={`${INPUT} mb-2`}
+                placeholder="ফিচারের শিরোনাম"
+              />
+              <textarea
+                value={f.desc || ""}
+                onChange={(e) => setFeature(i, "desc", e.target.value)}
+                rows={2}
+                className={`${INPUT} resize-y`}
+                placeholder="ফিচারের বিবরণ"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">স্ট্যাটিস্টিক্স — ৪টি সংখ্যা</p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {stats.map((s, i) => (
+            <div key={i} className="border border-gray-200 rounded-xl p-3 bg-gray-50">
+              <p className="text-[11px] font-mono text-gray-400 mb-1.5">#{i + 1}</p>
+              <input
+                value={s.value || ""}
+                onChange={(e) => setStat(i, "value", e.target.value)}
+                className={`${INPUT} mb-2`}
+                placeholder="10K+"
+              />
+              <input
+                value={s.label || ""}
+                onChange={(e) => setStat(i, "label", e.target.value)}
+                className={INPUT}
+                placeholder="Happy Customers"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function PolicyPagesEditor() {
   const [activeTab, setActiveTab] = useState("shipping");
   const [policyContent, setPolicyContent] = useState({
@@ -376,6 +739,12 @@ export default function PolicyPagesEditor() {
     privacy: [],
     terms: [],
   });
+  const [footerInfo, setFooterInfo] = useState(EMPTY_FOOTER_INFO);
+  const [contactInfo, setContactInfo] = useState(EMPTY_CONTACT_INFO);
+  const [socialLinks, setSocialLinks] = useState({});
+  const [footerLinks, setFooterLinks] = useState(EMPTY_FOOTER_LINKS);
+  const [aboutContent, setAboutContent] = useState(EMPTY_ABOUT);
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState("");
@@ -384,7 +753,8 @@ export default function PolicyPagesEditor() {
     fetch(`${API}/api/admin/settings`, { credentials: "include" })
       .then((r) => r.json())
       .then((b) => {
-        const pc = b.settings?.policyContent || {};
+        const s = b.settings || {};
+        const pc = s.policyContent || {};
         setPolicyContent({
           shipping: pc.shipping || [],
           return: pc.return || [],
@@ -392,6 +762,11 @@ export default function PolicyPagesEditor() {
           privacy: pc.privacy || [],
           terms: pc.terms || [],
         });
+        setFooterInfo(s.footerInfo || EMPTY_FOOTER_INFO);
+        setContactInfo(s.contactInfo || EMPTY_CONTACT_INFO);
+        setSocialLinks(s.socialLinks || {});
+        setFooterLinks(s.footerLinks || EMPTY_FOOTER_LINKS);
+        setAboutContent(s.aboutContent || EMPTY_ABOUT);
       })
       .catch(console.error)
       .finally(() => setLoading(false));
@@ -402,14 +777,14 @@ export default function PolicyPagesEditor() {
     setTimeout(() => setToast(""), 3000);
   };
 
-  const save = async (data) => {
+  const putPolicy = async (payload) => {
     setSaving(true);
     try {
       const resp = await fetch(`${API}/api/admin/settings/policy`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ policyContent: data }),
+        body: JSON.stringify(payload),
       });
       if (!resp.ok) throw new Error((await resp.json()).error || "Save failed");
       showToast("✅ সেভ হয়েছে!");
@@ -420,8 +795,6 @@ export default function PolicyPagesEditor() {
     }
   };
 
-  const handleSave = () => save(policyContent);
-
   const handleQuickSetup = async () => {
     if (
       !confirm(
@@ -430,7 +803,20 @@ export default function PolicyPagesEditor() {
     )
       return;
     setPolicyContent(DEFAULT_CONTENT);
-    await save(DEFAULT_CONTENT);
+    await putPolicy({ policyContent: DEFAULT_CONTENT });
+  };
+
+  const handleSave = () => {
+    if (activeTab === "footer") {
+      return putPolicy({ footerInfo, socialLinks, footerLinks });
+    }
+    if (activeTab === "contact") {
+      return putPolicy({ contactInfo });
+    }
+    if (activeTab === "about") {
+      return putPolicy({ aboutContent });
+    }
+    return putPolicy({ policyContent });
   };
 
   const handleChange = (key, value) =>
@@ -456,8 +842,8 @@ export default function PolicyPagesEditor() {
     );
 
   const activeTabConfig = TABS.find((t) => t.key === activeTab);
-  const totalItems = Object.values(policyContent).reduce(
-    (s, a) => s + a.length,
+  const totalItems = POLICY_KEYS.reduce(
+    (s, k) => s + (policyContent[k]?.length || 0),
     0,
   );
 
@@ -493,7 +879,7 @@ export default function PolicyPagesEditor() {
               Policy Pages Editor
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
-              Dashboard থেকে সাইটের সব পলিসি পেজ এডিট করুন
+              Dashboard থেকে সাইটের সব পলিসি ও কনটেন্ট পেজ এডিট করুন
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -502,13 +888,15 @@ export default function PolicyPagesEditor() {
                 {toast}
               </span>
             )}
-            <button
-              onClick={handleQuickSetup}
-              disabled={saving}
-              className="px-3 py-1.5 text-xs border border-amber-300 text-amber-700 hover:bg-amber-50 rounded-lg transition disabled:opacity-60"
-            >
-              ⚡ Quick Setup
-            </button>
+            {POLICY_KEYS.includes(activeTab) && (
+              <button
+                onClick={handleQuickSetup}
+                disabled={saving}
+                className="px-3 py-1.5 text-xs border border-amber-300 text-amber-700 hover:bg-amber-50 rounded-lg transition disabled:opacity-60"
+              >
+                ⚡ Quick Setup
+              </button>
+            )}
             <button
               onClick={handleSave}
               disabled={saving}
@@ -532,62 +920,99 @@ export default function PolicyPagesEditor() {
               }`}
             >
               {tab.icon} {tab.label}
-              <span className="ml-1.5 text-xs text-gray-400">
-                ({(policyContent[tab.key] || []).length})
-              </span>
+              {POLICY_KEYS.includes(tab.key) && (
+                <span className="ml-1.5 text-xs text-gray-400">
+                  ({(policyContent[tab.key] || []).length})
+                </span>
+              )}
             </button>
           ))}
         </div>
 
         {/* Editor body */}
         <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-700">
-                {activeTabConfig?.icon} {activeTabConfig?.label} পেজ
-              </span>
-              <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-lg">
-                /
-                {activeTab === "faq"
-                  ? "faq"
-                  : activeTab === "shipping"
-                    ? "shipping"
-                    : activeTab === "return"
-                      ? "returns"
-                      : activeTab}
-              </span>
+          {POLICY_KEYS.includes(activeTab) && (
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-700">
+                  {activeTabConfig?.icon} {activeTabConfig?.label} পেজ
+                </span>
+                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-lg">
+                  /
+                  {activeTab === "faq"
+                    ? "faq"
+                    : activeTab === "shipping"
+                      ? "shipping"
+                      : activeTab === "return"
+                        ? "returns"
+                        : activeTab}
+                </span>
+              </div>
+              <button
+                onClick={handleLoadTabDefault}
+                className="text-xs text-gray-800 hover:text-[#1D1D1F] border border-gray-300 hover:bg-gray-50 px-3 py-1 rounded-lg transition"
+              >
+                এই ট্যাবে default কনটেন্ট লোড করুন
+              </button>
             </div>
-            <button
-              onClick={handleLoadTabDefault}
-              className="text-xs text-gray-800 hover:text-[#1D1D1F] border border-gray-300 hover:bg-gray-50 px-3 py-1 rounded-lg transition"
-            >
-              এই ট্যাবে default কনটেন্ট লোড করুন
-            </button>
-          </div>
+          )}
 
-          {activeTabConfig?.type === "qa" ? (
+          {activeTabConfig?.type === "qa" && (
             <QAEditor
               items={policyContent[activeTab] || []}
               onChange={(val) => handleChange(activeTab, val)}
             />
-          ) : (
+          )}
+          {activeTabConfig?.type === "section" && (
             <SectionEditor
               items={policyContent[activeTab] || []}
               onChange={(val) => handleChange(activeTab, val)}
             />
           )}
+          {activeTabConfig?.type === "footer" && (
+            <FooterEditor
+              footerInfo={footerInfo}
+              socialLinks={socialLinks}
+              footerLinks={footerLinks}
+              onChange={(patch) => {
+                if (patch.footerInfo) setFooterInfo(patch.footerInfo);
+                if (patch.socialLinks) setSocialLinks(patch.socialLinks);
+                if (patch.footerLinks) setFooterLinks(patch.footerLinks);
+              }}
+            />
+          )}
+          {activeTabConfig?.type === "contact" && (
+            <ContactEditor
+              contactInfo={contactInfo}
+              onChange={(patch) => {
+                if (patch.contactInfo) setContactInfo(patch.contactInfo);
+              }}
+            />
+          )}
+          {activeTabConfig?.type === "about" && (
+            <AboutEditor
+              aboutContent={aboutContent}
+              onChange={(patch) => {
+                if (patch.aboutContent) setAboutContent(patch.aboutContent);
+              }}
+            />
+          )}
         </div>
 
         <div className="border-t border-gray-100 px-6 py-3 bg-gray-50 flex justify-between items-center">
-          <button
-            onClick={() => {
-              handleChange(activeTab, []);
-              showToast("ট্যাব খালি করা হয়েছে");
-            }}
-            className="text-xs text-gray-400 hover:text-red-500 transition"
-          >
-            এই ট্যাব রিসেট করুন
-          </button>
+          {POLICY_KEYS.includes(activeTab) ? (
+            <button
+              onClick={() => {
+                handleChange(activeTab, []);
+                showToast("ট্যাব খালি করা হয়েছে");
+              }}
+              className="text-xs text-gray-400 hover:text-red-500 transition"
+            >
+              এই ট্যাব রিসেট করুন
+            </button>
+          ) : (
+            <span />
+          )}
           <button
             onClick={handleSave}
             disabled={saving}

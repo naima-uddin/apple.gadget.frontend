@@ -1,5 +1,5 @@
 import PolicyTabs from "@/components/Policy/Sidebar";
-import { siteTitle, getStoreName } from "@/lib/storeMeta";
+import { siteTitle, getStoreName, getAboutContent } from "@/lib/storeMeta";
 
 export async function generateMetadata() {
   const [title, storeName] = await Promise.all([
@@ -65,7 +65,26 @@ function FeatureIcon({ path }) {
 }
 
 export default async function AboutPage() {
-  const storeName = await getStoreName();
+  const [storeName, aboutContent] = await Promise.all([
+    getStoreName(),
+    getAboutContent(),
+  ]);
+
+  const heroTitle = aboutContent?.hero?.title || `About ${storeName}`;
+  const heroDescription =
+    aboutContent?.hero?.description ||
+    `${storeName} brings you curated gadgets and electronics with fast shipping and reliable customer service. We believe everyone deserves access to quality tech at budget-friendly prices.`;
+
+  const features = aboutContent?.features?.length
+    ? aboutContent.features.map((f, i) => ({
+        title: f.title,
+        desc: f.desc,
+        icon: FEATURES[i % FEATURES.length].icon,
+      }))
+    : FEATURES;
+
+  const stats = aboutContent?.stats?.length ? aboutContent.stats : STATS;
+
   return (
     <main className="max-w-5xl mx-auto px-4 py-10 sm:py-16">
       <PolicyTabs />
@@ -83,11 +102,9 @@ export default async function AboutPage() {
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
             Our Story
           </p>
-          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">About {storeName}</h1>
+          <h1 className="mt-2 text-2xl font-bold sm:text-3xl">{heroTitle}</h1>
           <p className="mt-3 max-w-xl text-sm text-gray-100 sm:text-base">
-            {storeName} brings you curated gadgets and electronics with fast shipping
-            and reliable customer service. We believe everyone deserves access to
-            quality tech at budget-friendly prices.
+            {heroDescription}
           </p>
         </div>
 
@@ -99,9 +116,9 @@ export default async function AboutPage() {
           </p>
 
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {FEATURES.map((f) => (
+            {features.map((f, i) => (
               <div
-                key={f.title}
+                key={f.title || i}
                 className="flex gap-3 rounded-xl border border-gray-100 p-4 transition hover:border-gray-300 hover:bg-gray-100/40"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-[#1D1D1F]">
@@ -117,9 +134,9 @@ export default async function AboutPage() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {STATS.map((s) => (
+          {stats.map((s, i) => (
             <div
-              key={s.label}
+              key={s.label || i}
               className="rounded-2xl border border-gray-100 bg-white p-4 text-center shadow-sm"
             >
               <p className="text-xl font-bold text-[#1D1D1F] sm:text-2xl">{s.value}</p>
