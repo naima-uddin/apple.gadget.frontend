@@ -575,7 +575,9 @@ export default function CheckoutPage() {
       { value: formData.address, message: t("checkout.please_fill_address") },
     ];
 
-    const firstMissing = requiredFields.find((f) => !f.value?.toString().trim());
+    const firstMissing = requiredFields.find(
+      (f) => !f.value?.toString().trim(),
+    );
     if (firstMissing) {
       toast.error(firstMissing.message);
       return;
@@ -734,23 +736,6 @@ export default function CheckoutPage() {
             </button>
           </div>
         )}
-
-        {/* New-user eligibility banner */}
-        {user &&
-          user.createdAt &&
-          Date.now() - new Date(user.createdAt).getTime() <
-            30 * 24 * 60 * 60 * 1000 && (
-            <div className="mb-5 pb-4 sm:mb-8 sm:pb-6 border-b border-gray-100 text-sm text-gray-500">
-              {t("checkout.new_user_welcome")}{" "}
-              {t("checkout.new_user_desc_prefix")}{" "}
-              <strong className="text-[#1F2937]">newUser26</strong>{" "}
-              {t("checkout.new_user_desc_middle")}{" "}
-              <strong className="text-[#1F2937]">
-                {t("checkout.new_user_desc_perk")}
-              </strong>{" "}
-              {t("checkout.new_user_desc_suffix")}
-            </div>
-          )}
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 sm:gap-8 lg:gap-14 items-start">
           {/* ── Left — form ──────────────────────────────────────────────── */}
