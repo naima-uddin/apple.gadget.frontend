@@ -510,6 +510,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
           <div className="relative">
             <div
               ref={imgBoxRef}
+              id="pdp-main-image"
               onMouseEnter={() => isDesktop && setMagnify(true)}
               onMouseLeave={() => setMagnify(false)}
               onMouseMove={handleMagnifyMove}

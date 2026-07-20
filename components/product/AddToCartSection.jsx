@@ -12,6 +12,7 @@ import {
 } from "@/components/cart/VariantEditModal";
 import { FaBell, FaClock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { flyToCart } from "@/lib/flyToCart";
 
 const STORAGE_KEY = (id) => `waitlist_joined_${id}`;
 
@@ -86,7 +87,15 @@ export default function AddToCartSection({
     ? resolveVariant(product, selectedColor, selectedSize)
     : null;
 
+  const flyProductImage = () => {
+    const imgEl = document
+      .getElementById("pdp-main-image")
+      ?.querySelector("img");
+    if (imgEl) flyToCart(imgEl);
+  };
+
   const handleAdd = () => {
+    flyProductImage();
     addToCart(product, qty, {
       selectedColor: selectedColor || null,
       selectedSize: selectedSize || null,
@@ -95,6 +104,7 @@ export default function AddToCartSection({
   };
 
   const handleBuyNow = () => {
+    flyProductImage();
     addToCart(product, qty, {
       selectedColor: selectedColor || null,
       selectedSize: selectedSize || null,

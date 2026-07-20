@@ -562,6 +562,7 @@ export default function Navbar() {
 
           {/* Cart */}
           <button
+            id="nav-cart-icon"
             onClick={toggleSidebar}
             className="relative p-2 text-gray-800 hover:text-[#1D1D1F] transition-colors"
             aria-label="Cart"

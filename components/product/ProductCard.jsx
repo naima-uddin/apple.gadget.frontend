@@ -21,6 +21,7 @@ import { getDisplayPrice } from "@/lib/pricing";
 import { useCompare } from "@/components/context/CompareContext";
 import { useLanguage } from "@/components/context/LanguageContext";
 import Skeleton from "@/components/ui/Skeleton";
+import { flyToCart } from "@/lib/flyToCart";
 
 export default function ProductCard({
   product,
@@ -42,6 +43,7 @@ export default function ProductCard({
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const [pendingWishlist, setPendingWishlist] = React.useState(null);
   const [waitlistProduct, setWaitlistProduct] = React.useState(null);
+  const imageRef = React.useRef(null);
 
   React.useEffect(() => {
     if (user && pendingWishlist) {
@@ -133,6 +135,8 @@ export default function ProductCard({
     return images[currentImageIndex];
   };
   const image = encodeURI(currentImage());
+  // Always fly the resting/main image to the cart — never the hover-preview image
+  const mainImage = encodeURI(images[currentImageIndex]);
 
   const id = product._id || product.id;
   const isOutOfStock =
@@ -161,6 +165,7 @@ export default function ProductCard({
         >
           <div className="absolute inset-0  flex items-center justify-center overflow-hidden">
             <Image
+              ref={imageRef}
               src={image}
               alt={product.title || product.slug}
               width={imageWidth}
@@ -249,6 +254,7 @@ export default function ProductCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
+                  flyToCart(imageRef.current, mainImage);
                   addToCart(product, 1);
                 }}
                 className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
@@ -385,6 +391,7 @@ export default function ProductCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
+                  flyToCart(imageRef.current, mainImage);
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
@@ -396,6 +403,7 @@ export default function ProductCard({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
+                  flyToCart(imageRef.current, mainImage);
                   addToCart(product, 1);
                 }}
                 className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-3 py-1.5 rounded-full hover:bg-black transition cursor:pointer"

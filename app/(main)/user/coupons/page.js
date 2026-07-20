@@ -18,10 +18,10 @@ import { useLanguage } from "@/components/context/LanguageContext";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
-// Same three constants OffersToSayYes uses for its ticket cards, so the
-// coupons page renders with an identical color combination.
+// Same ticket layout as OffersToSayYes, but kept strictly monochrome:
+// white accents inside the dark ticket, near-black accents on the page chrome.
 const BG = "#1D1D1F";
-const BUTTON = "#5B21B6";
+const BUTTON = "#FFFFFF";
 const TEXT = "#FFFFFF";
 
 const EDGE_NOTCHES = [8, 26, 44, 62, 80, 98];
@@ -91,7 +91,7 @@ function CouponCard({ coupon, cartSubtotal = 0 }) {
         {ready && (
           <span
             className="self-start mb-1.5 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: BUTTON, color: TEXT }}
+            style={{ backgroundColor: BUTTON, color: BG }}
           >
             <FaCheckCircle className="w-2.5 h-2.5" /> {tr("coupons.ready")}
           </span>
@@ -137,7 +137,7 @@ function CouponCard({ coupon, cartSubtotal = 0 }) {
             {coupon.isFirstOrderOnly && (
               <span
                 className="text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1"
-                style={{ backgroundColor: BUTTON, color: TEXT }}
+                style={{ backgroundColor: BUTTON, color: BG }}
               >
                 <FaGift className="w-2.5 h-2.5" /> First Order
               </span>
@@ -204,8 +204,8 @@ function CouponCard({ coupon, cartSubtotal = 0 }) {
             <button
               onClick={copy}
               disabled={!isUnlocked}
-              style={{ backgroundColor: BUTTON }}
-              className={`mt-2 inline-flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white transition ${
+              style={{ backgroundColor: BUTTON, color: BG }}
+              className={`mt-2 inline-flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide transition ${
                 isUnlocked
                   ? "hover:opacity-90 cursor-pointer"
                   : "opacity-40 cursor-not-allowed"
@@ -283,7 +283,7 @@ export default function CouponsPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#1F2937] flex items-center gap-3">
-          <FaTicketAlt className="text-[#5B21B6]" />
+          <FaTicketAlt className="text-[#1D1D1F]" />
           <span>{t("coupons.title")}</span>
         </h1>
         <p className="text-sm text-[#6B7280] mt-1">
@@ -294,7 +294,7 @@ export default function CouponsPage() {
               <button
                 type="button"
                 onClick={() => setShowAuthModal(true)}
-                className="text-[#5B21B6] underline"
+                className="text-[#1D1D1F] underline"
               >
                 {t("nav.login")}
               </button>{" "}
@@ -308,7 +308,7 @@ export default function CouponsPage() {
       {user && (
         <div className="mb-6 flex flex-wrap gap-3">
           {data.isNewUser && (
-            <div className="flex items-center gap-2 border border-violet-100 bg-violet-50 text-[#5B21B6] px-4 py-2 rounded-lg text-sm">
+            <div className="flex items-center gap-2 border border-gray-200 bg-gray-50 text-[#1D1D1F] px-4 py-2 rounded-lg text-sm">
               <FaUser />
               <span>
                 <strong>New User!</strong> You&apos;re eligible for new user
@@ -317,7 +317,7 @@ export default function CouponsPage() {
             </div>
           )}
           {data.isFirstOrder && (
-            <div className="flex items-center gap-2 bg-[#5B21B6] text-white px-4 py-2 rounded-lg text-sm">
+            <div className="flex items-center gap-2 bg-[#1D1D1F] text-white px-4 py-2 rounded-lg text-sm">
               <FaGift />
               <span>
                 <strong>First Order!</strong> Special discounts await you.
@@ -326,7 +326,7 @@ export default function CouponsPage() {
           )}
           {cartSubtotal > 0 && (
             <div className="flex items-center gap-2 border border-gray-100 bg-gray-50 text-[#1F2937] px-4 py-2 rounded-lg text-sm">
-              <FaShoppingCart className="text-[#5B21B6]" />
+              <FaShoppingCart className="text-[#1D1D1F]" />
               <span>
                 {t("coupons.cart_subtotal")}{" "}
                 <strong>৳{cartSubtotal.toFixed(0)}</strong>
@@ -343,7 +343,7 @@ export default function CouponsPage() {
           onClick={() => setViewMode("smart")}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
             viewMode === "smart"
-              ? "bg-[#5B21B6] text-white hover:bg-[#4C1D95]"
+              ? "bg-[#1D1D1F] text-white hover:bg-[#3A3A3C]"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
         >
@@ -353,7 +353,7 @@ export default function CouponsPage() {
           onClick={() => setViewMode("all")}
           className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
             viewMode === "all"
-              ? "bg-[#5B21B6] text-white hover:bg-[#4C1D95]"
+              ? "bg-[#1D1D1F] text-white hover:bg-[#3A3A3C]"
               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
           }`}
         >
@@ -377,8 +377,8 @@ export default function CouponsPage() {
             {t("coupons.all_coupons")}
           </h2>
           {allCoupons.length === 0 ? (
-            <div className="text-center py-20 border-2 border-dashed border-violet-200 bg-violet-50/40 rounded-2xl text-[#6B7280]">
-              <FaTicketAlt className="w-12 h-12 mx-auto mb-4 text-[#5B21B6] opacity-40" />
+            <div className="text-center py-20 border-2 border-dashed border-gray-200 bg-gray-50/40 rounded-2xl text-[#6B7280]">
+              <FaTicketAlt className="w-12 h-12 mx-auto mb-4 text-[#1D1D1F] opacity-40" />
               <p className="text-lg font-medium text-[#1F2937]">{t("coupons.no_coupons")}</p>
               <p className="text-sm mt-1">{t("coupons.check_back")}</p>
             </div>
@@ -420,7 +420,7 @@ export default function CouponsPage() {
           {almostUnlocked.length > 0 && (
             <section>
               <h2 className="text-xl font-bold text-[#1F2937] mb-4 flex items-center gap-2">
-                <FaGift className="text-[#5B21B6]" />
+                <FaGift className="text-[#1D1D1F]" />
                 {t("coupons.almost_unlocked")}
               </h2>
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -476,8 +476,8 @@ export default function CouponsPage() {
 
           {/* Empty state for smart view */}
           {data.eligible?.length === 0 && data.other?.length === 0 && (
-            <div className="text-center py-20 border-2 border-dashed border-violet-200 bg-violet-50/40 rounded-2xl text-[#6B7280]">
-              <FaTicketAlt className="w-12 h-12 mx-auto mb-4 text-[#5B21B6] opacity-40" />
+            <div className="text-center py-20 border-2 border-dashed border-gray-200 bg-gray-50/40 rounded-2xl text-[#6B7280]">
+              <FaTicketAlt className="w-12 h-12 mx-auto mb-4 text-[#1D1D1F] opacity-40" />
               <p className="text-lg font-medium text-[#1F2937]">{t("coupons.no_coupons")}</p>
               <p className="text-sm mt-1">{t("coupons.check_back")}</p>
             </div>
@@ -490,7 +490,7 @@ export default function CouponsPage() {
         <div className="mt-10 text-center">
           <Link
             href="/checkout"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-[#5B21B6] text-white rounded-lg hover:bg-[#4C1D95] font-semibold transition"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[#1D1D1F] text-white rounded-lg hover:bg-[#3A3A3C] font-semibold transition"
           >
             <FaShoppingCart />
             {t("coupons.apply_checkout")}
