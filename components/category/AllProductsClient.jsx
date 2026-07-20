@@ -6,6 +6,7 @@ import ProductCard from "@/components/product/ProductCard";
 import ProductFilters from "@/components/product/ProductFilters";
 import SortDropdown from "@/components/product/SortDropdown";
 import Link from "next/link";
+import { useCategories } from "@/components/context/CategoryContext";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
@@ -15,6 +16,10 @@ const PRODUCTS_PER_PAGE = 10;
 
 export default function AllProductsClient() {
   const router = useRouter();
+  const { getMainCategories, getSubcategories, categoriesMap } =
+    useCategories();
+  const [categoryTree, setCategoryTree] = useState([]);
+  const [descendantMap, setDescendantMap] = useState(new Map());
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,6 +43,54 @@ export default function AllProductsClient() {
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
+
+  // Build a flat top-level-category list (with depth) and an id -> descendant-ids
+  // map for the filter sidebar, mirroring CategoryPageClient's logic but rooted
+  // at every main category instead of a single one.
+  useEffect(() => {
+    const mainCats = getMainCategories();
+    if (!mainCats.length) return;
+
+    const collectDescendants = (catId, depth) => {
+      const results = [];
+      const children = getSubcategories(catId);
+      children.forEach((child) => {
+        results.push({ _id: child._id, name: child.name, depth });
+        results.push(...collectDescendants(child._id, depth + 1));
+      });
+      return results;
+    };
+
+    const flat = [];
+    mainCats.forEach((cat) => {
+      flat.push({ _id: cat._id, name: cat.name, depth: 0 });
+      flat.push(...collectDescendants(cat._id, 1));
+    });
+    setCategoryTree(flat);
+
+    const buildDescendantMap = (rootId) => {
+      const map = new Map();
+      const processNode = (nodeId) => {
+        const children = getSubcategories(nodeId);
+        const nodeSet = new Set([String(nodeId)]);
+        children.forEach((child) => {
+          processNode(child._id);
+          (
+            map.get(String(child._id)) || new Set([String(child._id)])
+          ).forEach((id) => nodeSet.add(id));
+        });
+        map.set(String(nodeId), nodeSet);
+      };
+      processNode(rootId);
+      return map;
+    };
+
+    const fullMap = new Map();
+    mainCats.forEach((cat) => {
+      buildDescendantMap(cat._id).forEach((set, id) => fullMap.set(id, set));
+    });
+    setDescendantMap(fullMap);
+  }, [getMainCategories, getSubcategories, categoriesMap]);
 
   useEffect(() => {
     const load = async () => {
@@ -260,7 +313,9 @@ export default function AllProductsClient() {
                 <div className="pt-2">
                   <ProductFilters
                     products={products}
-                    subcategories={[]}
+                    subcategories={categoryTree}
+                    descendantMap={descendantMap}
+                    categoryLabel="Categories"
                     onChange={(f) => {
                       setActiveFilters(f);
                       setCurrentPage(1);
@@ -280,7 +335,9 @@ export default function AllProductsClient() {
             >
               <ProductFilters
                 products={products}
-                subcategories={[]}
+                subcategories={categoryTree}
+                descendantMap={descendantMap}
+                categoryLabel="Categories"
                 onChange={(f) => {
                   setActiveFilters(f);
                   setCurrentPage(1);

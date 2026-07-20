@@ -672,7 +672,7 @@ export default function ProfitMarginManager() {
                 Revenue · COGS · Profit
               </p>
               <p className="text-xs text-gray-400 mt-0.5">
-                From fulfilled orders (est. COGS uses current buying prices)
+                From delivered orders only (est. COGS uses current buying prices)
               </p>
             </div>
             <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs font-medium">
@@ -784,8 +784,8 @@ export default function ProfitMarginManager() {
             </p>
           </div>
           <div className="ml-auto text-xs text-gray-400 hidden sm:block">
-            {chartTab === "monthly" ? "Last 24 months" : "All years"} · Excludes
-            cancelled / returned
+            {chartTab === "monthly" ? "Last 24 months" : "All years"} · Delivered
+            orders only
           </div>
         </div>
       )}

@@ -469,7 +469,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
           {/* Mobile sticky filter/sort bar */}
           <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#FAFAFB]/95 backdrop-blur border-b border-gray-100">
-            <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
+            <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
               <button
                 type="button"
                 onClick={() => setShowMobileFilters(true)}
@@ -499,10 +499,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                 }}
                 className="w-full"
               />
-
-              <div className="h-9 px-3 rounded-full border border-gray-200 bg-white shadow-sm flex items-center justify-center text-xs font-semibold text-[#1D1D1F]">
-                {totalProducts > 0 ? totalProducts : "—"}
-              </div>
             </div>
           </div>
 

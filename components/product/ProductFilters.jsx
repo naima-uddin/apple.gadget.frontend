@@ -40,6 +40,7 @@ export default function ProductFilters({
   products = [],
   subcategories = EMPTY_SUBCATEGORIES,
   descendantMap = EMPTY_DESCENDANT_MAP,
+  categoryLabel = 'Subcategories',
   onChange,
   sticky = true,
   showSkincareFilters = false,
@@ -326,7 +327,7 @@ export default function ProductFilters({
 
       {/* ── Subcategories (nested with depth indentation) ────────────── */}
       {subcategories.length > 0 && (
-        <Section id="sub" title="Subcategories" isOpen={openSections.sub} onToggle={toggleSection}>
+        <Section id="sub" title={categoryLabel} isOpen={openSections.sub} onToggle={toggleSection}>
           <div className="space-y-1 max-h-52 overflow-y-auto pr-1">
             {subcategories.map(sub => {
               const id = String(sub._id);

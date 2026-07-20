@@ -193,7 +193,7 @@ export default function TrackOrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#fffaf6] py-10 px-4">
+    <div className="min-h-screen bg-[#F3F2F9] py-10 px-4">
       <div className="max-w-lg mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Track Your Order</h1>
@@ -215,7 +215,7 @@ export default function TrackOrderPage() {
                 onClick={() => switchMode(m.key)}
                 className={`flex-1 px-2 py-2 text-xs font-medium rounded-md transition ${
                   mode === m.key
-                    ? "bg-white text-rose-700 shadow-sm border border-gray-200"
+                    ? "bg-white text-gray-700 shadow-sm border border-gray-200"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -252,7 +252,7 @@ export default function TrackOrderPage() {
               <button
                 type="submit"
                 disabled={orderLoading}
-                className="w-full py-3 rounded-xl bg-rose-600 text-white font-semibold text-sm hover:bg-rose-700 disabled:opacity-60 transition"
+                className="w-full py-3 rounded-xl bg-gray-600 text-white font-semibold text-sm hover:bg-gray-900 disabled:opacity-60 transition"
               >
                 {orderLoading ? "Looking up order…" : "Track Order"}
               </button>
@@ -289,7 +289,7 @@ export default function TrackOrderPage() {
               <button
                 type="submit"
                 disabled={phoneLoading}
-                className="w-full py-3 rounded-xl bg-rose-600 text-white font-semibold text-sm hover:bg-rose-700 disabled:opacity-60 transition"
+                className="w-full py-3 rounded-xl bg-gray-600 text-white font-semibold text-sm hover:bg-gray-900 disabled:opacity-60 transition"
               >
                 {phoneLoading ? "Searching…" : "Find Orders"}
               </button>
