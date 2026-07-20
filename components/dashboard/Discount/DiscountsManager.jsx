@@ -143,6 +143,13 @@ function OfferCard({ offer }) {
   );
 }
 
+const BLANK_SECTION_TITLE = {
+  highlight: "",
+  rest: "",
+  highlightBn: "",
+  restBn: "",
+};
+
 export default function DiscountsManager() {
   const { user } = useUser();
   const [items, setItems] = useState([]);
@@ -151,6 +158,8 @@ export default function DiscountsManager() {
   const [form, setForm] = useState(BLANK);
   const [saving, setSaving] = useState(false);
   const [showFunctional, setShowFunctional] = useState(false);
+  const [sectionTitle, setSectionTitle] = useState(BLANK_SECTION_TITLE);
+  const [sectionTitleSaving, setSectionTitleSaving] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -167,9 +176,42 @@ export default function DiscountsManager() {
     }
   };
 
+  const loadSectionTitle = async () => {
+    try {
+      const r = await fetch(`${API}/api/admin/settings`, {
+        credentials: "include",
+      });
+      const d = await r.json();
+      if (d.settings?.offersTitle) {
+        setSectionTitle({ ...BLANK_SECTION_TITLE, ...d.settings.offersTitle });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   useEffect(() => {
     load();
+    loadSectionTitle();
   }, []);
+
+  const saveSectionTitle = async () => {
+    setSectionTitleSaving(true);
+    try {
+      const r = await fetch(`${API}/api/admin/settings`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ offersTitle: sectionTitle }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.error || "Save failed");
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      setSectionTitleSaving(false);
+    }
+  };
 
   const openNew = () => {
     setForm(BLANK);
@@ -299,6 +341,75 @@ export default function DiscountsManager() {
           className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] text-sm font-medium shrink-0"
         >
           <span className="text-lg leading-none">+</span> Add Offer/Coupon
+        </button>
+      </div>
+
+      {/* Homepage section title */}
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 space-y-4">
+        <div>
+          <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
+            Section Title
+          </h2>
+          <p className="text-xs text-gray-500 mt-0.5">
+            Shown above the offer cards on the homepage, e.g. "OFFERS! You
+            Can't Miss!!".
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className={lbl}>Highlighted Word (English)</label>
+            <input
+              className={inp}
+              value={sectionTitle.highlight}
+              onChange={(e) =>
+                setSectionTitle((p) => ({ ...p, highlight: e.target.value }))
+              }
+              placeholder="e.g. OFFERS!"
+            />
+          </div>
+          <div>
+            <label className={lbl}>Rest of Title (English)</label>
+            <input
+              className={inp}
+              value={sectionTitle.rest}
+              onChange={(e) =>
+                setSectionTitle((p) => ({ ...p, rest: e.target.value }))
+              }
+              placeholder="e.g. You Can't Miss!!"
+            />
+          </div>
+          <div>
+            <label className={lbl}>Highlighted Word (Bangla)</label>
+            <input
+              className={inp}
+              value={sectionTitle.highlightBn}
+              onChange={(e) =>
+                setSectionTitle((p) => ({
+                  ...p,
+                  highlightBn: e.target.value,
+                }))
+              }
+              placeholder="e.g. অফার!"
+            />
+          </div>
+          <div>
+            <label className={lbl}>Rest of Title (Bangla)</label>
+            <input
+              className={inp}
+              value={sectionTitle.restBn}
+              onChange={(e) =>
+                setSectionTitle((p) => ({ ...p, restBn: e.target.value }))
+              }
+              placeholder="e.g. মিস করবেন না!!"
+            />
+          </div>
+        </div>
+        <button
+          onClick={saveSectionTitle}
+          disabled={sectionTitleSaving}
+          className="px-5 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] text-sm font-medium disabled:opacity-60"
+        >
+          {sectionTitleSaving ? "Saving…" : "Save Title"}
         </button>
       </div>
 

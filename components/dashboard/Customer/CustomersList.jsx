@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useUser } from "@/components/context/UserContext";
 
@@ -26,11 +26,58 @@ function RiskBadge({ summary }) {
   );
 }
 
+function NewsletterBadge({ subscribed }) {
+  return subscribed ? (
+    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full border bg-emerald-50 text-emerald-700 border-emerald-200">
+      Subscribed
+    </span>
+  ) : (
+    <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full border bg-gray-50 text-gray-500 border-gray-200">
+      Not subscribed
+    </span>
+  );
+}
+
+const SORT_ACCESSORS = {
+  name: (u) => (u.name || "").toLowerCase(),
+  mobile: (u) => u.mobile || "",
+  orders: (u) => u.orderSummary?.totalOrders ?? 0,
+  delivered: (u) => u.orderSummary?.delivered ?? 0,
+  cancelled: (u) => u.orderSummary?.cancelled ?? 0,
+  returned: (u) => u.orderSummary?.returned ?? 0,
+  success: (u) => u.orderSummary?.deliverySuccessRate ?? 0,
+  risk: (u) => u.orderSummary?.riskScore ?? 0,
+  newsletter: (u) => (u.newsletterSubscribed ? 1 : 0),
+  createdAt: (u) => (u.createdAt ? new Date(u.createdAt).getTime() : 0),
+};
+
+const SORT_COLUMNS = [
+  { key: "name", label: "Customer" },
+  { key: "mobile", label: "Mobile" },
+  { key: "orders", label: "Orders" },
+  { key: "delivered", label: "Delivered" },
+  { key: "cancelled", label: "Cancelled" },
+  { key: "returned", label: "Returned" },
+  { key: "success", label: "Success" },
+  { key: "risk", label: "Risk" },
+  { key: "newsletter", label: "Newsletter" },
+];
+
+function SortIcon({ active, dir }) {
+  return (
+    <span className={`ml-1 inline-block text-[10px] ${active ? "text-[#5B21B6]" : "text-gray-300"}`}>
+      {active && dir === "desc" ? "▼" : "▲"}
+    </span>
+  );
+}
+
 export default function CustomersList() {
   const { user, refreshUser } = useUser();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState("createdAt");
+  const [sortDir, setSortDir] = useState("desc");
 
   useEffect(() => {
     if (!user) refreshUser();
@@ -61,6 +108,28 @@ export default function CustomersList() {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
+
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortKey(key);
+      setSortDir("asc");
+    }
+  };
+
+  const sortedItems = useMemo(() => {
+    const accessor = SORT_ACCESSORS[sortKey] || SORT_ACCESSORS.createdAt;
+    const sorted = [...items].sort((a, b) => {
+      const av = accessor(a);
+      const bv = accessor(b);
+      if (av < bv) return -1;
+      if (av > bv) return 1;
+      return 0;
+    });
+    if (sortDir === "desc") sorted.reverse();
+    return sorted;
+  }, [items, sortKey, sortDir]);
 
   const handleDelete = async (id) => {
     if (!confirm("Delete this user account?")) return;
@@ -105,19 +174,23 @@ export default function CustomersList() {
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
                 <tr>
-                  <th className="px-3 py-3">Customer</th>
-                  <th className="px-3 py-3">Mobile</th>
-                  <th className="px-3 py-3">Orders</th>
-                  <th className="px-3 py-3">Delivered</th>
-                  <th className="px-3 py-3">Cancelled</th>
-                  <th className="px-3 py-3">Returned</th>
-                  <th className="px-3 py-3">Success</th>
-                  <th className="px-3 py-3">Risk</th>
+                  {SORT_COLUMNS.map((col) => (
+                    <th key={col.key} className="px-3 py-3">
+                      <button
+                        type="button"
+                        onClick={() => handleSort(col.key)}
+                        className="inline-flex items-center hover:text-[#5B21B6] focus:outline-none"
+                      >
+                        {col.label}
+                        <SortIcon active={sortKey === col.key} dir={sortDir} />
+                      </button>
+                    </th>
+                  ))}
                   <th className="px-3 py-3">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {items.map((u) => {
+                {sortedItems.map((u) => {
                   const s = u.orderSummary;
                   return (
                     <tr key={u._id} className="hover:bg-gray-50/30">
@@ -151,6 +224,9 @@ export default function CustomersList() {
                         <RiskBadge summary={s} />
                       </td>
                       <td className="px-3 py-3">
+                        <NewsletterBadge subscribed={!!u.newsletterSubscribed} />
+                      </td>
+                      <td className="px-3 py-3">
                         <div className="flex flex-wrap gap-2">
                           <Link
                             href={`/dashboard/customers/${u._id}/profile`}
@@ -177,9 +253,9 @@ export default function CustomersList() {
                     </tr>
                   );
                 })}
-                {items.length === 0 && (
+                {sortedItems.length === 0 && (
                   <tr>
-                    <td colSpan={9} className="text-center py-10 text-gray-400">
+                    <td colSpan={10} className="text-center py-10 text-gray-400">
                       No customers found
                     </td>
                   </tr>

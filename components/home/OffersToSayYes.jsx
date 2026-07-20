@@ -115,15 +115,19 @@ function OfferCard({ offer }) {
 }
 
 export default function OffersToSayYes() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [mobileIndex, setMobileIndex] = useState(0);
   const [offers, setOffers] = useState([]);
+  const [offersTitle, setOffersTitle] = useState(null);
 
   useEffect(() => {
     fetch(`${API}/api/discounts`)
       .then((r) => r.json())
-      .then((d) => setOffers(d.items || []))
+      .then((d) => {
+        setOffers(d.items || []);
+        setOffersTitle(d.offersTitle || null);
+      })
       .catch(() => setOffers([]));
   }, []);
 
@@ -154,31 +158,36 @@ export default function OffersToSayYes() {
 
   if (offers.length === 0) return null;
 
+  const titleHighlight =
+    (lang === "bn" ? offersTitle?.highlightBn : offersTitle?.highlight) ||
+    t("offers.title_highlight");
+  const titleRest =
+    (lang === "bn" ? offersTitle?.restBn : offersTitle?.rest) ||
+    t("offers.title_rest");
+
   return (
     <div className="w-full max-w-7xl mx-auto px-3 md:px-6 lg:px-8 py-8">
       {/* Header */}
       <SectionHeader
         title={
           <>
-            <span className="text-[#1D1D1F]">
-              {t("offers.title_highlight")}
-            </span>{" "}
-            {t("offers.title_rest")}
+            <span className="text-[#1D1D1F]">{titleHighlight}</span>{" "}
+            {titleRest}
           </>
         }
       />
 
       {/* ── Mobile slider: one card at a time (hidden on md+) ── */}
-      <div className="relative md:hidden">
+      <div className="relative md:hidden px-7">
         <button
           onClick={prevMobile}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#1D1D1F] transition"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:border-[#1D1D1F] transition"
         >
           <FaChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextMobile}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:border hover:border-[#1D1D1F] transition"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:border-[#1D1D1F] transition"
         >
           <FaChevronRight className="w-4 h-4" />
         </button>
@@ -215,16 +224,16 @@ export default function OffersToSayYes() {
       </div>
 
       {/* ── Desktop slider: groups of 3 (shown on md+) ── */}
-      <div className="relative hidden md:block">
+      <div className="relative hidden md:block px-9">
         <button
           onClick={prevSlide}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#1D1D1F] transition"
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:shadow-xl hover:border-[#1D1D1F] transition"
         >
           <FaChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg hover:shadow-xl hover:border hover:border-[#1D1D1F] transition"
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:shadow-xl hover:border-[#1D1D1F] transition"
         >
           <FaChevronRight className="w-4 h-4" />
         </button>
