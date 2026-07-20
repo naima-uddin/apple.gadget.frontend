@@ -36,6 +36,20 @@ const inp =
   "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400";
 const lbl = "block text-sm font-medium text-gray-700 mb-1";
 
+const EDGE_NOTCHES = [8, 26, 44, 62, 80, 98];
+
+function TicketEdge({ side }) {
+  return EDGE_NOTCHES.map((top) => (
+    <div
+      key={`${side}-${top}`}
+      className={`absolute w-3.5 h-3.5 bg-white rounded-full z-10 -translate-y-1/2 ${
+        side === "left" ? "-left-1.75" : "-right-1.75"
+      }`}
+      style={{ top: `${top}%` }}
+    />
+  ));
+}
+
 function ColorField({ label, value, onChange, fallback }) {
   const handleTextChange = (raw) => {
     const hex = raw.replace(/[^0-9a-fA-F]/g, "").slice(0, 6);
@@ -73,6 +87,10 @@ function OfferCard({ offer }) {
       className="relative flex rounded-2xl overflow-hidden h-44 shadow-lg"
       style={{ backgroundColor: bg }}
     >
+      {/* Scalloped tear edges on the two outer short sides */}
+      <TicketEdge side="left" />
+      <TicketEdge side="right" />
+
       {/* Ticket-perforation notches on the seam between the stub and the body */}
       <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
       <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />

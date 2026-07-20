@@ -13,6 +13,20 @@ const DEFAULT_TEXT = "#FFFFFF";
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const safeColor = (value, fallback) => (HEX_RE.test(value) ? value : fallback);
 
+const EDGE_NOTCHES = [8, 26, 44, 62, 80, 98];
+
+function TicketEdge({ side }) {
+  return EDGE_NOTCHES.map((top) => (
+    <div
+      key={`${side}-${top}`}
+      className={`absolute w-3.5 h-3.5 bg-white rounded-full z-10 -translate-y-1/2 ${
+        side === "left" ? "-left-1.75" : "-right-1.75"
+      }`}
+      style={{ top: `${top}%` }}
+    />
+  ));
+}
+
 function CouponCopy({ code, buttonColor }) {
   const [copied, setCopied] = useState(false);
   const { t } = useLanguage();
@@ -50,6 +64,10 @@ function OfferCard({ offer }) {
       className="relative flex rounded-2xl overflow-hidden h-44 shadow-lg"
       style={{ backgroundColor: bg }}
     >
+      {/* Scalloped tear edges on the two outer short sides */}
+      <TicketEdge side="left" />
+      <TicketEdge side="right" />
+
       {/* Ticket-perforation notches on the seam between the stub and the body */}
       <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
       <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
