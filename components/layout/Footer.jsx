@@ -147,10 +147,10 @@ export default function Footer() {
               <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
                 {t("footer.support")}
               </h4>
-              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
+              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400 wrap-break-word">
                 {footerInfo?.address && <li>{footerInfo.address}</li>}
                 {footerInfo?.email && (
-                  <li>
+                  <li className="break-all">
                     <a
                       href={`mailto:${footerInfo.email}`}
                       className="hover:text-white transition-colors"
