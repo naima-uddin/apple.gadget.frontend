@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -103,10 +103,6 @@ export default function BlogDetailClient({ slug }) {
         if (!resp.ok) {
           throw new Error(data.error || "Blog not found");
         }
-
-        console.log("Blog data received:", data.post);
-        console.log("Featured Image:", data.post?.featuredImage);
-        console.log("Featured Image Type:", typeof data.post?.featuredImage);
 
         setBlog(data.post);
 
@@ -273,7 +269,7 @@ export default function BlogDetailClient({ slug }) {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex justify-center items-center py-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose-500 border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#1D1D1F] border-t-transparent"></div>
       </div>
     );
   }
@@ -282,15 +278,15 @@ export default function BlogDetailClient({ slug }) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center py-20 px-4">
         <div className="text-6xl mb-4">😔</div>
-        <h1 className="text-2xl font-semibold text-gray-800 mb-2">
+        <h1 className="text-2xl font-semibold text-[#1F2937] mb-2">
           Blog Not Found
         </h1>
-        <p className="text-gray-500 mb-6">
+        <p className="text-[#6B7280] mb-6">
           {error || "The blog you are looking for does not exist."}
         </p>
         <Link
           href="/blog"
-          className="px-6 py-2 bg-rose-600 text-white rounded-full hover:bg-rose-700 transition-colors"
+          className="px-6 py-2 bg-[#1D1D1F] text-white rounded-full hover:bg-[black] transition-colors"
         >
           Back to Blog
         </Link>
@@ -299,14 +295,14 @@ export default function BlogDetailClient({ slug }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Enhanced Breadcrumb */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200/60 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-2 md:px-4 lg:px-6 py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-600">
             <Link
               href="/"
-              className="hover:text-orange-600 transition-colors flex items-center gap-1"
+              className="hover:text-[#1D1D1F] transition-colors flex items-center gap-1"
             >
               <svg
                 className="w-4 h-4"
@@ -338,7 +334,7 @@ export default function BlogDetailClient({ slug }) {
             </svg>
             <Link
               href="/blog"
-              className="hover:text-orange-600 transition-colors"
+              className="hover:text-[#1D1D1F] transition-colors"
             >
               Blog
             </Link>
@@ -355,7 +351,7 @@ export default function BlogDetailClient({ slug }) {
                 d="M9 5l7 7-7 7"
               />
             </svg>
-            <span className="text-gray-900 truncate max-w-[200px] font-medium">
+            <span className="text-[#1F2937] truncate max-w-[200px] font-medium">
               {blog.title}
             </span>
           </nav>
@@ -367,41 +363,39 @@ export default function BlogDetailClient({ slug }) {
         {/* Enhanced Header */}
         <header className="mb-1">
           <div className="text-center mb-2">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 leading-tight">
-              <span className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
-                {blog.title}
-              </span>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-2 leading-tight">
+              {blog.title}
             </h1>
 
             {/* Enhanced Author & Meta Info */}
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center sm:justify-between items-center gap-3 sm:gap-6 text-gray-600 mb-2 px-2 sm:px-4 md:px-0">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center sm:justify-between items-center gap-3 sm:gap-6 text-[#6B7280] mb-2 px-2 sm:px-4 md:px-0">
               <div className="flex items-center gap-2 sm:gap-3">
                 {logoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={logoUrl}
                     alt={storeName || "Store"}
-                    className="w-10 sm:w-12 h-10 sm:h-12 rounded-full object-contain bg-white border border-gray-200 shadow-lg p-1"
+                    className="w-10 sm:w-12 h-10 sm:h-12 rounded-full object-contain bg-white border border-gray-200 shadow-sm p-1"
                   />
                 ) : (
-                  <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-gradient-to-r from-orange-400 to-pink-400 flex items-center justify-center shadow-lg">
+                  <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-[#1D1D1F] flex items-center justify-center shadow-sm">
                     <span className="text-white font-bold text-xs sm:text-sm">
                       {storeName ? storeName.charAt(0).toUpperCase() : "B"}
                     </span>
                   </div>
                 )}
                 <div className="text-left">
-                  <div className="font-semibold text-gray-900 text-xs sm:text-sm">
+                  <div className="font-semibold text-[#1F2937] text-xs sm:text-sm">
                     {storeName || "Store"}
                   </div>
-                  <div className="text-xs text-gray-500">Author</div>
+                  <div className="text-xs text-[#6B7280]">Author</div>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6">
-                <span className="flex items-center gap-1.5 sm:gap-2 bg-white px-2 sm:px-3 md:px-4 py-1.5 rounded-full shadow-sm border border-gray-200 text-xs">
+                <span className="flex items-center gap-1.5 sm:gap-2 bg-white px-2 sm:px-3 md:px-4 py-1.5 rounded-full shadow-sm border border-gray-100 text-xs">
                   <svg
-                    className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500"
+                    className="w-4 sm:w-5 h-4 sm:h-5 text-[#1D1D1F]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -417,9 +411,9 @@ export default function BlogDetailClient({ slug }) {
                     blog.publishDate || blog.createdAt || blog.publishedAt,
                   )}
                 </span>
-                <span className="flex items-center gap-1.5 sm:gap-2 bg-white px-2 sm:px-3 md:px-4 py-1.5 rounded-full shadow-sm border border-gray-200 text-xs">
+                <span className="flex items-center gap-1.5 sm:gap-2 bg-white px-2 sm:px-3 md:px-4 py-1.5 rounded-full shadow-sm border border-gray-100 text-xs">
                   <svg
-                    className="w-4 sm:w-5 h-4 sm:h-5 text-orange-500 "
+                    className="w-4 sm:w-5 h-4 sm:h-5 text-[#1D1D1F]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -440,7 +434,7 @@ export default function BlogDetailClient({ slug }) {
 
         {/* Featured Image */}
         {getImageUrl(blog.featuredImage, blog.thumbnail) && (
-          <div className="relative aspect-[3/1] mb-8 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-600 shadow-xl">
+          <div className="relative aspect-[3/1] mb-8 rounded-2xl overflow-hidden bg-gradient-to-br from-[#1D1D1F] to-gray-600 shadow-lg">
             <Image
               src={getImageUrl(blog.featuredImage, blog.thumbnail)}
               alt={blog.title}
@@ -454,9 +448,9 @@ export default function BlogDetailClient({ slug }) {
         )}
 
         {/* Enhanced Content */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 py-2 sm:py-4 px-4 sm:px-8 md:px-10 mb-4 md:mb-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 py-2 sm:py-4 px-4 sm:px-8 md:px-10 mb-4 md:mb-6">
           <div
-            className="prose prose-sm sm:prose md:prose-lg lg:prose-xl max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-a:text-orange-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-strong:text-gray-900 prose-blockquote:border-l-orange-400 prose-blockquote:bg-orange-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-code:text-orange-600 prose-code:bg-orange-50 prose-code:px-2 prose-code:py-1 prose-code:rounded"
+            className="prose prose-sm sm:prose md:prose-lg lg:prose-xl max-w-none prose-headings:text-[#1F2937] prose-p:text-[#6B7280] prose-p:leading-relaxed prose-a:text-[#1D1D1F] prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-strong:text-[#1F2937] prose-blockquote:border-l-[#1D1D1F] prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-code:text-[#1D1D1F] prose-code:bg-gray-50 prose-code:px-2 prose-code:py-1 prose-code:rounded"
             dangerouslySetInnerHTML={{ __html: blog.content }}
           />
         </div>
@@ -464,18 +458,18 @@ export default function BlogDetailClient({ slug }) {
         {/* Enhanced Additional Images Gallery */}
         {blog.additionalImages && blog.additionalImages.length > 0 && (
           <div className="mb-8">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
               <div className="text-center mb-8">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1F2937] mb-2">
                   Gallery
                 </h3>
-                <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto rounded-full"></div>
+                <div className="w-16 h-1 bg-[#1D1D1F] mx-auto rounded-full"></div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                 {blog.additionalImages.map((image, index) => (
                   <div
                     key={index}
-                    className="group relative aspect-video rounded-xl overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    className="group relative aspect-video rounded-xl overflow-hidden bg-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer"
                     onClick={() => {
                       setLightboxImage(image.url);
                       setLightboxOpen(true);
@@ -515,12 +509,12 @@ export default function BlogDetailClient({ slug }) {
         {/* Enhanced Videos */}
         {blog.videos && blog.videos.length > 0 && (
           <div className="mb-12">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
               <div className="text-center mb-8">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-2">
                   Videos
                 </h3>
-                <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto rounded-full"></div>
+                <div className="w-16 h-1 bg-[#1D1D1F] mx-auto rounded-full"></div>
               </div>
               <div className="grid grid-cols-1 gap-8">
                 {blog.videos.map((video, index) => {
@@ -532,7 +526,7 @@ export default function BlogDetailClient({ slug }) {
                   return (
                     <div
                       key={index}
-                      className="rounded-xl overflow-hidden shadow-xl bg-black"
+                      className="rounded-xl overflow-hidden shadow-lg bg-black"
                     >
                       <div className="aspect-video sm:aspect-[21/9]">
                         {embedUrl ? (
@@ -571,30 +565,30 @@ export default function BlogDetailClient({ slug }) {
               .map((section, index) => (
                 <div
                   key={`steps-${index}`}
-                  className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 md:p-8"
+                  className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8"
                 >
                   <div className="text-center mb-8">
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 capitalize">
+                    <h3 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-2 capitalize">
                       {section.type}
                     </h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto rounded-full"></div>
+                    <div className="w-16 h-1 bg-[#1D1D1F] mx-auto rounded-full"></div>
                   </div>
 
                   <div className="space-y-6">
                     {section.items.map((item, i) => (
                       <div
                         key={i}
-                        className="flex gap-3 sm:gap-4 md:gap-6 items-start p-4 sm:p-6 bg-gradient-to-r from-gray-50 to-gray-50/50 rounded-xl border border-gray-200/50"
+                        className="flex gap-3 sm:gap-4 md:gap-6 items-start p-4 sm:p-6 bg-gray-50 rounded-xl border border-gray-100"
                       >
-                        <div className="flex-shrink-0 w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg shadow-lg">
+                        <div className="flex-shrink-0 w-10 sm:w-12 h-10 sm:h-12 bg-[#1D1D1F] text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg shadow-sm">
                           {i + 1}
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-bold text-xl text-gray-900 mb-3">
+                          <h4 className="font-bold text-xl text-[#1F2937] mb-3">
                             {item.title}
                           </h4>
                           <div
-                            className="text-gray-700 leading-relaxed"
+                            className="text-[#6B7280] leading-relaxed"
                             dangerouslySetInnerHTML={{ __html: item.content }}
                           />
                         </div>
@@ -610,25 +604,25 @@ export default function BlogDetailClient({ slug }) {
               .map((section, index) => (
                 <div
                   key={`faq-${index}`}
-                  className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4 sm:p-6 md:p-8"
+                  className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8"
                 >
                   <div className="text-center mb-8">
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 capitalize">
+                    <h3 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-2 capitalize">
                       {section.type}
                     </h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto rounded-full"></div>
+                    <div className="w-16 h-1 bg-[#1D1D1F] mx-auto rounded-full"></div>
                   </div>
 
                   <div className="space-y-4">
                     {section.items.map((item, i) => (
                       <details
                         key={i}
-                        className="group border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                        className="group border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                       >
-                        <summary className="flex justify-between items-center cursor-pointer p-6 text-gray-900 font-semibold group-open:bg-gradient-to-r group-open:from-orange-50 group-open:to-pink-50 hover:bg-gray-50 transition-all">
+                        <summary className="flex justify-between items-center cursor-pointer p-6 text-[#1F2937] font-semibold group-open:bg-gray-50 hover:bg-gray-50 transition-all">
                           <span className="text-lg">{item.title}</span>
                           <svg
-                            className="w-6 h-6 transform group-open:rotate-180 transition-transform text-orange-500"
+                            className="w-6 h-6 transform group-open:rotate-180 transition-transform text-[#1D1D1F]"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -642,7 +636,7 @@ export default function BlogDetailClient({ slug }) {
                           </svg>
                         </summary>
                         <div
-                          className="px-6 pb-6 pt-2 text-gray-600 leading-relaxed"
+                          className="px-6 pb-6 pt-2 text-[#6B7280] leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: item.content }}
                         />
                       </details>
@@ -657,25 +651,25 @@ export default function BlogDetailClient({ slug }) {
               .map((section, index) => (
                 <div
                   key={`accordion-${index}`}
-                  className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8"
+                  className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
                 >
                   <div className="text-center mb-8">
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 capitalize">
+                    <h3 className="text-2xl md:text-3xl font-bold text-[#1F2937] mb-2 capitalize">
                       {section.type}
                     </h3>
-                    <div className="w-16 h-1 bg-gradient-to-r from-orange-400 to-pink-400 mx-auto rounded-full"></div>
+                    <div className="w-16 h-1 bg-[#1D1D1F] mx-auto rounded-full"></div>
                   </div>
 
                   <div className="space-y-4">
                     {section.items.map((item, i) => (
                       <details
                         key={i}
-                        className="group border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                        className="group border border-gray-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
                       >
-                        <summary className="flex justify-between items-center cursor-pointer p-6 text-gray-900 font-semibold group-open:bg-gradient-to-r group-open:from-orange-50 group-open:to-pink-50 hover:bg-gray-50 transition-all">
+                        <summary className="flex justify-between items-center cursor-pointer p-6 text-[#1F2937] font-semibold group-open:bg-gray-50 hover:bg-gray-50 transition-all">
                           <span className="text-lg">{item.title}</span>
                           <svg
-                            className="w-6 h-6 transform group-open:rotate-180 transition-transform text-orange-500"
+                            className="w-6 h-6 transform group-open:rotate-180 transition-transform text-[#1D1D1F]"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -689,7 +683,7 @@ export default function BlogDetailClient({ slug }) {
                           </svg>
                         </summary>
                         <div
-                          className="px-6 pb-6 pt-2 text-gray-600 leading-relaxed"
+                          className="px-6 pb-6 pt-2 text-[#6B7280] leading-relaxed"
                           dangerouslySetInnerHTML={{ __html: item.content }}
                         />
                       </details>
@@ -703,8 +697,8 @@ export default function BlogDetailClient({ slug }) {
         {/* Enhanced Tags */}
         {blog.tags && blog.tags.length > 0 && (
           <div className="mb-12">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+              <h3 className="text-xl font-bold text-[#1F2937] mb-6">
                 Related Topics
               </h3>
               <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
@@ -712,7 +706,7 @@ export default function BlogDetailClient({ slug }) {
                   <Link
                     key={tag}
                     href={`/blog?tag=${encodeURIComponent(tag)}`}
-                    className="inline-block bg-gradient-to-r from-orange-100 to-pink-100 hover:from-orange-200 hover:to-pink-200 text-orange-700 font-semibold px-6 py-3 rounded-full transition-all transform hover:scale-105 shadow-sm hover:shadow-md border border-orange-200"
+                    className="inline-block bg-gray-50 hover:bg-gray-100 text-[#1D1D1F] font-semibold px-6 py-3 rounded-full transition-all transform hover:scale-105 shadow-sm border border-gray-200"
                   >
                     #{tag}
                   </Link>
@@ -724,17 +718,17 @@ export default function BlogDetailClient({ slug }) {
 
         {/* Enhanced Share */}
         <div className="mb-6">
-          <div className="bg-gradient-to-r from-orange-50 to-pink-50 rounded-2xl shadow-lg border border-orange-100 p-8">
+          <div className="bg-gray-50 rounded-2xl shadow-sm border border-gray-100 p-8">
             <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
+              <h3 className="text-xl font-bold text-[#1F2937] mb-2">
                 Share this article
               </h3>
-              <p className="text-gray-600">Help others discover this content</p>
+              <p className="text-[#6B7280]">Help others discover this content</p>
             </div>
             <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 md:gap-4">
               <button
                 onClick={shareOnFacebook}
-                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all transform hover:scale-105 shadow-lg"
+                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all transform hover:scale-105 shadow-sm"
                 aria-label="Share on Facebook"
               >
                 <svg
@@ -748,7 +742,7 @@ export default function BlogDetailClient({ slug }) {
               </button>
               <button
                 onClick={shareOnTwitter}
-                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-xl transition-all transform hover:scale-105 shadow-lg"
+                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-xl transition-all transform hover:scale-105 shadow-sm"
                 aria-label="Share on Twitter"
               >
                 <svg
@@ -762,7 +756,7 @@ export default function BlogDetailClient({ slug }) {
               </button>
               <button
                 onClick={shareOnWhatsApp}
-                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl transition-all transform hover:scale-105 shadow-lg"
+                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl transition-all transform hover:scale-105 shadow-sm"
                 aria-label="Share on WhatsApp"
               >
                 <svg
@@ -776,7 +770,7 @@ export default function BlogDetailClient({ slug }) {
               </button>
               <button
                 onClick={copyLink}
-                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-xl transition-all transform hover:scale-105 shadow-lg"
+                className="flex items-center gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 md:py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-xl transition-all transform hover:scale-105 shadow-sm"
                 aria-label="Copy link"
               >
                 <svg
@@ -801,13 +795,13 @@ export default function BlogDetailClient({ slug }) {
 
       {/* Enhanced Related Blogs */}
       {relatedBlogs.length > 0 && (
-        <section className="bg-gradient-to-r from-orange-50 to-pink-50 py-4 sm:py-4 md:py-6 lg:py-10">
+        <section className="bg-white border-t border-gray-100 py-4 sm:py-4 md:py-6 lg:py-10">
           <div className="max-w-6xl mx-auto px-2 md:px-4 lg:px-6">
             <div className="text-center mb-4 md:mb-8">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1F2937] mb-2">
                 You Might Also Like
               </h2>
-              <p className="text-gray-600 max-w-4xl mx-auto text-sm md:text-base px-4">
+              <p className="text-[#6B7280] max-w-4xl mx-auto text-sm md:text-base px-4">
                 Discover more insightful articles and expert reviews to enhance
                 your tech knowledge
               </p>
@@ -817,7 +811,7 @@ export default function BlogDetailClient({ slug }) {
                 <Link
                   key={relBlog._id || relBlog.id}
                   href={`/blog/${relBlog.slug}`}
-                  className="group bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-md md:shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2"
+                  className="group bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 md:hover:-translate-y-2"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
                     {getImageUrl(relBlog.featuredImage, relBlog.thumbnail) ? (
@@ -832,10 +826,10 @@ export default function BlogDetailClient({ slug }) {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-orange-100 to-pink-100">
+                      <div className="w-full h-full flex items-center justify-center bg-gray-50">
                         <div className="text-center">
                           <div className="text-3xl md:text-4xl mb-2">📱</div>
-                          <span className="text-orange-600 font-semibold text-sm md:text-base">
+                          <span className="text-[#1D1D1F] font-semibold text-sm md:text-base">
                             Electronics
                           </span>
                         </div>
@@ -846,7 +840,7 @@ export default function BlogDetailClient({ slug }) {
                   <div className="px-4 py-2 md:px-6">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
                       {relBlog.categories && relBlog.categories.length > 0 && (
-                        <span className="inline-block bg-gradient-to-r from-orange-100 to-pink-100 text-orange-700 text-xs font-semibold px-2 md:px-3 py-1 rounded-full">
+                        <span className="inline-block bg-gray-50 text-[#1D1D1F] text-xs font-semibold px-2 md:px-3 py-1 rounded-full">
                           {relBlog.categories[0].name || relBlog.categories[0]}
                         </span>
                       )}
@@ -856,10 +850,10 @@ export default function BlogDetailClient({ slug }) {
                         </span>
                       )}
                     </div>
-                    <h3 className="font-bold text-base md:text-lg text-gray-900 group-hover:text-rose-700 transition-colors line-clamp-2 mb-2 leading-tight">
+                    <h3 className="font-bold text-base md:text-lg text-[#1F2937] group-hover:text-[#1D1D1F] transition-colors line-clamp-2 mb-2 leading-tight">
                       {relBlog.title}
                     </h3>
-                    <p className="text-gray-600 text-xs md:text-sm mb-1 md:mb-2 line-clamp-2 md:line-clamp-3 leading-relaxed">
+                    <p className="text-[#6B7280] text-xs md:text-sm mb-1 md:mb-2 line-clamp-2 md:line-clamp-3 leading-relaxed">
                       {truncateText(
                         relBlog.excerpt ||
                           relBlog.content?.replace(/<[^>]*>/g, ""),
@@ -867,7 +861,7 @@ export default function BlogDetailClient({ slug }) {
                       )}
                     </p>
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center text-rose-600 group-hover:text-rose-700 transition-colors ">
+                      <div className="flex items-center text-[#1D1D1F] group-hover:text-[black] transition-colors ">
                         <span className="text-xs md:text-sm font-semibold mr-1">
                           Read More
                         </span>
@@ -898,7 +892,7 @@ export default function BlogDetailClient({ slug }) {
       <div className="max-w-4xl mx-auto px-2 md:px-4 lg:px-6 py-4 sm:py-6 md:py-8">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-rose-600 hover:text-rose-700 font-medium transition-colors"
+          className="inline-flex items-center gap-2 text-[#1D1D1F] hover:text-[black] font-medium transition-colors"
         >
           <svg
             className="w-5 h-5"

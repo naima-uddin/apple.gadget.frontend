@@ -114,18 +114,18 @@ export default function Footer() {
   return (
     <>
       <footer role="contentinfo" className="bg-[#0A0A0A] text-white">
-        <div className="max-w-7xl mx-auto px-5 py-10 md:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-[1.5fr_1.2fr_1fr_1fr] gap-8 md:gap-10">
+        <div className="max-w-7xl mx-auto px-5 py-8 md:py-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-[1.5fr_1.2fr_1fr_1fr] gap-x-1 gap-y-1 md:gap-2 lg:gap-3">
             {/* Brand */}
-            <div className="col-span-2 md:col-span-1">
-              <h3 className="text-2xl font-extrabold tracking-tight mb-3">
+            <div className="md:col-span-1">
+              <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight mb-2 sm:mb-3">
                 {storeName || "Our Store"}
               </h3>
               <p className="text-sm text-gray-400 leading-relaxed md:max-w-60 mb-4">
                 {t("footer.store_desc")}
               </p>
               {socials.length > 0 && (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3 sm:gap-4">
                   {socials.map((s) => (
                     <a
                       key={s.key}
@@ -144,10 +144,10 @@ export default function Footer() {
 
             {/* Support */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
                 {t("footer.support")}
               </h4>
-              <ul className="space-y-3 text-sm text-gray-400">
+              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
                 {footerInfo?.address && <li>{footerInfo.address}</li>}
                 {footerInfo?.email && (
                   <li>
@@ -174,10 +174,10 @@ export default function Footer() {
 
             {/* Account */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
                 {t("footer.account")}
               </h4>
-              <ul className="space-y-3 text-sm text-gray-400">
+              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
                 <li>
                   <Link
                     href="/user/profile"
@@ -225,10 +225,10 @@ export default function Footer() {
 
             {/* Quick Link */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
                 {t("footer.quick_links")}
               </h4>
-              <ul className="space-y-3 text-sm text-gray-400">
+              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
                 {quickLinks.map((item, i) => (
                   <li key={i}>
                     <Link
@@ -245,7 +245,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 py-4 px-4 text-center text-xs text-gray-500">
+        <div className="border-t border-white/10 py-3 sm:py-4 px-4 text-center text-xs text-gray-500 leading-relaxed">
           © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
           {t("footer.rights")}
         </div>

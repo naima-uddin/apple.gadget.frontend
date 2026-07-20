@@ -125,14 +125,7 @@ export default function BlogListClient() {
         const resp = await fetch(`${API}/api/blog/categories`);
         if (resp.ok) {
           const data = await resp.json();
-          console.log("Fetched categories:", data); // Debug log
           setCategories(data.categories || []);
-        } else {
-          console.error(
-            "Failed to fetch categories:",
-            resp.status,
-            resp.statusText,
-          );
         }
       } catch (err) {
         console.error("Error fetching blog categories:", err);
@@ -207,7 +200,7 @@ export default function BlogListClient() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#1D1D1F]/85 via-[#1D1D1F]/60 to-[#1D1D1F]/85"></div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/30"></div>
         </div>
 
@@ -216,7 +209,7 @@ export default function BlogListClient() {
           <div className="max-w-2xl mx-auto">
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
               Tech{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400">
+              <span className="text-white/70">
                 Insights
               </span>
             </h1>
@@ -270,15 +263,15 @@ export default function BlogListClient() {
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 mb-8">
           {/* Category Sidebar */}
           <aside
-            className="md:w-64 w-full md:sticky md:top-24 bg-white rounded-2xl shadow-md p-4 mb-4 md:mb-0 overflow-y-auto"
+            className="md:w-64 w-full md:sticky md:top-24 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 md:mb-0 overflow-y-auto"
             style={{
               maxHeight: `${featureSectionHeight}px`,
               minHeight: `${Math.min(featureSectionHeight, 420)}px`,
               height: "100%",
             }}
           >
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <span className="text-rose-600">
+            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 text-[#1F2937]">
+              <span className="text-[#1D1D1F]">
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -300,7 +293,7 @@ export default function BlogListClient() {
                 onClick={() => handleCategoryChange("")}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
                   selectedCategory === ""
-                    ? "bg-rose-600 text-white"
+                    ? "bg-[#1D1D1F] text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -312,7 +305,7 @@ export default function BlogListClient() {
                   onClick={() => handleCategoryChange(cat)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
                     selectedCategory === cat
-                      ? "bg-rose-600 text-white"
+                      ? "bg-[#1D1D1F] text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
@@ -327,9 +320,9 @@ export default function BlogListClient() {
             {hasLoadedFeatured && featuredBlogs.length > 0 && (
               <div className="mb-6 md:mb-10">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-px bg-gradient-to-r from-transparent to-orange-400"></div>
+                  <div className="w-8 h-px bg-gradient-to-r from-transparent to-[#1D1D1F]/40"></div>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+                    <div className="w-8 h-8 bg-[#1D1D1F] rounded-full flex items-center justify-center shadow-lg">
                       <svg
                         className="w-4 h-4 text-white"
                         fill="currentColor"
@@ -338,11 +331,11 @@ export default function BlogListClient() {
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     </div>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 to-pink-400">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#1F2937]">
                       Featured Post
                     </h2>
                   </div>
-                  <div className="w-8 h-px bg-gradient-to-l from-transparent to-orange-400"></div>
+                  <div className="w-8 h-px bg-gradient-to-l from-transparent to-[#1D1D1F]/40"></div>
                 </div>
 
                 {featuredBlogs.length === 1 ? (
@@ -351,7 +344,7 @@ export default function BlogListClient() {
                     href={`/blog/${featuredBlogs[0].slug}`}
                     className="block"
                   >
-                    <div className="relative h-[280px] md:h-[320px] lg:h-[360px] rounded-2xl overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 group cursor-pointer shadow-2xl">
+                    <div className="relative h-[280px] md:h-[320px] lg:h-[360px] rounded-2xl overflow-hidden bg-gradient-to-br from-[#1D1D1F] via-gray-800 to-[#1D1D1F] group cursor-pointer shadow-xl">
                       {/* Background Image */}
                       {getImageUrl(
                         featuredBlogs[0].featuredImage,
@@ -434,7 +427,7 @@ export default function BlogListClient() {
 
                           {featuredBlogs[0].tags &&
                             featuredBlogs[0].tags[0] && (
-                              <span className="inline-block bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-3 sm:mb-4 shadow-lg">
+                              <span className="inline-block bg-[#1D1D1F] text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-3 sm:mb-4 shadow-lg">
                                 {featuredBlogs[0].tags[0]}
                               </span>
                             )}
@@ -454,7 +447,7 @@ export default function BlogListClient() {
                             )}
                           </p>
 
-                          <div className="flex items-center gap-2 text-white font-semibold group-hover:text-orange-300 transition-colors">
+                          <div className="flex items-center gap-2 text-white font-semibold group-hover:text-white/70 transition-colors">
                             <span className="text-lg">Read full story</span>
                             <svg
                               className="w-6 h-6 transform group-hover:translate-x-2 transition-transform duration-300"
@@ -477,7 +470,7 @@ export default function BlogListClient() {
                 ) : (
                   /* Multiple Featured Posts Slider */
                   <div className="relative">
-                    <div className="overflow-hidden rounded-2xl shadow-2xl">
+                    <div className="overflow-hidden rounded-2xl shadow-xl">
                       <div
                         className="flex transition-transform duration-500 ease-out"
                         style={{
@@ -493,7 +486,7 @@ export default function BlogListClient() {
                               href={`/blog/${featured.slug}`}
                               className="block"
                             >
-                              <div className="relative h-[280px] md:h-[320px] lg:h-[360px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 group cursor-pointer">
+                              <div className="relative h-[280px] md:h-[320px] lg:h-[360px] bg-gradient-to-br from-[#1D1D1F] via-gray-800 to-[#1D1D1F] group cursor-pointer">
                                 {/* Background Image */}
                                 {getImageUrl(
                                   featured.featuredImage,
@@ -545,7 +538,7 @@ export default function BlogListClient() {
                                     </div>
 
                                     {featured.tags && featured.tags[0] && (
-                                      <span className="inline-block bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-3 sm:mb-4 shadow-lg">
+                                      <span className="inline-block bg-[#1D1D1F] text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-3 sm:mb-4 shadow-lg">
                                         {featured.tags[0]}
                                       </span>
                                     )}
@@ -565,7 +558,7 @@ export default function BlogListClient() {
                                       )}
                                     </p>
 
-                                    <div className="flex items-center gap-2 text-rose-600 font-semibold group-hover:text-white transition-colors">
+                                    <div className="flex items-center gap-2 text-white/70 font-semibold group-hover:text-white transition-colors">
                                       <span className="text-lg">
                                         Read full story
                                       </span>
@@ -601,7 +594,7 @@ export default function BlogListClient() {
                             featuredBlogs.length,
                         )
                       }
-                      className="absolute left-1 sm:left-1 top-1/2 -translate-y-1/2 w-8 sm:w-10 h-8 sm:h-10 bg-rose-600/20 hover:bg-rose-600/30 text-white rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all shadow-lg"
+                      className="absolute left-1 sm:left-1 top-1/2 -translate-y-1/2 w-8 sm:w-10 h-8 sm:h-10 bg-[#1D1D1F]/20 hover:bg-[#1D1D1F]/30 text-white rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all shadow-lg"
                     >
                       <svg
                         className="w-5 sm:w-6 h-5 sm:h-6"
@@ -623,7 +616,7 @@ export default function BlogListClient() {
                           (prev) => (prev + 1) % featuredBlogs.length,
                         )
                       }
-                      className="absolute right-1 sm:right-1 top-1/2 -translate-y-1/2 w-8 sm:w-10 h-8 sm:h-10 bg-rose-600/20 hover:bg-rose-600/30 text-white rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all shadow-lg"
+                      className="absolute right-1 sm:right-1 top-1/2 -translate-y-1/2 w-8 sm:w-10 h-8 sm:h-10 bg-[#1D1D1F]/20 hover:bg-[#1D1D1F]/30 text-white rounded-full flex items-center justify-center backdrop-blur-sm border border-white/20 transition-all shadow-lg"
                     >
                       <svg
                         className="w-5 sm:w-6 h-5 sm:h-6"
@@ -648,7 +641,7 @@ export default function BlogListClient() {
                           onClick={() => setCurrentFeaturedIndex(index)}
                           className={`w-3 h-3 rounded-full transition-all ${
                             index === currentFeaturedIndex
-                              ? "bg-rose-600 shadow-lg"
+                              ? "bg-[#1D1D1F] shadow-lg"
                               : "bg-white/50 hover:bg-white/70"
                           }`}
                         />
@@ -666,7 +659,7 @@ export default function BlogListClient() {
           {/* Loading State for Categories */}
           {loadingCategories && (
             <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-4 border-rose-500 border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#1D1D1F] border-t-transparent"></div>
             </div>
           )}
 
@@ -674,10 +667,10 @@ export default function BlogListClient() {
           {error && !loadingCategories && (
             <div className="text-center py-20">
               <p className="text-red-600 text-lg mb-4">Failed to load blogs</p>
-              <p className="text-gray-500">{error}</p>
+              <p className="text-[#6B7280]">{error}</p>
               <button
                 onClick={() => setCurrentPage(1)}
-                className="mt-4 px-6 py-2 bg-rose-600 text-white rounded-full hover:bg-rose-700 transition-colors"
+                className="mt-4 px-6 py-2 bg-[#1D1D1F] text-white rounded-full hover:bg-[black] transition-colors"
               >
                 Try Again
               </button>
@@ -688,10 +681,10 @@ export default function BlogListClient() {
           {!loadingCategories && !error && blogs.length === 0 && (
             <div className="text-center py-20">
               <div className="text-6xl mb-4">📝</div>
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-2xl font-semibold text-[#1F2937] mb-2">
                 No blogs found
               </h2>
-              <p className="text-gray-500">
+              <p className="text-[#6B7280]">
                 Check back later for new articles!
               </p>
             </div>
@@ -705,7 +698,7 @@ export default function BlogListClient() {
                   <Link
                     key={blog._id || blog.id}
                     href={`/blog/${blog.slug}`}
-                    className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col"
+                    className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col"
                   >
                     {/* Thumbnail */}
                     <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
@@ -718,12 +711,12 @@ export default function BlogListClient() {
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-rose-100 to-pink-100">
+                        <div className="w-full h-full flex items-center justify-center bg-gray-50">
                           <span className="text-4xl">📖</span>
                         </div>
                       )}
                       {blog.tags && blog.tags.length > 0 && (
-                        <span className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-rose-600 text-white text-xs font-medium px-2 sm:px-3 py-1 rounded-full">
+                        <span className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-[#1D1D1F] text-white text-xs font-medium px-2 sm:px-3 py-1 rounded-full">
                           {blog.tags[0]}
                         </span>
                       )}
@@ -731,16 +724,16 @@ export default function BlogListClient() {
 
                     {/* Content */}
                     <div className="px-3 sm:px-5 py-1 sm:py-2 flex flex-col flex-grow">
-                      <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-rose-600 transition-colors">
+                      <h2 className="text-base sm:text-lg font-semibold text-[#1F2937] mb-2 line-clamp-2 group-hover:text-[#1D1D1F] transition-colors">
                         {blog.title}
                       </h2>
-                      <p className="text-gray-600 text-sm mb-1 line-clamp-3 flex-grow">
+                      <p className="text-[#6B7280] text-sm mb-1 line-clamp-3 flex-grow">
                         {truncateText(
                           blog.excerpt || blog.content?.replace(/<[^>]*>/g, ""),
                           120,
                         )}
                       </p>
-                      <div className="flex items-center justify-between text-sm text-gray-500 mt-auto pt-1 border-t border-gray-300">
+                      <div className="flex items-center justify-between text-sm text-[#6B7280] mt-auto pt-1 border-t border-gray-100">
                         <span className="flex items-center gap-1 text-xs">
                           <svg
                             className="w-4 h-4"
@@ -758,7 +751,7 @@ export default function BlogListClient() {
                           {formatDate(blog.createdAt || blog.publishedAt)}
                         </span>
 
-                        <p className="text-rose-600 font-medium text-xs hover:text-rose-700 transition-colors">
+                        <p className="text-[#1D1D1F] font-medium text-xs hover:text-[black] transition-colors">
                           Read more
                         </p>
                         {blog.readTime && (
@@ -844,7 +837,7 @@ export default function BlogListClient() {
                           }}
                           className={`w-8 sm:w-10 h-8 sm:h-10 rounded-lg font-medium transition-colors ${
                             currentPage === pageNum
-                              ? "bg-rose-600 text-white"
+                              ? "bg-[#1D1D1F] text-white"
                               : "text-gray-700 hover:bg-gray-100"
                           }`}
                         >

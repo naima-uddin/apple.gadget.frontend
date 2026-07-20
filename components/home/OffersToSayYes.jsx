@@ -177,20 +177,7 @@ export default function OffersToSayYes() {
       />
 
       {/* ── Mobile slider: one card at a time (hidden on md+) ── */}
-      <div className="relative md:hidden px-7">
-        <button
-          onClick={prevMobile}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:border-[#1D1D1F] transition"
-        >
-          <FaChevronLeft className="w-4 h-4" />
-        </button>
-        <button
-          onClick={nextMobile}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-gray-200 hover:border-[#1D1D1F] transition"
-        >
-          <FaChevronRight className="w-4 h-4" />
-        </button>
-
+      <div className="relative md:hidden px-1">
         {/* Sliding track */}
         <div className="overflow-hidden rounded-lg">
           <div
