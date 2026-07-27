@@ -10,6 +10,7 @@ import Newsletter from "@/components/layout/Newsletter";
 import AdSlot from "@/components/ui/AdSlot";
 import OffersToSayYes from "./OffersToSayYes";
 import DiscountsManager from "../dashboard/Discount/DiscountsManager";
+import ShoppableVideoSection from "./ShoppableVideoSection";
 
 export default function Home() {
   return (
@@ -23,8 +24,9 @@ export default function Home() {
       <DealsOfDay />
       <CTASection />
       <OffersToSayYes />
-      {/* newsletter band — homepage only, sits right above the footer */}
+      {/* shoppable video carousel — sits right above the footer */}
       <Newsletter />
+      <ShoppableVideoSection />
     </>
   );
 }
