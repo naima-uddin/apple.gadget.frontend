@@ -16,6 +16,48 @@ export function extractYouTubeId(raw) {
   return m ? m[1] : "";
 }
 
+// Validates a pasted link is a Facebook video/reel/watch URL and returns it
+// as-is — the Facebook embed plugin needs the exact original href, not a
+// transformed one.
+export function normalizeFacebookUrl(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "";
+  try {
+    const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
+    const host = u.hostname.replace(/^www\.|^m\./gi, "");
+    if (!/^(facebook\.com|fb\.watch)$/i.test(host)) return "";
+    return u.toString();
+  } catch {
+    return "";
+  }
+}
+
+// Validates an Instagram post/reel URL and returns the plain permalink —
+// Instagram's own embed.js (loaded on the homepage) needs the real permalink
+// on a data-instgrm-permalink attribute, not a pre-built /embed iframe src
+// (that bare form gets blocked by Instagram's X-Frame-Options for
+// unauthenticated iframes).
+export function normalizeInstagramUrl(raw) {
+  const s = String(raw || "").trim();
+  if (!s) return "";
+  try {
+    const u = new URL(/^https?:\/\//i.test(s) ? s : `https://${s}`);
+    const host = u.hostname.replace(/^www\./i, "");
+    if (!/^instagram\.com$/i.test(host)) return "";
+    const path = u.pathname.replace(/\/+$/, "").replace(/\/embed$/i, "");
+    return `https://www.instagram.com${path}/`;
+  } catch {
+    return "";
+  }
+}
+
+const LINK_TYPES = [
+  { value: "youtube", label: "YouTube" },
+  { value: "facebook", label: "Facebook" },
+  { value: "instagram", label: "Instagram" },
+  { value: "direct", label: "Other (direct video link)" },
+];
+
 export default function VideoCarouselEditor({
   sectionId = null,
   onSuccess,
@@ -32,7 +74,8 @@ export default function VideoCarouselEditor({
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [ytInput, setYtInput] = useState("");
+  const [linkType, setLinkType] = useState("youtube");
+  const [linkInput, setLinkInput] = useState("");
 
   // product search — attaches to one video card at a time
   const [attachIdx, setAttachIdx] = useState(null);
@@ -115,6 +158,8 @@ export default function VideoCarouselEditor({
             url: asset.url,
             public_id: asset.public_id || "",
             youtubeId: "",
+            facebookUrl: "",
+            instagramUrl: "",
             previewTime: 0,
             productId: null,
             product: null,
@@ -128,24 +173,47 @@ export default function VideoCarouselEditor({
     e.target.value = "";
   };
 
-  const handleAddYouTube = () => {
-    const id = extractYouTubeId(ytInput);
-    if (!id) {
-      alert("Invalid YouTube link. Paste a video/shorts URL or a video ID.");
-      return;
+  const blankVideo = () => ({
+    url: "",
+    public_id: "",
+    youtubeId: "",
+    facebookUrl: "",
+    instagramUrl: "",
+    previewTime: 0,
+    productId: null,
+    product: null,
+  });
+
+  const handleAddLink = () => {
+    const raw = linkInput.trim();
+    if (!raw) return;
+
+    if (linkType === "youtube") {
+      const id = extractYouTubeId(raw);
+      if (!id) {
+        alert("Invalid YouTube link. Paste a video/shorts URL or a video ID.");
+        return;
+      }
+      setVideos((prev) => [...prev, { ...blankVideo(), youtubeId: id }]);
+    } else if (linkType === "facebook") {
+      const url = normalizeFacebookUrl(raw);
+      if (!url) {
+        alert("Invalid Facebook link. Paste a facebook.com/fb.watch video URL.");
+        return;
+      }
+      setVideos((prev) => [...prev, { ...blankVideo(), facebookUrl: url }]);
+    } else if (linkType === "instagram") {
+      const url = normalizeInstagramUrl(raw);
+      if (!url) {
+        alert("Invalid Instagram link. Paste an instagram.com post/reel URL.");
+        return;
+      }
+      setVideos((prev) => [...prev, { ...blankVideo(), instagramUrl: url }]);
+    } else {
+      // Direct link — any hosted video file (mp4/webm/etc.)
+      setVideos((prev) => [...prev, { ...blankVideo(), url: raw }]);
     }
-    setVideos((prev) => [
-      ...prev,
-      {
-        url: "",
-        public_id: "",
-        youtubeId: id,
-        previewTime: 0,
-        productId: null,
-        product: null,
-      },
-    ]);
-    setYtInput("");
+    setLinkInput("");
   };
 
   const removeVideo = (idx) => {
@@ -203,6 +271,8 @@ export default function VideoCarouselEditor({
           url: v.url || "",
           public_id: v.public_id || "",
           youtubeId: v.youtubeId || "",
+          facebookUrl: v.facebookUrl || "",
+          instagramUrl: v.instagramUrl || "",
           previewTime: Math.max(0, Number(v.previewTime) || 0),
           productId: v.productId || null,
         })),
@@ -293,7 +363,8 @@ export default function VideoCarouselEditor({
         <p className="text-sm font-semibold text-gray-700">
           Videos{" "}
           <span className="font-normal text-gray-400">
-            (upload a file — max {maxMb}MB — or paste a YouTube link)
+            (upload a file — max {maxMb}MB — or paste a YouTube, Facebook,
+            Instagram, or other direct video link)
           </span>
         </p>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -309,16 +380,35 @@ export default function VideoCarouselEditor({
             />
           </label>
           <div className="flex flex-1 gap-2">
+            <select
+              value={linkType}
+              onChange={(e) => setLinkType(e.target.value)}
+              className="border rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 shrink-0"
+            >
+              {LINK_TYPES.map((lt) => (
+                <option key={lt.value} value={lt.value}>
+                  {lt.label}
+                </option>
+              ))}
+            </select>
             <input
-              value={ytInput}
-              onChange={(e) => setYtInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAddYouTube()}
-              placeholder="Paste YouTube link (video / shorts)…"
+              value={linkInput}
+              onChange={(e) => setLinkInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleAddLink()}
+              placeholder={
+                linkType === "youtube"
+                  ? "Paste YouTube link (video / shorts)…"
+                  : linkType === "facebook"
+                    ? "Paste Facebook video/reel link…"
+                    : linkType === "instagram"
+                      ? "Paste Instagram post/reel link…"
+                      : "Paste direct video URL (mp4, webm, …)…"
+              }
               className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
             <button
               type="button"
-              onClick={handleAddYouTube}
+              onClick={handleAddLink}
               className="px-4 py-2 bg-violet-50 text-violet-800 rounded-lg font-semibold hover:bg-violet-100 transition text-sm shrink-0"
             >
               + Add
@@ -331,7 +421,7 @@ export default function VideoCarouselEditor({
           <ul className="space-y-3">
             {videos.map((v, idx) => (
               <li
-                key={`${v.public_id || v.youtubeId || v.url}-${idx}`}
+                key={`${v.public_id || v.youtubeId || v.facebookUrl || v.instagramUrl || v.url}-${idx}`}
                 className="bg-gray-50 border rounded-xl p-3 space-y-3"
               >
                 <div className="flex items-start gap-3">
@@ -363,6 +453,18 @@ export default function VideoCarouselEditor({
                       alt="YouTube preview"
                       className="w-20 h-32 object-cover rounded-lg border bg-black shrink-0"
                     />
+                  ) : v.facebookUrl ? (
+                    <div className="w-20 h-32 rounded-lg border bg-[#0866FF] flex items-center justify-center shrink-0">
+                      <span className="text-white text-[10px] font-bold uppercase tracking-wide">
+                        Facebook
+                      </span>
+                    </div>
+                  ) : v.instagramUrl ? (
+                    <div className="w-20 h-32 rounded-lg border bg-linear-to-tr from-[#feda75] via-[#d62976] to-[#4f5bd5] flex items-center justify-center shrink-0">
+                      <span className="text-white text-[10px] font-bold uppercase tracking-wide">
+                        Instagram
+                      </span>
+                    </div>
                   ) : (
                     <video
                       key={`${v.url}#t=${Number(v.previewTime) || 0}`}
@@ -388,38 +490,66 @@ export default function VideoCarouselEditor({
                             {v.youtubeId}
                           </a>
                         </>
+                      ) : v.facebookUrl ? (
+                        <>
+                          Facebook ·{" "}
+                          <a
+                            href={v.facebookUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-violet-700 hover:underline truncate inline-block max-w-55 align-bottom"
+                          >
+                            {v.facebookUrl}
+                          </a>
+                        </>
+                      ) : v.instagramUrl ? (
+                        <>
+                          Instagram ·{" "}
+                          <a
+                            href={v.instagramUrl.replace(/\/embed$/, "")}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-violet-700 hover:underline truncate inline-block max-w-55 align-bottom"
+                          >
+                            {v.instagramUrl.replace(/\/embed$/, "")}
+                          </a>
+                        </>
                       ) : (
-                        "Uploaded video"
+                        "Uploaded/direct video"
                       )}
                     </p>
 
-                    {/* Which frame shows while the card is paused / not centered */}
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <label className="text-xs text-gray-500">
-                        Paused preview at
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.5"
-                        value={v.previewTime ?? 0}
-                        onChange={(e) =>
-                          setVideos((prev) =>
-                            prev.map((vv, i) =>
-                              i === idx
-                                ? { ...vv, previewTime: e.target.value }
-                                : vv,
-                            ),
-                          )
-                        }
-                        className="w-20 border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500"
-                      />
-                      <span className="text-xs text-gray-400">
-                        {v.youtubeId
-                          ? "sec — shown live on the homepage while paused (thumbnail here stays YouTube's default)"
-                          : "sec — this frame shows while the video is paused (thumbnail on the left updates)"}
-                      </span>
-                    </div>
+                    {/* Which frame shows while the card is paused / not centered
+                        — not applicable to Facebook/Instagram embeds, which
+                        always use the platform's own player chrome */}
+                    {!v.facebookUrl && !v.instagramUrl && (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <label className="text-xs text-gray-500">
+                          Paused preview at
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.5"
+                          value={v.previewTime ?? 0}
+                          onChange={(e) =>
+                            setVideos((prev) =>
+                              prev.map((vv, i) =>
+                                i === idx
+                                  ? { ...vv, previewTime: e.target.value }
+                                  : vv,
+                              ),
+                            )
+                          }
+                          className="w-20 border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500"
+                        />
+                        <span className="text-xs text-gray-400">
+                          {v.youtubeId
+                            ? "sec — shown live on the homepage while paused (thumbnail here stays YouTube's default)"
+                            : "sec — this frame shows while the video is paused (thumbnail on the left updates)"}
+                        </span>
+                      </div>
+                    )}
 
                     {/* Linked product */}
                     {v.product ? (

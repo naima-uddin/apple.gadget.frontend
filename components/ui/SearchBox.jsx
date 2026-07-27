@@ -123,7 +123,7 @@ export default function SearchBox({
       <form onSubmit={handleSubmit} role="search" aria-label="Search form">
         <div className="relative">
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-red-500 pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-600 pointer-events-none"
             width="16"
             height="16"
             viewBox="0 0 24 24"
@@ -145,7 +145,7 @@ export default function SearchBox({
             onFocus={() => query.trim() && suggestions.length && setOpen(true)}
             placeholder={t("nav.search_placeholder_full")}
             autoComplete="off"
-            className={`pl-9 pr-4 py-1.5 rounded-full border border-black/10 w-full outline-none placeholder:text-[13px] placeholder:text-gray-500 focus:border-red-400 transition-colors ${inputClassName}`}
+            className={`pl-9 pr-4 py-1.5 rounded-full border border-black/10 w-full outline-none placeholder:text-[13px] placeholder:text-gray-500 focus:border-black transition-colors ${inputClassName}`}
             aria-label="Search"
             aria-expanded={open}
             aria-autocomplete="list"

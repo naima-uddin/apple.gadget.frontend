@@ -1083,7 +1083,7 @@ function SuccessContent() {
               <textarea
                 autoFocus
                 rows={3}
-                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-400 outline-none resize-none"
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-black outline-none resize-none"
                 placeholder={t("orders.cancel_reason_placeholder")}
                 value={cancelReason}
                 onChange={(e) => {

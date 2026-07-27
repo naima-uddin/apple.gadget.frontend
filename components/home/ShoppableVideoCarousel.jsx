@@ -267,12 +267,169 @@ function YouTubeVideoFace({
   );
 }
 
-function VideoFace(props) {
-  return props.video.youtubeId ? (
-    <YouTubeVideoFace {...props} />
-  ) : (
-    <UploadedVideoFace {...props} />
+// Facebook's video plugin supports autoplay/mute via query params, so it's
+// mounted like the YouTube face: always present (poster/idle frame showing
+// even on side cards), driven by the same active/paused/muted props, with
+// pointer-events disabled so clicks fall through to our own PlayOverlay and
+// the card's select/recenter handler instead of Facebook's own UI.
+function FacebookVideoFace({ video, active, paused, muted, onToggleSound }) {
+  const playing = active && !paused;
+  // Mute stays forced on while idle so re-renders unrelated to this card's
+  // own state (e.g. another card's mute toggle) don't churn its src.
+  const effectiveMuted = playing ? muted : true;
+  const src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(
+    video.facebookUrl,
+  )}&show_text=false&autoplay=${playing}&mute=${effectiveMuted}`;
+  return (
+    <>
+      <iframe
+        key={`${playing}-${effectiveMuted}`}
+        src={src}
+        title="Facebook video"
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{ border: 0 }}
+        allow="autoplay; encrypted-media; picture-in-picture; web-share"
+        allowFullScreen
+      />
+      {!playing && <PlayOverlay />}
+      {active && <SoundButton muted={muted} onClick={onToggleSound} />}
+    </>
   );
+}
+
+// A bare `/embed` iframe src gets rejected by Instagram's X-Frame-Options
+// for unauthenticated third-party embeds (confirmed: it silently redirects
+// to instagram.com's login wall, which then refuses to be framed at all).
+// The only reliable public route is Instagram's own widget script, which
+// converts a <blockquote> permalink into a real embed itself. Loads once and
+// re-processes on every mount (new cards scrolling into view each need it).
+let igEmbedPromise = null;
+function loadInstagramEmbedScript() {
+  if (typeof window === "undefined") return Promise.resolve(null);
+  if (window.instgrm?.Embeds) return Promise.resolve(window.instgrm);
+  if (igEmbedPromise) return igEmbedPromise;
+  igEmbedPromise = new Promise((resolve) => {
+    if (document.getElementById("instagram-embed-js")) {
+      const wait = () => {
+        if (window.instgrm?.Embeds) resolve(window.instgrm);
+        else setTimeout(wait, 100);
+      };
+      wait();
+      return;
+    }
+    const tag = document.createElement("script");
+    tag.id = "instagram-embed-js";
+    tag.src = "https://www.instagram.com/embed.js";
+    tag.async = true;
+    tag.onload = () => resolve(window.instgrm);
+    document.body.appendChild(tag);
+  });
+  return igEmbedPromise;
+}
+
+// Strips a legacy stored "…/embed" suffix (the old, since-removed format) —
+// the widget needs the plain post/reel permalink.
+function toInstagramPermalink(raw) {
+  return String(raw || "").replace(/\/embed\/?$/i, "/");
+}
+
+// Instagram's widget has no query-param or postMessage control at all — it's
+// a self-contained mini page with its own play/mute controls, so (unlike the
+// other faces) it needs real pointer events to be usable. A click on an
+// Instagram card won't bubble up to recenter the carousel; swipe/drag and
+// the prev/next controls still work around that. Reels commonly render as a
+// "view on Instagram" card rather than an inline player — that's a platform
+// restriction, not something this embed can force open; the source badge is
+// the fallback path to actually watch it.
+function InstagramVideoFace({ video }) {
+  const permalink = toInstagramPermalink(video.instagramUrl);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadInstagramEmbedScript().then((ig) => {
+      if (!cancelled) ig?.Embeds.process();
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [permalink]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-white flex items-center justify-center">
+      <blockquote
+        className="instagram-media"
+        data-instgrm-permalink={permalink}
+        data-instgrm-version="14"
+        style={{ margin: 0, width: "100%", minWidth: 0 }}
+      />
+    </div>
+  );
+}
+
+function VideoFace(props) {
+  const { video } = props;
+  if (video.youtubeId) return <YouTubeVideoFace {...props} />;
+  if (video.facebookUrl) return <FacebookVideoFace {...props} />;
+  if (video.instagramUrl) return <InstagramVideoFace {...props} />;
+  return <UploadedVideoFace {...props} />;
+}
+
+// Small monochrome marks used only inside SourceBadge — not brand assets,
+// just enough shape to tell the three platforms apart at 16px.
+function PlatformIcon({ type }) {
+  if (type === "youtube") {
+    return (
+      <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+        <path d="M21.6 7.2s-.2-1.5-.8-2.2c-.8-.8-1.7-.8-2.1-.9C15.9 4 12 4 12 4s-3.9 0-6.7.1c-.4 0-1.3.1-2.1.9-.6.7-.8 2.2-.8 2.2S2.2 9 2.2 10.7v1.6c0 1.7.2 3.5.2 3.5s.2 1.5.8 2.2c.8.8 1.9.8 2.3.9 1.7.1 7.2.1 7.2.1s3.9 0 6.7-.1c.4 0 1.3-.1 2.1-.9.6-.7.8-2.2.8-2.2s.2-1.8.2-3.5v-1.6c0-1.7-.2-3.5-.2-3.5zM9.9 14.6V8.9l5.4 2.9-5.4 2.8z" />
+      </svg>
+    );
+  }
+  if (type === "facebook") {
+    return (
+      <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+        <path d="M13.5 21v-7.9h2.6l.4-3.1h-3v-2c0-.9.2-1.5 1.6-1.5h1.5V3.8C15.5 3.7 14.5 3.6 13.5 3.6c-2.1 0-3.6 1.3-3.6 3.7v2.7H7.4v3.1h2.5V21h3.6z" />
+      </svg>
+    );
+  }
+  // instagram
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="w-4 h-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+// Top-left link back to the original post — the only visible sign a card is
+// an external embed rather than an uploaded video.
+function SourceBadge({ href, type }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      aria-label={`Open on ${type}`}
+      className="absolute top-2.5 left-2.5 z-10 w-8 h-8 rounded-full bg-black/80 flex items-center justify-center text-white hover:bg-black transition"
+    >
+      <PlatformIcon type={type} />
+    </a>
+  );
+}
+
+function getSourceLink(video) {
+  if (video.youtubeId) return { type: "youtube", href: `https://youtu.be/${video.youtubeId}` };
+  if (video.facebookUrl) return { type: "facebook", href: video.facebookUrl };
+  if (video.instagramUrl)
+    return { type: "instagram", href: video.instagramUrl.replace(/\/embed$/, "") };
+  return null;
 }
 
 // White footer strip inside the card: thumb · category/price · arrow.
@@ -336,7 +493,7 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
   const videos = section.videos || [];
   const { cardW, gap, maxSide } = useLayout();
   const [center, setCenter] = useState(0);
-  const [paused, setPaused] = useState(true); // center card starts paused on its preview frame
+  const [paused, setPaused] = useState(false); // the center card is always playing unless explicitly paused
   const [muted, setMuted] = useState(true);
   const drag = useRef({ startX: 0, active: false });
   const suppressClick = useRef(false);
@@ -344,9 +501,11 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
   const n = videos.length;
   const cardH = Math.round((cardW * 16) / 9) + FOOTER_H;
 
-  const goTo = (i, keepPlaying = false) => {
+  // Whatever becomes the new center — by click, swipe, or auto-advance —
+  // starts playing immediately instead of sitting frozen on its preview frame.
+  const goTo = (i) => {
     setCenter(((i % n) + n) % n);
-    if (!keepPlaying) setPaused(true);
+    setPaused(false);
   };
 
   // Click-and-drag with the mouse, or swipe with a finger — both handled the
@@ -366,13 +525,15 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
     }
   };
 
-  // Auto-advance like a slider every 4s — but not while the center card is
-  // actively playing, so it doesn't yank the video away from someone watching.
+  // Only kicks in once the visitor has explicitly paused the center card —
+  // otherwise it's always playing already, so there's nothing to "advance
+  // toward". Nudges to the next card (and resumes playing it) after an idle pause.
   useEffect(() => {
     if (paused === false) return; // a video is actively playing, don't advance
     if (n <= 1) return;
     const id = setInterval(() => {
       setCenter((c) => (c + 1) % n);
+      setPaused(false);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
   }, [paused, n, center]);
@@ -450,6 +611,13 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
                       onEnded={() => goTo(center + 1)}
                     />
                   )}
+                  {visible &&
+                    (() => {
+                      const source = getSourceLink(video);
+                      return (
+                        source && <SourceBadge href={source.href} type={source.type} />
+                      );
+                    })()}
                 </div>
                 <ProductFooter product={video.product} />
               </div>

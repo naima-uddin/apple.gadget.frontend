@@ -159,7 +159,7 @@ export default function FeaturedSections() {
           // Shoppable video carousel — white band, centered header
           <ShoppableVideoCarousel key={sec._id} section={sec} lang={lang} />
         ) : (
-          <div key={sec._id} className="w-full bg-[#F3F2F9] py-6 md:py-8">
+          <div key={sec._id} className="w-full bg-[#f7f5ff] py-6 md:py-8">
             <div className="max-w-7xl mx-auto px-2">
               {/* Section header */}
               <SectionHeader
