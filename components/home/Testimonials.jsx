@@ -105,13 +105,24 @@ function TestimonialCard({ item, featured }) {
         </div>
         <div className="min-w-0">
           <p
-            className={`work-sans font-semibold text-[#1F2937] truncate mb-1.5 ${
+            className={`work-sans font-semibold text-[#1F2937] truncate ${
               featured ? "text-xl md:text-2xl" : "text-base"
             }`}
           >
             {item.name}
           </p>
-          <Stars rating={item.rating || 5} />
+          {item.address && (
+            <p
+              className={`text-[#6B7280] truncate mt-0.5 mb-1.5 ${
+                featured ? "text-sm md:text-base" : "text-xs"
+              }`}
+            >
+              {item.address}
+            </p>
+          )}
+          <div className={item.address ? "" : "mt-1.5"}>
+            <Stars rating={item.rating || 5} />
+          </div>
         </div>
       </div>
 

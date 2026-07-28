@@ -14,6 +14,7 @@ export default function TestimonialEditor({
 
   const [avatar, setAvatar] = useState({ url: "", public_id: "" });
   const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
   const [rating, setRating] = useState(5);
   const [isActive, setIsActive] = useState(true);
@@ -34,6 +35,7 @@ export default function TestimonialEditor({
         const s = b.item || {};
         setAvatar(s.avatar || { url: "", public_id: "" });
         setName(s.name || "");
+        setAddress(s.address || "");
         setMessage(s.message || "");
         setRating(s.rating || 5);
         setIsActive(s.isActive !== false);
@@ -65,7 +67,7 @@ export default function TestimonialEditor({
     }
     setSaving(true);
     try {
-      const body = { avatar, name, message, rating, isActive };
+      const body = { avatar, name, address, message, rating, isActive };
       const url = isEdit
         ? `${API}/api/admin/testimonials/${testimonialId}`
         : `${API}/api/admin/testimonials`;
@@ -192,6 +194,19 @@ export default function TestimonialEditor({
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Rafiul Islam"
+          className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* Address */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-1">
+          Address / Location
+        </label>
+        <input
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="e.g. Dhaka, Bangladesh"
           className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>

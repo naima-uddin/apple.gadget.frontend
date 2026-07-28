@@ -178,6 +178,11 @@ export default function TestimonialList() {
                 <p className="font-semibold text-gray-800 truncate">
                   {item.name}
                 </p>
+                {item.address && (
+                  <p className="text-xs text-gray-400 truncate">
+                    {item.address}
+                  </p>
+                )}
                 <p className="text-xs text-yellow-500 mb-0.5">
                   {"★".repeat(item.rating || 5)}
                   <span className="text-gray-300">
