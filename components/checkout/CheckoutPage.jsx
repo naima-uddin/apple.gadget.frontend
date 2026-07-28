@@ -172,14 +172,18 @@ export default function CheckoutPage() {
   }, [cartItems.length, cartHydrated, router]);
 
   // ── Server quote ────────────────────────────────────────────────────────────
-  // Re-fetch whenever cartItems OR city changes (keep any active coupons via ref)
+  // Re-fetch whenever cartItems OR city/zone/area changes (keep any active coupons via ref)
   const currentCityRef = useRef("");
+  const currentZoneRef = useRef("");
+  const currentAreaRef = useRef("");
 
   const fetchQuote = useCallback(
     (couponCodes, pointsToRedeem = 0) => {
       if (!cartItems.length) return;
       const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
       const city = currentCityRef.current?.trim() || null;
+      const zone = currentZoneRef.current?.trim() || null;
+      const area = currentAreaRef.current?.trim() || null;
       return fetch(`${API}/api/orders/quote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -193,6 +197,8 @@ export default function CheckoutPage() {
           })),
           couponCodes: couponCodes?.length ? couponCodes : null,
           city,
+          zone,
+          area,
           pointsToRedeem: pointsToRedeem > 0 ? pointsToRedeem : null,
         }),
       }).then((r) => r.json());
@@ -290,14 +296,21 @@ export default function CheckoutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems]);
 
-  // Re-fetch when city selection changes so shipping reflects inside/outside Dhaka
+  // Re-fetch when city/zone/area selection changes so shipping reflects
+  // inside/outside Dhaka, and any zone/area-specific override
   useEffect(() => {
     const resolvedCity = formData.city === "other" ? customCity : formData.city;
+    const resolvedZone = formData.zone === "other" ? customZone : formData.zone;
+    const resolvedArea = formData.area === "other" ? customArea : formData.area;
     if (!resolvedCity) {
       currentCityRef.current = "";
+      currentZoneRef.current = "";
+      currentAreaRef.current = "";
       return;
     }
     currentCityRef.current = resolvedCity;
+    currentZoneRef.current = resolvedZone || "";
+    currentAreaRef.current = resolvedArea || "";
     if (!cartItems.length) return;
     setQuoteLoading(true);
     fetchQuote(appliedCouponsRef.current, pointsToRedeemRef.current)
@@ -307,7 +320,14 @@ export default function CheckoutPage() {
       .catch((err) => console.error("Quote (city) fetch failed:", err))
       .finally(() => setQuoteLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.city, customCity]);
+  }, [
+    formData.city,
+    customCity,
+    formData.zone,
+    customZone,
+    formData.area,
+    customArea,
+  ]);
 
   const refetchQuoteWithPoints = (points) => {
     pointsToRedeemRef.current = points;

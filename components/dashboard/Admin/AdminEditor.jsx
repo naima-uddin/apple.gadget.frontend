@@ -81,6 +81,7 @@ const PERMISSION_GROUPS = [
       { key: "products.waitlist",     label: "Waitlist" },
       { key: "products.questions",    label: "Q & A" },
       { key: "products.preorders",    label: "Pre-orders" },
+      { key: "products.delivery",     label: "Delivery charge" },
     ],
   },
   {

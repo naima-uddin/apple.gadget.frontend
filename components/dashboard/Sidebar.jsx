@@ -46,6 +46,8 @@ const SECTIONS = [
       "/dashboard/waitlist",
       "/dashboard/inventory",
       "/dashboard/preorders",
+      "/dashboard/delivery-charge",
+      "/dashboard/packaging-cost",
     ],
     items: [
       {
@@ -82,6 +84,20 @@ const SECTIONS = [
         href: "/dashboard/discounts",
         icon: "M12 2l4 4-8 8-4-4 8-8z",
         permissionKey: "products.discounts",
+      },
+      {
+        key: "delivery-charge",
+        label: "Delivery Charge",
+        href: "/dashboard/delivery-charge",
+        icon: "M3 3h13v10H3z M16 8h4l3 3v2h-7z M6.5 20a2.5 2.5 0 100-5 2.5 2.5 0 000 5z M18 20a2.5 2.5 0 100-5 2.5 2.5 0 000 5z",
+        permissionKey: "products.delivery",
+      },
+      {
+        key: "packaging-cost",
+        label: "Packaging Cost",
+        href: "/dashboard/packaging-cost",
+        icon: "M21 8L12 3 3 8m18 0l-9 5m9-5v9l-9 5m0-9L3 8m9 5v9m-9-9v9l9 5",
+        permissionKey: "products.packaging",
       },
       {
         key: "tags",
