@@ -308,6 +308,7 @@ const SECTIONS = [
       "/dashboard/featured",
       "/dashboard/banners",
       "/dashboard/promo-panels",
+      "/dashboard/testimonials",
       "/dashboard/category-showcase",
       "/dashboard/deal-of-day",
       "/dashboard/popup",
@@ -334,6 +335,13 @@ const SECTIONS = [
         label: "Promo Blocks",
         href: "/dashboard/promo-panels",
         icon: "M3 3h8v8H3z M13 3h8v4h-8V3z M13 10h8v4h-8v-4z M3 14h8v7H3v-7z",
+        permissionKey: "content.promo",
+      },
+      {
+        key: "testimonials",
+        label: "Testimonials",
+        href: "/dashboard/testimonials",
+        icon: "M17 8h2a2 2 0 012 2v4a2 2 0 01-2 2h-1l-3 3v-3H8a2 2 0 01-2-2v-1 M3 3h11v9H9l-3 3v-3H3z",
         permissionKey: "content.promo",
       },
       {

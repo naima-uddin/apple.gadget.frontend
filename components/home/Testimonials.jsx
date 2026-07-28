@@ -4,52 +4,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaStar } from "react-icons/fa";
-import { MdVerified } from "react-icons/md";
 import { useLanguage } from "@/components/context/LanguageContext";
+import SectionHeader from "./SectionHeader";
 
-// Shown until real reviews are wired up from the dashboard.
-const DEFAULT_TESTIMONIALS = [
-  {
-    _id: "t1",
-    name: "Rafiul Islam",
-    role: "Verified Buyer",
-    rating: 5,
-    message:
-      "Ordered an iPhone charger and case — genuine product, well packed, and delivered within a day. Exactly what I expected.",
-  },
-  {
-    _id: "t2",
-    name: "Nusrat Jahan",
-    role: "Verified Buyer",
-    rating: 5,
-    message:
-      "Great collection of Apple accessories at fair prices. Customer support replied quickly when I asked about warranty.",
-  },
-  {
-    _id: "t3",
-    name: "Tanvir Ahmed",
-    role: "Verified Buyer",
-    rating: 4,
-    message:
-      "Smooth checkout and fast shipping. The AirPods case I bought looks and feels premium — will order again.",
-  },
-  {
-    _id: "t4",
-    name: "Farhana Akter",
-    role: "Verified Buyer",
-    rating: 5,
-    message:
-      "This is my second order from here. Products are always authentic and delivery is reliable every time.",
-  },
-  {
-    _id: "t5",
-    name: "Shakil Hasan",
-    role: "Verified Buyer",
-    rating: 5,
-    message:
-      "Best place to buy Apple gadgets online in Bangladesh. Easy returns policy gave me confidence to buy without hesitation.",
-  },
-];
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
 
 // Dark-neutral palette (stays inside the site's monochrome theme) so each
 // customer without a real photo still gets a visually distinct avatar
@@ -95,22 +53,6 @@ function Stars({ rating }) {
         />
       ))}
     </div>
-  );
-}
-
-// Testimonials are hand-picked and published by the admin, so every card
-// shown here has already been vetted — the badge is a static trust signal.
-function VerifiedBadge({ featured }) {
-  return (
-    <span
-      title="Verified Buyer"
-      aria-label="Verified Buyer"
-      className="absolute -top-0.5 -right-0.5 flex items-center justify-center z-10 bg-white rounded-full"
-    >
-      <MdVerified
-        className={`text-[#1D1D1F] ${featured ? "w-5 h-5" : "w-4 h-4"}`}
-      />
-    </span>
   );
 }
 
@@ -160,25 +102,15 @@ function TestimonialCard({ item, featured }) {
               </div>
             )}
           </div>
-          <VerifiedBadge featured={featured} />
         </div>
         <div className="min-w-0">
           <p
-            className={`work-sans font-semibold text-[#1F2937] truncate ${
+            className={`work-sans font-semibold text-[#1F2937] truncate mb-1.5 ${
               featured ? "text-xl md:text-2xl" : "text-base"
             }`}
           >
             {item.name}
           </p>
-          {item.role && (
-            <p
-              className={`text-[#6B7280] truncate mt-0.5 mb-1.5 ${
-                featured ? "text-base md:text-lg" : "text-sm"
-              }`}
-            >
-              {item.role}
-            </p>
-          )}
           <Stars rating={item.rating || 5} />
         </div>
       </div>
@@ -196,10 +128,17 @@ function TestimonialCard({ item, featured }) {
 
 export default function Testimonials() {
   const { t } = useLanguage();
-  const [items] = useState(DEFAULT_TESTIMONIALS);
+  const [items, setItems] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const isDesktop = useIsDesktop();
   const autoRef = useRef(null);
+
+  useEffect(() => {
+    fetch(`${API}/api/testimonials`)
+      .then((r) => r.json())
+      .then((d) => setItems(d.items || []))
+      .catch(() => setItems([]));
+  }, []);
 
   const n = items.length;
 
@@ -229,16 +168,9 @@ export default function Testimonials() {
   const centerItem = items[currentIndex];
 
   return (
-    <section className="w-full py-10 md:py-14 bg-[#FAFAFA]">
+    <section className="w-full py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="text-center mb-8 md:mb-10">
-          <h2 className="work-sans font-bold text-3xl md:text-4xl text-[#1F2937] text-balance mb-1">
-            {t("home.testimonials_title")}
-          </h2>
-          <p className="text-sm text-[#6B7280] max-w-xl mx-auto">
-            {t("home.testimonials_sub")}
-          </p>
-        </div>
+        <SectionHeader title={t("home.testimonials_title")} />
 
         <div
           className="relative"
