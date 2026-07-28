@@ -6,7 +6,7 @@ import CategoryShowcase from "./CategoryShowcase";
 import WhyChooseUs from "./WhyChooseUs";
 import DealsOfDay from "./DealsOfDay";
 import CTASection from "./CTASection";
-import Newsletter from "@/components/layout/Newsletter";
+import Testimonials from "./Testimonials";
 import AdSlot from "@/components/ui/AdSlot";
 import OffersToSayYes from "./OffersToSayYes";
 import DiscountsManager from "../dashboard/Discount/DiscountsManager";
@@ -24,8 +24,8 @@ export default function Home() {
       <DealsOfDay />
       <CTASection />
       <OffersToSayYes />
+      <Testimonials />
       {/* shoppable video carousel — sits right above the footer */}
-      <Newsletter />
       <ShoppableVideoSection />
     </>
   );
