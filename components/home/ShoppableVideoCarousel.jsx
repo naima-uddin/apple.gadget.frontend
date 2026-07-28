@@ -584,7 +584,7 @@ export default function ShoppableVideoCarousel({ section, lang = "en" }) {
                 transform: `translate(-50%, -50%) translateX(${off * gap}px) scale(${
                   1 - abs * 0.09
                 })`,
-                zIndex: 50 - abs,
+                zIndex: 30 - abs,
                 opacity: visible ? 1 : 0,
                 pointerEvents: visible ? "auto" : "none",
                 transition:
