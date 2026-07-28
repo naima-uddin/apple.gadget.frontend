@@ -51,6 +51,26 @@ const DEFAULT_TESTIMONIALS = [
   },
 ];
 
+// Dark-neutral palette (stays inside the site's monochrome theme) so each
+// customer without a real photo still gets a visually distinct avatar
+// instead of every card showing the same flat gray circle.
+const AVATAR_COLORS = [
+  "#1D1D1F",
+  "#374151",
+  "#4B5563",
+  "#52525B",
+  "#44403C",
+  "#3F3F46",
+];
+
+function avatarColor(name) {
+  let hash = 0;
+  for (let i = 0; i < (name || "").length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
 function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false);
   useEffect(() => {
@@ -131,9 +151,10 @@ function TestimonialCard({ item, featured }) {
               />
             ) : (
               <div
-                className={`work-sans font-bold w-full h-full flex items-center justify-center text-[#1D1D1F] ${
+                className={`work-sans font-bold w-full h-full flex items-center justify-center text-white ${
                   featured ? "text-2xl" : "text-xl"
                 }`}
+                style={{ backgroundColor: avatarColor(item.name) }}
               >
                 {item.name?.[0]?.toUpperCase() || "?"}
               </div>
