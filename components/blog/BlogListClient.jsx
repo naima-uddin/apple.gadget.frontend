@@ -74,8 +74,9 @@ export default function BlogListClient() {
         params.set("page", String(currentPage));
         params.set("limit", String(BLOGS_PER_PAGE));
         params.set("featured", "false"); // Only non-featured blogs
+        params.set("sort", "title"); // A to Z
         if (selectedCategory) {
-          params.set("tag", selectedCategory);
+          params.set("category", selectedCategory);
         }
 
         const resp = await fetch(`${API}/api/blog?${params.toString()}`);
@@ -85,16 +86,8 @@ export default function BlogListClient() {
           throw new Error(data.error || "Failed to fetch blogs");
         }
 
-        const items = data.items || [];
-        setBlogs(items);
+        setBlogs(data.items || []);
         setTotalPages(Math.ceil((data.total || 0) / BLOGS_PER_PAGE));
-
-        // Extract unique tags from blogs for category filtering
-        if (categories.length === 0 && items.length > 0) {
-          const allTags = items.flatMap((blog) => blog.tags || []);
-          const uniqueTags = [...new Set(allTags)];
-          setCategories(uniqueTags);
-        }
       } catch (err) {
         console.error("Error fetching blogs:", err);
         setError(err.message);
@@ -118,7 +111,7 @@ export default function BlogListClient() {
     }
   }, [featuredBlogs.length]);
 
-  // Fetch blog categories for hero section display
+  // Fetch real blog categories for the sidebar
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -301,15 +294,15 @@ export default function BlogListClient() {
               </button>
               {categories.map((cat) => (
                 <button
-                  key={cat}
-                  onClick={() => handleCategoryChange(cat)}
+                  key={cat._id || cat.slug}
+                  onClick={() => handleCategoryChange(cat.slug)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors text-left ${
-                    selectedCategory === cat
+                    selectedCategory === cat.slug
                       ? "bg-[#1D1D1F] text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
-                  <span>{cat}</span>
+                  <span>{cat.name}</span>
                 </button>
               ))}
             </div>
