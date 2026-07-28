@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaStar } from "react-icons/fa";
+import { MdVerified } from "react-icons/md";
 import { useLanguage } from "@/components/context/LanguageContext";
 import SectionHeader from "./SectionHeader";
 
@@ -56,6 +57,22 @@ function Stars({ rating }) {
   );
 }
 
+// Testimonials are hand-picked and published by the admin, so every card
+// shown here has already been vetted — the badge is a static trust signal.
+function VerifiedBadge({ featured }) {
+  return (
+    <span
+      title="Verified Buyer"
+      aria-label="Verified Buyer"
+      className="absolute -top-0.5 -right-0.5 flex items-center justify-center z-10 bg-white rounded-full"
+    >
+      <MdVerified
+        className={`text-[#1D1D1F] ${featured ? "w-5 h-5" : "w-4 h-4"}`}
+      />
+    </span>
+  );
+}
+
 function TestimonialCard({ item, featured }) {
   return (
     <div
@@ -102,6 +119,7 @@ function TestimonialCard({ item, featured }) {
               </div>
             )}
           </div>
+          <VerifiedBadge featured={featured} />
         </div>
         <div className="min-w-0">
           <p
