@@ -99,7 +99,7 @@ export default function CartSidebar() {
         } flex flex-col`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-gray-100 shrink-0">
+        <div className="flex items-center justify-between px-4 py-4 bg-white border-b border-gray-100 shrink-0 ">
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-full bg-[#D1D5DB] flex items-center justify-center">
               <FiShoppingBag className="w-4 h-4 text-[#1D1D1F]" />
