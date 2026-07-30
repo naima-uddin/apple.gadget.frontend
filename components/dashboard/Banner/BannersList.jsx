@@ -208,7 +208,7 @@ export default function BannersList() {
                     setEditId(b._id);
                     setView("edit");
                   }}
-                  className="px-3 py-1.5 text-xs font-semibold bg-violet-50 text-violet-800 rounded-lg hover:bg-violet-100 transition"
+                  className="px-3 py-1.5 text-xs font-semibold bg-gray-50 text-[#1D1D1F] rounded-lg hover:bg-gray-100 transition"
                 >
                   Edit
                 </button>

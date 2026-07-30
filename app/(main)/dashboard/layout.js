@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }) {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <svg
-            className="animate-spin w-10 h-10 text-[#5B21B6]"
+            className="animate-spin w-10 h-10 text-[#1D1D1F]"
             viewBox="0 0 24 24"
             fill="none"
           >
@@ -70,7 +70,7 @@ export default function DashboardLayout({ children }) {
           </p>
           <button
             onClick={() => router.push("/auth/adminlogin")}
-            className="px-5 py-2.5 bg-[#5B21B6] text-white rounded-xl text-sm font-semibold hover:bg-violet-800 transition-colors"
+            className="px-5 py-2.5 bg-[#1D1D1F] text-white rounded-xl text-sm font-semibold hover:bg-black transition-colors"
           >
             Go to Login
           </button>
@@ -120,7 +120,7 @@ export default function DashboardLayout({ children }) {
             <div className="flex items-center gap-2">
               {/* hamburger for mobile */}
               <button
-                className="md:hidden p-2 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-[#5B21B6] transition-colors"
+                className="md:hidden p-2 rounded-xl text-gray-500 hover:bg-gray-50 hover:text-[#1D1D1F] transition-colors"
                 onClick={() => setMobileSidebarOpen(true)}
                 aria-label="Open menu"
               >
@@ -142,7 +142,7 @@ export default function DashboardLayout({ children }) {
               <button
                 type="button"
                 onClick={goBack}
-                className="inline-flex items-center gap-2 px-4 py-1.5 border border-gray-200 rounded-full text-sm text-[#6B7280] hover:text-[#5B21B6] hover:border-[#5B21B6] transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-1.5 border border-gray-200 rounded-full text-sm text-[#6B7280] hover:text-[#1D1D1F] hover:border-[#1D1D1F] transition-colors"
               >
                 <span className="text-sm">←</span>
                 <span>Back</span>

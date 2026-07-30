@@ -23,7 +23,7 @@ const SLOTS = [
     key: "headerCode",
     label: "Header Code",
     badge: "<head>",
-    badgeColor: "bg-violet-100 text-violet-700",
+    badgeColor: "bg-gray-100 text-[#1D1D1F]",
     hint: "<head> ট্যাগের ভেতরে inject হবে — meta tag, script, stylesheet সব দেওয়া যাবে",
     placeholder: `<!-- উদাহরণ -->
 <meta name="google-site-verification" content="XXXX" />

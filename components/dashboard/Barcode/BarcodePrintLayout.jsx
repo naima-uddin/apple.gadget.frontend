@@ -122,7 +122,7 @@ export default function BarcodePrintLayout() {
               onClick={() => setPerPage(6)}
               className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold ${
                 perPage === 6
-                  ? "border-violet-700 bg-violet-700 text-white"
+                  ? "border-[#1D1D1F] bg-[#1D1D1F] text-white"
                   : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -133,7 +133,7 @@ export default function BarcodePrintLayout() {
               onClick={() => setPerPage(12)}
               className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold ${
                 perPage === 12
-                  ? "border-violet-700 bg-violet-700 text-white"
+                  ? "border-[#1D1D1F] bg-[#1D1D1F] text-white"
                   : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -144,7 +144,7 @@ export default function BarcodePrintLayout() {
               onClick={() => setPerPage(18)}
               className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold ${
                 perPage === 18
-                  ? "border-violet-700 bg-violet-700 text-white"
+                  ? "border-[#1D1D1F] bg-[#1D1D1F] text-white"
                   : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -155,7 +155,7 @@ export default function BarcodePrintLayout() {
               onClick={() => setPerPage(21)}
               className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold ${
                 perPage === 21
-                  ? "border-violet-700 bg-violet-700 text-white"
+                  ? "border-[#1D1D1F] bg-[#1D1D1F] text-white"
                   : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -197,7 +197,7 @@ export default function BarcodePrintLayout() {
 
       <div className="print-content mx-auto max-w-7xl px-4 py-6">
         {error && (
-          <p className="mb-4 rounded-xl border border-violet-200 bg-violet-50 px-4 py-3 text-sm text-violet-800 no-print">
+          <p className="mb-4 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-[#1D1D1F] no-print">
             {error}
           </p>
         )}

@@ -324,7 +324,7 @@ export default function VideoCarouselEditor({
             value={subtitle}
             onChange={(e) => setSubtitle(e.target.value)}
             placeholder="e.g. THIS IS HOW BEAUTY LOOKS LIKE"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
           />
         </div>
         <div>
@@ -335,7 +335,7 @@ export default function VideoCarouselEditor({
             value={subtitleBn}
             onChange={(e) => setSubtitleBn(e.target.value)}
             placeholder="ছোট ট্যাগলাইন (ঐচ্ছিক)"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
           />
         </div>
       </div>
@@ -345,7 +345,7 @@ export default function VideoCarouselEditor({
         <button
           type="button"
           onClick={() => setIsActive((v) => !v)}
-          className={`relative w-12 h-6 rounded-full transition-colors ${isActive ? "bg-[#5B21B6]" : "bg-gray-300"}`}
+          className={`relative w-12 h-6 rounded-full transition-colors ${isActive ? "bg-[#1D1D1F]" : "bg-gray-300"}`}
         >
           <span
             className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isActive ? "translate-x-6" : ""}`}
@@ -368,7 +368,7 @@ export default function VideoCarouselEditor({
           </span>
         </p>
         <div className="flex flex-col sm:flex-row gap-2">
-          <label className="inline-flex items-center justify-center px-4 py-2 bg-[#5B21B6] text-white rounded-lg cursor-pointer hover:bg-violet-800 transition text-sm font-semibold shrink-0">
+          <label className="inline-flex items-center justify-center px-4 py-2 bg-[#1D1D1F] text-white rounded-lg cursor-pointer hover:bg-black transition text-sm font-semibold shrink-0">
             {uploading ? "Uploading…" : "⬆ Upload Video"}
             <input
               type="file"
@@ -383,7 +383,7 @@ export default function VideoCarouselEditor({
             <select
               value={linkType}
               onChange={(e) => setLinkType(e.target.value)}
-              className="border rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 shrink-0"
+              className="border rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F] shrink-0"
             >
               {LINK_TYPES.map((lt) => (
                 <option key={lt.value} value={lt.value}>
@@ -404,12 +404,12 @@ export default function VideoCarouselEditor({
                       ? "Paste Instagram post/reel link…"
                       : "Paste direct video URL (mp4, webm, …)…"
               }
-              className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
             />
             <button
               type="button"
               onClick={handleAddLink}
-              className="px-4 py-2 bg-violet-50 text-violet-800 rounded-lg font-semibold hover:bg-violet-100 transition text-sm shrink-0"
+              className="px-4 py-2 bg-gray-100 text-[#1D1D1F] rounded-lg font-semibold hover:bg-gray-200 transition text-sm shrink-0"
             >
               + Add
             </button>
@@ -485,7 +485,7 @@ export default function VideoCarouselEditor({
                             href={`https://youtu.be/${v.youtubeId}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-violet-700 hover:underline"
+                            className="text-[#1D1D1F] hover:underline"
                           >
                             {v.youtubeId}
                           </a>
@@ -497,7 +497,7 @@ export default function VideoCarouselEditor({
                             href={v.facebookUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-violet-700 hover:underline truncate inline-block max-w-55 align-bottom"
+                            className="text-[#1D1D1F] hover:underline truncate inline-block max-w-55 align-bottom"
                           >
                             {v.facebookUrl}
                           </a>
@@ -509,7 +509,7 @@ export default function VideoCarouselEditor({
                             href={v.instagramUrl.replace(/\/embed$/, "")}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-violet-700 hover:underline truncate inline-block max-w-55 align-bottom"
+                            className="text-[#1D1D1F] hover:underline truncate inline-block max-w-55 align-bottom"
                           >
                             {v.instagramUrl.replace(/\/embed$/, "")}
                           </a>

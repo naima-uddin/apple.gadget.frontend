@@ -207,7 +207,7 @@ export default function ProductAsideSections({
       field: "featured",
       key: "flag:featured",
       label: "Featured",
-      color: "bg-violet-100 text-violet-800",
+      color: "bg-gray-100 text-[#1D1D1F]",
     },
     {
       field: "coupon",
@@ -219,7 +219,7 @@ export default function ProductAsideSections({
       field: "flashSale",
       key: "flag:flashSale",
       label: "Flash Sale",
-      color: "bg-violet-100 text-violet-800",
+      color: "bg-gray-100 text-[#1D1D1F]",
     },
     {
       field: "clearance",
@@ -324,7 +324,7 @@ export default function ProductAsideSections({
       case "linked":
         return "text-green-700 bg-green-50 border-green-200";
       case "taken":
-        return "text-violet-800 bg-violet-50 border-violet-200";
+        return "text-[#1D1D1F] bg-gray-50 border-gray-200";
       case "checking":
         return "text-blue-700 bg-blue-50 border-blue-200";
       case "error":

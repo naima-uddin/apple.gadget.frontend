@@ -25,7 +25,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const STATUS_STYLE = {
   pending: "bg-yellow-100 text-yellow-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-violet-100 text-violet-700",
+  processing: "bg-gray-100 text-[#1D1D1F]",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-gray-100 text-gray-600",
@@ -216,7 +216,7 @@ export default function Dashboard() {
     {
       name: "Processing",
       value: Number(orderFlow.processing || 0),
-      tone: "text-violet-600",
+      tone: "text-[#1D1D1F]",
     },
     {
       name: "Courier",
@@ -350,7 +350,7 @@ export default function Dashboard() {
                     dataKey="sales"
                     name="Sales"
                     fill="currentColor"
-                    className="text-violet-600"
+                    className="text-[#1D1D1F]"
                     radius={[6, 6, 0, 0]}
                   />
                   <Bar
@@ -455,9 +455,9 @@ export default function Dashboard() {
                     {orderFlow.confirmed ?? 0}
                   </span>
                 </div>
-                <div className="rounded border p-3 bg-violet-50 flex justify-between">
-                  <span className="text-[#5B21B6]">Processing</span>
-                  <span className="font-semibold text-violet-800">
+                <div className="rounded border p-3 bg-gray-50 flex justify-between">
+                  <span className="text-[#1D1D1F]">Processing</span>
+                  <span className="font-semibold text-black">
                     {orderFlow.processing ?? 0}
                   </span>
                 </div>

@@ -130,7 +130,7 @@ export default function WaitlistManager() {
           placeholder="Search by product, email, or phone…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+          className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
         />
         <div className="flex items-center gap-2">
           <FaFilter className="text-gray-400 text-sm" />

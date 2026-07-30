@@ -15,7 +15,7 @@ export default function DashboardError({ error, reset }) {
       <div className="flex gap-4">
         <button
           onClick={reset}
-          className="px-4 py-2 bg-violet-700 text-white rounded-full text-sm hover:bg-violet-800"
+          className="px-4 py-2 bg-[#1D1D1F] text-white rounded-full text-sm hover:bg-black"
         >
           Retry
         </button>

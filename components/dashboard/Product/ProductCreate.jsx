@@ -26,7 +26,7 @@ const DEFAULT_BADGE_OPTIONS = [
   {
     key: "popular_pics",
     label: "Popular Pics",
-    color: "bg-violet-100 text-violet-800",
+    color: "bg-gray-100 text-[#1D1D1F]",
   },
   { key: "trending", label: "Trending", color: "bg-blue-100 text-blue-800" },
   {
@@ -1133,7 +1133,7 @@ export default function ProductCreate() {
                     {
                       field: "featured",
                       label: "Featured",
-                      color: "bg-violet-100 text-violet-800",
+                      color: "bg-gray-100 text-[#1D1D1F]",
                     },
                     {
                       field: "coupon",
@@ -1143,7 +1143,7 @@ export default function ProductCreate() {
                     {
                       field: "flashSale",
                       label: "Flash Sale",
-                      color: "bg-violet-100 text-violet-800",
+                      color: "bg-gray-100 text-[#1D1D1F]",
                     },
                     {
                       field: "clearance",

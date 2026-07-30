@@ -6,7 +6,7 @@ import { useUser } from "@/components/context/UserContext";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const DEFAULT_BG = "#1D1D1F";
-const DEFAULT_BUTTON = "#5B21B6";
+const DEFAULT_BUTTON = "#1D1D1F";
 const DEFAULT_TEXT = "#FFFFFF";
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const safeColor = (value, fallback) => (HEX_RE.test(value) ? value : fallback);

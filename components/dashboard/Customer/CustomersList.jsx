@@ -65,7 +65,7 @@ const SORT_COLUMNS = [
 
 function SortIcon({ active, dir }) {
   return (
-    <span className={`ml-1 inline-block text-[10px] ${active ? "text-[#5B21B6]" : "text-gray-300"}`}>
+    <span className={`ml-1 inline-block text-[10px] ${active ? "text-[#1D1D1F]" : "text-gray-300"}`}>
       {active && dir === "desc" ? "▼" : "▲"}
     </span>
   );
@@ -179,7 +179,7 @@ export default function CustomersList() {
                       <button
                         type="button"
                         onClick={() => handleSort(col.key)}
-                        className="inline-flex items-center hover:text-[#5B21B6] focus:outline-none"
+                        className="inline-flex items-center hover:text-[#1D1D1F] focus:outline-none"
                       >
                         {col.label}
                         <SortIcon active={sortKey === col.key} dir={sortDir} />

@@ -43,7 +43,7 @@ const ADDONS_META = [
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
       </svg>
     ),
-    color: "bg-violet-50 border-violet-200",
+    color: "bg-gray-50 border-gray-200",
   },
   {
     key: "googleAnalytics4",
@@ -246,7 +246,7 @@ export default function AddonsPage() {
               <div className="flex-1 min-w-0">
                 <Link
                   href={addon.href}
-                  className="font-semibold text-gray-900 hover:text-violet-700 transition text-sm"
+                  className="font-semibold text-gray-900 hover:text-[#1D1D1F] transition text-sm"
                 >
                   {addon.name}
                 </Link>

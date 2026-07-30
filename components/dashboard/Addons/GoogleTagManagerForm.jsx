@@ -103,7 +103,7 @@ export default function GoogleTagManagerForm() {
 
       <div className="bg-white rounded-2xl border border-gray-200 p-6 space-y-5">
         <div className="flex items-center gap-3 mb-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 border border-violet-100">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-50 border border-gray-200">
             <svg
               className="h-5 w-5"
               viewBox="0 0 24 24"

@@ -11,7 +11,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const STATUS_STYLE = {
   pending: "bg-yellow-100 text-yellow-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-violet-100 text-violet-800",
+  processing: "bg-gray-100 text-[#1D1D1F]",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-gray-100 text-gray-600",

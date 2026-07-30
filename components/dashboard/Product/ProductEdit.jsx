@@ -34,7 +34,7 @@ const DEFAULT_BADGE_OPTIONS = [
   {
     key: "popular_pics",
     label: "Popular Pics",
-    color: "bg-violet-100 text-violet-800",
+    color: "bg-gray-100 text-[#1D1D1F]",
   },
   { key: "trending", label: "Trending", color: "bg-blue-100 text-blue-800" },
   {
@@ -970,7 +970,7 @@ export default function ProductEdit({ productId }) {
       case "linked":
         return "text-green-700 bg-green-50 border-green-200";
       case "taken":
-        return "text-violet-800 bg-violet-50 border-violet-200";
+        return "text-[#1D1D1F] bg-gray-50 border-gray-200";
       case "checking":
         return "text-blue-700 bg-blue-50 border-blue-200";
       case "error":
@@ -1354,7 +1354,7 @@ export default function ProductEdit({ productId }) {
                     {
                       field: "featured",
                       label: "Featured",
-                      color: "bg-violet-100 text-violet-800",
+                      color: "bg-gray-100 text-[#1D1D1F]",
                     },
                     {
                       field: "coupon",
@@ -1364,7 +1364,7 @@ export default function ProductEdit({ productId }) {
                     {
                       field: "flashSale",
                       label: "Flash Sale",
-                      color: "bg-violet-100 text-violet-800",
+                      color: "bg-gray-100 text-[#1D1D1F]",
                     },
                     {
                       field: "clearance",
