@@ -581,9 +581,9 @@ export default function ProductAsideSections({
           )}
           {canSeeBuyingPrice && (
             <div className="grid grid-cols-2 gap-3">
-              <div>
+              <div >
                 <label className={labelClass}>
-                  Delivery Charge (dropshipping to store)
+                  Delivery Charge
                 </label>
                 <select
                   value=""
@@ -596,7 +596,7 @@ export default function ProductAsideSections({
                   }}
                   className={`${inputClass} mb-2`}
                 >
-                  <option value="">Pick saved cost…</option>
+                  <option value="" >Pick…</option>
                   {dropshippingItems.map((item) => (
                     <option key={item._id} value={item.cost}>
                       {item.name} — ৳{item.cost}
@@ -619,10 +619,6 @@ export default function ProductAsideSections({
                   placeholder="0.00"
                   step="0.01"
                 />
-                <p className="mt-1 text-xs text-gray-500">
-                  Cost to bring this product from the dropshipping supplier
-                  to the store — not the customer-facing shipping charge.
-                </p>
                 <div className="mt-1.5 flex items-center gap-3">
                   <button
                     type="button"
@@ -652,7 +648,7 @@ export default function ProductAsideSections({
                   }}
                   className={`${inputClass} mb-2`}
                 >
-                  <option value="">Pick saved cost…</option>
+                  <option value="">Pick</option>
                   {packagingItems.map((item) => (
                     <option key={item._id} value={item.cost}>
                       {item.name} — ৳{item.cost}
@@ -842,13 +838,13 @@ export default function ProductAsideSections({
             </div>
           )}
           {canSeeBuyingPrice && (
-            <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 flex items-center justify-between">
+            <div className="rounded-lg border border-gray-200 bg-[#f2fffa] px-4 py-3 flex items-center justify-between">
               <div>
-                <p className="text-sm font-semibold text-gray-800">
+                <p className="text-sm font-semibold text-black">
                   Cost Per Item
                 </p>
-                <p className="text-xs text-gray-500">
-                  Buying Price + Delivery Charge (dropshipping to store) +
+                <p className="text-xs text-gray-700">
+                  Buying Price + Delivery Charge +
                   Packaging Cost
                 </p>
               </div>
