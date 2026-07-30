@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import PromoPanelEditor from "./PromoPanelEditor";
 import { useUser } from "@/components/context/UserContext";
+import Toggle from "@/components/dashboard/ui/Toggle";
+import EmptyState from "@/components/dashboard/ui/EmptyState";
 
 function DealOfDayPicker({ API }) {
   const [query, setQuery] = useState("");
@@ -329,7 +331,7 @@ export default function PromoPanelList() {
           </div>
           <button
             onClick={() => setView("create")}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm shrink-0"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm shrink-0"
           >
             + Add Panel
           </button>
@@ -338,12 +340,12 @@ export default function PromoPanelList() {
         {loading ? (
           <div className="text-center py-16 text-gray-400">Loading…</div>
         ) : panels.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">
-            <p className="text-lg font-medium mb-2">No promo panels yet</p>
-            <p className="text-sm">
-              Click &quot;+ Add Panel&quot; to create one.
-            </p>
-          </div>
+          <EmptyState
+            title="No promo panels yet"
+            description='Click "+ Add Panel" to create one.'
+            actionLabel="+ Add Panel"
+            onAction={() => setView("create")}
+          />
         ) : (
           <ul className="space-y-3">
             {panels.map((p, idx) => (
@@ -407,21 +409,18 @@ export default function PromoPanelList() {
                   )}
                 </div>
 
-                <button
-                  onClick={() => handleToggleActive(p)}
-                  className={`relative w-10 h-5 rounded-full transition-colors shrink-0 ${p.isActive ? "bg-blue-600" : "bg-gray-300"}`}
-                >
-                  <span
-                    className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${p.isActive ? "translate-x-5" : ""}`}
-                  />
-                </button>
+                <Toggle
+                  checked={!!p.isActive}
+                  onChange={() => handleToggleActive(p)}
+                  label="Toggle panel active"
+                />
 
                 <button
                   onClick={() => {
                     setEditId(p._id);
                     setView("edit");
                   }}
-                  className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 shrink-0"
+                  className="px-3 py-1.5 text-sm border border-gray-200 rounded-xl hover:bg-gray-50 text-gray-700 shrink-0 transition-colors"
                 >
                   Edit
                 </button>

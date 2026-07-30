@@ -196,12 +196,12 @@ export default function ProductsList() {
   };
 
   return (
-    <div className="mx-auto mt-6 bg-white p-4 sm:p-6 rounded-lg shadow">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
-        <h2 className="text-lg font-semibold">
+    <div className="mx-auto bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <h2 className="text-2xl font-bold text-[#1F2937]">
           {viewTrash ? "Trash" : "Products"}
           {total > 0 && (
-            <span className="ml-2 text-sm font-normal text-gray-500">
+            <span className="ml-2 text-base font-normal text-gray-500">
               ({total} total)
             </span>
           )}
@@ -215,7 +215,7 @@ export default function ProductsList() {
                 setPage(1);
                 setSelectedIds([]);
               }}
-              className={`px-3 py-2 rounded-lg text-sm border ${viewTrash ? "bg-gray-800 text-white border-gray-800" : "bg-white text-gray-700 hover:bg-gray-50"}`}
+              className={`px-3 py-2 rounded-xl text-sm border transition-colors ${viewTrash ? "bg-[#1D1D1F] text-white border-[#1D1D1F]" : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"}`}
             >
               <FaTrash className="inline-block mr-1" />
               {viewTrash ? "Back to Products" : "Trash"}
@@ -224,7 +224,7 @@ export default function ProductsList() {
           {!viewTrash && (
             <Link
               href="/dashboard/products/new"
-              className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm text-center"
+              className="px-3 py-2 bg-green-600 text-white rounded-xl text-sm text-center hover:bg-green-700 transition-colors"
             >
               Create product
             </Link>
@@ -244,7 +244,7 @@ export default function ProductsList() {
             setSelectedChild(null);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded-lg"
+          className="border border-gray-200 px-3 py-2 rounded-xl text-sm text-gray-700 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         >
           <option value="">All categories</option>
           {categories.map((c) => (
@@ -266,7 +266,7 @@ export default function ProductsList() {
             setSelectedChild(null);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded-lg"
+          className="border border-gray-200 px-3 py-2 rounded-xl text-sm text-gray-700 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         >
           <option value="">Sub category</option>
           {(selectedMain?.children || []).map((c) => (
@@ -286,7 +286,7 @@ export default function ProductsList() {
             setSelectedChild(child);
             setPage(1);
           }}
-          className="border px-3 py-2 rounded-lg"
+          className="border border-gray-200 px-3 py-2 rounded-xl text-sm text-gray-700 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         >
           <option value="">Sub‑sub category</option>
           {(selectedSub?.children || []).map((c) => (
@@ -303,7 +303,7 @@ export default function ProductsList() {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="border px-3 py-2 rounded-lg bg-white"
+            className="border border-gray-200 px-3 py-2 rounded-xl text-sm text-gray-700 bg-white outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           >
             <option value="">All statuses</option>
             <option value="draft">📝 Drafts</option>
@@ -320,7 +320,7 @@ export default function ProductsList() {
             setPage(1);
           }}
           placeholder="Search products"
-          className="border px-3 py-2 rounded-lg flex-1 min-w-45"
+          className="border border-gray-200 px-3 py-2 rounded-xl text-sm flex-1 min-w-45 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         />
       </div>
 

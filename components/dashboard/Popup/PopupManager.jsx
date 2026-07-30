@@ -5,6 +5,7 @@ import Image from "next/image";
 import MediaPicker from "@/components/dashboard/MediaPicker";
 import { useUser } from "@/components/context/UserContext";
 import { uploadAdminImage } from "@/lib/uploadImage";
+import Toggle from "@/components/dashboard/ui/Toggle";
 
 export default function PopupManager() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";

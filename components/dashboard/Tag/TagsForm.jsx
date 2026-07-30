@@ -242,18 +242,18 @@ export default function TagsForm() {
 
   if (loading)
     return (
-      <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow text-center">
+      <div className="max-w-5xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center text-gray-500">
         Loading tags…
       </div>
     );
 
   return (
-    <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow">
+    <div className="max-w-5xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-        <h2 className="text-lg font-semibold">Mega Menu Tags</h2>
+        <h2 className="text-2xl font-bold text-[#1F2937]">Mega Menu Tags</h2>
         <button
           type="button"
-          className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm shrink-0"
+          className="px-3 py-1.5 border border-gray-200 rounded-xl text-sm shrink-0 text-gray-700 hover:bg-gray-50 transition-colors"
           onClick={handleAddTag}
         >
           + Add tag

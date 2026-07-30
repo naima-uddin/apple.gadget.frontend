@@ -16,7 +16,7 @@ const STATUS_STYLE = {
   approved: "bg-blue-100 text-blue-700",
   rejected: "bg-red-100 text-red-700",
   confirmed: "bg-blue-100 text-blue-700",
-  processing: "bg-violet-100 text-violet-800",
+  processing: "bg-gray-100 text-[#1D1D1F]",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   returned: "bg-teal-100 text-teal-700",
@@ -665,7 +665,7 @@ export default function OrderDetails({ orderId }) {
                           {ev.newStatus}
                         </span>
                         <span
-                          className={`text-xs px-2 py-0.5 rounded-full font-medium ${byCustomer ? "bg-orange-100 text-orange-700" : bySystem ? "bg-gray-100 text-gray-500" : "bg-violet-100 text-violet-800"}`}
+                          className={`text-xs px-2 py-0.5 rounded-full font-medium ${byCustomer ? "bg-orange-100 text-orange-700" : bySystem ? "bg-gray-100 text-gray-500" : "bg-gray-100 text-[#1D1D1F]"}`}
                         >
                           {byCustomer
                             ? "By customer"

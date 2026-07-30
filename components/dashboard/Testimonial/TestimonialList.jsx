@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import TestimonialEditor from "./TestimonialEditor";
 import { useUser } from "@/components/context/UserContext";
+import Toggle from "@/components/dashboard/ui/Toggle";
+import EmptyState from "@/components/dashboard/ui/EmptyState";
 
 export default function TestimonialList() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -122,7 +124,7 @@ export default function TestimonialList() {
         </div>
         <button
           onClick={() => setView("create")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm shrink-0"
+          className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm shrink-0"
         >
           + Add Testimonial
         </button>
@@ -131,12 +133,12 @@ export default function TestimonialList() {
       {loading ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : items.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <p className="text-lg font-medium mb-2">No testimonials yet</p>
-          <p className="text-sm">
-            Click &quot;+ Add Testimonial&quot; to create one.
-          </p>
-        </div>
+        <EmptyState
+          title="No testimonials yet"
+          description='Click "+ Add Testimonial" to create one.'
+          actionLabel="+ Add Testimonial"
+          onAction={() => setView("create")}
+        />
       ) : (
         <ul className="space-y-3">
           {items.map((item, idx) => (
@@ -194,21 +196,18 @@ export default function TestimonialList() {
                 </p>
               </div>
 
-              <button
-                onClick={() => handleToggleActive(item)}
-                className={`relative w-10 h-5 rounded-full transition-colors shrink-0 ${item.isActive ? "bg-blue-600" : "bg-gray-300"}`}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${item.isActive ? "translate-x-5" : ""}`}
-                />
-              </button>
+              <Toggle
+                checked={!!item.isActive}
+                onChange={() => handleToggleActive(item)}
+                label="Toggle testimonial active"
+              />
 
               <button
                 onClick={() => {
                   setEditId(item._id);
                   setView("edit");
                 }}
-                className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-700 shrink-0"
+                className="px-3 py-1.5 text-sm border border-gray-200 rounded-xl hover:bg-gray-50 text-gray-700 shrink-0 transition-colors"
               >
                 Edit
               </button>

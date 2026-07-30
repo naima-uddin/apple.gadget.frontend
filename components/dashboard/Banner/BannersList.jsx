@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import BannerEditor from "./BannerEditor";
 import { useUser } from "@/components/context/UserContext";
+import Toggle from "@/components/dashboard/ui/Toggle";
+import EmptyState from "@/components/dashboard/ui/EmptyState";
 
 export default function BannersList() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -109,7 +111,7 @@ export default function BannersList() {
     );
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Banner Slides</h1>
@@ -119,7 +121,7 @@ export default function BannersList() {
         </div>
         <button
           onClick={() => setView("create")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm shrink-0"
+          className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm shrink-0"
         >
           + Add Slide
         </button>
@@ -128,12 +130,10 @@ export default function BannersList() {
       {loading ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : banners.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <p className="text-lg font-medium mb-2">No banner slides yet</p>
-          <p className="text-sm">
-            Click &quot;+ Add Slide&quot; to upload your first banner.
-          </p>
-        </div>
+        <EmptyState
+          title="No banner slides yet"
+          description={'Click "+ Add Slide" to upload your first banner.'}
+        />
       ) : (
         <ul className="space-y-3">
           {banners.map((b, idx) => (

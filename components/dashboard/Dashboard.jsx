@@ -576,7 +576,7 @@ export default function Dashboard() {
                     {actionCenter.pendingOrders ?? 0}
                   </span>
                 </div>
-                <div className="flex justify-between rounded-lg border p-3 bg-violet-50 text-sm">
+                <div className="flex justify-between rounded-lg border p-3 bg-gray-50 text-sm">
                   <span>Processing orders</span>
                   <span className="font-semibold">
                     {actionCenter.processingOrders ?? 0}
@@ -716,7 +716,7 @@ export default function Dashboard() {
                     <Bar
                       dataKey="revenue"
                       fill="currentColor"
-                      className="text-violet-600"
+                      className="text-[#1D1D1F]"
                       radius={[5, 5, 0, 0]}
                     />
                   </BarChart>
@@ -749,7 +749,7 @@ export default function Dashboard() {
                       type="monotone"
                       dataKey="revenue"
                       name="Revenue"
-                      stroke="#7C3AED"
+                      stroke="#1D1D1F"
                       strokeWidth={2.5}
                       dot={{ r: 4 }}
                       activeDot={{ r: 6 }}
@@ -859,10 +859,10 @@ export default function Dashboard() {
                   <div className="space-y-2">
                     {paymentBreakdown.map((p, idx) => {
                       const colors = [
-                        "bg-violet-500",
+                        "bg-[#1D1D1F]",
                         "bg-green-500",
                         "bg-orange-500",
-                        "bg-violet-500",
+                        "bg-[#1D1D1F]",
                         "bg-teal-500",
                         "bg-amber-500",
                       ];

@@ -10,7 +10,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const STATUS_STYLE = {
   unassigned: "bg-gray-100 text-gray-600",
   assigned: "bg-blue-100 text-blue-700",
-  called: "bg-violet-100 text-violet-800",
+  called: "bg-gray-100 text-[#1D1D1F]",
   accepted: "bg-green-100 text-green-700",
   rejected: "bg-red-100 text-red-700",
 };

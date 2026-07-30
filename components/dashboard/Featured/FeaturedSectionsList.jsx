@@ -140,7 +140,7 @@ export default function FeaturedSectionsList() {
           </button>
           <button
             onClick={() => setView("create-video")}
-            className="px-4 py-2 bg-[#5B21B6] text-white rounded-lg font-semibold hover:bg-violet-800 transition text-sm"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black transition text-sm"
           >
             + Video Carousel
           </button>
@@ -186,7 +186,7 @@ export default function FeaturedSectionsList() {
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-800 truncate">
                   {sec.type === "video" && (
-                    <span className="inline-block mr-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-violet-100 text-violet-800 rounded-full align-middle">
+                    <span className="inline-block mr-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide bg-gray-100 text-[#1D1D1F] rounded-full align-middle">
                       Video
                     </span>
                   )}
@@ -235,7 +235,7 @@ export default function FeaturedSectionsList() {
                     setEditType(sec.type === "video" ? "video" : "products");
                     setView("edit");
                   }}
-                  className="px-3 py-1.5 text-xs font-semibold bg-violet-50 text-violet-800 rounded-lg hover:bg-violet-100 transition"
+                  className="px-3 py-1.5 text-xs font-semibold bg-gray-50 text-[#1D1D1F] rounded-lg hover:bg-gray-100 transition"
                 >
                   Edit
                 </button>

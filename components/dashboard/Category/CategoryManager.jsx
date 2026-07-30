@@ -132,18 +132,18 @@ export default function CategoryManager() {
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            <span className="text-xs bg-slate-900 text-white px-2 py-1 rounded-full hidden sm:inline">
+            <span className="text-xs bg-[#1D1D1F] text-white px-2 py-1 rounded-full hidden sm:inline">
               {levelLabel}
             </span>
             {hasChildren && (
-              <span className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full hidden sm:inline">
+              <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full hidden sm:inline">
                 {cat.children.length}
               </span>
             )}
 
             <button
               onClick={() => setEditingCategory(cat)}
-              className="p-2 text-gray-800 hover:bg-gray-100 rounded-lg"
+              className="p-2 text-gray-800 hover:bg-gray-100 rounded-xl"
               title="Edit & manage children"
             >
               <FaEdit />
@@ -174,10 +174,10 @@ export default function CategoryManager() {
     <div className="max-w-7xl mx-auto bg-white rounded-2xl border border-gray-100 shadow-sm">
       <div className="p-6 border-b">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-          <h2 className="text-2xl font-semibold">Categories</h2>
+          <h2 className="text-2xl font-bold text-[#1F2937]">Categories</h2>
           <button
             onClick={() => setShowCreateMain(true)}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2 text-sm shrink-0"
+            className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 flex items-center gap-2 text-sm shrink-0 transition-colors"
           >
             <FaPlus /> Create Main Category
           </button>
@@ -188,31 +188,15 @@ export default function CategoryManager() {
           placeholder="Search categories by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300"
+          className="w-full border border-gray-200 px-4 py-2 rounded-xl outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         />
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="text-left px-4 py-3 text-sm font-medium">#</th>
-              <th className="text-left px-4 py-3 text-sm font-medium">
-                Category
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-medium">Level</th>
-              <th className="text-left px-4 py-3 text-sm font-medium">
-                Parent Category
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-medium">
-                Children
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-medium">
-                Actions
-              </th>
-            </tr>
-          </thead>
-        </table>
+        <div className="flex items-center justify-between bg-gray-50 px-4 py-3 text-sm font-medium text-gray-600">
+          <span>Category</span>
+          <span className="hidden sm:inline">Level / Actions</span>
+        </div>
 
         {loading ? (
           <div className="text-center py-12 text-gray-500">Loading...</div>
@@ -332,7 +316,7 @@ function CreateMainModal({ API, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-50 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h3 className="text-xl font-semibold mb-4">Create Main Category</h3>
 
@@ -603,7 +587,7 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-50 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <h3 className="text-xl font-semibold mb-4">
             Edit{" "}

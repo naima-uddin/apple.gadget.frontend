@@ -150,12 +150,12 @@ export default function AdminsList() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-4 sm:p-6 rounded-lg shadow">
+    <div className="max-w-6xl mx-auto bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-        <h2 className="text-lg font-semibold">Authorized accounts</h2>
+        <h2 className="text-lg font-semibold text-[#1F2937]">Authorized accounts</h2>
         <a
           href="/dashboard/authorized/new"
-          className="px-3 py-2 bg-green-600 text-white rounded-lg text-sm text-center shrink-0"
+          className="px-3 py-2 bg-[#1D1D1F] text-white rounded-xl text-sm text-center shrink-0 hover:bg-black transition-colors"
         >
           Create admin/moderator
         </a>
@@ -178,7 +178,7 @@ export default function AdminsList() {
             </thead>
             <tbody>
               {items.map((a) => (
-                <tr key={a._id} className="border-t align-top">
+                <tr key={a._id} className="border-t align-top hover:bg-gray-50">
                   <td className="py-3 pr-4 whitespace-nowrap font-medium">{a.name}</td>
                   <td className="py-3 pr-4 text-gray-500 whitespace-nowrap">{a.email}</td>
                   <td className="py-3 pr-4">

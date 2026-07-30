@@ -66,15 +66,15 @@ export default function BlogList() {
   return (
     <div>
       <div className="mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <h2 className="text-lg font-semibold">Blog posts</h2>
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937]">Blog posts</h2>
         <div className="flex flex-wrap gap-2">
           <Link
             href="/dashboard/blog/new"
-            className="px-3 py-2 bg-gray-800 text-white rounded-lg text-sm"
+            className="px-3 py-2 bg-[#1D1D1F] text-white hover:bg-black rounded-xl transition-colors text-sm"
           >
             New post
           </Link>
-          <button onClick={load} className="px-3 py-2 border border-gray-200 rounded-lg text-sm">
+          <button onClick={load} className="px-3 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors text-sm">
             Refresh
           </button>
         </div>
@@ -97,7 +97,10 @@ export default function BlogList() {
               {loading ? (
                 <tr>
                   <td colSpan={4} className="p-4 text-center">
-                    Loading…
+                    <div className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+                      Loading…
+                    </div>
                   </td>
                 </tr>
               ) : items.length === 0 ? (
@@ -129,7 +132,7 @@ export default function BlogList() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleEdit(p)}
-                          className="px-2 py-1 border border-gray-200 rounded-lg text-sm"
+                          className="px-2 py-1 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors text-sm"
                         >
                           Edit
                         </button>

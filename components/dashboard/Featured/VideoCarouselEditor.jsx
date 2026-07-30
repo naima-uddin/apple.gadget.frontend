@@ -541,7 +541,7 @@ export default function VideoCarouselEditor({
                               ),
                             )
                           }
-                          className="w-20 border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-violet-500"
+                          className="w-20 border rounded-lg px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
                         />
                         <span className="text-xs text-gray-400">
                           {v.youtubeId
@@ -587,7 +587,7 @@ export default function VideoCarouselEditor({
                           setQuery("");
                           setSearchResults([]);
                         }}
-                        className="text-xs font-semibold text-violet-700 hover:text-violet-900"
+                        className="text-xs font-semibold text-[#1D1D1F] hover:text-black"
                       >
                         {attachIdx === idx ? "✕ Cancel" : "+ Link a product"}
                       </button>
@@ -611,7 +611,7 @@ export default function VideoCarouselEditor({
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       placeholder="Search product by name…"
-                      className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+                      className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
                     />
                     {searching && (
                       <span className="absolute right-3 top-2.5 text-xs text-gray-400">
@@ -623,7 +623,7 @@ export default function VideoCarouselEditor({
                         {searchResults.map((p) => (
                           <li
                             key={p._id}
-                            className="flex items-center gap-3 px-3 py-2 hover:bg-violet-50 cursor-pointer"
+                            className="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 cursor-pointer"
                             onClick={() => attachProduct(p)}
                           >
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -641,7 +641,7 @@ export default function VideoCarouselEditor({
                                 ৳{getProductPrice(p)}
                               </p>
                             </div>
-                            <span className="text-violet-700 font-semibold text-xs">
+                            <span className="text-[#1D1D1F] font-semibold text-xs">
                               + Link
                             </span>
                           </li>
@@ -661,7 +661,7 @@ export default function VideoCarouselEditor({
         <button
           onClick={handleSave}
           disabled={saving || uploading}
-          className="px-6 py-2 bg-[#5B21B6] text-white rounded-lg font-semibold hover:bg-violet-800 disabled:opacity-50 transition"
+          className="px-6 py-2 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black disabled:opacity-50 transition"
         >
           {saving ? "Saving…" : isEdit ? "Save Changes" : "Create Carousel"}
         </button>

@@ -140,7 +140,7 @@ export default function WaitlistManager() {
               onClick={() => setFilterNotified(val)}
               className={`capitalize text-sm px-3 py-1.5 rounded-lg border transition ${
                 filterNotified === val
-                  ? "bg-violet-700 text-white border-violet-700"
+                  ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
                   : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
               }`}
             >
@@ -171,7 +171,7 @@ export default function WaitlistManager() {
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow overflow-hidden">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-gray-600 uppercase text-xs tracking-wide">

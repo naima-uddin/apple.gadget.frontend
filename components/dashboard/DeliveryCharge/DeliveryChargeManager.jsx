@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const INPUT =
-  "w-full border border-gray-200 px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300";
+  "w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]";
 
 function Section({ title, desc, children }) {
   return (
@@ -145,10 +145,10 @@ export default function DeliveryChargeManager() {
     <div className="max-w-3xl mx-auto space-y-6 pb-16">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-lg font-semibold text-gray-900">
+          <h1 className="text-xl font-bold tracking-tight text-[#1F2937]">
             Delivery Charge
           </h1>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             Set default shipping charges and optional overrides for specific
             Dhaka zones or areas. Checkout pulls these values directly — no
             more hardcoded charges.
@@ -158,7 +158,7 @@ export default function DeliveryChargeManager() {
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="px-4 py-2 rounded-lg text-sm font-medium bg-[#1D1D1F] text-white hover:bg-black transition disabled:opacity-50"
+          className="px-4 py-2 rounded-xl text-sm font-medium bg-[#1D1D1F] text-white hover:bg-black transition-colors disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save changes"}
         </button>
@@ -229,7 +229,7 @@ export default function DeliveryChargeManager() {
                         [zone]: e.target.value,
                       }))
                     }
-                    className="w-24 border border-gray-200 px-2.5 py-1.5 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300"
+                    className="w-24 border border-gray-200 px-2.5 py-1.5 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                   />
                 </div>
 

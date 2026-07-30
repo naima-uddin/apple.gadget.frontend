@@ -69,8 +69,8 @@ export default function MostPopular() {
     <div className="max-w-4xl mx-auto space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">Most Popular Products</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937]">Most Popular Products</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
             Products ranked by total page views from all visitors (guests &amp;
             logged-in users).
           </p>
@@ -79,7 +79,7 @@ export default function MostPopular() {
           <select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="text-sm border border-gray-200 rounded-lg px-2 py-1.5"
+            className="border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           >
             <option value={10}>Top 10</option>
             <option value={20}>Top 20</option>
@@ -87,7 +87,7 @@ export default function MostPopular() {
           </select>
           <button
             onClick={fetchData}
-            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg"
+            className="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
           >
             Refresh
           </button>
