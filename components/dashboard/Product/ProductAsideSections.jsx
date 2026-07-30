@@ -431,7 +431,7 @@ export default function ProductAsideSections({
         <button
           type="button"
           onClick={() => setShowBadgeManager((v) => !v)}
-          className="mt-3 rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-[#1D1D1F] hover:bg-gray-100"
+          className="mt-3 rounded-xl border border-gray-300 px-3 py-1.5 text-sm text-[#1D1D1F] hover:bg-gray-100 transition-colors"
         >
           {showBadgeManager ? "Hide Badge Manager" : "Manage Badges"}
         </button>
@@ -517,7 +517,7 @@ export default function ProductAsideSections({
               />
               <button
                 type="button"
-                className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-[#1D1D1F] hover:bg-gray-100"
+                className="rounded-xl border border-gray-300 px-3 py-1.5 text-sm text-[#1D1D1F] hover:bg-gray-100 transition-colors"
                 onClick={() => {
                   const key = normalizeBadgeKey(newBadgeKey || newBadgeLabel);
                   const label = String(newBadgeLabel || "").trim();
@@ -539,7 +539,7 @@ export default function ProductAsideSections({
               type="button"
               disabled={badgeSaving}
               onClick={() => saveBadgeOptions(badgeOptions)}
-              className="w-full rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-[#1D1D1F] disabled:opacity-60"
+              className="w-full rounded-xl bg-gray-800 px-4 py-2 text-sm text-white hover:bg-[#1D1D1F] disabled:opacity-60 transition-colors"
             >
               {badgeSaving ? "Saving..." : "Save Badge Options"}
             </button>

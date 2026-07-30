@@ -420,7 +420,7 @@ export default function OrderDetails({ orderId }) {
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {editItems.map((item, i) => (
-                  <tr key={i}>
+                  <tr key={i} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         {item.image ? (
@@ -451,7 +451,7 @@ export default function OrderDetails({ orderId }) {
                         value={item.quantity}
                         disabled={saving}
                         onChange={(e) => updateItemQty(i, e.target.value)}
-                        className="w-16 text-center text-sm border border-gray-200 rounded-lg px-2 py-1.5"
+                        className="w-16 text-center border border-gray-200 px-2 py-1.5 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                       />
                     </td>
                     <td className="px-5 py-4 text-right font-semibold text-gray-800">
@@ -476,7 +476,7 @@ export default function OrderDetails({ orderId }) {
               <button
                 type="button"
                 onClick={() => setBookModalOpen(true)}
-                className="px-5 py-2.5 text-sm font-semibold rounded-lg bg-gray-900 text-white hover:bg-gray-800"
+                className="px-5 py-2.5 text-sm font-semibold rounded-xl bg-gray-900 text-white hover:bg-gray-800 transition-colors"
               >
                 Book Courier ▾
               </button>

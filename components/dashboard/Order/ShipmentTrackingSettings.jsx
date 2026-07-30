@@ -454,7 +454,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                             }))
                           }
                           placeholder={isUnchanged ? "Clear to update" : ""}
-                          className={`w-full text-sm border rounded-lg px-3 py-2 bg-white ${isPassword ? "pr-9" : ""} ${isUnchanged ? "border-green-200" : "border-gray-200"}`}
+                          className={`w-full text-sm border rounded-xl px-3 py-2 bg-white outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F] ${isPassword ? "pr-9" : ""} ${isUnchanged ? "border-green-200" : "border-gray-200"}`}
                         />
                         {isPassword && (
                           <button
@@ -521,7 +521,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                       }))
                     }
                     placeholder={help?.storeId || "Merchant panel → Stores"}
-                    className="w-full text-sm border rounded-lg px-3 py-2 bg-white max-w-xs"
+                    className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2 bg-white max-w-xs outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                   />
                 </div>
               )}

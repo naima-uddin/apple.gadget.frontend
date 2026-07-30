@@ -127,7 +127,8 @@ function ImageDragGrid({ images, onReorder, onRemove }) {
             />
             {(img.uploading || img.__local) && (
               <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
-                <div className="text-sm font-medium text-gray-700">
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
                   Uploading...
                 </div>
               </div>
@@ -838,13 +839,13 @@ export default function ProductCreate() {
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-4 sm:py-6 md:py-8">
       <div className="mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
           <div className="flex items-center justify-between gap-3">
             <div>
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-[#1F2937] work-sans">
                 Create New Product
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-sm text-gray-500 mt-0.5">
                 Add a new product to your catalog
               </p>
               {lastSaved && (
@@ -2172,7 +2173,7 @@ export default function ProductCreate() {
         </div>
 
         {/* Action Buttons */}
-        <div className="bg-white rounded-xl shadow-md p-6 mt-6">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mt-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-start">
             <button
               type="button"

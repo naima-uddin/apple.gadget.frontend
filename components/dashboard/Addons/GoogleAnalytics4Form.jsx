@@ -67,7 +67,12 @@ export default function GoogleAnalytics4Form() {
   };
 
   if (loading)
-    return <div className="py-16 text-center text-gray-400">Loading…</div>;
+    return (
+      <div className="flex items-center justify-center gap-2 py-16 text-center text-gray-400">
+        <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+        Loading…
+      </div>
+    );
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -127,7 +132,7 @@ export default function GoogleAnalytics4Form() {
             value={cfg.measurementId}
             onChange={(e) => set("measurementId", e.target.value)}
             placeholder="e.g. G-XXXXXXXXXX"
-            className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-100"
+            className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           />
           <p className="mt-1.5 text-xs text-gray-400">
             Find in Google Analytics → Admin → Data Streams → your stream →

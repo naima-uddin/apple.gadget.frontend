@@ -1042,7 +1042,26 @@ export default function ProductEdit({ productId }) {
       <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-white rounded-xl shadow-md p-12 text-center">
-            <div className="text-xl font-semibold text-gray-700">
+            <div className="flex items-center justify-center gap-2 text-xl font-semibold text-gray-700">
+              <svg
+                className="animate-spin h-4 w-4 text-gray-400"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <circle
+                  className="opacity-20"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-80"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                />
+              </svg>
               Loading product...
             </div>
           </div>
@@ -1061,7 +1080,7 @@ export default function ProductEdit({ productId }) {
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-[#1F2937] work-sans">
                 Edit Product
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="text-sm text-gray-500 mt-0.5">
                 Update product information in your catalog
               </p>
               {lastSaved && (

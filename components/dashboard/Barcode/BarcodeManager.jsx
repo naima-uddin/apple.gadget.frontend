@@ -434,7 +434,28 @@ export default function BarcodeManager() {
 
           <div className="mt-4 space-y-3">
             {loading ? (
-              <p className="text-sm text-gray-500">Loading barcodes...</p>
+              <p className="flex items-center gap-2 text-sm text-gray-500">
+                <svg
+                  className="animate-spin h-4 w-4 text-gray-400"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    className="opacity-20"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-80"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  />
+                </svg>
+                Loading barcodes...
+              </p>
             ) : items.length === 0 ? (
               <p className="text-sm text-gray-500">No barcodes found.</p>
             ) : (
@@ -466,37 +487,43 @@ export default function BarcodeManager() {
                               {item.label || "No label"}
                             </p>
                           </div>
-                          <div className="flex flex-wrap gap-2">
-                            <button
-                              type="button"
-                              onClick={() => {
-                                navigator.clipboard?.writeText(item.code);
-                                setCopiedCode(item.code);
-                                window.setTimeout(
-                                  () => setCopiedCode(""),
-                                  1200,
-                                );
-                              }}
-                              className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
-                            >
-                              <FaCopy /> Copy
-                            </button>
+                          <div className="flex flex-wrap items-center gap-2">
                             <button
                               type="button"
                               onClick={() => handleEdit(item)}
-                              className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-[#1D1D1F] hover:bg-gray-50"
+                              className="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                             >
-                              <FaEdit /> Edit
+                              <FaEdit className="h-3.5 w-3.5" /> Edit
                             </button>
-                            {user?.role === "admin" && (
-                              <button
-                                type="button"
-                                onClick={() => handleDelete(item)}
-                                className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-[#1D1D1F] hover:bg-gray-50"
-                              >
-                                <FaTrash /> Delete
-                              </button>
-                            )}
+                            <RowActionsMenu
+                              items={[
+                                {
+                                  label: "Copy code",
+                                  icon: <FaCopy className="h-3.5 w-3.5" />,
+                                  onClick: () => {
+                                    navigator.clipboard?.writeText(item.code);
+                                    setCopiedCode(item.code);
+                                    window.setTimeout(
+                                      () => setCopiedCode(""),
+                                      1200,
+                                    );
+                                  },
+                                },
+                                ...(user?.role === "admin"
+                                  ? [
+                                      { divider: true },
+                                      {
+                                        label: "Delete",
+                                        icon: (
+                                          <FaTrash className="h-3.5 w-3.5" />
+                                        ),
+                                        onClick: () => handleDelete(item),
+                                        danger: true,
+                                      },
+                                    ]
+                                  : []),
+                              ]}
+                            />
                           </div>
                         </div>
 
