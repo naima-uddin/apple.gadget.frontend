@@ -21,8 +21,9 @@ function normalizeHref(href) {
 
 export default function Footer() {
   const { user } = useUser();
-  const { storeName, logoUrl, footerInfo, socialLinks, footerLinks } =
+  const { storeName, logoUrl, footerLogoUrl, footerInfo, socialLinks, footerLinks } =
     useStoreSettings();
+  const displayLogoUrl = footerLogoUrl || logoUrl;
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -155,11 +156,11 @@ export default function Footer() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
-                {logoUrl && (
+                {displayLogoUrl && (
                   <span className="flex h-9 w-26 shrink-0 items-center justify-center rounded-lg bg-white p-1">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={logoUrl}
+                      src={displayLogoUrl}
                       alt={storeName || "Store logo"}
                       className="h-full w-full object-contain"
                     />

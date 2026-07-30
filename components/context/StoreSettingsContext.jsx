@@ -18,6 +18,7 @@ const EMPTY_ABOUT = { hero: {}, features: [], stats: [] };
 const StoreSettingsContext = createContext({
   storeName: "",
   logoUrl: "",
+  footerLogoUrl: "",
   footerInfo: { phone: "", email: "", address: "" },
   contactInfo: { phone: "", email: "", address: "" },
   socialLinks: {},
@@ -30,6 +31,7 @@ export function StoreSettingsProvider({ children }) {
   const [settings, setSettings] = useState({
     storeName: "",
     logoUrl: "",
+    footerLogoUrl: "",
     footerInfo: { phone: "", email: "", address: "" },
     contactInfo: { phone: "", email: "", address: "" },
     socialLinks: {},
@@ -45,6 +47,7 @@ export function StoreSettingsProvider({ children }) {
         setSettings({
           storeName: d.storeName || "",
           logoUrl: d.websiteLogo?.url || "",
+          footerLogoUrl: d.footerLogo?.url || "",
           footerInfo: d.footerInfo || { phone: "", email: "", address: "" },
           contactInfo: d.contactInfo || { phone: "", email: "", address: "" },
           socialLinks: d.socialLinks || {},

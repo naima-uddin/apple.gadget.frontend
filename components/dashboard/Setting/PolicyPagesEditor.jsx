@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import MediaPicker from "@/components/dashboard/MediaPicker";
+import { uploadAdminImage } from "@/lib/uploadImage";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -18,6 +20,7 @@ const TABS = [
 const POLICY_KEYS = ["shipping", "return", "faq", "privacy", "terms"];
 
 const EMPTY_FOOTER_INFO = { phone: "", email: "", address: "" };
+const EMPTY_FOOTER_LOGO = {};
 const EMPTY_CONTACT_INFO = { phone: "", email: "", address: "" };
 const EMPTY_FOOTER_LINKS = { quickLinks: [], customerService: [] };
 const EMPTY_ABOUT = {
@@ -277,6 +280,74 @@ function Field({ label, children }) {
   );
 }
 
+function ImageAssetField({
+  label,
+  desc,
+  value,
+  uploading,
+  status,
+  onUpload,
+  onPickFromMedia,
+  onDelete,
+}) {
+  return (
+    <div>
+      <p className="text-xs font-medium text-gray-600 mb-2">{label}</p>
+      <div className="flex items-center gap-4 flex-wrap">
+        <div className="w-28 h-14 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+          {value?.url ? (
+            <img
+              src={value.url}
+              alt={label}
+              className="max-w-full max-h-full object-contain"
+            />
+          ) : (
+            <span className="text-xs text-gray-300">খালি</span>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <label className="px-3 py-1.5 border border-gray-200 text-gray-700 rounded-xl text-xs cursor-pointer bg-white hover:bg-gray-50 transition-colors">
+            {uploading ? "Uploading…" : "Upload"}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              disabled={uploading}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) onUpload(file);
+                e.target.value = "";
+              }}
+            />
+          </label>
+          <button
+            type="button"
+            onClick={onPickFromMedia}
+            className="px-3 py-1.5 border border-gray-200 text-gray-700 rounded-xl text-xs bg-white hover:bg-gray-50 transition-colors"
+          >
+            From Media
+          </button>
+          <button
+            type="button"
+            onClick={onDelete}
+            className="px-3 py-1.5 border border-red-200 rounded-lg text-xs text-red-600 bg-white hover:bg-red-50"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <p className="mt-2 text-[11px] text-gray-400">
+        {status === "saving" && <span className="text-blue-500">Saving…</span>}
+        {status === "saved" && <span className="text-green-600">Saved!</span>}
+        {status && status !== "saving" && status !== "saved" && (
+          <span className="text-red-500">Error: {status}</span>
+        )}
+        {!status && (desc || "সেভ করলে সাথে সাথে ওয়েবসাইটে প্রয়োগ হবে।")}
+      </p>
+    </div>
+  );
+}
+
 function QAEditor({ items, onChange }) {
   const add = () => onChange([...items, { question: "", answer: "" }]);
   const remove = (i) => onChange(items.filter((_, idx) => idx !== i));
@@ -403,7 +474,18 @@ function SectionEditor({ items, onChange }) {
   );
 }
 
-function FooterEditor({ footerInfo, socialLinks, footerLinks, onChange }) {
+function FooterEditor({
+  footerInfo,
+  socialLinks,
+  footerLinks,
+  footerLogo,
+  logoUploading,
+  logoStatus,
+  onLogoUpload,
+  onPickLogo,
+  onDeleteLogo,
+  onChange,
+}) {
   const setInfo = (key, val) =>
     onChange({ footerInfo: { ...footerInfo, [key]: val } });
 
@@ -428,6 +510,20 @@ function FooterEditor({ footerInfo, socialLinks, footerLinks, onChange }) {
 
   return (
     <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার লোগো</p>
+        <ImageAssetField
+          label="Footer Logo"
+          desc="আলাদা লোগো না দিলে ওয়েবসাইটের প্রধান লোগোই ফুটারে দেখাবে।"
+          value={footerLogo}
+          uploading={logoUploading}
+          status={logoStatus}
+          onUpload={onLogoUpload}
+          onPickFromMedia={onPickLogo}
+          onDelete={onDeleteLogo}
+        />
+      </div>
+
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার — যোগাযোগের তথ্য</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -743,7 +839,12 @@ export default function PolicyPagesEditor() {
   const [contactInfo, setContactInfo] = useState(EMPTY_CONTACT_INFO);
   const [socialLinks, setSocialLinks] = useState({});
   const [footerLinks, setFooterLinks] = useState(EMPTY_FOOTER_LINKS);
+  const [footerLogo, setFooterLogo] = useState(EMPTY_FOOTER_LOGO);
   const [aboutContent, setAboutContent] = useState(EMPTY_ABOUT);
+
+  const [logoUploading, setLogoUploading] = useState(false);
+  const [showLogoPicker, setShowLogoPicker] = useState(false);
+  const [logoStatus, setLogoStatus] = useState("");
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -766,6 +867,7 @@ export default function PolicyPagesEditor() {
         setContactInfo(s.contactInfo || EMPTY_CONTACT_INFO);
         setSocialLinks(s.socialLinks || {});
         setFooterLinks(s.footerLinks || EMPTY_FOOTER_LINKS);
+        setFooterLogo(s.footerLogo || EMPTY_FOOTER_LOGO);
         setAboutContent(s.aboutContent || EMPTY_ABOUT);
       })
       .catch(console.error)
@@ -795,6 +897,46 @@ export default function PolicyPagesEditor() {
     }
   };
 
+  const saveFooterLogo = async (logo, setStatus) => {
+    setStatus("saving");
+    try {
+      const resp = await fetch(`${API}/api/admin/settings/policy`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ footerLogo: logo }),
+      });
+      if (!resp.ok) {
+        const body = await resp.json().catch(() => ({}));
+        throw new Error(body.error || "Save failed");
+      }
+      setStatus("saved");
+      setTimeout(() => setStatus(""), 2500);
+    } catch (err) {
+      setStatus(err.message || "error");
+    }
+  };
+
+  const handleLogoUpload = async (file) => {
+    if (!file) return;
+    setLogoUploading(true);
+    try {
+      const b = await uploadAdminImage(file, "appleProduct/settings");
+      const asset = b.asset || {};
+      setFooterLogo(asset);
+      await saveFooterLogo(asset, setLogoStatus);
+    } catch (err) {
+      alert(err.message || "Upload failed");
+    } finally {
+      setLogoUploading(false);
+    }
+  };
+
+  const handleDeleteLogo = async () => {
+    setFooterLogo({});
+    await saveFooterLogo({}, setLogoStatus);
+  };
+
   const handleQuickSetup = async () => {
     if (
       !confirm(
@@ -808,7 +950,7 @@ export default function PolicyPagesEditor() {
 
   const handleSave = () => {
     if (activeTab === "footer") {
-      return putPolicy({ footerInfo, socialLinks, footerLinks });
+      return putPolicy({ footerInfo, socialLinks, footerLinks, footerLogo });
     }
     if (activeTab === "contact") {
       return putPolicy({ contactInfo });
@@ -974,6 +1116,12 @@ export default function PolicyPagesEditor() {
               footerInfo={footerInfo}
               socialLinks={socialLinks}
               footerLinks={footerLinks}
+              footerLogo={footerLogo}
+              logoUploading={logoUploading}
+              logoStatus={logoStatus}
+              onLogoUpload={handleLogoUpload}
+              onPickLogo={() => setShowLogoPicker(true)}
+              onDeleteLogo={handleDeleteLogo}
               onChange={(patch) => {
                 if (patch.footerInfo) setFooterInfo(patch.footerInfo);
                 if (patch.socialLinks) setSocialLinks(patch.socialLinks);
@@ -1022,6 +1170,17 @@ export default function PolicyPagesEditor() {
           </button>
         </div>
       </div>
+
+      <MediaPicker
+        open={showLogoPicker}
+        onSelect={async (asset) => {
+          const logo = asset || {};
+          setFooterLogo(logo);
+          setShowLogoPicker(false);
+          await saveFooterLogo(logo, setLogoStatus);
+        }}
+        onClose={() => setShowLogoPicker(false)}
+      />
     </div>
   );
 }
