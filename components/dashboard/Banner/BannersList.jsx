@@ -191,15 +191,11 @@ export default function BannersList() {
               </div>
 
               {/* Active toggle */}
-              <button
-                onClick={() => handleToggleActive(b)}
-                className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${b.isActive ? "bg-blue-600" : "bg-gray-300"}`}
-                title={b.isActive ? "Click to hide" : "Click to show"}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${b.isActive ? "translate-x-5" : ""}`}
-                />
-              </button>
+              <Toggle
+                checked={b.isActive}
+                onChange={() => handleToggleActive(b)}
+                label={b.title || "Banner slide"}
+              />
 
               {/* Edit / Delete */}
               <div className="flex gap-2 shrink-0">

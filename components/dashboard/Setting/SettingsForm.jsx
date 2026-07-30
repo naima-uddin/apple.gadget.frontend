@@ -73,7 +73,7 @@ function ImageAssetField({
           )}
         </div>
         <div className="flex flex-wrap gap-2">
-          <label className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs cursor-pointer bg-white hover:bg-gray-50">
+          <label className="px-3 py-1.5 border border-gray-200 text-gray-700 rounded-xl text-xs cursor-pointer bg-white hover:bg-gray-50 transition-colors">
             {uploading ? "Uploading…" : "Upload"}
             <input
               type="file"
@@ -90,7 +90,7 @@ function ImageAssetField({
           <button
             type="button"
             onClick={onPickFromMedia}
-            className="px-3 py-1.5 border border-gray-200 rounded-lg text-xs bg-white hover:bg-gray-50"
+            className="px-3 py-1.5 border border-gray-200 text-gray-700 rounded-xl text-xs bg-white hover:bg-gray-50 transition-colors"
           >
             From Media
           </button>
@@ -226,7 +226,10 @@ export default function SettingsForm() {
   if (loading || !settings)
     return (
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-xl border border-gray-200 text-center text-sm text-gray-400">
-        Loading settings…
+        <div className="flex items-center justify-center gap-2">
+          <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+          Loading settings…
+        </div>
       </div>
     );
 
@@ -236,22 +239,22 @@ export default function SettingsForm() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Settings</h1>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             Store info manage করুন
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+            className="px-4 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors text-sm"
           >
             Reset
           </button>
           <button
             onClick={handleSave}
             disabled={saving}
-            className={`px-5 py-2 rounded-lg text-sm font-semibold text-white transition disabled:opacity-50 ${
-              saved ? "bg-green-600" : "bg-gray-900 hover:bg-gray-700"
+            className={`px-5 py-2 rounded-xl text-sm font-semibold text-white transition-colors disabled:opacity-50 ${
+              saved ? "bg-green-600" : "bg-[#1D1D1F] hover:bg-black"
             }`}
           >
             {saving ? "Saving…" : saved ? "Saved ✓" : "Save"}

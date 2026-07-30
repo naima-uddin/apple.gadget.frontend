@@ -1,22 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Toggle from "@/components/dashboard/ui/Toggle";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-
-function Toggle({ checked, onChange }) {
-  return (
-    <label className="relative inline-flex cursor-pointer items-center">
-      <input
-        type="checkbox"
-        className="sr-only peer"
-        checked={checked}
-        onChange={onChange}
-      />
-      <div className="h-6 w-11 rounded-full bg-gray-200 transition-colors peer-checked:bg-gray-900 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5" />
-    </label>
-  );
-}
 
 const SLOTS = [
   {
@@ -164,7 +151,8 @@ export default function CodeSnippetForm() {
           </div>
           <Toggle
             checked={cfg.active}
-            onChange={(e) => set("active", e.target.checked)}
+            onChange={(next) => set("active", next)}
+            label="Toggle code snippet active"
           />
         </div>
       </div>

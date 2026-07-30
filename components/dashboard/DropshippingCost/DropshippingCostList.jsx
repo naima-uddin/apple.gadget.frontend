@@ -8,7 +8,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const emptyForm = { name: "", cost: "", description: "" };
 
 const inp =
-  "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400";
+  "w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]";
 
 export default function DropshippingCostList() {
   const { user } = useUser();
@@ -99,10 +99,10 @@ export default function DropshippingCostList() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-[#1F2937]">
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937]">
           Dropshipping Cost
         </h2>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="text-sm text-gray-500 mt-0.5">
           Cost to bring a product from the dropshipping supplier to the store
           (courier, customs, handling, etc.). Add as many items as needed —
           edit or delete any of them anytime. Used in product Cost Per Item as
@@ -143,7 +143,7 @@ export default function DropshippingCostList() {
           <button
             type="submit"
             disabled={saving}
-            className="rounded-lg bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-[#1D1D1F] disabled:opacity-60"
+            className="rounded-xl bg-[#1D1D1F] px-4 py-2 text-sm font-medium text-white hover:bg-black transition-colors disabled:opacity-60"
           >
             {saving ? "Saving..." : editingId ? "Update" : "Add"}
           </button>
@@ -151,7 +151,7 @@ export default function DropshippingCostList() {
             <button
               type="button"
               onClick={resetForm}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50"
+              className="rounded-xl border border-gray-200 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
@@ -175,7 +175,7 @@ export default function DropshippingCostList() {
               </thead>
               <tbody className="divide-y divide-gray-100 bg-white">
                 {items.map((item) => (
-                  <tr key={item._id}>
+                  <tr key={item._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3 font-medium text-gray-900">
                       {item.name}
                     </td>
@@ -196,7 +196,7 @@ export default function DropshippingCostList() {
                             description: item.description || "",
                           });
                         }}
-                        className="mr-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-50"
+                        className="mr-2 rounded-xl border border-gray-200 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                       >
                         Edit
                       </button>

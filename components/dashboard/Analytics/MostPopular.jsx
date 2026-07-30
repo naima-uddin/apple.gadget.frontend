@@ -96,7 +96,10 @@ export default function MostPopular() {
 
       {loading ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-500">
-          Loading…
+          <div className="flex items-center justify-center gap-2">
+            <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+            Loading…
+          </div>
         </div>
       ) : error ? (
         <div className="bg-red-50 border border-red-200 rounded-xl p-5 text-red-700 text-sm">
@@ -168,7 +171,7 @@ export default function MostPopular() {
                       <div className="flex items-center justify-end gap-1.5">
                         <Link
                           href={`/dashboard/products/${item._id}`}
-                          className="text-xs px-2 py-1 border border-gray-200 rounded-lg hover:bg-gray-50"
+                          className="text-xs px-2 py-1 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
                         >
                           Edit
                         </Link>

@@ -29,7 +29,10 @@ export default function RewardsOverview() {
 
   if (loading) {
     return (
-      <div className="text-center py-16 text-gray-400">Loading rewards…</div>
+      <div className="flex items-center justify-center gap-2 py-16 text-gray-400">
+        <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+        Loading rewards…
+      </div>
     );
   }
   if (!data) {
@@ -46,7 +49,7 @@ export default function RewardsOverview() {
     <div className="max-w-6xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">All Rewards</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 mt-0.5">
           Customer reward points — {pointsPerTk} points = ৳1
         </p>
       </div>
@@ -170,7 +173,7 @@ export default function RewardsOverview() {
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {users.map((u) => (
-                  <tr key={u._id}>
+                  <tr key={u._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3 font-medium">{u.name || "—"}</td>
                     <td className="px-4 py-3 text-gray-600">{u.email}</td>
                     <td className="px-4 py-3 font-bold text-[#1D1D1F]">

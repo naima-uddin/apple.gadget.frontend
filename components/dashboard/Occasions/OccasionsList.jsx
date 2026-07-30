@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import OccasionEditor from "./OccasionEditor";
 import { useUser } from "@/components/context/UserContext";
+import Toggle from "@/components/dashboard/ui/Toggle";
+import EmptyState from "@/components/dashboard/ui/EmptyState";
 
 export default function OccasionsList() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -114,7 +116,7 @@ export default function OccasionsList() {
 
   // ── List view ───────────────────────────────────────────────────────────────
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Occasion Sections</h2>
@@ -125,7 +127,7 @@ export default function OccasionsList() {
         </div>
         <button
           onClick={() => setView("create")}
-          className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 shrink-0"
+          className="bg-[#1D1D1F] text-white text-sm px-4 py-2 rounded-xl hover:bg-black transition-colors shrink-0"
         >
           + New Section
         </button>
@@ -134,15 +136,11 @@ export default function OccasionsList() {
       {loading ? (
         <div className="text-center text-gray-400 py-16">Loading…</div>
       ) : sections.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-gray-200 rounded-xl">
-          <p className="text-gray-500 mb-3">No occasion sections yet.</p>
-          <button
-            onClick={() => setView("create")}
-            className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Create your first section
-          </button>
-        </div>
+        <EmptyState
+          title="No occasion sections yet."
+          actionLabel="Create your first section"
+          onAction={() => setView("create")}
+        />
       ) : (
         <div className="space-y-3">
           {sections.map((section, idx) => (
@@ -208,14 +206,11 @@ export default function OccasionsList() {
               </div>
 
               {/* Active toggle */}
-              <div
-                onClick={() => handleToggleActive(section)}
-                className={`relative w-10 h-5 rounded-full cursor-pointer transition-colors shrink-0 ${section.isActive ? "bg-green-500" : "bg-gray-300"}`}
-              >
-                <div
-                  className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${section.isActive ? "translate-x-5" : "translate-x-0"}`}
-                />
-              </div>
+              <Toggle
+                checked={section.isActive}
+                onChange={() => handleToggleActive(section)}
+                label={section.title}
+              />
 
               {/* Edit / Delete */}
               <div className="flex gap-2 shrink-0">
@@ -224,7 +219,7 @@ export default function OccasionsList() {
                     setEditId(section._id);
                     setView("edit");
                   }}
-                  className="text-blue-600 hover:text-blue-800 text-sm px-3 py-1.5 border border-blue-200 rounded-lg hover:bg-blue-50"
+                  className="text-gray-700 text-sm px-3 py-1.5 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Edit
                 </button>

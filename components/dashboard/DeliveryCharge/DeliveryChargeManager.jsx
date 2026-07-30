@@ -257,7 +257,7 @@ export default function DeliveryChargeManager() {
                               },
                             }))
                           }
-                          className="w-24 border border-gray-200 px-2.5 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100 focus:border-gray-300"
+                          className="w-24 border border-gray-200 px-2.5 py-1.5 rounded-xl text-xs outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                         />
                       </div>
                     ))}

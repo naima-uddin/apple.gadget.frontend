@@ -818,7 +818,7 @@ export default function ProfitMarginManager() {
               setPage(1);
             }}
             placeholder="Search product name or SKU…"
-            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="border border-gray-200 rounded-xl px-3 py-1.5 text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F] w-full sm:w-72"
           />
           <select
             value={sort}
@@ -826,7 +826,7 @@ export default function ProfitMarginManager() {
               setSort(e.target.value);
               setPage(1);
             }}
-            className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="border border-gray-200 rounded-xl px-3 py-1.5 text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           >
             <option value="margin_asc">Margin: Low → High</option>
             <option value="margin_desc">Margin: High → Low</option>

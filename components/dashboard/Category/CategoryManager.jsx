@@ -548,9 +548,11 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
       const data = await resp.json();
       if (!resp.ok) throw new Error(data.error);
 
-      // Create new children if any
-      for (const child of newChildren) {
-        if (child.name.trim()) {
+      // Create new children in parallel — sequential awaits made adding
+      // multiple subcategories at once take one round-trip per row.
+      const childrenToCreate = newChildren.filter((child) => child.name.trim());
+      await Promise.all(
+        childrenToCreate.map((child) => {
           const childPayload = {
             name: child.name.trim(),
             description: (child.description || "").trim(),
@@ -564,18 +566,19 @@ function EditCategoryModal({ API, category, userRole, onClose, onSuccess }) {
             childPayload.images = childImages;
           }
 
-          const childResp = await fetch(`${API}/api/admin/categories`, {
+          return fetch(`${API}/api/admin/categories`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             credentials: "include",
             body: JSON.stringify(childPayload),
+          }).then(async (resp) => {
+            if (!resp.ok) {
+              const err = await resp.json();
+              throw new Error(err.error || "Failed to create child");
+            }
           });
-          if (!childResp.ok) {
-            const err = await childResp.json();
-            throw new Error(err.error || "Failed to create child");
-          }
-        }
-      }
+        }),
+      );
 
       onSuccess();
     } catch (err) {

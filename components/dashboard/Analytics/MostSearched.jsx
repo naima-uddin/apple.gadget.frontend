@@ -78,8 +78,8 @@ export default function MostSearched() {
     <div className="max-w-3xl mx-auto space-y-5">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold">Most Searched</h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937]">Most Searched</h1>
+          <p className="text-sm text-gray-500 mt-0.5">
             Top search terms entered by visitors (guests &amp; logged-in users).
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function MostSearched() {
           <select
             value={limit}
             onChange={(e) => setLimit(Number(e.target.value))}
-            className="text-sm border border-gray-200 rounded-lg px-2 py-1.5"
+            className="border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           >
             <option value={10}>Top 10</option>
             <option value={20}>Top 20</option>
@@ -95,7 +95,7 @@ export default function MostSearched() {
           </select>
           <button
             onClick={fetchData}
-            className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg"
+            className="px-3 py-1.5 text-sm border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
           >
             Refresh
           </button>
@@ -104,7 +104,10 @@ export default function MostSearched() {
 
       {loading ? (
         <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center text-gray-500">
-          Loading…
+          <div className="flex items-center justify-center gap-2">
+            <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
+            Loading…
+          </div>
         </div>
       ) : error ? (
         <div className="bg-red-50 border border-red-200 rounded-xl p-5 text-red-700 text-sm">

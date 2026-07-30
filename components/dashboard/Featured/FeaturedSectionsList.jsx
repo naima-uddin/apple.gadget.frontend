@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import FeaturedSectionEditor from "./FeaturedSectionEditor";
 import VideoCarouselEditor from "./VideoCarouselEditor";
 import { useUser } from "@/components/context/UserContext";
+import Toggle from "@/components/dashboard/ui/Toggle";
+import EmptyState from "@/components/dashboard/ui/EmptyState";
 
 export default function FeaturedSectionsList() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -119,7 +121,7 @@ export default function FeaturedSectionsList() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -134,13 +136,13 @@ export default function FeaturedSectionsList() {
         <div className="flex gap-2 shrink-0">
           <button
             onClick={() => setView("create")}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm"
           >
             + Product Section
           </button>
           <button
             onClick={() => setView("create-video")}
-            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black transition text-sm"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm"
           >
             + Video Carousel
           </button>
@@ -150,13 +152,12 @@ export default function FeaturedSectionsList() {
       {loading ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : sections.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <p className="text-lg font-medium mb-2">No featured sections yet</p>
-          <p className="text-sm">
-            Click &quot;+ New Section&quot; to create your first product
-            carousel.
-          </p>
-        </div>
+        <EmptyState
+          title="No featured sections yet"
+          description={
+            'Click "+ New Section" to create your first product carousel.'
+          }
+        />
       ) : (
         <ul className="space-y-3">
           {sections.map((sec, idx) => (
@@ -217,15 +218,11 @@ export default function FeaturedSectionsList() {
               </div>
 
               {/* Active toggle */}
-              <button
-                onClick={() => handleToggleActive(sec)}
-                className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${sec.isActive ? "bg-blue-600" : "bg-gray-300"}`}
-                title={sec.isActive ? "Click to hide" : "Click to show"}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${sec.isActive ? "translate-x-5" : ""}`}
-                />
-              </button>
+              <Toggle
+                checked={sec.isActive}
+                onChange={() => handleToggleActive(sec)}
+                label={sec.title || "Featured section"}
+              />
 
               {/* Edit / Delete */}
               <div className="flex gap-2 shrink-0">

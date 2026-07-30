@@ -3,6 +3,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PromoStripEditor from "./PromoStripEditor";
 import { useUser } from "@/components/context/UserContext";
+import Toggle from "@/components/dashboard/ui/Toggle";
+import EmptyState from "@/components/dashboard/ui/EmptyState";
 
 export default function PromoStripList() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -108,17 +110,17 @@ export default function PromoStripList() {
     );
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Promo Strip Items</h2>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 mt-0.5">
             Manage combo/offer cards shown right below banner.
           </p>
         </div>
         <button
           onClick={() => setView("create")}
-          className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 shrink-0"
+          className="bg-[#1D1D1F] text-white text-sm px-4 py-2 rounded-xl hover:bg-black transition-colors shrink-0"
         >
           + New Item
         </button>
@@ -127,15 +129,11 @@ export default function PromoStripList() {
       {loading ? (
         <div className="text-center py-16 text-gray-400">Loading…</div>
       ) : items.length === 0 ? (
-        <div className="text-center py-16 border-2 border-dashed border-gray-200 rounded-xl">
-          <p className="text-gray-500 mb-3">No promo strip items yet.</p>
-          <button
-            onClick={() => setView("create")}
-            className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Create first item
-          </button>
-        </div>
+        <EmptyState
+          title="No promo strip items yet."
+          actionLabel="Create first item"
+          onAction={() => setView("create")}
+        />
       ) : (
         <div className="space-y-3">
           {items.map((item, idx) => (
@@ -187,15 +185,11 @@ export default function PromoStripList() {
                 </p>
               </div>
 
-              <button
-                onClick={() => handleToggleActive(item)}
-                className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${item.isActive ? "bg-blue-600" : "bg-gray-300"}`}
-                title={item.isActive ? "Click to hide" : "Click to show"}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${item.isActive ? "translate-x-5" : ""}`}
-                />
-              </button>
+              <Toggle
+                checked={item.isActive}
+                onChange={() => handleToggleActive(item)}
+                label={item.title || "Promo strip item"}
+              />
 
               <div className="flex gap-2 shrink-0">
                 <button
@@ -203,7 +197,7 @@ export default function PromoStripList() {
                     setEditId(item._id);
                     setView("edit");
                   }}
-                  className="text-blue-600 hover:text-blue-800 text-sm px-3 py-1.5 border border-blue-200 rounded-lg hover:bg-blue-50"
+                  className="text-gray-700 text-sm px-3 py-1.5 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
                 >
                   Edit
                 </button>

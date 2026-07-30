@@ -239,15 +239,11 @@ export default function PopupManager() {
 
       {/* Active toggle */}
       <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setIsActive((v) => !v)}
-          className={`relative w-11 h-6 rounded-full transition-colors ${isActive ? "bg-blue-600" : "bg-gray-300"}`}
-        >
-          <span
-            className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isActive ? "translate-x-5" : ""}`}
-          />
-        </button>
+        <Toggle
+          checked={isActive}
+          onChange={(next) => setIsActive(next)}
+          label="Toggle popup active"
+        />
         <span className="text-sm text-gray-700 font-medium">
           {isActive ? "Popup enabled" : "Popup disabled"}
         </span>
@@ -258,7 +254,7 @@ export default function PopupManager() {
         <button
           onClick={handleSave}
           disabled={saving || uploading}
-          className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition text-sm disabled:opacity-50"
+          className="px-6 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm disabled:opacity-50"
         >
           {saving ? "Saving…" : "Save Popup"}
         </button>
