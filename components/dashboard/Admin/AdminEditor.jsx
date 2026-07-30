@@ -82,6 +82,8 @@ const PERMISSION_GROUPS = [
       { key: "products.questions",    label: "Q & A" },
       { key: "products.preorders",    label: "Pre-orders" },
       { key: "products.delivery",     label: "Delivery charge" },
+      { key: "products.packaging",    label: "Packaging cost" },
+      { key: "products.dropshipping", label: "Dropshipping cost" },
     ],
   },
   {

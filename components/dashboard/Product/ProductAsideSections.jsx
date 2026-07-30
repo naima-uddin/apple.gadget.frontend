@@ -30,76 +30,20 @@ export default function ProductAsideSections({
   const { user } = useUser();
   const canSeeBuyingPrice = hasPermission(user, "products.buying_price");
 
-  // --- Delivery charge & packaging cost: pulled from the dashboard
-  // settings pages, with a quick inline add/edit so admins don't have to
-  // leave the product form to create a new option.
-  const [deliverySettings, setDeliverySettings] = useState({
-    insideDhaka: 0,
-    outsideDhaka: 0,
-    zones: [],
-  });
-  const [dhakaZones, setDhakaZones] = useState([]); // [{ zone, areas: [] }]
+  // --- Dropshipping cost & packaging cost: pulled from their dashboard
+  // list pages, with a quick inline add/edit so admins don't have to leave
+  // the product form to create a new option. Dropshipping cost = what it
+  // costs to bring this product from the supplier to the store; it feeds
+  // the "Cost Per Item" total below alongside buying price + packaging.
+  const [dropshippingItems, setDropshippingItems] = useState([]);
   const [showDeliveryManager, setShowDeliveryManager] = useState(false);
-  const [deliveryDraft, setDeliveryDraft] = useState({
-    insideDhaka: "",
-    outsideDhaka: "",
+  const [newDropshipping, setNewDropshipping] = useState({
+    name: "",
+    cost: "",
+    description: "",
   });
-  const [newZoneOverride, setNewZoneOverride] = useState({
-    zone: "",
-    area: "",
-    charge: "",
-  });
+  const [editingDropshippingId, setEditingDropshippingId] = useState(null);
   const [deliverySaving, setDeliverySaving] = useState(false);
-
-  const deliveryChargeOptions = useMemo(() => {
-    const opts = [
-      {
-        label: `Inside Dhaka — ৳${deliverySettings.insideDhaka}`,
-        value: deliverySettings.insideDhaka,
-      },
-      {
-        label: `Outside Dhaka — ৳${deliverySettings.outsideDhaka}`,
-        value: deliverySettings.outsideDhaka,
-      },
-    ];
-    (deliverySettings.zones || []).forEach((z) => {
-      if (z.charge != null) {
-        opts.push({ label: `${z.zone} — ৳${z.charge}`, value: z.charge });
-      }
-      (z.areas || []).forEach((a) => {
-        if (a.charge != null) {
-          opts.push({
-            label: `${z.zone} · ${a.area} — ৳${a.charge}`,
-            value: a.charge,
-          });
-        }
-      });
-    });
-    return opts;
-  }, [deliverySettings]);
-
-  const selectedZoneAreas = useMemo(() => {
-    return (
-      dhakaZones.find((z) => z.zone === newZoneOverride.zone)?.areas || []
-    );
-  }, [dhakaZones, newZoneOverride.zone]);
-
-  const selectedZoneOverrides = useMemo(() => {
-    const zoneEntry = (deliverySettings.zones || []).find(
-      (z) => z.zone === newZoneOverride.zone,
-    );
-    if (!zoneEntry) return [];
-    const rows = [];
-    if (zoneEntry.charge != null) {
-      rows.push({ label: "Zone-wide", area: "", charge: zoneEntry.charge });
-    }
-    (zoneEntry.areas || []).forEach((a) => {
-      if (a.charge != null) {
-        rows.push({ label: a.area, area: a.area, charge: a.charge });
-      }
-    });
-    return rows;
-  }, [deliverySettings.zones, newZoneOverride.zone]);
 
   const [packagingItems, setPackagingItems] = useState([]);
   const [showPackagingManager, setShowPackagingManager] = useState(false);
@@ -111,25 +55,15 @@ export default function ProductAsideSections({
   const [editingPackagingId, setEditingPackagingId] = useState(null);
   const [packagingSaving, setPackagingSaving] = useState(false);
 
-  const loadDeliverySettings = React.useCallback(async () => {
+  const loadDropshippingItems = React.useCallback(async () => {
     try {
-      const resp = await fetch(`${API}/api/admin/settings`, {
+      const resp = await fetch(`${API}/api/admin/dropshipping-costs`, {
         credentials: "include",
       });
       const body = await resp.json();
-      const dc = body?.settings?.deliveryCharge || {};
-      const next = {
-        insideDhaka: dc.insideDhaka ?? 70,
-        outsideDhaka: dc.outsideDhaka ?? 130,
-        zones: dc.zones || [],
-      };
-      setDeliverySettings(next);
-      setDeliveryDraft({
-        insideDhaka: String(next.insideDhaka),
-        outsideDhaka: String(next.outsideDhaka),
-      });
+      setDropshippingItems(body?.items || []);
     } catch {
-      /* keep defaults */
+      /* leave list empty */
     }
   }, [API]);
 
@@ -146,86 +80,57 @@ export default function ProductAsideSections({
   }, [API]);
 
   useEffect(() => {
-    loadDeliverySettings();
+    loadDropshippingItems();
     loadPackagingItems();
-    fetch("/api/locations/dhaka")
-      .then((r) => r.json())
-      .then((body) => setDhakaZones(body?.zones || []))
-      .catch(() => {});
-  }, [loadDeliverySettings, loadPackagingItems]);
+  }, [loadDropshippingItems, loadPackagingItems]);
 
-  const saveDeliveryDefaults = async () => {
-    setDeliverySaving(true);
-    try {
-      const deliveryCharge = {
-        insideDhaka: Number(deliveryDraft.insideDhaka) || 0,
-        outsideDhaka: Number(deliveryDraft.outsideDhaka) || 0,
-        zones: deliverySettings.zones,
-      };
-      const resp = await fetch(`${API}/api/admin/settings/delivery-charge`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ deliveryCharge }),
-      });
-      const body = await resp.json();
-      if (!resp.ok) throw new Error(body.error || "Save failed");
-      await loadDeliverySettings();
-    } catch (err) {
-      alert(err.message || "Failed to save delivery charge defaults");
-    } finally {
-      setDeliverySaving(false);
-    }
+  const resetDropshippingForm = () => {
+    setNewDropshipping({ name: "", cost: "", description: "" });
+    setEditingDropshippingId(null);
   };
 
-  const addZoneOverride = async () => {
-    const zone = newZoneOverride.zone;
-    const area = newZoneOverride.area;
-    const charge = Number(newZoneOverride.charge);
-    if (!zone || !Number.isFinite(charge) || charge < 0) {
-      alert("Select a zone and enter a valid charge");
+  const editDropshippingItem = (item) => {
+    setEditingDropshippingId(item._id);
+    setNewDropshipping({
+      name: item.name || "",
+      cost: String(item.cost ?? ""),
+      description: item.description || "",
+    });
+  };
+
+  const saveDropshippingItem = async () => {
+    if (!newDropshipping.name.trim()) {
+      alert("Enter an item name");
+      return;
+    }
+    const cost = Number(newDropshipping.cost);
+    if (!Number.isFinite(cost) || cost < 0) {
+      alert("Enter a valid cost");
       return;
     }
     setDeliverySaving(true);
     try {
-      const existingZone = (deliverySettings.zones || []).find(
-        (z) => z.zone === zone,
+      const resp = await fetch(
+        editingDropshippingId
+          ? `${API}/api/admin/dropshipping-costs/${editingDropshippingId}`
+          : `${API}/api/admin/dropshipping-costs`,
+        {
+          method: editingDropshippingId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            name: newDropshipping.name,
+            cost,
+            description: newDropshipping.description,
+          }),
+        },
       );
-      let zoneEntry;
-      if (area) {
-        const nextAreas = [
-          ...(existingZone?.areas || []).filter((a) => a.area !== area),
-          { area, charge },
-        ];
-        zoneEntry = {
-          zone,
-          charge: existingZone?.charge ?? null,
-          areas: nextAreas,
-        };
-      } else {
-        zoneEntry = { zone, charge, areas: existingZone?.areas || [] };
-      }
-      const zones = [
-        ...(deliverySettings.zones || []).filter((z) => z.zone !== zone),
-        zoneEntry,
-      ];
-      const deliveryCharge = {
-        insideDhaka: Number(deliveryDraft.insideDhaka) || 0,
-        outsideDhaka: Number(deliveryDraft.outsideDhaka) || 0,
-        zones,
-      };
-      const resp = await fetch(`${API}/api/admin/settings/delivery-charge`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ deliveryCharge }),
-      });
       const body = await resp.json();
       if (!resp.ok) throw new Error(body.error || "Save failed");
-      setNewZoneOverride((p) => ({ ...p, area: "", charge: "" }));
-      await loadDeliverySettings();
+      resetDropshippingForm();
+      await loadDropshippingItems();
     } catch (err) {
-      alert(err.message || "Failed to add zone override");
+      alert(err.message || "Failed to save dropshipping cost");
     } finally {
       setDeliverySaving(false);
     }
@@ -677,7 +582,9 @@ export default function ProductAsideSections({
           {canSeeBuyingPrice && (
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={labelClass}>Delivery Charge</label>
+                <label className={labelClass}>
+                  Delivery Charge (dropshipping to store)
+                </label>
                 <select
                   value=""
                   onChange={(e) => {
@@ -689,10 +596,10 @@ export default function ProductAsideSections({
                   }}
                   className={`${inputClass} mb-2`}
                 >
-                  <option value="">Pick saved charge…</option>
-                  {deliveryChargeOptions.map((opt, i) => (
-                    <option key={`${opt.label}-${i}`} value={opt.value}>
-                      {opt.label}
+                  <option value="">Pick saved cost…</option>
+                  {dropshippingItems.map((item) => (
+                    <option key={item._id} value={item.cost}>
+                      {item.name} — ৳{item.cost}
                     </option>
                   ))}
                 </select>
@@ -712,6 +619,10 @@ export default function ProductAsideSections({
                   placeholder="0.00"
                   step="0.01"
                 />
+                <p className="mt-1 text-xs text-gray-500">
+                  Cost to bring this product from the dropshipping supplier
+                  to the store — not the customer-facing shipping charge.
+                </p>
                 <div className="mt-1.5 flex items-center gap-3">
                   <button
                     type="button"
@@ -721,7 +632,7 @@ export default function ProductAsideSections({
                     {showDeliveryManager ? "Hide" : "+ Add / Edit"}
                   </button>
                   <Link
-                    href="/dashboard/delivery-charge"
+                    href="/dashboard/dropshipping-cost"
                     className="text-xs text-gray-500 hover:underline"
                   >
                     Manage all
@@ -784,129 +695,73 @@ export default function ProductAsideSections({
           )}
 
           {canSeeBuyingPrice && showDeliveryManager && (
-            <div className="space-y-3 rounded-xl border border-gray-300 bg-gray-50 p-3">
+            <div className="space-y-2 rounded-xl border border-gray-300 bg-gray-50 p-3">
               <p className="text-xs font-semibold text-gray-700">
-                Delivery charge defaults
+                {editingDropshippingId
+                  ? "Edit dropshipping cost item"
+                  : "Add dropshipping cost item"}
               </p>
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  type="number"
-                  min="0"
-                  value={deliveryDraft.insideDhaka}
-                  onChange={(e) =>
-                    setDeliveryDraft((p) => ({
-                      ...p,
-                      insideDhaka: e.target.value,
-                    }))
-                  }
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                  placeholder="Inside Dhaka"
-                />
-                <input
-                  type="number"
-                  min="0"
-                  value={deliveryDraft.outsideDhaka}
-                  onChange={(e) =>
-                    setDeliveryDraft((p) => ({
-                      ...p,
-                      outsideDhaka: e.target.value,
-                    }))
-                  }
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                  placeholder="Outside Dhaka"
-                />
-              </div>
-              <button
-                type="button"
-                disabled={deliverySaving}
-                onClick={saveDeliveryDefaults}
-                className="w-full rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-[#1D1D1F] disabled:opacity-60"
-              >
-                {deliverySaving ? "Saving..." : "Save defaults"}
-              </button>
-
-              <p className="text-xs font-semibold text-gray-700 border-t border-gray-300 pt-3">
-                Dhaka zone &amp; area overrides
-              </p>
-              <div className="grid grid-cols-2 gap-2">
-                <select
-                  value={newZoneOverride.zone}
-                  onChange={(e) =>
-                    setNewZoneOverride({
-                      zone: e.target.value,
-                      area: "",
-                      charge: "",
-                    })
-                  }
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                >
-                  <option value="">Select zone</option>
-                  {dhakaZones.map((z) => (
-                    <option key={z.zone} value={z.zone}>
-                      {z.zone}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={newZoneOverride.area}
-                  onChange={(e) =>
-                    setNewZoneOverride((p) => ({
-                      ...p,
-                      area: e.target.value,
-                    }))
-                  }
-                  disabled={!newZoneOverride.zone}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-50"
-                >
-                  <option value="">Zone-wide (no area)</option>
-                  {selectedZoneAreas.map((area) => (
-                    <option key={area} value={area}>
-                      {area}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <input
+                type="text"
+                value={newDropshipping.name}
+                onChange={(e) =>
+                  setNewDropshipping((p) => ({ ...p, name: e.target.value }))
+                }
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                placeholder="Item name (e.g. Local Courier)"
+              />
               <div className="flex gap-2">
                 <input
-                  type="number"
-                  min="0"
-                  value={newZoneOverride.charge}
-                  onChange={(e) =>
-                    setNewZoneOverride((p) => ({
-                      ...p,
-                      charge: e.target.value,
-                    }))
-                  }
+                  type="text"
+                  inputMode="decimal"
+                  value={newDropshipping.cost}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9.]/g, "");
+                    setNewDropshipping((p) => ({ ...p, cost: val }));
+                  }}
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                  placeholder="৳ charge"
+                  placeholder="Cost (৳)"
                 />
                 <button
                   type="button"
-                  disabled={deliverySaving || !newZoneOverride.zone}
-                  onClick={addZoneOverride}
-                  className="shrink-0 rounded-lg border border-gray-300 px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-100 disabled:opacity-60"
+                  disabled={deliverySaving}
+                  onClick={saveDropshippingItem}
+                  className="shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-[#1D1D1F] disabled:opacity-60"
                 >
-                  Save
+                  {deliverySaving
+                    ? "Saving..."
+                    : editingDropshippingId
+                      ? "Update"
+                      : "Add"}
                 </button>
+                {editingDropshippingId && (
+                  <button
+                    type="button"
+                    onClick={resetDropshippingForm}
+                    className="shrink-0 rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
-              {newZoneOverride.zone && selectedZoneOverrides.length > 0 && (
-                <div className="max-h-28 divide-y divide-gray-200 overflow-y-auto border-t border-gray-300">
-                  {selectedZoneOverrides.map((row) => (
-                    <button
-                      key={row.label}
-                      type="button"
-                      onClick={() =>
-                        setNewZoneOverride((p) => ({
-                          ...p,
-                          area: row.area,
-                          charge: String(row.charge),
-                        }))
-                      }
-                      className="flex w-full items-center justify-between py-1.5 text-left text-xs text-gray-700 hover:text-[#1D1D1F]"
+              {dropshippingItems.length > 0 && (
+                <div className="mt-2 max-h-32 divide-y divide-gray-200 overflow-y-auto border-t border-gray-300">
+                  {dropshippingItems.map((item) => (
+                    <div
+                      key={item._id}
+                      className="flex items-center justify-between py-1.5 text-xs"
                     >
-                      <span>{row.label}</span>
-                      <span className="font-semibold">৳{row.charge}</span>
-                    </button>
+                      <span className="text-gray-700">
+                        {item.name} — ৳{item.cost}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => editDropshippingItem(item)}
+                        className="font-semibold text-[#1D1D1F] hover:underline"
+                      >
+                        Edit
+                      </button>
+                    </div>
                   ))}
                 </div>
               )}
@@ -993,7 +848,8 @@ export default function ProductAsideSections({
                   Cost Per Item
                 </p>
                 <p className="text-xs text-gray-500">
-                  Buying Price + Delivery Charge + Packaging Cost
+                  Buying Price + Delivery Charge (dropshipping to store) +
+                  Packaging Cost
                 </p>
               </div>
               <p className="text-lg font-bold text-[#1D1D1F] tabular-nums">

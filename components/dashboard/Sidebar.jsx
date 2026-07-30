@@ -48,6 +48,7 @@ const SECTIONS = [
       "/dashboard/preorders",
       "/dashboard/delivery-charge",
       "/dashboard/packaging-cost",
+      "/dashboard/dropshipping-cost",
     ],
     items: [
       {
@@ -98,6 +99,13 @@ const SECTIONS = [
         href: "/dashboard/packaging-cost",
         icon: "M21 8L12 3 3 8m18 0l-9 5m9-5v9l-9 5m0-9L3 8m9 5v9m-9-9v9l9 5",
         permissionKey: "products.packaging",
+      },
+      {
+        key: "dropshipping-cost",
+        label: "Dropshipping Cost",
+        href: "/dashboard/dropshipping-cost",
+        icon: "M3 13l4-8h10l4 8M3 13v6a1 1 0 001 1h16a1 1 0 001-1v-6M3 13h18",
+        permissionKey: "products.dropshipping",
       },
       {
         key: "tags",
