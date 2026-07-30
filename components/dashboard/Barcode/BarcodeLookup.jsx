@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaBarcode, FaEdit, FaExternalLinkAlt, FaSearch } from "react-icons/fa";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function normalizeCode(value) {
   return String(value || "")

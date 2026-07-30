@@ -9,7 +9,7 @@ import { uploadAdminImage } from "@/lib/uploadImage";
 export default function CategoryEdit({ categoryId }) {
   const router = useRouter();
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   const [category, setCategory] = useState({
     name: "",

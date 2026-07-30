@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const CACHE_KEY = "custom_code_cfg";
 const CACHE_TTL = 5 * 60 * 1000;
 

@@ -38,7 +38,7 @@ function ProfileMenu() {
     rewards: 0,
   });
   const ref = useRef(null);
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   useEffect(() => {
     function handleClick(e) {

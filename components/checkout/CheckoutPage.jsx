@@ -115,7 +115,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (cartItems.length === 0) return;
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     fetch(`${API}/api/checkout-sessions`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -148,7 +148,7 @@ export default function CheckoutPage() {
     clearTimeout(sessionPatchTimer.current);
     sessionPatchTimer.current = setTimeout(() => {
       if (!checkoutSessionId.current) return;
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       fetch(`${API}/api/checkout-sessions/${checkoutSessionId.current}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -180,7 +180,7 @@ export default function CheckoutPage() {
   const fetchQuote = useCallback(
     (couponCodes, pointsToRedeem = 0) => {
       if (!cartItems.length) return;
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       const city = currentCityRef.current?.trim() || null;
       const zone = currentZoneRef.current?.trim() || null;
       const area = currentAreaRef.current?.trim() || null;
@@ -208,7 +208,7 @@ export default function CheckoutPage() {
 
   // Fetch progress indicators
   const fetchProgress = useCallback(async (subtotal) => {
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     try {
       const resp = await fetch(
         `${API}/api/coupons/progress?subtotal=${subtotal}`,
@@ -231,7 +231,7 @@ export default function CheckoutPage() {
 
     const fetchPreviousAddresses = async () => {
       try {
-        const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+        const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
         const resp = await fetch(`${API}/api/orders/my`, {
           credentials: "include",
         });
@@ -448,7 +448,7 @@ export default function CheckoutPage() {
     setCouponMsg(null);
     setQuoteLoading(true);
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       const newCoupons = [...appliedCoupons, code];
       const resp = await fetch(`${API}/api/orders/quote`, {
         method: "POST",
@@ -511,7 +511,7 @@ export default function CheckoutPage() {
     setCouponMsg(null);
     setQuoteLoading(true);
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       const resp = await fetch(`${API}/api/orders/quote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -548,7 +548,7 @@ export default function CheckoutPage() {
     setFormData((prev) => ({ ...prev, coupon: "" }));
     setQuoteLoading(true);
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       const resp = await fetch(`${API}/api/orders/quote`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -658,7 +658,7 @@ export default function CheckoutPage() {
     };
 
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       const response = await fetch(`${API}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

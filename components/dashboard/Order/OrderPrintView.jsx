@@ -6,7 +6,7 @@ import JsBarcode from "jsbarcode";
 import QRCode from "qrcode";
 import { formatOrderId } from "@/lib/orderId";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function fmtDate(date) {
   return new Date(date).toLocaleDateString("en-GB", {

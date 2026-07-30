@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Suspense, useState } from "react";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function CancelContent() {
   const params = useSearchParams();

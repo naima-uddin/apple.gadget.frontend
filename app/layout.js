@@ -19,7 +19,7 @@ import GlobalScrollFix from "@/components/ui/GlobalScrollFix";
 import RemoveChildDebugger from "@/components/dev/RemoveChildDebugger";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://pickob.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",

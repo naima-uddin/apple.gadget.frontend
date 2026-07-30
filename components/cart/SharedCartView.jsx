@@ -11,7 +11,7 @@ import {
 } from "@/components/cart/VariantEditModal";
 import { FaShoppingCart, FaUsers } from "react-icons/fa";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 export default function SharedCartView({ token }) {
   const router = useRouter();

@@ -171,7 +171,7 @@ export default function PromoPanelEditor({
   onSuccess,
   onCancel,
 }) {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const isEdit = !!panelId;
 
   const [image, setImage] = useState({ url: "", public_id: "" });

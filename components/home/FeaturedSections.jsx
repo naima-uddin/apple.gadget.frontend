@@ -126,7 +126,7 @@ function FeaturedSlider({ products }) {
 }
 
 export default function FeaturedSections() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { t, lang } = useLanguage();
   const [sections, setSections] = useState([]);
   const [loaded, setLoaded] = useState(false);

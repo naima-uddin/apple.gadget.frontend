@@ -35,7 +35,7 @@ export default function PopularPicks() {
 
   // fetch popular picks from backend
   useEffect(() => {
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     const normalizeProduct = (p) => {
       // Show the product's own main price — never a variant's price.
       // Only fall back to variant pricing when the product has no main price.

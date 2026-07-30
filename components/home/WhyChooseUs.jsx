@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useLanguage } from "@/components/context/LanguageContext";
 import SectionHeader from "./SectionHeader";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const VISIBLE_FAQS = 4;
 
 // Shown when no FAQ items are configured in dashboard → Policy Pages → FAQ

@@ -7,7 +7,7 @@ import { useUser } from "@/components/context/UserContext";
 import { uploadAdminImage } from "@/lib/uploadImage";
 
 export default function PopupManager() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { user } = useUser();
 
   const [image, setImage] = useState({ url: "", public_id: "" });

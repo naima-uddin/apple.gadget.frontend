@@ -10,7 +10,7 @@ export function CategoryProvider({ children }) {
   const [subcategories, setSubcategories] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   useEffect(() => {
     fetchCategories();

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Cayenne-style CTA: soft neutral text card on the left, image on the right.
 // Content comes from the first active Promo Panel (dashboard → Promo Panels Banner).

@@ -8,7 +8,7 @@ import MegaMenuNavbar from "@/components/layout/MegaMenuNavbar";
 import Footer from "@/components/layout/Footer";
 import { StoreSettingsProvider } from "@/components/context/StoreSettingsContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // ── Tracking Scripts Component ──────────────────────────────────────────────
 function TrackingScripts() {

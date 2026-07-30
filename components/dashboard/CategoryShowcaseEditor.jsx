@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import MediaPicker from "@/components/dashboard/MediaPicker";
 import { uploadAdminImage } from "@/lib/uploadImage";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const SLOT_LABELS = [
   "Left Big Tile",

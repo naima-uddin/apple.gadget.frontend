@@ -13,7 +13,7 @@ import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
 import SectionHeader from "@/components/home/SectionHeader";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const PRODUCTS_PER_PAGE = 10;
 
 export default function CategoryPageClient({ slug, parentSlug = null }) {
@@ -220,7 +220,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     }
     metaDesc.setAttribute("content", descContent);
 
-    const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pickob.com";
+    const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
       canonical = document.createElement("link");

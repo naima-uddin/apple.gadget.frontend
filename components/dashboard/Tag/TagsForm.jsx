@@ -165,7 +165,7 @@ const normalizeMegaMenuTags = (items) => {
 
 export default function TagsForm() {
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(false);

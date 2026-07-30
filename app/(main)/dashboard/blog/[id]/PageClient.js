@@ -8,7 +8,7 @@ import BlogEdit from "@/components/dashboard/Blog/BlogEdit";
 import { useUrlParam } from "@/hooks/useUrlParam";
 
 export default function Page() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const id = useUrlParam();
   const [postData, setPostData] = useState(null);
 

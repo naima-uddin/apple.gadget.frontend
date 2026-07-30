@@ -5,7 +5,7 @@ import OccasionEditor from "./OccasionEditor";
 import { useUser } from "@/components/context/UserContext";
 
 export default function OccasionsList() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { user } = useUser();
   const [sections, setSections] = useState([]);
   const [loading, setLoading] = useState(true);

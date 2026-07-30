@@ -11,7 +11,7 @@ import DynamicSectionBuilder from "./DynamicSectionBuilder";
 import { uploadAdminImage } from "@/lib/uploadImage";
 
 export default function BlogCreate() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const router = useRouter();
   const { user } = useUser();
 

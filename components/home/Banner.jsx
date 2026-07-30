@@ -20,7 +20,7 @@ const FALLBACK = [
 ];
 
 const Banner = () => {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const router = useRouter();
   const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);

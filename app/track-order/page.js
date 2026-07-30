@@ -5,7 +5,7 @@ import Link from "next/link";
 import OrderTrackingTimeline from "@/components/order/OrderTrackingTimeline";
 import { formatOrderId } from "@/lib/orderId";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const STATUS_LABELS = {
   pending: "Pending",

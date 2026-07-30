@@ -6,7 +6,7 @@ import Image from "next/image";
 import { getDisplayPrice } from "@/lib/pricing";
 import { useLanguage } from "@/components/context/LanguageContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 export default function SearchBox({
   className = "",

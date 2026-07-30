@@ -7,7 +7,7 @@ import Image from "next/image";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { uploadUserImage } from "@/lib/uploadImage";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function StarRating({ value, onChange }) {
   const [hovered, setHovered] = useState(0);

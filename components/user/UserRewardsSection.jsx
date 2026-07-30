@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatOrderId } from "@/lib/orderId";
 import { useLanguage } from "@/components/context/LanguageContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function fmt(date) {
   return new Date(date).toLocaleDateString("en-GB", {

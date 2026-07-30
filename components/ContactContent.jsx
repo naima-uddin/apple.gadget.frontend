@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 import { useLanguage } from "@/components/context/LanguageContext";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const CONTACT_ICON =
   "M21 10a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7H9v3l-4-4 4-4v3h4a4.5 4.5 0 004.5-4.5V6a4.5 4.5 0 00-4.5-4.5H5";

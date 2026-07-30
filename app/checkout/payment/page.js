@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const STEP = { NUMBER: 1, TXID: 2, PROCESSING: 3 };
 
 // ── Brand logos ──────────────────────────────────────────────────────────────

@@ -22,7 +22,7 @@ import {
 } from "react-icons/fa";
 import { useUser } from "@/components/context/UserContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const EMPTY_FORM = {
   code: "",

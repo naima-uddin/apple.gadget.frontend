@@ -16,7 +16,7 @@ import {
 } from "react-icons/fa";
 import { useLanguage } from "@/components/context/LanguageContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Same ticket layout as OffersToSayYes, but kept strictly monochrome:
 // white accents inside the dark ticket, near-black accents on the page chrome.

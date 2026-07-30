@@ -1,7 +1,7 @@
 import ChildCategoryPageWrapper from "./PageClient";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
 
 function flattenCategories(cats) {
   const result = [];

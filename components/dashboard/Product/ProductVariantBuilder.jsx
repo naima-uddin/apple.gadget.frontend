@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useUser } from "@/components/context/UserContext";
 import { hasPermission } from "@/lib/permissions";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const uid = () =>
   `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;

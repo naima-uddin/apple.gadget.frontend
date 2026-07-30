@@ -124,7 +124,7 @@ export default function AuthModal({ isOpen, onClose }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("error"); // 'error' | 'success' | 'info'
   const [messageAction, setMessageAction] = useState(null); // { action: string, text: string }

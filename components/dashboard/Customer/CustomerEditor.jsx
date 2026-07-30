@@ -7,7 +7,7 @@ import { useUser } from "@/components/context/UserContext";
 export default function CustomerEditor({ userId }) {
   const router = useRouter();
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   const [customer, setCustomer] = useState(null);
   const [tagOptions, setTagOptions] = useState([]);

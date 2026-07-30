@@ -207,7 +207,7 @@ function DealOfDayPicker({ API }) {
 }
 
 export default function PromoPanelList() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { user } = useUser();
   const [panels, setPanels] = useState([]);
   const [loading, setLoading] = useState(true);

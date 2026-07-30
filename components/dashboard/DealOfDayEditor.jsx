@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { getDisplayPrice } from "@/lib/pricing";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Admin editor for the homepage "Deal of the Day" section.
 // Single product select — saved to Setting.dealOfDayProductId.

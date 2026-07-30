@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useUser } from "@/components/context/UserContext";
 import { useSearchParams } from "next/navigation";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function Stars({ value }) {
   return (

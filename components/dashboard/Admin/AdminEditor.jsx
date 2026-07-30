@@ -155,7 +155,7 @@ function GroupCheckbox({ allChecked, someChecked, onChange }) {
 export default function AdminEditor({ adminId }) {
   const router = useRouter();
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   const [admin, setAdmin] = useState({
     name: "",

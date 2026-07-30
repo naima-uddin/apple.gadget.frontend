@@ -38,7 +38,7 @@ export default function ProductAsideSections({
     outsideDhaka: 0,
     zones: [],
   });
-  const [dhakaZoneNames, setDhakaZoneNames] = useState([]);
+  const [dhakaZones, setDhakaZones] = useState([]); // [{ zone, areas: [] }]
   const [showDeliveryManager, setShowDeliveryManager] = useState(false);
   const [deliveryDraft, setDeliveryDraft] = useState({
     insideDhaka: "",
@@ -46,9 +46,60 @@ export default function ProductAsideSections({
   });
   const [newZoneOverride, setNewZoneOverride] = useState({
     zone: "",
+    area: "",
     charge: "",
   });
   const [deliverySaving, setDeliverySaving] = useState(false);
+
+  const deliveryChargeOptions = useMemo(() => {
+    const opts = [
+      {
+        label: `Inside Dhaka — ৳${deliverySettings.insideDhaka}`,
+        value: deliverySettings.insideDhaka,
+      },
+      {
+        label: `Outside Dhaka — ৳${deliverySettings.outsideDhaka}`,
+        value: deliverySettings.outsideDhaka,
+      },
+    ];
+    (deliverySettings.zones || []).forEach((z) => {
+      if (z.charge != null) {
+        opts.push({ label: `${z.zone} — ৳${z.charge}`, value: z.charge });
+      }
+      (z.areas || []).forEach((a) => {
+        if (a.charge != null) {
+          opts.push({
+            label: `${z.zone} · ${a.area} — ৳${a.charge}`,
+            value: a.charge,
+          });
+        }
+      });
+    });
+    return opts;
+  }, [deliverySettings]);
+
+  const selectedZoneAreas = useMemo(() => {
+    return (
+      dhakaZones.find((z) => z.zone === newZoneOverride.zone)?.areas || []
+    );
+  }, [dhakaZones, newZoneOverride.zone]);
+
+  const selectedZoneOverrides = useMemo(() => {
+    const zoneEntry = (deliverySettings.zones || []).find(
+      (z) => z.zone === newZoneOverride.zone,
+    );
+    if (!zoneEntry) return [];
+    const rows = [];
+    if (zoneEntry.charge != null) {
+      rows.push({ label: "Zone-wide", area: "", charge: zoneEntry.charge });
+    }
+    (zoneEntry.areas || []).forEach((a) => {
+      if (a.charge != null) {
+        rows.push({ label: a.area, area: a.area, charge: a.charge });
+      }
+    });
+    return rows;
+  }, [deliverySettings.zones, newZoneOverride.zone]);
 
   const [packagingItems, setPackagingItems] = useState([]);
   const [showPackagingManager, setShowPackagingManager] = useState(false);
@@ -99,9 +150,7 @@ export default function ProductAsideSections({
     loadPackagingItems();
     fetch("/api/locations/dhaka")
       .then((r) => r.json())
-      .then((body) =>
-        setDhakaZoneNames((body?.zones || []).map((z) => z.zone)),
-      )
+      .then((body) => setDhakaZones(body?.zones || []))
       .catch(() => {});
   }, [loadDeliverySettings, loadPackagingItems]);
 
@@ -131,6 +180,7 @@ export default function ProductAsideSections({
 
   const addZoneOverride = async () => {
     const zone = newZoneOverride.zone;
+    const area = newZoneOverride.area;
     const charge = Number(newZoneOverride.charge);
     if (!zone || !Number.isFinite(charge) || charge < 0) {
       alert("Select a zone and enter a valid charge");
@@ -138,12 +188,26 @@ export default function ProductAsideSections({
     }
     setDeliverySaving(true);
     try {
-      const existing = (deliverySettings.zones || []).find(
+      const existingZone = (deliverySettings.zones || []).find(
         (z) => z.zone === zone,
       );
+      let zoneEntry;
+      if (area) {
+        const nextAreas = [
+          ...(existingZone?.areas || []).filter((a) => a.area !== area),
+          { area, charge },
+        ];
+        zoneEntry = {
+          zone,
+          charge: existingZone?.charge ?? null,
+          areas: nextAreas,
+        };
+      } else {
+        zoneEntry = { zone, charge, areas: existingZone?.areas || [] };
+      }
       const zones = [
         ...(deliverySettings.zones || []).filter((z) => z.zone !== zone),
-        { zone, charge, areas: existing?.areas || [] },
+        zoneEntry,
       ];
       const deliveryCharge = {
         insideDhaka: Number(deliveryDraft.insideDhaka) || 0,
@@ -158,7 +222,7 @@ export default function ProductAsideSections({
       });
       const body = await resp.json();
       if (!resp.ok) throw new Error(body.error || "Save failed");
-      setNewZoneOverride({ zone: "", charge: "" });
+      setNewZoneOverride((p) => ({ ...p, area: "", charge: "" }));
       await loadDeliverySettings();
     } catch (err) {
       alert(err.message || "Failed to add zone override");
@@ -626,19 +690,11 @@ export default function ProductAsideSections({
                   className={`${inputClass} mb-2`}
                 >
                   <option value="">Pick saved charge…</option>
-                  <option value={deliverySettings.insideDhaka}>
-                    Inside Dhaka — ৳{deliverySettings.insideDhaka}
-                  </option>
-                  <option value={deliverySettings.outsideDhaka}>
-                    Outside Dhaka — ৳{deliverySettings.outsideDhaka}
-                  </option>
-                  {(deliverySettings.zones || [])
-                    .filter((z) => z.charge != null)
-                    .map((z) => (
-                      <option key={z.zone} value={z.charge}>
-                        {z.zone} — ৳{z.charge}
-                      </option>
-                    ))}
+                  {deliveryChargeOptions.map((opt, i) => (
+                    <option key={`${opt.label}-${i}`} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
                 </select>
                 <input
                   type="number"
@@ -770,26 +826,47 @@ export default function ProductAsideSections({
               </button>
 
               <p className="text-xs font-semibold text-gray-700 border-t border-gray-300 pt-3">
-                Add / update zone override
+                Dhaka zone &amp; area overrides
               </p>
-              <div className="grid grid-cols-[1fr_5rem] gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 <select
                   value={newZoneOverride.zone}
                   onChange={(e) =>
-                    setNewZoneOverride((p) => ({
-                      ...p,
+                    setNewZoneOverride({
                       zone: e.target.value,
-                    }))
+                      area: "",
+                      charge: "",
+                    })
                   }
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
                 >
                   <option value="">Select zone</option>
-                  {dhakaZoneNames.map((zone) => (
-                    <option key={zone} value={zone}>
-                      {zone}
+                  {dhakaZones.map((z) => (
+                    <option key={z.zone} value={z.zone}>
+                      {z.zone}
                     </option>
                   ))}
                 </select>
+                <select
+                  value={newZoneOverride.area}
+                  onChange={(e) =>
+                    setNewZoneOverride((p) => ({
+                      ...p,
+                      area: e.target.value,
+                    }))
+                  }
+                  disabled={!newZoneOverride.zone}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm disabled:opacity-50"
+                >
+                  <option value="">Zone-wide (no area)</option>
+                  {selectedZoneAreas.map((area) => (
+                    <option key={area} value={area}>
+                      {area}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-2">
                 <input
                   type="number"
                   min="0"
@@ -801,17 +878,38 @@ export default function ProductAsideSections({
                     }))
                   }
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
-                  placeholder="৳"
+                  placeholder="৳ charge"
                 />
+                <button
+                  type="button"
+                  disabled={deliverySaving || !newZoneOverride.zone}
+                  onClick={addZoneOverride}
+                  className="shrink-0 rounded-lg border border-gray-300 px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-100 disabled:opacity-60"
+                >
+                  Save
+                </button>
               </div>
-              <button
-                type="button"
-                disabled={deliverySaving}
-                onClick={addZoneOverride}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-100 disabled:opacity-60"
-              >
-                Add zone override
-              </button>
+              {newZoneOverride.zone && selectedZoneOverrides.length > 0 && (
+                <div className="max-h-28 divide-y divide-gray-200 overflow-y-auto border-t border-gray-300">
+                  {selectedZoneOverrides.map((row) => (
+                    <button
+                      key={row.label}
+                      type="button"
+                      onClick={() =>
+                        setNewZoneOverride((p) => ({
+                          ...p,
+                          area: row.area,
+                          charge: String(row.charge),
+                        }))
+                      }
+                      className="flex w-full items-center justify-between py-1.5 text-left text-xs text-gray-700 hover:text-[#1D1D1F]"
+                    >
+                      <span>{row.label}</span>
+                      <span className="font-semibold">৳{row.charge}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

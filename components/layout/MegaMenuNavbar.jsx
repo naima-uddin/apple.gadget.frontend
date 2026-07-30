@@ -55,7 +55,7 @@ export default function MegaMenuNavbar() {
   const [menuTags, setMenuTags] = useState(DEFAULT_TAGS);
   const timeoutRef = useRef(null);
   const scrollContainerRef = useRef(null);
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   useEffect(() => {
     let cancelled = false;

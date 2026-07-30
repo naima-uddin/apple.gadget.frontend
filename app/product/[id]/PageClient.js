@@ -4,7 +4,7 @@ import { useUrlParam } from "@/hooks/useUrlParam";
 import { useEffect, useState } from "react";
 import ProductDetails from "@/components/product/ProductDetails";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 export default function ProductPageClient() {
   const id = useUrlParam();

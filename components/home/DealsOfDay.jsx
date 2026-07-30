@@ -44,7 +44,7 @@ export default function DealsOfDay() {
 
   // fetch deals-of-day product and bestseller list
   useEffect(() => {
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     const fetchData = async () => {
       try {
         // Deal of the Day is chosen from the dashboard (Setting.dealOfDayProductId)

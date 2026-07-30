@@ -7,7 +7,7 @@ const emptyForm = { name: "", color: "#3B82F6", description: "" };
 
 export default function CustomerTagList() {
   const { user } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const [items, setItems] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);

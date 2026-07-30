@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useUser } from "@/components/context/UserContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const emptyForm = { name: "", optionsText: "" };
 
 const normalizeVariation = (item) => ({

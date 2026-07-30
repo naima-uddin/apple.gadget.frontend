@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export default function TagInput({ tags = [], onChange }) {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [allTags, setAllTags] = useState([]);

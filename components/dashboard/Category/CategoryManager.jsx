@@ -13,7 +13,7 @@ import { uploadAdminImage } from "@/lib/uploadImage";
 
 export default function CategoryManager() {
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);

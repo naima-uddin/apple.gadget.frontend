@@ -73,7 +73,7 @@ function PermissionGrid({ admin }) {
 
 export default function AdminsList() {
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 

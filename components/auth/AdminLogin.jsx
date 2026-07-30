@@ -9,7 +9,7 @@ export default function AdminLogin() {
   const router = useRouter();
   const { refreshUser } = useUser();
   const { storeName, logoUrl } = useStoreSettings();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   // only login supported now, so no "mode" toggling or registration state
   const [email, setEmail] = useState("");

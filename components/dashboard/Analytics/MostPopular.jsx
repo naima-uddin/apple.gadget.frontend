@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getDisplayPrice } from "@/lib/pricing";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 export default function MostPopular() {
   const [items, setItems] = useState([]);

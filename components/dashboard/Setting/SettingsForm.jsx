@@ -117,7 +117,7 @@ function ImageAssetField({
 
 export default function SettingsForm() {
   const { user, refreshUser } = useUser();
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(false);

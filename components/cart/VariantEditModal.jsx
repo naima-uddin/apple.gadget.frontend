@@ -160,7 +160,7 @@ export default function VariantEditModal({
     const id = product?._id || product?.id;
     if (!id) return;
     let mounted = true;
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     fetch(`${API}/api/products/${id}`)
       .then((r) => r.json())
       .then((body) => {

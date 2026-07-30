@@ -1440,7 +1440,7 @@ export default function UserSectionPage() {
 
   const handleLogout = async () => {
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       await fetch(`${API}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
@@ -1454,7 +1454,7 @@ export default function UserSectionPage() {
   };
 
   const handleSaveProfile = async () => {
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     try {
       const formData = new FormData();
       formData.append("name", editForm.name);
@@ -1750,7 +1750,7 @@ export default function UserSectionPage() {
                   <OrdersSection
                     API={
                       process.env.NEXT_PUBLIC_API_URL ||
-                      "https://api.pickob.com"
+                      "https://api.applebd.com"
                     }
                   />
                 )}
@@ -1791,7 +1791,7 @@ export default function UserSectionPage() {
                   <MyReviewsSection
                     API={
                       process.env.NEXT_PUBLIC_API_URL ||
-                      "https://api.pickob.com"
+                      "https://api.applebd.com"
                     }
                   />
                 )}

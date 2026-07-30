@@ -7,7 +7,7 @@ export default function FeaturedSectionEditor({
   onSuccess,
   onCancel,
 }) {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const isEdit = !!sectionId;
 
   const [title, setTitle] = useState("");

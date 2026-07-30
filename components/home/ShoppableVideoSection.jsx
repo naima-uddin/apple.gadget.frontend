@@ -8,7 +8,7 @@ import ShoppableVideoCarousel from "./ShoppableVideoCarousel";
 // only renders the video-type entries — placed near the footer instead of
 // among the product carousels.
 export default function ShoppableVideoSection() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { lang } = useLanguage();
   const [sections, setSections] = useState([]);
   const [loaded, setLoaded] = useState(false);

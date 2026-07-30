@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useUser } from "@/components/context/UserContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const INTEGRATION_SLUGS = ["pathao", "steadfast", "redx"];
 
@@ -729,7 +729,7 @@ export default function ShipmentTrackingSettings() {
           <p>Steadfast merchant panel → Webhook → Callback URL:</p>
           <code className="block bg-white/80 px-2 py-1 rounded-lg border text-[11px] break-all">
             {typeof window !== "undefined"
-              ? `${process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com"}/api/orders/webhooks/steadfast`
+              ? `${process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com"}/api/orders/webhooks/steadfast`
               : "/api/orders/webhooks/steadfast"}
           </code>
           <p>

@@ -11,7 +11,7 @@ import React, {
 import UserContext from "@/components/context/UserContext";
 import { showActionToast } from "@/components/ui/ActionToast";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const CartContext = createContext(null);
 

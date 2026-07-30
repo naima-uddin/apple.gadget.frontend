@@ -8,7 +8,7 @@ export default function BlogMediaLibrary({
   onSelect = null,
   showSelection = true,
 }) {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { user } = useUser();
 
   const [items, setItems] = useState([]);

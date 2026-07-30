@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Helper function to safely get image URL from featuredImage (object or string)
 const getImageUrl = (featuredImage, thumbnail = null) => {
@@ -149,7 +149,7 @@ export default function BlogDetailClient({ slug }) {
   useEffect(() => {
     if (!blog) return;
 
-    const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://pickob.com";
+    const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
 
     const seoTitle = blog.seo?.title || blog.title;
     const seoDesc =

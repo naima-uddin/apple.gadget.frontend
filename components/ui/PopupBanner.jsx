@@ -17,7 +17,7 @@ export default function PopupBanner() {
   useEffect(() => {
     if (isDashboard) return;
 
-    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+    const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
     fetch(`${API}/api/popup`)
       .then((r) => r.json())
       .then((d) => {

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SectionHeader from "./SectionHeader";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 function Tile({ tile, big = false, className = "", delay = 0 }) {
   if (!tile) return null;

@@ -9,7 +9,7 @@ export default function TestimonialEditor({
   onSuccess,
   onCancel,
 }) {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const isEdit = !!testimonialId;
 
   const [avatar, setAvatar] = useState({ url: "", public_id: "" });

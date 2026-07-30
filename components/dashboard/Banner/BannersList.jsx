@@ -5,7 +5,7 @@ import BannerEditor from "./BannerEditor";
 import { useUser } from "@/components/context/UserContext";
 
 export default function BannersList() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { user } = useUser();
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);

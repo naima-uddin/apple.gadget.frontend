@@ -25,7 +25,7 @@ export default function WaitlistModal({ product, onClose }) {
     setLoading(true);
     setError("");
     try {
-      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+      const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
       const res = await fetch(`${API}/api/waitlist`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

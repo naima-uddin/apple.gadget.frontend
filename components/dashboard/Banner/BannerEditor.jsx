@@ -5,7 +5,7 @@ import MediaPicker from "@/components/dashboard/MediaPicker";
 import { uploadAdminImage } from "@/lib/uploadImage";
 
 export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const isEdit = !!bannerId;
 
   const [image, setImage] = useState({ url: "", public_id: "" });

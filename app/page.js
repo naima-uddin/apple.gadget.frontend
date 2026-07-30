@@ -2,7 +2,7 @@
 import { getStoreName } from "@/lib/storeMeta";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://pickob.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
 
 export async function generateMetadata() {
   const storeName = await getStoreName();

@@ -28,7 +28,7 @@ export default function WishlistPage({ embedded = false }) {
       }
       setLoading(true);
       try {
-        const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+        const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
         const proms = wishlistItems.map(async (id) => {
           try {
             const resp = await fetch(`${API}/api/products/${id}`);

@@ -14,7 +14,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { formatOrderId } from "@/lib/orderId";
 import CourierScorePanel from "@/components/dashboard/Customer/CourierScorePanel";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Recycle bin: retention window before a trashed order is permanently purged.
 // Must match TRASH_RETENTION_MS on the backend (30 days).

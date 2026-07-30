@@ -5,7 +5,7 @@ import PromoStripEditor from "./PromoStripEditor";
 import { useUser } from "@/components/context/UserContext";
 
 export default function PromoStripList() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const { user } = useUser();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);

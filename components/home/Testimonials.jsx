@@ -8,7 +8,7 @@ import { MdVerified } from "react-icons/md";
 import { useLanguage } from "@/components/context/LanguageContext";
 import SectionHeader from "./SectionHeader";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Dark-neutral palette (stays inside the site's monochrome theme) so each
 // customer without a real photo still gets a visually distinct avatar

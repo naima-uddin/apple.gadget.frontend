@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import NoProductsFound from "@/components/ui/NoProductsFound";
 
-const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // ─── Stock badge ──────────────────────────────────────────────────────────────
 function StockBadge({ stock, threshold = 5 }) {

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import MediaPicker from "@/components/dashboard/MediaPicker";
 
 export default function AdSenseForm() {
-  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.pickob.com";
+  const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
