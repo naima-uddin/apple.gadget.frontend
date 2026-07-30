@@ -19,7 +19,7 @@ function normalizeHref(href) {
 
 export default function Footer() {
   const { user } = useUser();
-  const { storeName, footerInfo, socialLinks, footerLinks } =
+  const { storeName, logoUrl, footerInfo, socialLinks, footerLinks } =
     useStoreSettings();
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -118,9 +118,18 @@ export default function Footer() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-[1.5fr_1.2fr_1fr_1fr] gap-x-1 gap-y-1 md:gap-2 lg:gap-3">
             {/* Brand */}
             <div className="md:col-span-1">
-              <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight mb-2 sm:mb-3">
-                {storeName || "Our Store"}
-              </h3>
+              <div className="flex items-center gap-2.5 mb-2 sm:mb-3">
+                {logoUrl && (
+                  <span className="flex h-9 w-26 shrink-0 items-center justify-center rounded-lg bg-white p-1">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={logoUrl}
+                      alt={storeName || "Store logo"}
+                      className="h-full w-full object-contain"
+                    />
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-gray-400 leading-relaxed md:max-w-60 mb-4">
                 {t("footer.store_desc")}
               </p>
