@@ -384,7 +384,7 @@ export default function VariantEditModal({
               className="w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition flex items-center justify-center gap-2"
             >
               <FaPlus className="w-4 h-4" />
-              Add to Cart
+             Cart Add
             </button>
           ) : (
             <>

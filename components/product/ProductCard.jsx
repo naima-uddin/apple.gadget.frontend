@@ -399,7 +399,7 @@ export default function ProductCard({
               >
                 {t("product.buy_now")}
               </button>
-              {/* Add to cart — icon-only black button */}
+              {/* Add cart — icon-only black button */}
               <button
                 onClick={(e) => {
                   e.stopPropagation();

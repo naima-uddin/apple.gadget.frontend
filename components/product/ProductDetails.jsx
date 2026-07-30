@@ -862,7 +862,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
           <hr className="border-gray-200 mb-3 mt-1 hidden md:block" />
 
-          {/* Add to cart */}
+          {/* Add cart */}
           <div className="mb-3">
             <AddToCartSection
               product={product}

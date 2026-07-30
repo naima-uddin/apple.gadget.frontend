@@ -611,7 +611,7 @@ export default function PopularPicks() {
                             </div>
                           )}
 
-                          {/* Add to Cart / Out of Stock Button - appears on hover */}
+                          {/* Add Cart / Out Stock Button - appears on hover */}
                           {product.status === "Stock Out" ? (
                             <div className="absolute bottom-4 left-4 right-4 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <button
