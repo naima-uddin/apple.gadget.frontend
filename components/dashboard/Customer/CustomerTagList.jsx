@@ -84,27 +84,27 @@ export default function CustomerTagList() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-xl font-semibold text-gray-900">Customer Tags</h2>
-        <p className="mt-1 text-sm text-gray-500">
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937]">Customer Tags</h2>
+        <p className="text-sm text-gray-500 mt-0.5">
           Create tags and assign them from each customer profile.
         </p>
       </div>
 
       <form
         onSubmit={saveTag}
-        className="grid gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4 md:grid-cols-[1fr_9rem_1fr_auto]"
+        className="grid gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 md:grid-cols-[1fr_9rem_1fr_auto]"
       >
         <input
           value={form.name}
           onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-          className="rounded border border-gray-300 px-3 py-2"
+          className="border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           placeholder="Tag name"
         />
         <input
           type="color"
           value={form.color}
           onChange={(e) => setForm((p) => ({ ...p, color: e.target.value }))}
-          className="h-10 w-full rounded-lg border border-gray-300 bg-white p-1"
+          className="h-10 w-full rounded-xl border border-gray-200 bg-white p-1 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           title="Tag color"
         />
         <input
@@ -112,14 +112,14 @@ export default function CustomerTagList() {
           onChange={(e) =>
             setForm((p) => ({ ...p, description: e.target.value }))
           }
-          className="rounded border border-gray-300 px-3 py-2"
+          className="border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           placeholder="Description"
         />
         <div className="flex gap-2">
           <button
             type="submit"
             disabled={saving}
-            className="rounded bg-gray-800 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+            className="rounded-xl bg-[#1D1D1F] px-4 py-2 text-sm font-semibold text-white hover:bg-black transition-colors disabled:opacity-60"
           >
             {saving ? "Saving..." : editingId ? "Update" : "Add"}
           </button>
@@ -127,7 +127,7 @@ export default function CustomerTagList() {
             <button
               type="button"
               onClick={resetForm}
-              className="rounded border border-gray-300 px-4 py-2 text-sm"
+              className="rounded-xl border border-gray-200 text-gray-700 px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
@@ -136,9 +136,30 @@ export default function CustomerTagList() {
       </form>
 
       {loading ? (
-        <div className="py-8 text-center text-gray-500">Loading...</div>
+        <div className="flex items-center justify-center gap-2 py-8 text-gray-500">
+          <svg
+            className="animate-spin h-4 w-4 text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle
+              className="opacity-20"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-80"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            />
+          </svg>
+          Loading...
+        </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-gray-50 text-gray-600">
@@ -150,7 +171,7 @@ export default function CustomerTagList() {
               </thead>
               <tbody className="divide-y divide-gray-100 bg-white">
                 {items.map((tag) => (
-                  <tr key={tag._id}>
+                  <tr key={tag._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-4 py-3">
                       <span
                         className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white"
@@ -173,7 +194,7 @@ export default function CustomerTagList() {
                             description: tag.description || "",
                           });
                         }}
-                        className="mr-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm"
+                        className="mr-2 rounded-xl border border-gray-200 text-gray-700 px-3 py-1.5 text-sm hover:bg-gray-50 transition-colors"
                       >
                         Edit
                       </button>
@@ -181,7 +202,7 @@ export default function CustomerTagList() {
                         <button
                           type="button"
                           onClick={() => deleteTag(tag._id)}
-                          className="rounded border border-red-300 px-3 py-1.5 text-sm text-red-600"
+                          className="rounded-xl border border-red-300 px-3 py-1.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
                         >
                           Delete
                         </button>

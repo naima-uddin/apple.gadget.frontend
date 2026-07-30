@@ -172,7 +172,7 @@ function OrderTrackingCard({
                 onChange={(e) =>
                   setForm((p) => ({ ...p, courier: e.target.value }))
                 }
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 bg-white"
+                className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 bg-white outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
               >
                 {courierOptions.map((opt) => (
                   <option key={opt.value || "empty"} value={opt.value}>
@@ -191,7 +191,7 @@ function OrderTrackingCard({
                   setForm((p) => ({ ...p, trackingId: e.target.value }))
                 }
                 placeholder="Consignment ID (optional)"
-                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5"
+                className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
               />
             </div>
           </div>
@@ -206,7 +206,7 @@ function OrderTrackingCard({
                 setForm((p) => ({ ...p, trackingUrl: e.target.value }))
               }
               placeholder="Paste link from courier SMS / app"
-              className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5"
+              className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
             />
             <p className="text-[11px] text-gray-400 mt-1">
               Save করলে customer's /track-order/ ও My Orders page-এ এই link auto
@@ -218,7 +218,7 @@ function OrderTrackingCard({
             <button
               type="button"
               onClick={() => setBookModalOpen(true)}
-              className="px-4 py-2 text-sm font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
+              className="px-4 py-2 text-sm font-semibold rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition-colors"
             >
               Book Courier
             </button>
@@ -226,7 +226,7 @@ function OrderTrackingCard({
               type="button"
               onClick={saveShipment}
               disabled={saving}
-              className="px-4 py-2 text-sm font-semibold rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60"
+              className="px-4 py-2 text-sm font-semibold rounded-xl bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60 transition-colors"
             >
               {saving ? "Saving…" : "Save & sync tracking"}
             </button>
@@ -235,7 +235,7 @@ function OrderTrackingCard({
                 href={form.trackingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 text-sm font-medium rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50"
+                className="px-4 py-2 text-sm font-medium rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Open tracking ↗
               </a>
@@ -331,14 +331,14 @@ export default function ShipmentTrackingManager() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Order Tracking</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 mt-0.5">
             সব order collapsed — expand করে courier name ও live tracking URL
             save করুন।
           </p>
         </div>
         <Link
           href="/dashboard/shipment-tracking/settings"
-          className="px-3 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50"
+          className="px-3 py-2 text-sm font-medium rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Courier settings
         </Link>
@@ -375,7 +375,28 @@ export default function ShipmentTrackingManager() {
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-400 py-16">Loading orders…</p>
+        <div className="flex items-center justify-center gap-2 py-16 text-gray-400">
+          <svg
+            className="animate-spin h-4 w-4 text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle
+              className="opacity-20"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-80"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            />
+          </svg>
+          <span>Loading orders…</span>
+        </div>
       ) : orders.length === 0 ? (
         <div className="rounded-xl border border-dashed border-gray-200 bg-white p-12 text-center">
           <p className="text-gray-600">No orders in this view.</p>

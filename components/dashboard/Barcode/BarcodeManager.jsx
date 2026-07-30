@@ -21,6 +21,7 @@ import {
   FaTrash,
 } from "react-icons/fa";
 import { useUser } from "@/components/context/UserContext";
+import RowActionsMenu from "@/components/dashboard/ui/RowActionsMenu";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -197,7 +198,7 @@ export default function BarcodeManager() {
             <h1 className="mt-2 text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
               Manage Barcodes
             </h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-0.5 text-sm text-gray-500">
               Create, edit, delete, and inspect barcode numbers from one place.
             </p>
           </div>
@@ -305,13 +306,13 @@ export default function BarcodeManager() {
                 <button
                   type="button"
                   onClick={handleGenerate}
-                  className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-[#1D1D1F] hover:bg-gray-50"
+                  className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-semibold text-[#1D1D1F] hover:bg-gray-50"
                 >
                   <FaRedo /> Generate
                 </button>
                 <Link
                   href="/dashboard/products/new"
-                  className="inline-flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                  className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-50"
                 >
                   Open Product Form
                 </Link>

@@ -3,6 +3,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useUser } from "@/components/context/UserContext";
+import RowActionsMenu from "@/components/dashboard/ui/RowActionsMenu";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -161,12 +163,31 @@ export default function CustomersList() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search name, email, mobile…"
-            className="border border-gray-200 rounded-lg px-3 py-2 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="border border-gray-200 px-3 py-2 rounded-xl text-sm w-full sm:w-72 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           />
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-gray-400">
+          <div className="flex items-center justify-center gap-2 py-12 text-gray-400">
+            <svg
+              className="animate-spin h-4 w-4 text-gray-400"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                className="opacity-20"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-80"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              />
+            </svg>
             Loading customers…
           </div>
         ) : (
@@ -193,7 +214,7 @@ export default function CustomersList() {
                 {sortedItems.map((u) => {
                   const s = u.orderSummary;
                   return (
-                    <tr key={u._id} className="hover:bg-gray-50/30">
+                    <tr key={u._id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-3 py-3">
                         <p className="font-medium text-gray-800">
                           {u.name || "—"}
@@ -227,27 +248,33 @@ export default function CustomersList() {
                         <NewsletterBadge subscribed={!!u.newsletterSubscribed} />
                       </td>
                       <td className="px-3 py-3">
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex items-center gap-1.5">
                           <Link
                             href={`/dashboard/customers/${u._id}/profile`}
-                            className="px-2 py-1 border border-gray-200 rounded-lg text-xs font-medium text-[#1D1D1F] border-gray-300 hover:bg-gray-50"
+                            className="px-2.5 py-1.5 rounded-xl text-xs font-medium border border-gray-200 text-[#1D1D1F] hover:bg-gray-50 transition-colors"
                           >
                             Profile
                           </Link>
-                          <Link
-                            href={`/dashboard/customers/${u._id}`}
-                            className="px-2 py-1 border border-gray-200 rounded-lg text-xs hover:bg-gray-50"
-                          >
-                            Edit
-                          </Link>
-                          {user?.role === "admin" && (
-                            <button
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600 hover:bg-red-50"
-                              onClick={() => handleDelete(u._id)}
-                            >
-                              Delete
-                            </button>
-                          )}
+                          <RowActionsMenu
+                            items={[
+                              {
+                                label: "Edit",
+                                icon: <FaEdit className="h-3.5 w-3.5" />,
+                                href: `/dashboard/customers/${u._id}`,
+                              },
+                              ...(user?.role === "admin"
+                                ? [
+                                    { divider: true },
+                                    {
+                                      label: "Delete",
+                                      icon: <FaTrash className="h-3.5 w-3.5" />,
+                                      onClick: () => handleDelete(u._id),
+                                      danger: true,
+                                    },
+                                  ]
+                                : []),
+                            ]}
+                          />
                         </div>
                       </td>
                     </tr>

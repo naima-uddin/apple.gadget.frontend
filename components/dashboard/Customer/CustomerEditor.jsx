@@ -63,24 +63,47 @@ export default function CustomerEditor({ userId }) {
   };
 
   if (!customer && loading)
-    return <div className="text-center py-12">Loading…</div>;
+    return (
+      <div className="flex items-center justify-center gap-2 py-12 text-gray-400">
+        <svg
+          className="animate-spin h-4 w-4 text-gray-400"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle
+            className="opacity-20"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-80"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          />
+        </svg>
+        Loading…
+      </div>
+    );
   if (!customer)
     return (
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
         No user selected
       </div>
     );
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-        <h2 className="text-lg font-semibold">
+        <h2 className="text-xl font-bold tracking-tight text-[#1F2937]">
           {userId === "new" ? "Create user" : "Edit customer"}
         </h2>
         <div>
           <button
             onClick={() => router.push("/dashboard/customers")}
-            className="px-3 py-2 border border-gray-200 rounded-lg text-sm shrink-0"
+            className="px-3 py-2 border border-gray-200 text-gray-700 rounded-xl text-sm shrink-0 hover:bg-gray-50 transition-colors"
           >
             Back
           </button>
@@ -93,7 +116,7 @@ export default function CustomerEditor({ userId }) {
           <input
             value={customer.email || ""}
             readOnly
-            className="w-full border px-3 py-2 rounded-lg bg-gray-50"
+            className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm bg-gray-50 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           />
         </div>
 
@@ -104,7 +127,7 @@ export default function CustomerEditor({ userId }) {
             onChange={(e) =>
               setCustomer((c) => ({ ...c, name: e.target.value }))
             }
-            className="w-full border px-3 py-2 rounded-lg"
+            className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           />
         </div>
 
@@ -115,7 +138,7 @@ export default function CustomerEditor({ userId }) {
             onChange={(e) =>
               setCustomer((c) => ({ ...c, mobile: e.target.value }))
             }
-            className="w-full border px-3 py-2 rounded-lg font-mono"
+            className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm font-mono outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
             placeholder="e.g. 01700000000"
             inputMode="tel"
           />
@@ -127,7 +150,7 @@ export default function CustomerEditor({ userId }) {
             <input
               value={customer.provider || ""}
               readOnly
-              className="w-full border px-3 py-2 rounded-lg bg-gray-50"
+              className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm bg-gray-50 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
             />
           </div>
           <div>
@@ -135,7 +158,7 @@ export default function CustomerEditor({ userId }) {
             <input
               value={new Date(customer.createdAt).toLocaleString()}
               readOnly
-              className="w-full border px-3 py-2 rounded-lg bg-gray-50"
+              className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm bg-gray-50 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
             />
           </div>
         </div>
@@ -199,14 +222,14 @@ export default function CustomerEditor({ userId }) {
         <div className="flex gap-2">
           <button
             onClick={handleSave}
-            className="px-3 py-2 bg-gray-800 text-white rounded-lg"
+            className="px-3 py-2 bg-[#1D1D1F] text-white hover:bg-black rounded-xl transition-colors disabled:opacity-60"
             disabled={saving}
           >
             {saving ? "Saving…" : "Save"}
           </button>
           <button
             onClick={() => router.push("/dashboard/customers")}
-            className="px-3 py-2 border border-gray-200 rounded-lg"
+            className="px-3 py-2 border border-gray-200 text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
           >
             Cancel
           </button>

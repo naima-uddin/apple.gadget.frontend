@@ -356,7 +356,7 @@ export default function InventoryManager() {
             <button
               onClick={handleBulkSave}
               disabled={bulkSaving}
-              className="px-3 py-1.5 bg-amber-500 text-white text-xs font-semibold rounded-lg hover:bg-amber-600 disabled:opacity-60"
+              className="px-3 py-1.5 bg-amber-500 text-white text-xs font-semibold rounded-xl hover:bg-amber-600 disabled:opacity-60"
             >
               {bulkSaving ? "Saving…" : "Save All"}
             </button>
@@ -374,7 +374,7 @@ export default function InventoryManager() {
               setPage(1);
             }}
             placeholder="Search product name or SKU…"
-            className="border rounded-lg px-3 py-1.5 text-sm w-full sm:w-72 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="border border-gray-200 rounded-xl px-3 py-1.5 text-sm w-full sm:w-72 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           />
           <select
             value={sort}
@@ -382,7 +382,7 @@ export default function InventoryManager() {
               setSort(e.target.value);
               setPage(1);
             }}
-            className="border rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="border border-gray-200 rounded-xl px-3 py-1.5 text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
           >
             <option value="stock_asc">Stock: Low → High</option>
             <option value="stock_desc">Stock: High → Low</option>
@@ -396,7 +396,26 @@ export default function InventoryManager() {
 
         {/* Table */}
         {loading ? (
-          <div className="py-20 text-center text-gray-400 text-sm">
+          <div className="py-20 flex items-center justify-center gap-2 text-gray-400 text-sm">
+            <svg
+              className="animate-spin h-4 w-4 text-gray-400"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                className="opacity-20"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-80"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8H4z"
+              />
+            </svg>
             Loading inventory…
           </div>
         ) : items.length === 0 ? (
@@ -534,7 +553,7 @@ export default function InventoryManager() {
                     {/* Edit link */}
                     <Link
                       href={`/dashboard/products/${product._id}`}
-                      className="shrink-0 text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded-lg border border-transparent hover:border-gray-300"
+                      className="shrink-0 text-xs text-gray-400 hover:text-gray-600 px-2 py-1 rounded-xl border border-transparent hover:border-gray-300"
                     >
                       Edit
                     </Link>
@@ -572,7 +591,7 @@ export default function InventoryManager() {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-3 py-1.5 text-sm rounded-lg border hover:bg-gray-50 disabled:opacity-40"
+              className="px-3 py-1.5 text-sm rounded-xl border hover:bg-gray-50 disabled:opacity-40"
             >
               ← Prev
             </button>
@@ -582,7 +601,7 @@ export default function InventoryManager() {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="px-3 py-1.5 text-sm rounded-lg border hover:bg-gray-50 disabled:opacity-40"
+              className="px-3 py-1.5 text-sm rounded-xl border hover:bg-gray-50 disabled:opacity-40"
             >
               Next →
             </button>

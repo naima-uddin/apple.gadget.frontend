@@ -78,7 +78,7 @@ export default function FollowUpManager() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Follow Up</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 mt-0.5">
             Assign an authorized person to call and confirm orders.
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function FollowUpManager() {
                     <div className="flex flex-wrap gap-2">
                       <Link
                         href={`/dashboard/authorized/${p._id}/profile`}
-                        className="text-xs font-medium text-blue-600 hover:underline"
+                        className="text-xs font-medium text-gray-800 hover:underline"
                       >
                         Profile
                       </Link>
@@ -147,7 +147,7 @@ export default function FollowUpManager() {
                           type="button"
                           disabled={assigning}
                           onClick={() => assignToOrder(p._id)}
-                          className="text-xs font-medium px-3 py-1 rounded-lg bg-gray-800 text-white hover:bg-[#1D1D1F] disabled:opacity-60"
+                          className="text-xs font-medium px-3 py-1 rounded-xl bg-gray-800 text-white hover:bg-[#1D1D1F] disabled:opacity-60"
                         >
                           Assign
                         </button>

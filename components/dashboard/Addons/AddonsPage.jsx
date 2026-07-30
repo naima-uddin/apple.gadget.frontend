@@ -191,7 +191,8 @@ export default function AddonsPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-24 text-gray-400">
+      <div className="flex items-center justify-center gap-2 py-24 text-gray-400">
+        <svg className="animate-spin h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none"><circle className="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg>
         Loading addons…
       </div>
     );
@@ -201,7 +202,7 @@ export default function AddonsPage() {
     <div className="max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Addons</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 mt-0.5">
           Extend your store with powerful integrations
         </p>
       </div>
@@ -237,7 +238,7 @@ export default function AddonsPage() {
         {visibleAddons.map((addon) => {
           const installed = isInstalled(addon.key);
           return (
-            <div key={addon.key} className="flex items-center gap-4 px-6 py-4">
+            <div key={addon.key} className="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition-colors">
               <div
                 className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border ${addon.color}`}
               >
@@ -258,7 +259,7 @@ export default function AddonsPage() {
                 {installed && (
                   <Link
                     href={addon.href}
-                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-700 hover:bg-gray-50 transition"
+                    className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Configure
                   </Link>
@@ -266,14 +267,14 @@ export default function AddonsPage() {
                 {installed ? (
                   <button
                     onClick={() => handleUninstall(addon.key)}
-                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition"
+                    className="px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-700 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors"
                   >
                     Uninstall
                   </button>
                 ) : (
                   <button
                     onClick={() => handleInstall(addon.key, addon.href)}
-                    className="px-3 py-1.5 rounded-lg bg-gray-900 text-xs font-medium text-white hover:bg-gray-700 transition"
+                    className="px-3 py-1.5 rounded-xl bg-gray-900 text-xs font-medium text-white hover:bg-gray-700 transition-colors"
                   >
                     Install
                   </button>

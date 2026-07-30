@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useUser } from "@/components/context/UserContext";
+import RowActionsMenu from "@/components/dashboard/ui/RowActionsMenu";
 
 // Groups to display in the permission grid — mirrors backend PERMISSION_GROUPS structure.
 // `legacy` is the old broad section key that also grants access to this group.
@@ -203,35 +204,42 @@ export default function AdminsList() {
                     )}
                   </td>
                   <td className="py-3">
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="flex items-center justify-end gap-1.5">
                       <a
-                        className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
-                        href={`/dashboard/authorized/${a._id}/profile`}
-                      >
-                        Profile
-                      </a>
-                      <a
-                        className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
+                        className="px-2.5 py-1.5 rounded-xl text-xs font-medium border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
                         href={`/dashboard/authorized/${a._id}`}
                       >
                         Edit
                       </a>
-                      {a.isActive && (
-                        <button
-                          className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600"
-                          onClick={() => handleDeactivate(a._id)}
-                        >
-                          Deactivate
-                        </button>
-                      )}
-                      {user?.role === "admin" && (
-                        <button
-                          className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600"
-                          onClick={() => handleDelete(a._id)}
-                        >
-                          Delete
-                        </button>
-                      )}
+                      <RowActionsMenu
+                        items={[
+                          {
+                            label: "Profile",
+                            href: `/dashboard/authorized/${a._id}/profile`,
+                          },
+                          ...(a.isActive || user?.role === "admin"
+                            ? [{ divider: true }]
+                            : []),
+                          ...(a.isActive
+                            ? [
+                                {
+                                  label: "Deactivate",
+                                  onClick: () => handleDeactivate(a._id),
+                                  danger: true,
+                                },
+                              ]
+                            : []),
+                          ...(user?.role === "admin"
+                            ? [
+                                {
+                                  label: "Delete",
+                                  onClick: () => handleDelete(a._id),
+                                  danger: true,
+                                },
+                              ]
+                            : []),
+                        ]}
+                      />
                     </div>
                   </td>
                 </tr>

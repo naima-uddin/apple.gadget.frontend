@@ -3,6 +3,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import NoProductsFound from "@/components/ui/NoProductsFound";
+import RowActionsMenu from "@/components/dashboard/ui/RowActionsMenu";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/components/context/UserContext";
 import {
@@ -477,99 +478,90 @@ export default function ProductsList() {
                       </span>
                     </td>
                     <td className="py-3 px-3">
-                      <div className="flex flex-wrap gap-1.5">
-                        {viewTrash ? (
-                          <>
+                      {viewTrash ? (
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            title="Restore this product"
+                            onClick={() => restoreFromTrash([id])}
+                            disabled={bulkBusy}
+                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-green-600 hover:bg-green-700 disabled:opacity-50 transition-colors"
+                          >
+                            <FaTrashRestore className="inline-block mr-1" />
+                            Restore
+                          </button>
+                          {user?.role === "admin" && (
                             <button
-                              title="Restore this product"
-                              onClick={() => restoreFromTrash([id])}
+                              title="Delete permanently"
+                              onClick={() => permanentDelete([id])}
                               disabled={bulkBusy}
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-white bg-green-600 hover:bg-green-700 disabled:opacity-50"
+                              className="px-2.5 py-1.5 rounded-lg text-xs font-medium text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 transition-colors"
                             >
-                              <FaTrashRestore className="inline-block mr-1" />
-                              Restore
+                              <FaTrash className="inline-block mr-1" />
+                              Delete
                             </button>
-                            {user?.role === "admin" && (
-                              <button
-                                title="Delete permanently"
-                                onClick={() => permanentDelete([id])}
-                                disabled={bulkBusy}
-                                className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-white bg-red-600 hover:bg-red-700 disabled:opacity-50"
-                              >
-                                <FaTrash className="inline-block mr-1" />
-                                Delete
-                              </button>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            <Link
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs"
-                              href={`/dashboard/products/${p._id}`}
-                            >
-                              Edit
-                            </Link>
-                            <button
-                              title="Duplicate this product"
-                              onClick={() => handleDuplicate(p._id)}
-                              disabled={duplicatingId === p._id}
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800 disabled:opacity-50"
-                            >
-                              <FaClone className="inline-block mr-1" />
-                              {duplicatingId === p._id
-                                ? "Duplicating…"
-                                : "Duplicate"}
-                            </button>
-                            {user?.role === "admin" && (
-                              <button
-                                title="Move to Trash"
-                                onClick={() => moveToTrash([id])}
-                                disabled={bulkBusy}
-                                className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-red-600 hover:bg-red-50 disabled:opacity-50"
-                              >
-                                <FaTrash className="inline-block mr-1" />
-                                Trash
-                              </button>
-                            )}
-                            <button
-                              title="View waitlist for product"
-                              onClick={() =>
-                                router.push(
-                                  `/dashboard/waitlist?productId=${p._id}`,
-                                )
-                              }
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800"
-                            >
-                              <FaBell className="inline-block mr-1" />
-                              Waitlist
-                            </button>
-                            <button
-                              title="View reviews for product"
-                              onClick={() =>
-                                router.push(
-                                  `/dashboard/reviews?productId=${p._id}`,
-                                )
-                              }
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800"
-                            >
-                              <FaStar className="inline-block mr-1" />
-                              Reviews
-                            </button>
-                            <button
-                              title="View questions for product"
-                              onClick={() =>
-                                router.push(
-                                  `/dashboard/questions?productId=${p._id}`,
-                                )
-                              }
-                              className="px-2 py-1 border border-gray-200 rounded-lg text-xs text-gray-600 hover:text-gray-800"
-                            >
-                              <FaQuestionCircle className="inline-block mr-1" />
-                              Q&A
-                            </button>
-                          </>
-                        )}
-                      </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Link
+                            className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
+                            href={`/dashboard/products/${p._id}`}
+                          >
+                            Edit
+                          </Link>
+                          <RowActionsMenu
+                            items={[
+                              {
+                                label:
+                                  duplicatingId === p._id
+                                    ? "Duplicating…"
+                                    : "Duplicate",
+                                icon: <FaClone className="h-3.5 w-3.5" />,
+                                onClick: () => handleDuplicate(p._id),
+                                disabled: duplicatingId === p._id,
+                              },
+                              {
+                                label: "Waitlist",
+                                icon: <FaBell className="h-3.5 w-3.5" />,
+                                onClick: () =>
+                                  router.push(
+                                    `/dashboard/waitlist?productId=${p._id}`,
+                                  ),
+                              },
+                              {
+                                label: "Reviews",
+                                icon: <FaStar className="h-3.5 w-3.5" />,
+                                onClick: () =>
+                                  router.push(
+                                    `/dashboard/reviews?productId=${p._id}`,
+                                  ),
+                              },
+                              {
+                                label: "Q&A",
+                                icon: (
+                                  <FaQuestionCircle className="h-3.5 w-3.5" />
+                                ),
+                                onClick: () =>
+                                  router.push(
+                                    `/dashboard/questions?productId=${p._id}`,
+                                  ),
+                              },
+                              ...(user?.role === "admin"
+                                ? [
+                                    { divider: true },
+                                    {
+                                      label: "Move to Trash",
+                                      icon: <FaTrash className="h-3.5 w-3.5" />,
+                                      onClick: () => moveToTrash([id]),
+                                      disabled: bulkBusy,
+                                      danger: true,
+                                    },
+                                  ]
+                                : []),
+                            ]}
+                          />
+                        </div>
+                      )}
                     </td>
                   </tr>
                 );

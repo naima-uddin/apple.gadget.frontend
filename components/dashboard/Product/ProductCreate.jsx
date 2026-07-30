@@ -282,7 +282,7 @@ export default function ProductCreate() {
   ]);
 
   const inputClass =
-    "w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all";
+    "w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]";
   const labelClass = "block text-sm font-semibold text-gray-700 mb-2";
   const toDateInput = (value) => {
     if (!value) return "";

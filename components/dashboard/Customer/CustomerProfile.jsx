@@ -143,7 +143,28 @@ export default function CustomerProfile({ userId }) {
 
   if (loading) {
     return (
-      <div className="text-center py-16 text-gray-400">Loading profile…</div>
+      <div className="flex items-center justify-center gap-2 py-16 text-gray-400">
+        <svg
+          className="animate-spin h-4 w-4 text-gray-400"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle
+            className="opacity-20"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-80"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          />
+        </svg>
+        Loading profile…
+      </div>
     );
   }
   if (error) {
@@ -197,7 +218,7 @@ export default function CustomerProfile({ userId }) {
         </div>
         <Link
           href={`/dashboard/customers/${userId}`}
-          className="px-4 py-2 text-sm font-medium border border-gray-200 rounded-lg hover:bg-gray-50"
+          className="px-4 py-2 text-sm font-medium border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
         >
           Edit customer
         </Link>
@@ -270,7 +291,7 @@ export default function CustomerProfile({ userId }) {
                       .replace(/\D/g, "")
                       .endsWith(user.mobile.replace(/\D/g, "").slice(-10));
                   return (
-                    <tr key={order._id} className="hover:bg-gray-50/30">
+                    <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3">
                         <Link
                           href={`/dashboard/orders/${order._id}`}
@@ -407,7 +428,7 @@ export default function CustomerProfile({ userId }) {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {courierRows.map(([courier, row]) => (
-                    <tr key={courier} className="hover:bg-gray-50/50">
+                    <tr key={courier} className="hover:bg-gray-50 transition-colors">
                       <td className="px-4 py-3 font-medium capitalize">
                         {formatCourierName(courier)}
                       </td>

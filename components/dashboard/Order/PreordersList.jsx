@@ -86,10 +86,10 @@ export default function PreordersList() {
   );
 
   return (
-    <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
+    <div className="max-w-6xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div>
-          <h2 className="text-lg font-semibold text-gray-800">
+          <h2 className="text-lg font-bold tracking-tight text-[#1F2937]">
             Pre-orders Management
           </h2>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -100,14 +100,14 @@ export default function PreordersList() {
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
           placeholder="Search by product, customer, phone, or email…"
-          className="border px-3 py-2 rounded-lg w-full sm:w-80 text-sm"
+          className="border border-gray-200 px-3 py-2 rounded-xl w-full sm:w-80 text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         />
       </div>
 
       <div className="flex flex-wrap items-center gap-2 mb-6">
         <button
           onClick={() => setStatusFilter("")}
-          className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${statusFilter === "" ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+          className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${statusFilter === "" ? "bg-[#1D1D1F] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
         >
           All statuses
         </button>
@@ -115,7 +115,7 @@ export default function PreordersList() {
           <button
             key={s}
             onClick={() => setStatusFilter(s)}
-            className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition ${statusFilter === s ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            className={`px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-colors ${statusFilter === s ? "bg-[#1D1D1F] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
           >
             {s}
           </button>
@@ -123,8 +123,27 @@ export default function PreordersList() {
       </div>
 
       {loading ? (
-        <div className="text-center py-16 text-gray-400">
-          Loading pre-orders…
+        <div className="flex items-center justify-center gap-2 py-16 text-gray-400">
+          <svg
+            className="animate-spin h-4 w-4 text-gray-400"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <circle
+              className="opacity-20"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-80"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            />
+          </svg>
+          <span>Loading pre-orders…</span>
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
@@ -194,7 +213,7 @@ export default function PreordersList() {
 
               <Link
                 href={`/dashboard/orders/${row.orderId}`}
-                className="text-xs px-3 py-1.5 rounded-lg bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
+                className="text-xs px-3 py-1.5 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium transition"
               >
                 {formatOrderId(row.orderId)}
               </Link>

@@ -253,7 +253,28 @@ export default function OrderDetails({ orderId }) {
 
   if (loading) {
     return (
-      <div className="text-center py-16 text-gray-400">Loading order…</div>
+      <div className="flex items-center justify-center gap-2 py-16 text-gray-400">
+        <svg
+          className="animate-spin h-4 w-4 text-gray-400"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle
+            className="opacity-20"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-80"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          />
+        </svg>
+        Loading order…
+      </div>
     );
   }
   if (!order) {
@@ -325,7 +346,7 @@ export default function OrderDetails({ orderId }) {
         <div className="flex flex-wrap gap-2">
           <Link
             href={`/dashboard/orders/${orderId}/invoice`}
-            className="px-3 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50"
+            className="px-3 py-2 text-sm font-medium rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Print
           </Link>
@@ -333,7 +354,7 @@ export default function OrderDetails({ orderId }) {
             <button
               type="button"
               onClick={() => setActionsOpen((v) => !v)}
-              className="px-3 py-2 text-sm font-medium rounded-lg border border-gray-200 hover:bg-gray-50"
+              className="px-3 py-2 text-sm font-medium rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors"
             >
               More Action ▾
             </button>
@@ -343,10 +364,10 @@ export default function OrderDetails({ orderId }) {
                   className="fixed inset-0 z-10"
                   onClick={() => setActionsOpen(false)}
                 />
-                <div className="absolute right-0 top-full mt-1 z-20 bg-white border rounded-lg shadow-lg py-1 text-sm min-w-[10rem]">
+                <div className="absolute right-0 top-full mt-1 z-20 bg-white border border-gray-200 rounded-xl shadow-lg py-1 text-sm min-w-[10rem]">
                   <Link
                     href={`/dashboard/orders/${orderId}/slip`}
-                    className="block px-3 py-2 hover:bg-gray-50"
+                    className="block px-3 py-2 hover:bg-gray-50 transition-colors"
                     onClick={() => setActionsOpen(false)}
                   >
                     Print slip
@@ -361,7 +382,7 @@ export default function OrderDetails({ orderId }) {
                         status: order.status,
                       }));
                     }}
-                    className="w-full text-left px-3 py-2 hover:bg-gray-50"
+                    className="w-full text-left px-3 py-2 hover:bg-gray-50 transition-colors"
                   >
                     Update status
                   </button>

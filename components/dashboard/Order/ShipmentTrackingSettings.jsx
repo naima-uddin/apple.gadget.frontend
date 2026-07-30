@@ -151,19 +151,19 @@ function CourierManager({ couriers, onChange }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Courier name (e.g. Pathao)"
-          className="text-sm border border-gray-200 rounded-lg px-3 py-2 flex-1 min-w-48"
+          className="text-sm border border-gray-200 rounded-xl px-3 py-2 flex-1 min-w-48 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         />
         <input
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
           placeholder="Slug (optional)"
-          className="text-sm border border-gray-200 rounded-lg px-3 py-2 w-36"
+          className="text-sm border border-gray-200 rounded-xl px-3 py-2 w-36 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
         />
         <button
           type="button"
           onClick={createCourier}
           disabled={saving}
-          className="px-4 py-2 text-sm font-medium rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60"
+          className="px-4 py-2 text-sm font-medium rounded-xl bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60 transition-colors"
         >
           Add courier
         </button>
@@ -179,7 +179,7 @@ function CourierManager({ couriers, onChange }) {
                 <input
                   value={editForm.name}
                   onChange={(e) => setEditForm({ name: e.target.value })}
-                  className="border border-gray-200 rounded-lg px-2 py-1 flex-1 min-w-32"
+                  className="border border-gray-200 rounded-xl px-2 py-1 flex-1 min-w-32 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                 />
                 <button
                   type="button"
@@ -216,7 +216,7 @@ function CourierManager({ couriers, onChange }) {
                     setEditingId(c._id);
                     setEditForm({ name: c.name });
                   }}
-                  className="text-xs text-blue-600 ml-auto"
+                  className="text-xs text-gray-700 hover:text-[#1D1D1F] ml-auto"
                 >
                   Edit
                 </button>

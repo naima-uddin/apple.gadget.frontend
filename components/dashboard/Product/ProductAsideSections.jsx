@@ -453,7 +453,7 @@ export default function ProductAsideSections({
                       ),
                     )
                   }
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                   placeholder="Badge label"
                 />
                 <input
@@ -476,7 +476,7 @@ export default function ProductAsideSections({
                       }));
                     }
                   }}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                   placeholder="badge_key"
                 />
                 <button
@@ -505,14 +505,14 @@ export default function ProductAsideSections({
                 type="text"
                 value={newBadgeLabel}
                 onChange={(e) => setNewBadgeLabel(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                 placeholder="New badge label"
               />
               <input
                 type="text"
                 value={newBadgeKey}
                 onChange={(e) => setNewBadgeKey(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                 placeholder="new_badge_key"
               />
               <button
@@ -707,7 +707,7 @@ export default function ProductAsideSections({
                 onChange={(e) =>
                   setNewDropshipping((p) => ({ ...p, name: e.target.value }))
                 }
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                 placeholder="Item name (e.g. Local Courier)"
               />
               <div className="flex gap-2">
@@ -719,7 +719,7 @@ export default function ProductAsideSections({
                     const val = e.target.value.replace(/[^0-9.]/g, "");
                     setNewDropshipping((p) => ({ ...p, cost: val }));
                   }}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                   placeholder="Cost (৳)"
                 />
                 <button
@@ -781,7 +781,7 @@ export default function ProductAsideSections({
                 onChange={(e) =>
                   setNewPackaging((p) => ({ ...p, name: e.target.value }))
                 }
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                 placeholder="Item name (e.g. Box)"
               />
               <div className="flex gap-2">
@@ -793,7 +793,7 @@ export default function ProductAsideSections({
                     const val = e.target.value.replace(/[^0-9.]/g, "");
                     setNewPackaging((p) => ({ ...p, cost: val }));
                   }}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                   placeholder="Cost (৳)"
                 />
                 <button
