@@ -88,13 +88,13 @@ export default function CartSidebar() {
       {/* backdrop */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/20  z-40 transition-opacity"
+          className="fixed inset-0 bg-black/20  z-65 transition-opacity"
           onClick={toggleSidebar}
         />
       )}
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`fixed top-0 right-0 h-full w-full max-w-xs sm:w-88 md:w-96 bg-[#faf9fc] shadow-2xl transform transition-transform duration-300 z-50 ${
+        className={`fixed top-0 right-0 h-full w-full max-w-xs sm:w-88 md:w-96 bg-[#faf9fc] shadow-2xl transform transition-transform duration-300 z-70 ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         } flex flex-col`}
       >
