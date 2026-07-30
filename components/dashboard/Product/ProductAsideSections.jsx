@@ -30,6 +30,195 @@ export default function ProductAsideSections({
   const { user } = useUser();
   const canSeeBuyingPrice = hasPermission(user, "products.buying_price");
 
+  // --- Delivery charge & packaging cost: pulled from the dashboard
+  // settings pages, with a quick inline add/edit so admins don't have to
+  // leave the product form to create a new option.
+  const [deliverySettings, setDeliverySettings] = useState({
+    insideDhaka: 0,
+    outsideDhaka: 0,
+    zones: [],
+  });
+  const [dhakaZoneNames, setDhakaZoneNames] = useState([]);
+  const [showDeliveryManager, setShowDeliveryManager] = useState(false);
+  const [deliveryDraft, setDeliveryDraft] = useState({
+    insideDhaka: "",
+    outsideDhaka: "",
+  });
+  const [newZoneOverride, setNewZoneOverride] = useState({
+    zone: "",
+    charge: "",
+  });
+  const [deliverySaving, setDeliverySaving] = useState(false);
+
+  const [packagingItems, setPackagingItems] = useState([]);
+  const [showPackagingManager, setShowPackagingManager] = useState(false);
+  const [newPackaging, setNewPackaging] = useState({
+    name: "",
+    cost: "",
+    description: "",
+  });
+  const [editingPackagingId, setEditingPackagingId] = useState(null);
+  const [packagingSaving, setPackagingSaving] = useState(false);
+
+  const loadDeliverySettings = React.useCallback(async () => {
+    try {
+      const resp = await fetch(`${API}/api/admin/settings`, {
+        credentials: "include",
+      });
+      const body = await resp.json();
+      const dc = body?.settings?.deliveryCharge || {};
+      const next = {
+        insideDhaka: dc.insideDhaka ?? 70,
+        outsideDhaka: dc.outsideDhaka ?? 130,
+        zones: dc.zones || [],
+      };
+      setDeliverySettings(next);
+      setDeliveryDraft({
+        insideDhaka: String(next.insideDhaka),
+        outsideDhaka: String(next.outsideDhaka),
+      });
+    } catch {
+      /* keep defaults */
+    }
+  }, [API]);
+
+  const loadPackagingItems = React.useCallback(async () => {
+    try {
+      const resp = await fetch(`${API}/api/admin/packaging-costs`, {
+        credentials: "include",
+      });
+      const body = await resp.json();
+      setPackagingItems(body?.items || []);
+    } catch {
+      /* leave list empty */
+    }
+  }, [API]);
+
+  useEffect(() => {
+    loadDeliverySettings();
+    loadPackagingItems();
+    fetch("/api/locations/dhaka")
+      .then((r) => r.json())
+      .then((body) =>
+        setDhakaZoneNames((body?.zones || []).map((z) => z.zone)),
+      )
+      .catch(() => {});
+  }, [loadDeliverySettings, loadPackagingItems]);
+
+  const saveDeliveryDefaults = async () => {
+    setDeliverySaving(true);
+    try {
+      const deliveryCharge = {
+        insideDhaka: Number(deliveryDraft.insideDhaka) || 0,
+        outsideDhaka: Number(deliveryDraft.outsideDhaka) || 0,
+        zones: deliverySettings.zones,
+      };
+      const resp = await fetch(`${API}/api/admin/settings/delivery-charge`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ deliveryCharge }),
+      });
+      const body = await resp.json();
+      if (!resp.ok) throw new Error(body.error || "Save failed");
+      await loadDeliverySettings();
+    } catch (err) {
+      alert(err.message || "Failed to save delivery charge defaults");
+    } finally {
+      setDeliverySaving(false);
+    }
+  };
+
+  const addZoneOverride = async () => {
+    const zone = newZoneOverride.zone;
+    const charge = Number(newZoneOverride.charge);
+    if (!zone || !Number.isFinite(charge) || charge < 0) {
+      alert("Select a zone and enter a valid charge");
+      return;
+    }
+    setDeliverySaving(true);
+    try {
+      const existing = (deliverySettings.zones || []).find(
+        (z) => z.zone === zone,
+      );
+      const zones = [
+        ...(deliverySettings.zones || []).filter((z) => z.zone !== zone),
+        { zone, charge, areas: existing?.areas || [] },
+      ];
+      const deliveryCharge = {
+        insideDhaka: Number(deliveryDraft.insideDhaka) || 0,
+        outsideDhaka: Number(deliveryDraft.outsideDhaka) || 0,
+        zones,
+      };
+      const resp = await fetch(`${API}/api/admin/settings/delivery-charge`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ deliveryCharge }),
+      });
+      const body = await resp.json();
+      if (!resp.ok) throw new Error(body.error || "Save failed");
+      setNewZoneOverride({ zone: "", charge: "" });
+      await loadDeliverySettings();
+    } catch (err) {
+      alert(err.message || "Failed to add zone override");
+    } finally {
+      setDeliverySaving(false);
+    }
+  };
+
+  const resetPackagingForm = () => {
+    setNewPackaging({ name: "", cost: "", description: "" });
+    setEditingPackagingId(null);
+  };
+
+  const editPackagingItem = (item) => {
+    setEditingPackagingId(item._id);
+    setNewPackaging({
+      name: item.name || "",
+      cost: String(item.cost ?? ""),
+      description: item.description || "",
+    });
+  };
+
+  const savePackagingItem = async () => {
+    if (!newPackaging.name.trim()) {
+      alert("Enter an item name");
+      return;
+    }
+    const cost = Number(newPackaging.cost);
+    if (!Number.isFinite(cost) || cost < 0) {
+      alert("Enter a valid cost");
+      return;
+    }
+    setPackagingSaving(true);
+    try {
+      const resp = await fetch(
+        editingPackagingId
+          ? `${API}/api/admin/packaging-costs/${editingPackagingId}`
+          : `${API}/api/admin/packaging-costs`,
+        {
+          method: editingPackagingId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            name: newPackaging.name,
+            cost,
+            description: newPackaging.description,
+          }),
+        },
+      );
+      const body = await resp.json();
+      if (!resp.ok) throw new Error(body.error || "Save failed");
+      resetPackagingForm();
+      await loadPackagingItems();
+    } catch (err) {
+      alert(err.message || "Failed to save packaging cost");
+    } finally {
+      setPackagingSaving(false);
+    }
+  };
+
   const generateSku = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const rand = (n) =>
@@ -425,6 +614,32 @@ export default function ProductAsideSections({
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className={labelClass}>Delivery Charge</label>
+                <select
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value === "") return;
+                    setProduct((p) => ({
+                      ...p,
+                      deliveryCharge: Number(e.target.value),
+                    }));
+                  }}
+                  className={`${inputClass} mb-2`}
+                >
+                  <option value="">Pick saved charge…</option>
+                  <option value={deliverySettings.insideDhaka}>
+                    Inside Dhaka — ৳{deliverySettings.insideDhaka}
+                  </option>
+                  <option value={deliverySettings.outsideDhaka}>
+                    Outside Dhaka — ৳{deliverySettings.outsideDhaka}
+                  </option>
+                  {(deliverySettings.zones || [])
+                    .filter((z) => z.charge != null)
+                    .map((z) => (
+                      <option key={z.zone} value={z.charge}>
+                        {z.zone} — ৳{z.charge}
+                      </option>
+                    ))}
+                </select>
                 <input
                   type="number"
                   value={product.deliveryCharge ?? ""}
@@ -441,9 +656,42 @@ export default function ProductAsideSections({
                   placeholder="0.00"
                   step="0.01"
                 />
+                <div className="mt-1.5 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowDeliveryManager((v) => !v)}
+                    className="text-xs font-semibold text-[#1D1D1F] hover:underline"
+                  >
+                    {showDeliveryManager ? "Hide" : "+ Add / Edit"}
+                  </button>
+                  <Link
+                    href="/dashboard/delivery-charge"
+                    className="text-xs text-gray-500 hover:underline"
+                  >
+                    Manage all
+                  </Link>
+                </div>
               </div>
               <div>
                 <label className={labelClass}>Packaging Cost</label>
+                <select
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value === "") return;
+                    setProduct((p) => ({
+                      ...p,
+                      packagingCost: Number(e.target.value),
+                    }));
+                  }}
+                  className={`${inputClass} mb-2`}
+                >
+                  <option value="">Pick saved cost…</option>
+                  {packagingItems.map((item) => (
+                    <option key={item._id} value={item.cost}>
+                      {item.name} — ৳{item.cost}
+                    </option>
+                  ))}
+                </select>
                 <input
                   type="number"
                   value={product.packagingCost ?? ""}
@@ -460,7 +708,184 @@ export default function ProductAsideSections({
                   placeholder="0.00"
                   step="0.01"
                 />
+                <div className="mt-1.5 flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowPackagingManager((v) => !v)}
+                    className="text-xs font-semibold text-[#1D1D1F] hover:underline"
+                  >
+                    {showPackagingManager ? "Hide" : "+ Add / Edit"}
+                  </button>
+                  <Link
+                    href="/dashboard/packaging-cost"
+                    className="text-xs text-gray-500 hover:underline"
+                  >
+                    Manage all
+                  </Link>
+                </div>
               </div>
+            </div>
+          )}
+
+          {canSeeBuyingPrice && showDeliveryManager && (
+            <div className="space-y-3 rounded-xl border border-gray-300 bg-gray-50 p-3">
+              <p className="text-xs font-semibold text-gray-700">
+                Delivery charge defaults
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <input
+                  type="number"
+                  min="0"
+                  value={deliveryDraft.insideDhaka}
+                  onChange={(e) =>
+                    setDeliveryDraft((p) => ({
+                      ...p,
+                      insideDhaka: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  placeholder="Inside Dhaka"
+                />
+                <input
+                  type="number"
+                  min="0"
+                  value={deliveryDraft.outsideDhaka}
+                  onChange={(e) =>
+                    setDeliveryDraft((p) => ({
+                      ...p,
+                      outsideDhaka: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  placeholder="Outside Dhaka"
+                />
+              </div>
+              <button
+                type="button"
+                disabled={deliverySaving}
+                onClick={saveDeliveryDefaults}
+                className="w-full rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-[#1D1D1F] disabled:opacity-60"
+              >
+                {deliverySaving ? "Saving..." : "Save defaults"}
+              </button>
+
+              <p className="text-xs font-semibold text-gray-700 border-t border-gray-300 pt-3">
+                Add / update zone override
+              </p>
+              <div className="grid grid-cols-[1fr_5rem] gap-2">
+                <select
+                  value={newZoneOverride.zone}
+                  onChange={(e) =>
+                    setNewZoneOverride((p) => ({
+                      ...p,
+                      zone: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                >
+                  <option value="">Select zone</option>
+                  {dhakaZoneNames.map((zone) => (
+                    <option key={zone} value={zone}>
+                      {zone}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  min="0"
+                  value={newZoneOverride.charge}
+                  onChange={(e) =>
+                    setNewZoneOverride((p) => ({
+                      ...p,
+                      charge: e.target.value,
+                    }))
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  placeholder="৳"
+                />
+              </div>
+              <button
+                type="button"
+                disabled={deliverySaving}
+                onClick={addZoneOverride}
+                className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm text-[#1D1D1F] hover:bg-gray-100 disabled:opacity-60"
+              >
+                Add zone override
+              </button>
+            </div>
+          )}
+
+          {canSeeBuyingPrice && showPackagingManager && (
+            <div className="space-y-2 rounded-xl border border-gray-300 bg-gray-50 p-3">
+              <p className="text-xs font-semibold text-gray-700">
+                {editingPackagingId
+                  ? "Edit packaging item"
+                  : "Add packaging item"}
+              </p>
+              <input
+                type="text"
+                value={newPackaging.name}
+                onChange={(e) =>
+                  setNewPackaging((p) => ({ ...p, name: e.target.value }))
+                }
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                placeholder="Item name (e.g. Box)"
+              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  value={newPackaging.cost}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9.]/g, "");
+                    setNewPackaging((p) => ({ ...p, cost: val }));
+                  }}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                  placeholder="Cost (৳)"
+                />
+                <button
+                  type="button"
+                  disabled={packagingSaving}
+                  onClick={savePackagingItem}
+                  className="shrink-0 rounded-lg bg-gray-800 px-4 py-2 text-sm text-white hover:bg-[#1D1D1F] disabled:opacity-60"
+                >
+                  {packagingSaving
+                    ? "Saving..."
+                    : editingPackagingId
+                      ? "Update"
+                      : "Add"}
+                </button>
+                {editingPackagingId && (
+                  <button
+                    type="button"
+                    onClick={resetPackagingForm}
+                    className="shrink-0 rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-100"
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+              {packagingItems.length > 0 && (
+                <div className="mt-2 max-h-32 divide-y divide-gray-200 overflow-y-auto border-t border-gray-300">
+                  {packagingItems.map((item) => (
+                    <div
+                      key={item._id}
+                      className="flex items-center justify-between py-1.5 text-xs"
+                    >
+                      <span className="text-gray-700">
+                        {item.name} — ৳{item.cost}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => editPackagingItem(item)}
+                        className="font-semibold text-[#1D1D1F] hover:underline"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
           {canSeeBuyingPrice && (
