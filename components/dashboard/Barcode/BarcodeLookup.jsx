@@ -114,7 +114,7 @@ export default function BarcodeLookup() {
             <h1 className="mt-2 text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
               Scan or search product by barcode
             </h1>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            <p className="mt-0.5 max-w-2xl text-sm text-gray-500">
               Use a USB/Bluetooth scanner (it types the number and sends Enter)
               or type the barcode manually, then press Enter or click Look up.
             </p>
