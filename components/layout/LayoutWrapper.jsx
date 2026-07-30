@@ -13,6 +13,8 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 // ── Tracking Scripts Component ──────────────────────────────────────────────
 function TrackingScripts() {
   const [config, setConfig] = useState(null);
+  const pathname = usePathname();
+  const skipNextPageview = useRef(true);
 
   useEffect(() => {
     fetch(`${API}/api/admin/tracking-config`)
@@ -20,6 +22,30 @@ function TrackingScripts() {
       .then(setConfig)
       .catch(() => {});
   }, []);
+
+  // Next.js client-side navigation never reloads the page, so each vendor's
+  // init snippet (whether wired up here or pasted by hand into the Code
+  // Snippet header/body/footer boxes) only ever fires its first pageview
+  // once per browser session. Without this, every route change after that
+  // is invisible to analytics — only click-triggered events (which call
+  // fbq()/gtag() fresh each time) keep tracking correctly. Checking the
+  // global objects directly (not the addon config) covers both sources.
+  // Skip the first run since the init snippets already cover that pageview.
+  useEffect(() => {
+    if (skipNextPageview.current) {
+      skipNextPageview.current = false;
+      return;
+    }
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "page_view", { page_path: pathname });
+    }
+    if (typeof window.fbq === "function") {
+      window.fbq("track", "PageView");
+    }
+    if (typeof window.ttq?.page === "function") {
+      window.ttq.page();
+    }
+  }, [pathname]);
 
   if (!config) return null;
 
