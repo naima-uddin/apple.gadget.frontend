@@ -6,6 +6,8 @@ import { useUser } from "@/components/context/UserContext";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 import { useLanguage } from "@/components/context/LanguageContext";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
+
 function normalizeHref(href) {
   if (!href) return "/";
   if (
@@ -23,6 +25,40 @@ export default function Footer() {
     useStoreSettings();
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState(null); // 'loading' | 'success' | 'error'
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleFormChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 30000);
+    try {
+      const res = await fetch(`${API_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+        signal: controller.signal,
+      });
+      clearTimeout(tid);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setStatus("success");
+      setForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      clearTimeout(tid);
+      setStatus("error");
+      setErrorMsg(
+        err.name === "AbortError" ? t("contact.timeout_error") : err.message,
+      );
+    }
+  };
 
   const quickLinks = footerLinks?.customerService?.length
     ? footerLinks.customerService
@@ -114,11 +150,11 @@ export default function Footer() {
   return (
     <>
       <footer role="contentinfo" className="bg-[#0A0A0A] text-white">
-        <div className="max-w-7xl mx-auto px-5 py-8 md:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-[1.5fr_1.2fr_1fr_1fr] gap-x-1 gap-y-1 md:gap-2 lg:gap-3">
+        <div className="max-w-7xl mx-auto px-5 py-10 md:py-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1.2fr] gap-y-10 gap-x-8 lg:gap-x-10">
             {/* Brand */}
-            <div className="md:col-span-1">
-              <div className="flex items-center gap-2.5 mb-2 sm:mb-3">
+            <div>
+              <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
                 {logoUrl && (
                   <span className="flex h-9 w-26 shrink-0 items-center justify-center rounded-lg bg-white p-1">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -130,33 +166,10 @@ export default function Footer() {
                   </span>
                 )}
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed md:max-w-60 mb-4">
+              <p className="text-sm text-gray-400 leading-relaxed max-w-72 mb-5">
                 {t("footer.store_desc")}
               </p>
-              {socials.length > 0 && (
-                <div className="flex items-center gap-3 sm:gap-4">
-                  {socials.map((s) => (
-                    <a
-                      key={s.key}
-                      href={s.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={s.label}
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      {s.icon}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
-                {t("footer.support")}
-              </h4>
-              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400 wrap-break-word">
+              <ul className="space-y-2 text-sm text-gray-400 wrap-break-word mb-6">
                 {footerInfo?.address && <li>{footerInfo.address}</li>}
                 {footerInfo?.email && (
                   <li className="break-all">
@@ -179,14 +192,50 @@ export default function Footer() {
                   </li>
                 )}
               </ul>
+              {socials.length > 0 && (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
+                    {t("footer.follow_us")}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    {socials.map((s) => (
+                      <a
+                        key={s.key}
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={s.label}
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition-colors"
+                      >
+                        {s.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Account */}
+            {/* Company */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
-                {t("footer.account")}
-              </h4>
-              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
+              <h4 className="text-sm font-bold mb-4">{t("footer.company")}</h4>
+              <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
+                {quickLinks.map((item, i) => (
+                  <li key={i}>
+                    <Link
+                      href={normalizeHref(item.href)}
+                      className="hover:text-white transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Product */}
+            <div>
+              <h4 className="text-sm font-bold mb-4">{t("footer.product")}</h4>
+              <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
                 <li>
                   <Link
                     href="/user/profile"
@@ -232,23 +281,58 @@ export default function Footer() {
               </ul>
             </div>
 
-            {/* Quick Link */}
+            {/* Contact form */}
             <div>
-              <h4 className="text-sm font-bold uppercase tracking-wider mb-3 sm:mb-4">
-                {t("footer.quick_links")}
+              <h4 className="text-sm font-bold mb-4">
+                {t("footer.contact_title")}
               </h4>
-              <ul className="space-y-2 sm:space-y-3 text-sm text-gray-400">
-                {quickLinks.map((item, i) => (
-                  <li key={i}>
-                    <Link
-                      href={normalizeHref(item.href)}
-                      className="hover:text-white transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {status === "success" ? (
+                <div className="rounded-lg border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
+                  {t("contact.success_msg")}
+                </div>
+              ) : (
+                <form className="space-y-3" onSubmit={handleFormSubmit}>
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name}
+                    onChange={handleFormChange}
+                    required
+                    placeholder={t("footer.contact_name_ph")}
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
+                  />
+                  <input
+                    type="text"
+                    name="email"
+                    value={form.email}
+                    onChange={handleFormChange}
+                    required
+                    placeholder={t("footer.contact_email_ph")}
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
+                  />
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={handleFormChange}
+                    required
+                    rows={4}
+                    placeholder={t("footer.contact_message_ph")}
+                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30 resize-none"
+                  />
+                  {status === "error" && (
+                    <p className="text-sm text-red-400">{errorMsg}</p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={status === "loading"}
+                    className="w-full rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-[#0A0A0A] transition hover:bg-gray-200 disabled:opacity-60"
+                  >
+                    {status === "loading"
+                      ? t("contact.sending")
+                      : t("footer.send_message")}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

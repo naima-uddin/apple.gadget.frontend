@@ -233,7 +233,7 @@ export default function LayoutWrapper({ children }) {
         {!hideNav && <TopBanner />}
 
         {!hideNav && (
-          <div className="sticky top-0 z-60 bg-[#FFFFFF]">
+          <div className="sticky top-0 z-60 bg-white/70 backdrop-blur-md backdrop-saturate-150 border-b border-black/5">
             <Navbar />
             {/* <MegaMenuNavbar /> */}
           </div>
