@@ -258,7 +258,7 @@ export default function ProductCard({
                   addToCart(product, 1);
                 }}
                 className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
-                title="Add to cart"
+                title="Add cart"
               >
                 <FaShoppingCart className="w-4 h-4" />
               </button>
