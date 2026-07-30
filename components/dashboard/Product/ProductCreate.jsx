@@ -166,6 +166,8 @@ export default function ProductCreate() {
     images: [],
     variants: [],
     buyingPrice: undefined,
+    deliveryCharge: undefined,
+    packagingCost: undefined,
     price: undefined,
     compareAtPrice: undefined,
     sku: (() => {

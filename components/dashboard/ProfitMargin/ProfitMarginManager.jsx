@@ -841,7 +841,7 @@ export default function ProfitMarginManager() {
         {/* Column headers */}
         <div className="hidden lg:grid grid-cols-[2fr_0.9fr_0.9fr_0.9fr_1.4fr_0.7fr_1.1fr_0.9fr_auto] gap-3 px-5 py-2 border-b bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wide">
           <span>Product</span>
-          <span>Cost Price</span>
+          <span>Cost/Item</span>
           <span>Sell Price</span>
           <span>Profit/Unit</span>
           <span>Gross Margin</span>
@@ -927,7 +927,7 @@ export default function ProfitMarginManager() {
                       </div>
                     </div>
 
-                    {/* Cost price */}
+                    {/* Cost per item */}
                     <div className="hidden lg:block text-sm text-gray-700">
                       {product.hasVariants ? (
                         <span className="text-xs text-gray-400 italic">
@@ -936,14 +936,12 @@ export default function ProfitMarginManager() {
                       ) : (
                         <span
                           className={
-                            !product.buyingPrice
+                            !m.hasData
                               ? "text-gray-300 italic text-xs"
                               : "font-medium"
                           }
                         >
-                          {product.buyingPrice
-                            ? fmt(product.buyingPrice)
-                            : "Not set"}
+                          {m.hasData ? fmt(m.bp) : "Not set"}
                         </span>
                       )}
                     </div>
@@ -1129,8 +1127,14 @@ export default function ProfitMarginManager() {
         <div className="grid sm:grid-cols-2 gap-4 text-xs text-gray-600">
           <div className="space-y-1.5">
             <p>
+              <span className="font-semibold text-gray-700">
+                Cost Per Item
+              </span>{" "}
+              = Buying Price + Delivery Charge + Packaging Cost
+            </p>
+            <p>
               <span className="font-semibold text-gray-700">Profit / Unit</span>{" "}
-              = Selling Price − Cost Price
+              = Selling Price − Cost Per Item
             </p>
             <p>
               <span className="font-semibold text-gray-700">
@@ -1140,11 +1144,11 @@ export default function ProfitMarginManager() {
             </p>
             <p>
               <span className="font-semibold text-gray-700">Total Profit</span>{" "}
-              = (Sell Price × Units Sold) − (Cost × Units Sold)
+              = (Sell Price × Units Sold) − (Cost Per Item × Units Sold)
             </p>
             <p className="text-gray-400 italic">
-              * COGS estimated using current buying price, not historical order
-              price.
+              * COGS estimated using current cost per item, not historical
+              order price.
             </p>
           </div>
           <div className="space-y-1.5">
@@ -1160,7 +1164,7 @@ export default function ProfitMarginManager() {
             </div>
             <p className="text-gray-400 mt-1">
               Cost price set না থাকলে margin calculate করা যাবে না। পণ্যের Edit
-              পেজে buying price যোগ করুন।
+              পেজে buying price, delivery charge ও packaging cost যোগ করুন।
             </p>
           </div>
         </div>

@@ -175,6 +175,8 @@ export default function ProductEdit({ productId }) {
     images: [],
     variants: [],
     buyingPrice: undefined,
+    deliveryCharge: undefined,
+    packagingCost: undefined,
     price: undefined,
     compareAtPrice: undefined,
     sku: "",

@@ -421,6 +421,67 @@ export default function ProductAsideSections({
               </p>
             </div>
           )}
+          {canSeeBuyingPrice && (
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className={labelClass}>Delivery Charge</label>
+                <input
+                  type="number"
+                  value={product.deliveryCharge ?? ""}
+                  onChange={(e) =>
+                    setProduct((p) => ({
+                      ...p,
+                      deliveryCharge:
+                        e.target.value === ""
+                          ? undefined
+                          : Number(e.target.value),
+                    }))
+                  }
+                  className={inputClass}
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Packaging Cost</label>
+                <input
+                  type="number"
+                  value={product.packagingCost ?? ""}
+                  onChange={(e) =>
+                    setProduct((p) => ({
+                      ...p,
+                      packagingCost:
+                        e.target.value === ""
+                          ? undefined
+                          : Number(e.target.value),
+                    }))
+                  }
+                  className={inputClass}
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div>
+            </div>
+          )}
+          {canSeeBuyingPrice && (
+            <div className="rounded-lg border border-gray-200 bg-white px-4 py-3 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-gray-800">
+                  Cost Per Item
+                </p>
+                <p className="text-xs text-gray-500">
+                  Buying Price + Delivery Charge + Packaging Cost
+                </p>
+              </div>
+              <p className="text-lg font-bold text-[#1D1D1F] tabular-nums">
+                {(
+                  Number(product.buyingPrice || 0) +
+                  Number(product.deliveryCharge || 0) +
+                  Number(product.packagingCost || 0)
+                ).toFixed(2)}
+              </p>
+            </div>
+          )}
           <div>
             <label className={labelClass}>
               Selling Price <span className="text-red-500">*</span>
