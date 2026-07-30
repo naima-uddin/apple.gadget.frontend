@@ -2160,7 +2160,7 @@ export default function ProductEdit({ productId }) {
                   <label className="text-lg font-semibold text-gray-900 block">
                     Frequently Asked Questions
                   </label>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <p className="text-sm text-gray-500 mt-0.5">
                     Help customers by answering common questions
                   </p>
                 </div>
@@ -2172,7 +2172,7 @@ export default function ProductEdit({ productId }) {
                       faqs: [...(p.faqs || []), { question: "", answer: "" }],
                     }))
                   }
-                  className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-[#1D1D1F] transition-colors"
+                  className="px-4 py-2 bg-gray-800 text-white rounded-xl hover:bg-[#1D1D1F] transition-colors"
                 >
                   + Add FAQ
                 </button>

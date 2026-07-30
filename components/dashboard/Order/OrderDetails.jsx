@@ -512,7 +512,7 @@ export default function OrderDetails({ orderId }) {
                       onChange={(e) =>
                         setEditShipping(Number(e.target.value) || 0)
                       }
-                      className="w-20 text-sm border border-gray-200 rounded-lg px-2 py-1"
+                      className="w-20 border border-gray-200 px-2 py-1 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
                     />
                     <button
                       type="button"

@@ -548,7 +548,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                   type="button"
                   onClick={save}
                   disabled={saving}
-                  className="px-3 py-1.5 text-sm font-medium rounded-lg bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60"
+                  className="px-3 py-1.5 text-sm font-medium rounded-xl bg-gray-700 text-white hover:bg-gray-800 disabled:opacity-60 transition-colors"
                 >
                   {saving ? "Saving…" : "Save credentials"}
                 </button>
@@ -556,7 +556,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                   type="button"
                   onClick={testConnection}
                   disabled={testing}
-                  className="px-3 py-1.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-800 hover:bg-gray-50 disabled:opacity-60"
+                  className="px-3 py-1.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-800 hover:bg-gray-50 disabled:opacity-60 transition-colors"
                 >
                   {testing ? "Testing…" : "Test connection"}
                 </button>
