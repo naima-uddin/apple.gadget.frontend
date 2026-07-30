@@ -1074,7 +1074,7 @@ export default function ProductEdit({ productId }) {
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-4 sm:py-6 md:py-8">
       <div className="mx-auto px-2">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-4 sm:mb-6">
+        <div className="  mb-4 sm:mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-[#1F2937] work-sans">
@@ -1091,7 +1091,7 @@ export default function ProductEdit({ productId }) {
             </div>
             <button
               onClick={() => router.push("/dashboard/products")}
-              className="px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors shrink-0"
+              className="px-4 py-2 text-red-600 hover:text-red-700 transition-colors shrink-0"
             >
               ✕ Cancel
             </button>
@@ -1102,23 +1102,11 @@ export default function ProductEdit({ productId }) {
         <div className="relative bg-white rounded-xl shadow-md p-8 space-y-12 xl:pr-[26rem] xl:min-h-[220rem]">
           {/* Basic Info Tab */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
-              Basic Information
-            </h2>
+            
 
             <div className="grid grid-cols-1 gap-6 items-start">
               <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                <div className="mb-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                    Main Details
-                  </p>
-                  <h3 className="mt-2 text-lg font-semibold text-gray-900">
-                    Product Story
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Keep the core story readable while editing.
-                  </p>
-                </div>
+                
 
                 <div className="space-y-5">
                   <div>
@@ -1173,10 +1161,8 @@ export default function ProductEdit({ productId }) {
 
               <aside className="space-y-4 xl:absolute xl:right-8 xl:top-8 xl:w-[22rem]">
                 <section className="rounded-2xl border border-gray-200 bg-slate-50 p-5 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                    Status
-                  </p>
-                  <div className="mt-4">
+                  
+                  <div className="mt-0">
                     <label className={labelClass}>Product Status</label>
                     <select
                       value={product.status}
@@ -1193,10 +1179,8 @@ export default function ProductEdit({ productId }) {
                 </section>
 
                 <section className="rounded-2xl border border-gray-200 bg-slate-50 p-5 shadow-sm">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">
-                    Organization
-                  </p>
-                  <div className="mt-4 space-y-4">
+                  
+                  <div className="mt-2 space-y-4">
                     <div className="relative">
                       <label className={labelClass}>Department / Brand</label>
                       <input
@@ -1576,9 +1560,6 @@ export default function ProductEdit({ productId }) {
 
           {/* Pricing Tab */}
           <div className="hidden">
-            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
-              Pricing & Inventory
-            </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="mt-4 space-y-4">
@@ -1912,10 +1893,7 @@ export default function ProductEdit({ productId }) {
 
             <div>
               <label className={labelClass}>Upload Images</label>
-              <p className="text-sm text-gray-600 mb-4">
-                Add high-quality images of your product. First image will be the
-                main product image.
-              </p>
+             
 
               <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-gray-500 hover:bg-gray-100 transition-all">
                 <input
@@ -2135,10 +2113,7 @@ export default function ProductEdit({ productId }) {
             {/* Care Guidelines */}
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
               <label className={labelClass}>Care & Handling Instructions</label>
-              <p className="text-sm text-gray-600 mb-2">
-                Use bold, italic, bullet lists etc. Saved and shown exactly as
-                typed on the Guides tab.
-              </p>
+              
               <RichTextEditor
                 value={product.guidelines || ""}
                 onChange={(html) =>
@@ -2298,8 +2273,8 @@ export default function ProductEdit({ productId }) {
           </div>
 
           {/* Reviews Tab */}
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-4">
               Customer Reviews
             </h2>
 
@@ -2620,9 +2595,6 @@ export default function ProductEdit({ productId }) {
 
           {/* SEO Tab */}
           <div className="hidden">
-            <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans mb-6">
-              SEO & Search Optimization
-            </h2>
 
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
               <p className="text-sm text-gray-600 mb-6">
