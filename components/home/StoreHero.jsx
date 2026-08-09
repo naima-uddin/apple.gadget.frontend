@@ -45,7 +45,7 @@ export default function StoreHero({ className = "" }) {
               <Link
                 key={i}
                 href={item.link || "/"}
-                className="group flex flex-col items-center gap-3 shrink-0"
+                className="group flex flex-col items-center gap-4 shrink-0"
               >
                 <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
                   {item.image?.url ? (
@@ -58,7 +58,7 @@ export default function StoreHero({ className = "" }) {
                     />
                   ) : null}
                 </div>
-                <span className="text-xs sm:text-sm font-semibold text-[#1D1D1F] group-hover:text-black transition-colors">
+                <span className="text-[10px] sm:text-xs font-semibold text-[#1D1D1F] group-hover:text-black transition-colors -mt-2">
                   {item.label}
                 </span>
               </Link>
