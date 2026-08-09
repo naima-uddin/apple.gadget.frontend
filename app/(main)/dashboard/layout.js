@@ -22,10 +22,10 @@ export default function DashboardLayout({ children }) {
     else router.push("/dashboard");
   };
 
-  // Refresh user data if it hasn't been loaded yet
+  // Not logged in (or session expired) → go straight to the login page.
   useEffect(() => {
-    if (!user && !loading) refreshUser();
-  }, [user, loading, refreshUser]);
+    if (!user && !loading) router.replace("/auth/adminlogin");
+  }, [user, loading, router]);
 
   // ── Still fetching session ────────────────────────────────────────────────
   if (loading) {
@@ -57,24 +57,29 @@ export default function DashboardLayout({ children }) {
     );
   }
 
-  // ── Not logged in ─────────────────────────────────────────────────────────
+  // ── Not logged in ── redirect effect above sends us to /auth/adminlogin ───
   if (!user) {
     return (
-      <div className="min-h-[60vh] bg-gray-50 flex items-center justify-center px-4">
-        <div className="max-w-md w-full p-8 bg-white rounded-2xl border border-gray-200 shadow-sm text-center">
-          <h2 className="text-lg font-semibold text-[#1F2937] mb-2">
-            Session expired
-          </h2>
-          <p className="text-sm text-[#6B7280] mb-5">
-            Please log in to access the dashboard.
-          </p>
-          <button
-            onClick={() => router.push("/auth/adminlogin")}
-            className="px-5 py-2.5 bg-[#1D1D1F] text-white rounded-xl text-sm font-semibold hover:bg-black transition-colors"
-          >
-            Go to Login
-          </button>
-        </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <svg
+          className="animate-spin w-10 h-10 text-[#1D1D1F]"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle
+            className="opacity-20"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          />
+          <path
+            className="opacity-80"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v8H4z"
+          />
+        </svg>
       </div>
     );
   }

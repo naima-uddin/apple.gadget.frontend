@@ -10,6 +10,7 @@ import { useCategories } from "@/components/context/CategoryContext";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
+import StoreHero from "@/components/home/StoreHero";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const PRODUCTS_PER_PAGE = 10;
@@ -235,6 +236,9 @@ export default function AllProductsClient() {
             <span className="text-gray-300">/</span>
             <span className="text-[#1D1D1F] font-medium">All Products</span>
           </nav>
+
+          {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
+          <StoreHero className="relative mb-6" />
 
           {/* Title */}
           <div className="relative text-center max-w-3xl mx-auto">

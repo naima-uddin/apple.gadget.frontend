@@ -68,25 +68,6 @@ export default function FeaturedSectionsList() {
     }
   };
 
-  const handleMoveOrder = async (idx, dir) => {
-    const next = [...sections];
-    const swap = idx + dir;
-    if (swap < 0 || swap >= next.length) return;
-    [next[idx], next[swap]] = [next[swap], next[idx]];
-    const updates = next.map((s, i) => ({ _id: s._id, order: i }));
-    setSections(next);
-    try {
-      await fetch(`${API}/api/admin/featured-reorder`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(updates),
-      });
-    } catch {
-      load(); // rollback on error
-    }
-  };
-
   if (view === "create" || view === "create-video") {
     const Editor =
       view === "create-video" ? VideoCarouselEditor : FeaturedSectionEditor;
@@ -129,8 +110,9 @@ export default function FeaturedSectionsList() {
             Featured Sections
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Product &amp; video carousels displayed on the homepage, in this
-            order
+            Manage carousel content, products &amp; videos here. Go to the
+            &quot;Page Layout&quot; tab to control where each product row
+            appears on the homepage.
           </p>
         </div>
         <div className="flex gap-2 shrink-0">
@@ -160,29 +142,11 @@ export default function FeaturedSectionsList() {
         />
       ) : (
         <ul className="space-y-3">
-          {sections.map((sec, idx) => (
+          {sections.map((sec) => (
             <li
               key={sec._id}
               className="bg-white border rounded-2xl p-4 flex items-center gap-4 shadow-sm"
             >
-              {/* Order buttons */}
-              <div className="flex flex-col gap-1">
-                <button
-                  disabled={idx === 0}
-                  onClick={() => handleMoveOrder(idx, -1)}
-                  className="text-gray-400 hover:text-gray-700 disabled:opacity-30 text-xs leading-none"
-                >
-                  ▲
-                </button>
-                <button
-                  disabled={idx === sections.length - 1}
-                  onClick={() => handleMoveOrder(idx, 1)}
-                  className="text-gray-400 hover:text-gray-700 disabled:opacity-30 text-xs leading-none"
-                >
-                  ▼
-                </button>
-              </div>
-
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-800 truncate">

@@ -24,7 +24,9 @@ function useVisibleCount() {
   return count;
 }
 
-function FeaturedSlider({ products }) {
+// Exported so FeaturedRow.jsx (individually-placed carousels) can reuse the
+// exact same slider mechanics instead of duplicating them.
+export function FeaturedSlider({ products }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const visibleCount = useVisibleCount();
   const maxIndex = Math.max(0, products.length - visibleCount);

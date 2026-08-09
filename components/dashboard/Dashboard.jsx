@@ -157,7 +157,7 @@ export default function Dashboard() {
       // ignore
     }
     await refreshUser();
-    router.push("/");
+    router.push("/auth/adminlogin");
   };
 
   const overview = dashboard?.overview || {};

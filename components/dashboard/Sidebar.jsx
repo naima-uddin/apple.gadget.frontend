@@ -315,6 +315,7 @@ const SECTIONS = [
     matchPrefixes: [
       "/dashboard/featured",
       "/dashboard/banners",
+      "/dashboard/store-hero",
       "/dashboard/promo-panels",
       "/dashboard/testimonials",
       "/dashboard/category-showcase",
@@ -328,6 +329,13 @@ const SECTIONS = [
         key: "banners",
         label: "Hero Banners",
         href: "/dashboard/banners",
+        icon: "M4 5h16v10H4z M8 18h8",
+        permissionKey: "content.banners",
+      },
+      {
+        key: "store-hero",
+        label: "Store Hero",
+        href: "/dashboard/store-hero",
         icon: "M4 5h16v10H4z M8 18h8",
         permissionKey: "content.banners",
       },
@@ -583,7 +591,7 @@ export default function Sidebar({
       // ignore
     }
     await refreshUser();
-    router.push("/");
+    router.push("/auth/adminlogin");
   };
 
   const isActivePath = (href) =>
