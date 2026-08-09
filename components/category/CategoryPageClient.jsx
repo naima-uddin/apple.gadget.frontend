@@ -448,9 +448,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
             ) : null}
           </nav>
 
-          {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
-          <StoreHero className="relative mb-6" />
-
           {/* Title */}
           <div className="relative text-center max-w-3xl mx-auto">
             <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight work-sans">
@@ -651,74 +648,79 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         </div>
       </div>
 
-      {/* ── Best Selling — below All Products ── */}
+      {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
+      <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
+
+      {/* ── Best Selling — below Store Hero ── */}
       {(loadingBestSelling || bestSelling.length > 0) && (
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-10">
-          <SectionHeader
-            title={
-              <>
-                Best <span className="text-[#1D1D1F]">Selling</span>
-              </>
-            }
-            seeMoreHref="/tag/best-seller"
-            seeMoreLabel="See More"
-          />
+        <div className="bg-[#FAFAFB] w-full">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 mt-10">
+            <SectionHeader
+              title={
+                <>
+                  Best <span className="text-[#1D1D1F]">Selling</span>
+                </>
+              }
+              seeMoreHref="/tag/best-seller"
+              seeMoreLabel="See More"
+            />
 
-          {loadingBestSelling ? (
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-              {Array(5)
-                .fill(0)
-                .map((_, i) => (
-                  <ProductCard key={i} loading={true} />
-                ))}
-            </div>
-          ) : (
-            <div className="relative">
-              {canSlideBestSelling && (
-                <div className="flex items-center justify-end gap-2 mb-4">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setBestSellingStartIndex((i) => Math.max(0, i - 1))
-                    }
-                    disabled={bestSellingStartIndex === 0}
-                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
-                    aria-label="Previous best selling products"
-                  >
-                    ‹
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setBestSellingStartIndex((i) =>
-                        Math.min(maxBestSellingStart, i + 1),
-                      )
-                    }
-                    disabled={bestSellingStartIndex >= maxBestSellingStart}
-                    className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
-                    aria-label="Next best selling products"
-                  >
-                    ›
-                  </button>
-                </div>
-              )}
-
-              <div className="min-w-0 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                {visibleBestSelling.map((p) => (
-                  <ProductCard
-                    key={p._id}
-                    product={p}
-                    imageWidth={360}
-                    imageHeight={160}
-                    showDiscount={true}
-                    maxTags={2}
-                    showActionsOnHover={true}
-                  />
-                ))}
+            {loadingBestSelling ? (
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                {Array(5)
+                  .fill(0)
+                  .map((_, i) => (
+                    <ProductCard key={i} loading={true} />
+                  ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="relative">
+                {canSlideBestSelling && (
+                  <div className="flex items-center justify-end gap-2 mb-4">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBestSellingStartIndex((i) => Math.max(0, i - 1))
+                      }
+                      disabled={bestSellingStartIndex === 0}
+                      className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
+                      aria-label="Previous best selling products"
+                    >
+                      ‹
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setBestSellingStartIndex((i) =>
+                          Math.min(maxBestSellingStart, i + 1),
+                        )
+                      }
+                      disabled={bestSellingStartIndex >= maxBestSellingStart}
+                      className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
+                      aria-label="Next best selling products"
+                    >
+                      ›
+                    </button>
+                  </div>
+                )}
+
+                <div className="min-w-0 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {visibleBestSelling.map((p) => (
+                    <ProductCard
+                      key={p._id}
+                      product={p}
+                      imageWidth={360}
+                      imageHeight={160}
+                      showDiscount={true}
+                      maxTags={2}
+                      showActionsOnHover={true}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </>

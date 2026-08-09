@@ -28,7 +28,7 @@ export default function StoreHero({ className = "" }) {
   return (
     <section className={className}>
       {(heading || subheading) && (
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight leading-tight max-w-3xl">
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-tight max-w-7xl ">
           {heading && <span className="text-[#1D1D1F]">{heading} </span>}
           {subheading && (
             <span className="text-[#6B7280]">{subheading}</span>

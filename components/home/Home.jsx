@@ -11,6 +11,9 @@ import Testimonials from "./Testimonials";
 import AdSlot from "@/components/ui/AdSlot";
 import OffersToSayYes from "./OffersToSayYes";
 import ShoppableVideoSection from "./ShoppableVideoSection";
+import StoreHero from "./StoreHero";
+import AllProductsSection from "./AllProductsSection";
+import CategoryWiseProducts from "./CategoryWiseProducts";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -19,10 +22,13 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 // (rather than showing nothing).
 const FALLBACK_ORDER = [
   "banner",
+  "storeHero",
   "shopByCategory",
   "featuredSections",
   "adSlot",
   "categoryShowcase",
+  "allProducts",
+  "categoryWiseProducts",
   "whyChooseUs",
   "dealsOfDay",
   "ctaSection",
@@ -49,11 +55,16 @@ export default async function Home() {
 
   const FIXED_MAP = {
     banner: <Banner />,
+    storeHero: (
+      <StoreHero className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10" />
+    ),
     shopByCategory: <ShopByCategory />,
     adSlot: (
       <AdSlot page="homepage" className="max-w-7xl mx-auto px-2 py-3" />
     ),
     categoryShowcase: <CategoryShowcase />,
+    allProducts: <AllProductsSection />,
+    categoryWiseProducts: <CategoryWiseProducts />,
     whyChooseUs: <WhyChooseUs />,
     dealsOfDay: <DealsOfDay />,
     ctaSection: <CTASection />,
