@@ -684,7 +684,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
         {/* ── MIDDLE: product info ── */}
         <div className="w-full lg:flex-1 flex flex-col">
           {/* Title */}
-          <h1 className="text-xl md:text-2xl text-[#1F2937] leading-tight mb-2 work-sans">
+          <h1 className="text-xl md:text-2xl text-[#1F2937] leading-tight mb-2 font-georgia">
             {title}
           </h1>
 

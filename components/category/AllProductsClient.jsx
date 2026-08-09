@@ -278,7 +278,7 @@ export default function AllProductsClient() {
 
           {/* Title */}
           <div className="relative text-center max-w-3xl mx-auto">
-            <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight work-sans">
+            <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight font-georgia">
               All Products
             </h1>
             <p className="text-[#6B7280] mt-3 text-sm md:text-base leading-relaxed">

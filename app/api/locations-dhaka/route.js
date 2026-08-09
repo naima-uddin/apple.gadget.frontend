@@ -6,6 +6,12 @@ export const dynamic = 'force-static';
 // zone's areas (unions/thanas) — used by the admin Delivery Charge page so
 // admins can set per-zone/per-area shipping overrides without hardcoding
 // the zone list.
+//
+// Lives at a sibling path to /api/locations (not nested under it) because
+// static export writes each route handler's output to a file named after
+// its path with trailingSlash:true — nesting "dhaka" under "locations"
+// makes "locations" need to be both a file and a directory, which fails
+// the export (EEXIST on out/api/locations).
 export async function GET(request) {
   const dhakaDistrict = Object.values(districts_en)
     .flat()

@@ -60,7 +60,7 @@ export default function RecentlyViewed({ currentProductId }) {
   return (
     <section className="max-w-7xl mx-auto  mt-12 mb-4">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg md:text-xl text-[#1F2937] tracking-tight work-sans">
+        <h2 className="text-lg md:text-xl text-[#1F2937] tracking-tight font-georgia">
           Recently <span className="text-[#1D1D1F]">Viewed</span>
         </h2>
         <div className="flex items-center gap-2">

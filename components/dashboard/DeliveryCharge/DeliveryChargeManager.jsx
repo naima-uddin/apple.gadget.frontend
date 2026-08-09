@@ -45,7 +45,7 @@ export default function DeliveryChargeManager() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/locations/dhaka").then((r) => r.json()),
+      fetch("/api/locations-dhaka").then((r) => r.json()),
       fetch(`${API}/api/admin/settings`, { credentials: "include" }).then((r) =>
         r.json(),
       ),

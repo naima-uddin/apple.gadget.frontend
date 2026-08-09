@@ -239,7 +239,7 @@ export default function ProductFilters({
     <aside className={`w-full bg-white border border-gray-100 rounded-2xl shadow-sm p-5 space-y-1 ${sticky ? 'sticky top-20' : ''}`}>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h4 className="flex items-center gap-2 text-base font-semibold text-[#1F2937] work-sans">
+        <h4 className="flex items-center gap-2 text-base font-semibold text-[#1F2937] font-georgia">
           <svg className="w-4 h-4 text-[#1D1D1F]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

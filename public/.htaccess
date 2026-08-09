@@ -10,6 +10,13 @@ DirectoryIndex index.html
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
+  # ── Redirects ───────────────────────────────────────────────────────────
+  # next.config.mjs's redirects() only runs on a Node server and is a no-op
+  # under output:"export", so these two are mirrored here (query string,
+  # e.g. ?orderId=&method=, is preserved automatically by mod_rewrite).
+  RewriteRule ^checkout/success/?$ /thankyou/success [R=302,L]
+  RewriteRule ^thankyou/?$ /thankyou/success [R=302,L]
+
   # ── RSC / flight data payloads (.txt / .rsc) ───────────────────────────
   # Next.js client-side navigation fetches "<path>.txt" (or "<path>/index.txt")
   # for the React Server Component payload. For routes that aren't pre-built
