@@ -56,7 +56,7 @@ export default function ShopByCategory() {
                   alt={cat.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-contain transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <p className="mt-3 text-center text-sm md:text-base font-semibold text-[#1D1D1F] group-hover:text-black transition-colors truncate">
