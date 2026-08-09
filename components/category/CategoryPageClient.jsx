@@ -466,10 +466,10 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
       </div>
 
       {/* ── Listing area ── */}
-      <div className="bg-[#FAFAFB] w-full">
+      <div className="bg-[#f7f5ff] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#FAFAFB]/95 backdrop-blur border-b border-gray-100">
+          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#f7f5ff]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
               <button
                 type="button"
@@ -653,7 +653,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
       {/* ── Best Selling — below Store Hero ── */}
       {(loadingBestSelling || bestSelling.length > 0) && (
-        <div className="bg-[#FAFAFB] w-full">
+        <div className="bg-[#f7f5ff] w-full">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 mt-10">
             <SectionHeader
               title={

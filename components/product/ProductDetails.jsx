@@ -975,7 +975,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     if (el) el.scrollIntoView({ behavior: "smooth" });
                     window.dispatchEvent(new Event("openQuestions"));
                   }}
-                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#1D1D1F] bg-[#FAFAFB] hover:bg-gray-50 border border-gray-100 hover:border-gray-300 rounded-xl px-3 py-2 transition-all"
+                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#1D1D1F] bg-[#f7f5ff] hover:bg-gray-50 border border-gray-100 hover:border-gray-300 rounded-xl px-3 py-2 transition-all"
                 >
                   <FaCommentDots className="text-[#1D1D1F] w-3.5 h-3.5 shrink-0" />
                   Ask about this product
@@ -986,7 +986,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               <div className="px-3 pb-3">
                 <button
                   onClick={scrollToReviews}
-                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#1D1D1F] bg-[#FAFAFB] hover:bg-gray-50 border border-gray-100 hover:border-gray-300 rounded-xl px-3 py-2 transition-all"
+                  className="w-full flex items-center gap-2 text-[11px] font-semibold text-[#1F2937] hover:text-[#1D1D1F] bg-[#f7f5ff] hover:bg-gray-50 border border-gray-100 hover:border-gray-300 rounded-xl px-3 py-2 transition-all"
                 >
                   <FaPencilAlt className="text-[#1D1D1F] w-3 h-3 shrink-0" />
                   Write your Awesome Review
@@ -997,7 +997,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
           {/* Shipping / trust info */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
+            <div className="flex items-center gap-2.5 bg-[#f7f5ff] border border-gray-100 rounded-xl px-3 py-2.5">
               <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <FaClock className="w-3.5 h-3.5 text-[#1D1D1F]" />
               </span>
@@ -1014,7 +1014,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 </a>
               </span>
             </div>
-            <div className="flex items-center gap-2.5 bg-[#FAFAFB] border border-gray-100 rounded-xl px-3 py-2.5">
+            <div className="flex items-center gap-2.5 bg-[#f7f5ff] border border-gray-100 rounded-xl px-3 py-2.5">
               <span className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
                 <FaCartShopping className="w-3.5 h-3.5 text-[#1D1D1F]" />
               </span>
