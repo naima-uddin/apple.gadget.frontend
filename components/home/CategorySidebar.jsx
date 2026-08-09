@@ -218,7 +218,7 @@ const CategorySidebar = ({ onLinkClick }) => {
           <div className="px-5 py-2.5 border-b border-gray-100 bg-pink-50">
             <Link
               href={`/category/${activeCategoryData.slug}/`}
-              className="font-bold text-sm text-rose-600 hover:underline"
+              className="font-bold text-sm text-rose-600 hover:underline font-georgia"
               onClick={handleLinkClick}
             >
               {activeCategoryData.name}

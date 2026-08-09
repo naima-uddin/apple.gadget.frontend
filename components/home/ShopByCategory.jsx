@@ -59,7 +59,7 @@ export default function ShopByCategory() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105 "
                 />
               </div>
-              <p className="mt-3 text-center text-sm md:text-base font-semibold text-[#1D1D1F] group-hover:text-black transition-colors truncate">
+              <p className="mt-3 text-center text-sm md:text-base font-semibold text-[#1D1D1F] group-hover:text-black transition-colors truncate font-georgia">
                 {cat.name}
               </p>
             </Link>

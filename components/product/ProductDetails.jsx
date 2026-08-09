@@ -934,7 +934,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               onClick={() => setOffersOpen((v) => !v)}
               className="lg:cursor-default w-full bg-gray-50 border-b border-gray-200 px-4 py-2.5 flex items-center justify-between"
             >
-              <p className="text-xs font-bold text-[#1D1D1F] uppercase tracking-wide">
+              <p className="text-xs font-bold text-[#1D1D1F] uppercase tracking-wide font-georgia">
                 Available Offer
               </p>
               <FaChevronRight
@@ -948,7 +948,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   <FaGift className="text-[#1D1D1F] w-4 h-4" />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-[11px] font-bold text-[#1F2937]">
+                  <p className="text-[11px] font-bold text-[#1F2937] font-georgia">
                     Earn Points, Save More
                   </p>
                   {product.rewardPoints > 0 ? (

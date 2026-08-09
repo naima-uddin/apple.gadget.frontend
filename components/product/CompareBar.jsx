@@ -31,7 +31,7 @@ export default function CompareBar() {
                   className="w-9 h-9 object-contain rounded"
                 />
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-gray-800 line-clamp-1">
+                  <p className="text-xs font-semibold text-gray-800 line-clamp-1 font-georgia">
                     {product.title}
                   </p>
                   <p className="text-xs text-red-600 font-bold">

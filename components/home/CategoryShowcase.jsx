@@ -31,7 +31,7 @@ function Tile({ tile, big = false, className = "", delay = 0 }) {
       <div className="absolute inset-x-0 bottom-0 h-2/5 bg-linear-to-t from-black/60 via-black/25 to-transparent backdrop-blur-[1.5px] mask-[linear-gradient(to_top,black,transparent)] transition-opacity duration-300 group-hover:from-black/75" />
       {/* label + hover hint */}
       <div className="absolute inset-x-0 bottom-0 px-3 pb-2 md:pb-3 text-center">
-        <p className="text-white font-semibold text-sm md:text-base drop-shadow truncate transition-transform duration-300 group-hover:-translate-y-1">
+        <p className="text-white font-semibold text-sm md:text-base drop-shadow truncate transition-transform duration-300 group-hover:-translate-y-1 font-georgia">
           {tile.label}
         </p>
         <span className="block text-[10px] md:text-[11px] font-semibold uppercase tracking-widest text-white/90 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">

@@ -104,7 +104,7 @@ export default function PromoStripSection() {
               </div>
 
               <div className="min-w-0 flex-1 bg-white/70 backdrop-blur-sm border border-transparent group-hover:border-gray-100 rounded-lg px-0.5 py-1 transition-all duration-200 group-hover:shadow-[0_2px_8px_rgba(29,29,31,0.12)] group-hover:bg-white">
-                <p className="text-[13px] font-extrabold leading-none tracking-tight uppercase bg-linear-to-r from-[#1D1D1F] to-[#374151] bg-clip-text text-transparent">
+                <p className="text-[13px] font-extrabold leading-none tracking-tight uppercase bg-linear-to-r from-[#1D1D1F] to-[#374151] bg-clip-text text-transparent font-georgia">
                   {item.title}
                 </p>
                 {item.subtitle && (

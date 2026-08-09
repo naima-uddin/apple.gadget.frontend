@@ -13,7 +13,7 @@ const Section = ({ id, title, children, isOpen, onToggle }) => (
     <button
       type="button"
       onClick={() => onToggle(id)}
-      className="w-full flex items-center justify-between py-2 text-sm font-semibold text-[#1F2937] hover:text-[#1D1D1F] transition-colors"
+      className="w-full flex items-center justify-between py-2 text-sm font-semibold text-[#1F2937] hover:text-[#1D1D1F] transition-colors font-georgia"
     >
       {title}
       <svg className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}

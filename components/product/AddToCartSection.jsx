@@ -155,7 +155,7 @@ export default function AddToCartSection({
             {notifySuccess ? (
               <div className="text-center py-2">
                 <div className="text-3xl mb-2">🎉</div>
-                <p className="font-semibold text-green-800">
+                <p className="font-semibold text-green-800 font-georgia">
                   You&apos;re on the list!
                 </p>
                 <p className="text-sm text-green-700 mt-1">
@@ -164,7 +164,7 @@ export default function AddToCartSection({
               </div>
             ) : (
               <>
-                <p className="font-bold text-gray-800 text-base mb-0.5">
+                <p className="font-bold text-gray-800 text-base mb-0.5 font-georgia">
                   In stock very soon!
                 </p>
                 <p className="text-sm text-gray-500 mb-3">

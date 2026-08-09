@@ -173,3 +173,8 @@ h6 {
   font-weight: 600;
   font-style: normal;
 }
+
+/* Georgia serif for heading-like text that isn't a real h1-h6 tag */
+.font-georgia {
+  font-family: Georgia, "Times New Roman", serif;
+}

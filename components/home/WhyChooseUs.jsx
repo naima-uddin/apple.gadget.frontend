@@ -100,7 +100,7 @@ export default function WhyChooseUs() {
                       className="w-full flex items-center justify-between gap-4 py-4 text-left"
                       aria-expanded={open}
                     >
-                      <span className="text-sm md:text-base font-semibold text-[#1F2937]">
+                      <span className="text-sm md:text-base font-semibold text-[#1F2937] font-georgia">
                         {item.question}
                       </span>
                       <span
