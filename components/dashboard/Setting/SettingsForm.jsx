@@ -296,7 +296,7 @@ export default function SettingsForm() {
                 setSettings((s) => ({ ...s, cloudinaryFolder: e.target.value }))
               }
               className={`${INPUT} sm:col-span-2`}
-              placeholder="appleProduct/products"
+              placeholder="applebd/products"
             />
           </Field>
         </div>
@@ -310,7 +310,7 @@ export default function SettingsForm() {
           onUpload={(file) =>
             handleImageUpload(
               "websiteLogo",
-              "appleProduct/settings",
+              "applebd/settings",
               file,
               setLogoUploading,
               setLogoStatus,
@@ -330,7 +330,7 @@ export default function SettingsForm() {
           onUpload={(file) =>
             handleImageUpload(
               "websiteFavicon",
-              "appleProduct/settings",
+              "applebd/settings",
               file,
               setFaviconUploading,
               setFaviconStatus,

@@ -50,13 +50,13 @@ export default function ShopByCategory() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {visible.map((cat) => (
             <Link key={cat._id} href={cat.link} className="group block">
-              <div className="relative rounded-3xl overflow-hidden bg-[#F5F6F7] h-36 sm:h-44 md:h-52 shadow-sm">
+              <div className="relative rounded-3xl overflow-hidden bg-[#F5F6F7] h-36 sm:h-44 md:h-52 shadow-lg border border-[#f0f0f3]">
                 <Image
                   src={encodeURI(cat.image)}
                   alt={cat.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105 "
                 />
               </div>
               <p className="mt-3 text-center text-sm md:text-base font-semibold text-[#1D1D1F] group-hover:text-black transition-colors truncate">

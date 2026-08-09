@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { useUser } from "@/components/context/UserContext";
 import { uploadAdminImage } from "@/lib/uploadImage";
 
-const ROOT_FOLDER = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER || "appleProduct";
+const ROOT_FOLDER = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER || "applebd";
 
 export default function MediaLibrary() {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";

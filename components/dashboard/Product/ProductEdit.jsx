@@ -758,7 +758,7 @@ export default function ProductEdit({ productId }) {
     }));
 
     try {
-      const asset = await uploadImageDirect(file, "appleProduct/products");
+      const asset = await uploadImageDirect(file, "applebd/products");
 
       setProduct((p) => {
         const imgs = (p.images || []).map((img) => {

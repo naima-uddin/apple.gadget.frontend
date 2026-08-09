@@ -6,7 +6,7 @@ import { uploadAdminImage } from "@/lib/uploadImage";
 
 export default function MediaUploader({
   onUploadComplete,
-  folder = "appleProduct/blog/images",
+  folder = "applebd/blog/images",
   accept = "image/*,video/*",
   multiple = true,
   label = "Upload Media",
@@ -189,10 +189,10 @@ export default function MediaUploader({
                 onClick={() => handleRemove(idx)}
                 className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
               >
-                ×
+                Ã—
               </button>
               <div className="p-1 text-xs text-gray-600 truncate">
-                {asset.resourceType === "video" ? "🎥" : "🖼️"}{" "}
+                {asset.resourceType === "video" ? "ðŸŽ¥" : "ðŸ–¼ï¸"}{" "}
                 {asset.format || "media"}
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function MediaUploader({
                 onClick={() => setShowLibrary(false)}
                 className="text-gray-400 hover:text-gray-600 text-2xl"
               >
-                ×
+                Ã—
               </button>
             </div>
             <div className="overflow-y-auto max-h-[calc(90vh-5rem)]">

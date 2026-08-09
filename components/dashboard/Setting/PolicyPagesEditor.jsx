@@ -921,7 +921,7 @@ export default function PolicyPagesEditor() {
     if (!file) return;
     setLogoUploading(true);
     try {
-      const b = await uploadAdminImage(file, "appleProduct/settings");
+      const b = await uploadAdminImage(file, "applebd/settings");
       const asset = b.asset || {};
       setFooterLogo(asset);
       await saveFooterLogo(asset, setLogoStatus);

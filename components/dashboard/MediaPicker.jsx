@@ -23,7 +23,7 @@ export default function MediaPicker({
 }) {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
-  const ROOT_FOLDER = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER || "appleProduct";
+  const ROOT_FOLDER = process.env.NEXT_PUBLIC_CLOUDINARY_FOLDER || "applebd";
 
   const [items, setItems] = useState([]);
   const [folders, setFolders] = useState([]);

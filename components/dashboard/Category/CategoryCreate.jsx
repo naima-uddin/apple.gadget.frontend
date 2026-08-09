@@ -49,7 +49,7 @@ export default function CategoryCreate({ onSuccess }) {
       { url: preview, __local: true, uploading: true },
     ]);
     try {
-      const body = await uploadAdminImage(file, "appleProduct/categories");
+      const body = await uploadAdminImage(file, "applebd/categories");
       const asset = {
         public_id: body.asset.public_id,
         url: body.asset.url,

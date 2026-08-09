@@ -50,7 +50,7 @@ export default function TestimonialEditor({
     setAvatar({ url: preview, public_id: "", __uploading: true });
     setUploading(true);
     try {
-      const data = await uploadAdminImage(file, "appleProduct/testimonials");
+      const data = await uploadAdminImage(file, "applebd/testimonials");
       setAvatar({ url: data.asset.url, public_id: data.asset.public_id });
     } catch (err) {
       alert("Image upload failed: " + err.message);

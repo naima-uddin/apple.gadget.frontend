@@ -50,7 +50,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
     setImage({ url: preview, public_id: "", __uploading: true });
     setUploading(true);
     try {
-      const data = await uploadAdminImage(file, "appleProduct/banners");
+      const data = await uploadAdminImage(file, "applebd/banners");
       setImage({ url: data.asset.url, public_id: data.asset.public_id });
     } catch (err) {
       alert("Image upload failed: " + err.message);

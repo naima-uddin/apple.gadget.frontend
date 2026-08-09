@@ -94,7 +94,7 @@ export default function CategoryShowcaseEditor() {
     patchTile(i, { image: { url: preview, public_id: "" } });
     setUploadingIdx(i);
     try {
-      const data = await uploadAdminImage(file, "appleProduct/showcase");
+      const data = await uploadAdminImage(file, "applebd/showcase");
       patchTile(i, {
         image: { url: data.asset.url, public_id: data.asset.public_id },
       });

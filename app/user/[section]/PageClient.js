@@ -1466,7 +1466,7 @@ export default function UserSectionPage() {
         // cap; anything up to 10MB works) and send just the resulting URL.
         const asset = await uploadUserImage(
           selectedImageFile,
-          "appleProduct/profiles",
+          "applebd/profiles",
         );
         formData.append("imageUrl", asset.url);
         if (asset.public_id) formData.append("imagePublicId", asset.public_id);

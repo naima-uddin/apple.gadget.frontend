@@ -49,7 +49,7 @@ export default function PromoStripEditor({
     setImage({ url: previewUrl, public_id: "", __uploading: true });
 
     try {
-      const body = await uploadAdminImage(file, "appleProduct/promostrip");
+      const body = await uploadAdminImage(file, "applebd/promostrip");
       setImage({ url: body.asset.url, public_id: body.asset.public_id });
       URL.revokeObjectURL(previewUrl);
     } catch (err) {

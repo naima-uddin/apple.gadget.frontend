@@ -151,7 +151,7 @@ export default function VideoCarouselEditor({
     setUploading(true);
     for (const file of files) {
       try {
-        const { asset } = await uploadAdminImage(file, "appleProduct/videos");
+        const { asset } = await uploadAdminImage(file, "applebd/videos");
         setVideos((prev) => [
           ...prev,
           {
