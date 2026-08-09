@@ -147,6 +147,16 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+/* Heading font — applies site-wide to every h1-h6 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
 /* NOTE: layout and component-specific styles should use Tailwind utility classes inline. */
 
 /* ensure hyperlinks in rich content are highlighted blue and underlined */
