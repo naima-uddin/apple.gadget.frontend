@@ -288,7 +288,7 @@ export default function Footer() {
                 {t("footer.contact_title")}
               </h4>
               {status === "success" ? (
-                <div className="rounded-lg border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
+                <div className="rounded-sm border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
                   {t("contact.success_msg")}
                 </div>
               ) : (
@@ -300,7 +300,7 @@ export default function Footer() {
                     onChange={handleFormChange}
                     required
                     placeholder={t("footer.contact_name_ph")}
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
+                    className="w-full rounded-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
                   />
                   <input
                     type="text"
@@ -309,7 +309,7 @@ export default function Footer() {
                     onChange={handleFormChange}
                     required
                     placeholder={t("footer.contact_email_ph")}
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
+                    className="w-full rounded-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
                   />
                   <textarea
                     name="message"
@@ -318,7 +318,7 @@ export default function Footer() {
                     required
                     rows={4}
                     placeholder={t("footer.contact_message_ph")}
-                    className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30 resize-none"
+                    className="w-full rounded-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30 resize-none"
                   />
                   {status === "error" && (
                     <p className="text-sm text-red-400">{errorMsg}</p>
@@ -326,7 +326,7 @@ export default function Footer() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-[#0A0A0A] transition hover:bg-gray-200 disabled:opacity-60"
+                    className="w-full rounded-sm bg-white px-4 py-2.5 text-sm font-medium text-[#0A0A0A] transition hover:bg-gray-200 disabled:opacity-60"
                   >
                     {status === "loading"
                       ? t("contact.sending")
