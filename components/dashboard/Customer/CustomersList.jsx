@@ -155,7 +155,7 @@ export default function CustomersList() {
           <div>
             <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Customers</h2>
             <p className="text-sm text-gray-500 mt-0.5">
-              Search by name, email, or mobile. List shows Pickob stats — open
+              Search by name, email, or mobile. List shows AppleBD stats — open
               profile for lifetime courier fraud check (Pathao/Steadfast/RedX).
             </p>
           </div>

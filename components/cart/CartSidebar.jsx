@@ -51,7 +51,7 @@ export default function CartSidebar() {
     try {
       const url = await shareCart();
       if (navigator.share) {
-        await navigator.share({ title: "My Pickob Cart", url });
+        await navigator.share({ title: "My AppleBD Cart", url });
       } else {
         await navigator.clipboard?.writeText(url);
         toast.success("Cart link copied to clipboard!");

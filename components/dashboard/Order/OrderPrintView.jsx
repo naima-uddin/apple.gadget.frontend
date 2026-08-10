@@ -173,7 +173,7 @@ export default function OrderPrintView({
     .filter(Boolean)
     .join(", ");
   const isSlip = variant === "slip";
-  const storeName = settings?.storeName || "Pickob";
+  const storeName = settings?.storeName || "AppleBD";
   const storeEmail = settings?.storeEmail || "";
   const logoUrl = settings?.websiteLogo?.url || "/mainLogo.png";
 

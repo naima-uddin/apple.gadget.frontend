@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
     return {
       title: "Shop by Category",
       description:
-        "Browse gadgets and electronics by category at Pickob. Best prices, fast delivery across Bangladesh.",
+        "Browse gadgets and electronics by category at AppleBD. Best prices, fast delivery across Bangladesh.",
     };
   }
   try {
@@ -56,10 +56,10 @@ export async function generateMetadata({ params }) {
     const category = all.find((c) => c.slug === childSlug);
     if (!category) throw new Error("not found");
 
-    const title = `${category.name} — Gadgets & Electronics | Pickob`;
+    const title = `${category.name} — Gadgets & Electronics | AppleBD`;
     const description =
       category.description ||
-      `Browse ${category.name} at Pickob — gadgets and electronics with best prices and fast delivery across Bangladesh.`;
+      `Browse ${category.name} at AppleBD — gadgets and electronics with best prices and fast delivery across Bangladesh.`;
     const categoryUrl = `${SITE_URL}/category/${slug}/${childSlug}`;
     const image = category.images?.[0]?.url || `${SITE_URL}/mainLogo.png`;
 
@@ -85,7 +85,7 @@ export async function generateMetadata({ params }) {
     return {
       title: "Shop by Category",
       description:
-        "Browse gadgets and electronics by category at Pickob. Best prices, fast delivery across Bangladesh.",
+        "Browse gadgets and electronics by category at AppleBD. Best prices, fast delivery across Bangladesh.",
     };
   }
 }

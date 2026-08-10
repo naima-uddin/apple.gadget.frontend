@@ -172,9 +172,9 @@ export default function CustomerProfile({ userId }) {
   }
   if (!data) return null;
 
-  const { user, PickobBD, stats, percentages, courierBreakdown, risk, orders } =
+  const { user, AppleBDBD, stats, percentages, courierBreakdown, risk, orders } =
     data;
-  const site = PickobBD || {
+  const site = AppleBDBD || {
     stats,
     percentages,
     courierBreakdown,
@@ -246,7 +246,7 @@ export default function CustomerProfile({ userId }) {
         <div className="px-5 py-4 border-b flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 className="text-base font-semibold text-gray-800">
-              Pickob Order History
+              AppleBD Order History
             </h2>
             {user.mobile && (
               <p className="text-xs text-gray-500 mt-0.5">
@@ -342,7 +342,7 @@ export default function CustomerProfile({ userId }) {
       <section className="space-y-4 pt-2 border-t border-gray-100">
         <div>
           <h2 className="text-lg font-bold text-gray-900">
-            Pickob orders only
+            AppleBD orders only
           </h2>
           <p className="text-sm text-gray-500">
             শুধু এই সাইটে করা অর্ডারের history ও risk score।
@@ -350,7 +350,7 @@ export default function CustomerProfile({ userId }) {
         </div>
 
         <RiskCard
-          title="Pickob risk score"
+          title="AppleBD risk score"
           risk={site.risk}
           percentages={site.percentages}
         />
@@ -405,7 +405,7 @@ export default function CustomerProfile({ userId }) {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b">
             <h3 className="text-base font-semibold text-gray-800">
-              Courier-wise (Pickob)
+              Courier-wise (AppleBD)
             </h3>
           </div>
           {courierRows.length === 0 ? (

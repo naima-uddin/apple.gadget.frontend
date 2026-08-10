@@ -7,7 +7,7 @@ import { useUser } from "@/components/context/UserContext";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-const STORAGE_KEY = "Pickob-dashboard-sidebar-collapsed";
+const STORAGE_KEY = "AppleBD-dashboard-sidebar-collapsed";
 
 import { hasPermission } from "@/lib/permissions";
 

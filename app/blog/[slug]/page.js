@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
     return {
       title: "Blog Article",
       description:
-        "Read gadget guides, tech tips, and product reviews on the Pickob blog.",
+        "Read gadget guides, tech tips, and product reviews on the AppleBD blog.",
     };
   }
   try {
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }) {
     const description =
       post?.seo?.description ||
       post?.excerpt ||
-      `Read ${post?.title} on the Pickob blog.`;
+      `Read ${post?.title} on the AppleBD blog.`;
     const keywords = post?.seo?.keywords || post?.tags || [];
     const image =
       post?.featuredImage?.url || post?.thumbnail || `${SITE_URL}/mainLogo.png`;
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }) {
         images: [{ url: image, width: 1200, height: 630, alt: title }],
         publishedTime: post?.publishedAt || post?.publishDate,
         modifiedTime: post?.updatedAt,
-        authors: ["Pickob"],
+        authors: ["AppleBD"],
       },
       twitter: {
         card: "summary_large_image",
@@ -71,7 +71,7 @@ export async function generateMetadata({ params }) {
     return {
       title: "Blog Article",
       description:
-        "Read gadget guides, tech tips, and product reviews on the Pickob blog.",
+        "Read gadget guides, tech tips, and product reviews on the AppleBD blog.",
     };
   }
 }

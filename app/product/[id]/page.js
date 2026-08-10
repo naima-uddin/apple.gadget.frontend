@@ -28,7 +28,7 @@ export async function generateMetadata({ params }) {
     return {
       title: "Product Details",
       description:
-        "Browse gadgets and electronics at Pickob. View price, specifications, and availability.",
+        "Browse gadgets and electronics at AppleBD. View price, specifications, and availability.",
     };
   }
   try {
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
       (typeof product?.description === "string"
         ? product.description.replace(/<[^>]*>/g, "").slice(0, 160)
         : "") ||
-      `Buy ${product?.title} at Pickob. Best price, fast delivery across Bangladesh.`;
+      `Buy ${product?.title} at AppleBD. Best price, fast delivery across Bangladesh.`;
     const keywords = product?.seo?.keywords || [];
     const image = product?.images?.[0]?.url || `${SITE_URL}/mainLogo.png`;
     const productUrl = `${SITE_URL}/product/${id}`;
@@ -72,7 +72,7 @@ export async function generateMetadata({ params }) {
     return {
       title: "Product Details",
       description:
-        "Browse gadgets and electronics at Pickob. View price, specifications, and availability.",
+        "Browse gadgets and electronics at AppleBD. View price, specifications, and availability.",
     };
   }
 }

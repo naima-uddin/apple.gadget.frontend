@@ -16,8 +16,8 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const CartContext = createContext(null);
 
 // Storage keys
-const CART_STORAGE_KEY = "Pickob_cart";
-const WISHLIST_STORAGE_KEY = "Pickob_wishlist";
+const CART_STORAGE_KEY = "AppleBD_cart";
+const WISHLIST_STORAGE_KEY = "AppleBD_wishlist";
 
 const getStorageItem = (key, defaultValue = null) => {
   if (typeof window === "undefined") return defaultValue;
