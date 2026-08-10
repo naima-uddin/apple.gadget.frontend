@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-
-const INITIAL_COUNT = 6;
 
 const pillClass =
   "shrink-0 bg-white border border-gray-200 rounded-full px-4 py-1.5 text-xs font-medium text-[#6B7280] hover:text-[#1D1D1F] hover:border-[#1D1D1F] transition-colors shadow-sm whitespace-nowrap";
@@ -19,6 +17,9 @@ const pillClass =
 export default function StoreHero({ className = "" }) {
   const [data, setData] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const [overflowing, setOverflowing] = useState(false);
+  const [rowH, setRowH] = useState(0);
+  const rowRef = useRef(null);
 
   useEffect(() => {
     fetch(`${API}/api/store-hero`)
@@ -27,16 +28,34 @@ export default function StoreHero({ className = "" }) {
       .catch(() => setData({ items: [] }));
   }, []);
 
+  // Measure the height of a single row and whether the items overflow past it,
+  // so exactly one row shows when collapsed and "See More" only appears when
+  // there's a second row. Recomputes on resize (row count is width-dependent).
+  useLayoutEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const measure = () => {
+      const first = el.firstElementChild;
+      const h = first ? first.offsetHeight : 0;
+      setRowH(h);
+      // scrollHeight reflects full content even while clipped by max-height.
+      setOverflowing(h > 0 && el.scrollHeight > h + 8);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [data]);
+
   if (!data) return null;
   const { heading, subheading, items = [] } = data;
   if (!heading && !subheading && items.length === 0) return null;
 
-  const hasMore = items.length > INITIAL_COUNT;
-  const visible = expanded ? items : items.slice(0, INITIAL_COUNT);
+  const collapsed = !expanded && overflowing;
 
   return (
     <section className={className}>
-      {(heading || subheading || hasMore) && (
+      {(heading || subheading || overflowing) && (
         <div className="flex items-center gap-3 md:gap-4">
           {(heading || subheading) && (
             <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-tight">
@@ -47,7 +66,7 @@ export default function StoreHero({ className = "" }) {
             </h1>
           )}
           <div className="flex-1" />
-          {hasMore && (
+          {overflowing && (
             <button
               type="button"
               onClick={() => setExpanded((v) => !v)}
@@ -60,11 +79,13 @@ export default function StoreHero({ className = "" }) {
       )}
 
       {items.length > 0 && (
-        <div
-          className={`${heading || subheading || hasMore ? "mt-6" : ""} -mx-4 sm:mx-0 overflow-x-auto scrollbar-hide`}
-        >
-          <div className="flex gap-8 sm:gap-10 px-4 sm:px-0 min-w-max sm:min-w-0 sm:flex-wrap">
-            {visible.map((item, i) => (
+        <div className={heading || subheading || overflowing ? "mt-6" : ""}>
+          <div
+            ref={rowRef}
+            className="flex flex-wrap justify-start gap-x-8 sm:gap-x-10 gap-y-8 overflow-hidden"
+            style={collapsed && rowH ? { maxHeight: rowH } : undefined}
+          >
+            {items.map((item, i) => (
               <Link
                 key={i}
                 href={item.link || "/"}
