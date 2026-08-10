@@ -91,7 +91,7 @@ export default function StoreHero({ className = "" }) {
                 href={item.link || "/"}
                 className="group flex flex-col items-center gap-4 shrink-0"
               >
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
+                <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center">
                   {item.image?.url ? (
                     <Image
                       src={item.image.url}
