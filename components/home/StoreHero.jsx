@@ -6,6 +6,11 @@ import Image from "next/image";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
+const INITIAL_COUNT = 6;
+
+const pillClass =
+  "shrink-0 bg-white border border-gray-200 rounded-full px-4 py-1.5 text-xs font-medium text-[#6B7280] hover:text-[#1D1D1F] hover:border-[#1D1D1F] transition-colors shadow-sm whitespace-nowrap";
+
 // Heading + scrollable row of category icons, shown below the breadcrumb on
 // category pages (components/category/CategoryPageClient.jsx) and the "All
 // Products" page (components/category/AllProductsClient.jsx), as a quick
@@ -13,6 +18,7 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 // → Store Hero: heading text, subheading text, each icon's image/label/link.
 export default function StoreHero({ className = "" }) {
   const [data, setData] = useState(null);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     fetch(`${API}/api/store-hero`)
@@ -25,23 +31,40 @@ export default function StoreHero({ className = "" }) {
   const { heading, subheading, items = [] } = data;
   if (!heading && !subheading && items.length === 0) return null;
 
+  const hasMore = items.length > INITIAL_COUNT;
+  const visible = expanded ? items : items.slice(0, INITIAL_COUNT);
+
   return (
     <section className={className}>
-      {(heading || subheading) && (
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-tight max-w-7xl ">
-          {heading && <span className="text-[#1D1D1F]">{heading} </span>}
-          {subheading && (
-            <span className="text-[#6B7280]">{subheading}</span>
+      {(heading || subheading || hasMore) && (
+        <div className="flex items-center gap-3 md:gap-4">
+          {(heading || subheading) && (
+            <h1 className="text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight leading-tight">
+              {heading && <span className="text-[#1D1D1F]">{heading} </span>}
+              {subheading && (
+                <span className="text-[#6B7280]">{subheading}</span>
+              )}
+            </h1>
           )}
-        </h1>
+          <div className="flex-1" />
+          {hasMore && (
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className={pillClass}
+            >
+              {expanded ? "See Less" : "See More"}
+            </button>
+          )}
+        </div>
       )}
 
       {items.length > 0 && (
         <div
-          className={`${heading || subheading ? "mt-6" : ""} -mx-4 sm:mx-0 overflow-x-auto scrollbar-hide`}
+          className={`${heading || subheading || hasMore ? "mt-6" : ""} -mx-4 sm:mx-0 overflow-x-auto scrollbar-hide`}
         >
           <div className="flex gap-8 sm:gap-10 px-4 sm:px-0 min-w-max sm:min-w-0 sm:flex-wrap">
-            {items.map((item, i) => (
+            {visible.map((item, i) => (
               <Link
                 key={i}
                 href={item.link || "/"}

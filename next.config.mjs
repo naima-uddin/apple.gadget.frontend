@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig = {
-  output: "export",
+  // output: "export",
   trailingSlash: true,
 
   async redirects() {
@@ -33,6 +33,9 @@ const nextConfig = {
   images: {
     unoptimized: true,
     remotePatterns: [
+      // New uploads are served from our own backend's /uploads folder.
+      { protocol: "https", hostname: "api.applebd.com" },
+      // Legacy assets still served from Cloudinary.
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "download.logo.wine" },
       { protocol: "https", hostname: "img.icons8.com" },

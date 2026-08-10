@@ -5,7 +5,6 @@ import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/navigation";
 import {
-  FaEye,
   FaShoppingCart,
   FaHeart,
   FaBell,
@@ -239,30 +238,8 @@ export default function ProductCard({
           </div>
 
           <div
-            className={`absolute top-2 right-2 z-30 flex flex-col gap-1.5 transition-opacity duration-300 ${showActionsOnHover ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}
+            className={`absolute inset-0 z-30 flex items-center justify-center gap-2.5 transition-opacity duration-300 pointer-events-none ${showActionsOnHover ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}
           >
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                router.push(href);
-              }}
-              className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
-            >
-              <FaEye className="w-4 h-4" />
-            </button>
-            {!isOutOfStock && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  flyToCart(imageRef.current, mainImage);
-                  addToCart(product, 1);
-                }}
-                className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
-                title="Add cart"
-              >
-                <FaShoppingCart className="w-4 h-4" />
-              </button>
-            )}
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -273,7 +250,7 @@ export default function ProductCard({
                   addToWishlist(product);
                 }
               }}
-              className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
+              className="pointer-events-auto w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
               title="Add to wishlist"
             >
               <FaHeart className="w-4 h-4" />
@@ -284,7 +261,7 @@ export default function ProductCard({
                 if (isInCompare(product._id)) removeFromCompare(product._id);
                 else addToCompare(product);
               }}
-              className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors ${
+              className={`pointer-events-auto w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors ${
                 isInCompare(product._id)
                   ? "bg-[#1D1D1F] text-white"
                   : "bg-white hover:bg-[#1D1D1F] hover:text-white"
