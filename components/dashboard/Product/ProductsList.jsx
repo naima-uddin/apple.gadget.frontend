@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import NoProductsFound from "@/components/ui/NoProductsFound";
 import RowActionsMenu from "@/components/dashboard/ui/RowActionsMenu";
+import ProductHistoryModal from "@/components/dashboard/Product/ProductHistoryModal";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/components/context/UserContext";
 import {
@@ -13,6 +14,7 @@ import {
   FaClone,
   FaTrash,
   FaTrashRestore,
+  FaHistory,
 } from "react-icons/fa";
 
 const LIMIT = 20;
@@ -46,6 +48,7 @@ export default function ProductsList() {
   const [bulkBusy, setBulkBusy] = useState(false);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [historyProduct, setHistoryProduct] = useState(null); // product whose edit-history modal is open
 
   const totalPages = Math.ceil(total / LIMIT);
 
@@ -394,6 +397,7 @@ export default function ProductsList() {
                 <th className="py-2 px-3 whitespace-nowrap">Price</th>
                 <th className="py-2 px-3 whitespace-nowrap">Inventory</th>
                 <th className="py-2 px-3 whitespace-nowrap">Status</th>
+                <th className="py-2 px-3 whitespace-nowrap">History</th>
                 <th className="py-2 px-3">Actions</th>
               </tr>
             </thead>
@@ -476,6 +480,17 @@ export default function ProductsList() {
                       >
                         {p.status}
                       </span>
+                    </td>
+                    <td className="py-3 px-3">
+                      <button
+                        type="button"
+                        title="View edit history"
+                        onClick={() => setHistoryProduct(p)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+                      >
+                        <FaHistory className="h-3.5 w-3.5" />
+                        History
+                      </button>
                     </td>
                     <td className="py-3 px-3">
                       {viewTrash ? (
@@ -600,6 +615,13 @@ export default function ProductsList() {
             Next →
           </button>
         </div>
+      )}
+
+      {historyProduct && (
+        <ProductHistoryModal
+          product={historyProduct}
+          onClose={() => setHistoryProduct(null)}
+        />
       )}
     </div>
   );

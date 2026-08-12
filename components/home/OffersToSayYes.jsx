@@ -2,52 +2,90 @@
 
 import React, { useState, useEffect } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { HiOutlineClipboardCopy, HiCheck } from "react-icons/hi";
 import { useLanguage } from "@/components/context/LanguageContext";
 import SectionHeader from "./SectionHeader";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const DEFAULT_BG = "#1D1D1F";
-const DEFAULT_BUTTON = "#5B21B6";
+const DEFAULT_BUTTON = "#1D1D1F"; // Apple-default monochrome accent (never violet)
 const DEFAULT_TEXT = "#FFFFFF";
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const safeColor = (value, fallback) => (HEX_RE.test(value) ? value : fallback);
 
-const EDGE_NOTCHES = [8, 26, 44, 62, 80, 98];
+/* ── Color utilities ─────────────────────────────────────────────── */
+const toRgb = (hex) => ({
+  r: parseInt(hex.slice(1, 3), 16),
+  g: parseInt(hex.slice(3, 5), 16),
+  b: parseInt(hex.slice(5, 7), 16),
+});
+// Relative luminance → pick black/white ink that stays readable on any color.
+const readableInk = (hex) => {
+  const { r, g, b } = toRgb(hex);
+  const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return lum > 0.62 ? "#111111" : "#FFFFFF";
+};
+const withAlpha = (hex, alpha) => {
+  const { r, g, b } = toRgb(hex);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
-function TicketEdge({ side }) {
-  return EDGE_NOTCHES.map((top) => (
-    <div
-      key={`${side}-${top}`}
-      className={`absolute w-3.5 h-3.5 bg-white rounded-full z-10 -translate-y-1/2 ${
-        side === "left" ? "-left-1.75" : "-right-1.75"
-      }`}
-      style={{ top: `${top}%` }}
-    />
-  ));
+/* ── Derived discount display (for the stub) ─────────────────────── */
+function discountBadge(offer, tr) {
+  const v = Number(offer.discountValue) || 0;
+  if (offer.discountType === "free_shipping")
+    return { big: tr("offers.free_shipping"), small: null };
+  if (offer.discountType === "percentage" && v > 0)
+    return { big: `${v}%`, small: tr("offers.off") };
+  if (offer.discountType === "fixed" && v > 0)
+    return { big: `৳${v}`, small: tr("offers.off") };
+  return null;
 }
 
-function CouponCopy({ code, buttonColor }) {
+function minSpendText(offer, tr) {
+  const min = Number(offer.minOrderAmount) || 0;
+  if (min > 0) return `${tr("offers.min_spend")} ৳${min}`;
+  if (offer.spend) return `${tr("offers.min_spend")} ${offer.spend}`;
+  return null;
+}
+
+function expiryText(offer, tr) {
+  if (!offer.expiresAt) return null;
+  const d = new Date(offer.expiresAt);
+  if (isNaN(d)) return null;
+  return `${tr("offers.valid_till")} ${d.toLocaleDateString(undefined, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })}`;
+}
+
+/* ── Dashed code chip + copy (lives in the ticket body) ──────────── */
+function CouponCopy({ code, text }) {
   const [copied, setCopied] = useState(false);
   const { t } = useLanguage();
   const copy = () => {
-    navigator.clipboard.writeText(code);
+    navigator.clipboard?.writeText(code);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    setTimeout(() => setCopied(false), 1600);
   };
   return (
     <button
       onClick={copy}
-      style={{ backgroundColor: buttonColor }}
-      className="mt-2 inline-flex items-center gap-1.5 self-start hover:opacity-90 rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white transition"
+      aria-label={`${t("offers.use_code")} ${code}`}
+      style={{
+        color: text,
+        backgroundColor: withAlpha(text, 0.1),
+        borderColor: withAlpha(text, 0.4),
+      }}
+      className="group/btn inline-flex items-center gap-2 rounded-lg border border-dashed px-3 py-1.5 text-[13px] font-bold tracking-wide transition-colors duration-200 hover:bg-white/10 active:scale-95"
     >
+      <span className="font-mono tabular-nums">{code}</span>
       {copied ? (
-        <span>{t("offers.copied")}</span>
+        <HiCheck className="h-4 w-4 shrink-0" />
       ) : (
-        <>
-          <span className="opacity-80">{t("offers.use_code")}:</span>
-          <span>{code}</span>
-        </>
+        <HiOutlineClipboardCopy className="h-4 w-4 shrink-0 opacity-70 transition-opacity group-hover/btn:opacity-100" />
       )}
     </button>
   );
@@ -55,61 +93,139 @@ function CouponCopy({ code, buttonColor }) {
 
 function OfferCard({ offer }) {
   const { t: tr } = useLanguage();
-  const couponLabel = tr("offers.coupon_label");
   const bg = safeColor(offer.bgColor, DEFAULT_BG);
-  const buttonColor = safeColor(offer.buttonColor, DEFAULT_BUTTON);
-  const textColor = safeColor(offer.textColor, DEFAULT_TEXT);
-  return (
-    <div
-      className="relative flex rounded-2xl overflow-hidden h-36 sm:h-44 shadow-lg"
-      style={{ backgroundColor: bg }}
-    >
-      {/* Scalloped tear edges on the two outer short sides */}
-      <TicketEdge side="left" />
-      <TicketEdge side="right" />
+  const accent = safeColor(offer.buttonColor, DEFAULT_BUTTON);
+  const text = safeColor(offer.textColor, DEFAULT_TEXT);
+  const stubInk = readableInk(accent);
+  const badge = discountBadge(offer, tr);
+  const minSpend = minSpendText(offer, tr);
+  const expiry = expiryText(offer, tr);
+  const couponLabel = tr("offers.coupon_label");
 
-      {/* Ticket-perforation notches on the seam between the stub and the body */}
-      <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
-      <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
+  return (
+    <div className="group relative h-full">
+      {/* Soft accent glow behind the card on hover */}
       <div
-        className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed"
-        style={{ borderColor: `${buttonColor}80` }}
+        className="pointer-events-none absolute -inset-1 rounded-[22px] opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-60"
+        style={{ background: withAlpha(accent, 0.35) }}
+        aria-hidden="true"
       />
 
-      {/* Ticket stub: vertical COUPON label */}
-      <div className="w-16 shrink-0 flex items-center justify-center">
-        <span
-          className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap opacity-30"
+      <article className="relative flex h-full min-h-42 overflow-hidden rounded-2xl shadow-[0_12px_30px_-14px_rgba(0,0,0,0.5)] ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-1">
+        {/* ── Ticket body ── */}
+        <div
+          className="relative flex flex-1 flex-col justify-between gap-3 p-5 sm:p-6"
+          style={{ backgroundColor: bg, color: text }}
+        >
+          {/* subtle depth highlight */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background: `radial-gradient(120% 100% at 0% 0%, ${withAlpha(
+                accent,
+                0.16,
+              )} 0%, transparent 55%)`,
+            }}
+            aria-hidden="true"
+          />
+
+          <div className="relative flex items-start gap-3.5">
+            {offer.image?.url && (
+              <img
+                src={offer.image.url}
+                alt=""
+                loading="lazy"
+                className="h-16 w-16 shrink-0 object-contain drop-shadow-sm sm:h-[72px] sm:w-[72px]"
+              />
+            )}
+            <div className="min-w-0">
+              <span
+                className="text-[10px] font-bold uppercase tracking-[0.28em]"
+                style={{ color: withAlpha(text, 0.5) }}
+              >
+                {couponLabel}
+              </span>
+              <h3 className="mt-1.5 text-[22px] font-extrabold uppercase leading-[1.05] tracking-tight sm:text-2xl">
+                {offer.highlight}
+                {offer.highlightSecondary && (
+                  <>
+                    <br />
+                    {offer.highlightSecondary}
+                  </>
+                )}
+              </h3>
+              {offer.subtitle && (
+                <p
+                  className="mt-1.5 line-clamp-2 text-[13px] leading-snug"
+                  style={{ color: withAlpha(text, 0.7) }}
+                >
+                  {offer.subtitle}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="relative flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            {offer.couponCode && (
+              <CouponCopy code={offer.couponCode} text={text} />
+            )}
+            {minSpend && (
+              <span
+                className="text-[11px] font-medium"
+                style={{ color: withAlpha(text, 0.55) }}
+              >
+                {minSpend}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* ── Tear-off stub (two-tone, accent panel) ── */}
+        <div
+          className="relative flex w-23 shrink-0 flex-col items-center justify-center gap-1 border-l-2 border-dashed px-2 text-center sm:w-26"
           style={{
-            writingMode: "vertical-rl",
-            transform: "rotate(180deg)",
-            color: textColor,
+            backgroundColor: accent,
+            color: stubInk,
+            borderColor: withAlpha(stubInk, 0.45),
           }}
         >
-          {couponLabel} • {couponLabel} • {couponLabel}
-        </span>
-      </div>
+          {/* carved perforation notches at the seam */}
+          <span
+            className="absolute -left-2.5 -top-2.5 z-20 h-5 w-5 rounded-full bg-white"
+            aria-hidden="true"
+          />
+          <span
+            className="absolute -bottom-2.5 -left-2.5 z-20 h-5 w-5 rounded-full bg-white"
+            aria-hidden="true"
+          />
 
-      {/* Ticket body: title, subtitle, coupon code */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center px-5 py-4">
-        <h2
-          className="text-xl sm:text-2xl font-extrabold uppercase leading-tight"
-          style={{ color: textColor }}
-        >
-          {offer.highlight}
-        </h2>
-        {offer.subtitle && (
-          <p
-            className="text-xs mt-1 truncate opacity-70"
-            style={{ color: textColor }}
-          >
-            {offer.subtitle}
-          </p>
-        )}
-        {offer.couponCode && (
-          <CouponCopy code={offer.couponCode} buttonColor={buttonColor} />
-        )}
-      </div>
+          {badge ? (
+            <>
+              <div className="text-[28px] font-black leading-none tracking-tight sm:text-3xl">
+                {badge.big}
+              </div>
+              {badge.small && (
+                <div className="text-[10px] font-bold uppercase tracking-[0.22em] opacity-80">
+                  {badge.small}
+                </div>
+              )}
+            </>
+          ) : (
+            <span
+              className="text-sm font-black uppercase tracking-[0.35em]"
+              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+            >
+              {couponLabel}
+            </span>
+          )}
+
+          {expiry && (
+            <div className="mt-1 px-1 text-[9px] font-semibold uppercase leading-tight tracking-wide opacity-75">
+              {expiry}
+            </div>
+          )}
+        </div>
+      </article>
     </div>
   );
 }
@@ -177,15 +293,15 @@ export default function OffersToSayYes() {
       />
 
       {/* ── Mobile slider: one card at a time (hidden on md+) ── */}
-      <div className="relative md:hidden px-1">
+      <div className="relative md:hidden px-3">
         {/* Sliding track */}
-        <div className="overflow-hidden rounded-lg">
+        <div className="overflow-hidden">
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${mobileIndex * 100}%)` }}
           >
             {offers.map((offer) => (
-              <div key={offer._id} className="w-full shrink-0">
+              <div key={offer._id} className="w-full shrink-0 px-1 py-2">
                 <OfferCard offer={offer} />
               </div>
             ))}
@@ -211,9 +327,9 @@ export default function OffersToSayYes() {
 
       {/* ── Desktop slider: groups of 3 (shown on md+) ── */}
       <div className="relative hidden md:block px-2">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-500">
-          {visibleOffers.map((offer) => (
-            <OfferCard key={offer._id} offer={offer} />
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 py-2 transition-all duration-500">
+          {visibleOffers.map((offer, i) => (
+            <OfferCard key={offer?._id || i} offer={offer} />
           ))}
         </div>
 

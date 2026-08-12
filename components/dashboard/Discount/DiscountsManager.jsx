@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useUser } from "@/components/context/UserContext";
+import { uploadAdminImage } from "@/lib/uploadImage";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -11,10 +12,33 @@ const DEFAULT_TEXT = "#FFFFFF";
 const HEX_RE = /^#[0-9a-fA-F]{6}$/;
 const safeColor = (value, fallback) => (HEX_RE.test(value) ? value : fallback);
 
+const toRgb = (hex) => ({
+  r: parseInt(hex.slice(1, 3), 16),
+  g: parseInt(hex.slice(3, 5), 16),
+  b: parseInt(hex.slice(5, 7), 16),
+});
+const readableInk = (hex) => {
+  const { r, g, b } = toRgb(hex);
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.62 ? "#111111" : "#FFFFFF";
+};
+const withAlpha = (hex, alpha) => {
+  const { r, g, b } = toRgb(hex);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
+
+const discountBadge = (o) => {
+  const v = Number(o.discountValue) || 0;
+  if (o.discountType === "free_shipping") return { big: "FREE SHIP", small: null };
+  if (o.discountType === "percentage" && v > 0) return { big: `${v}%`, small: "OFF" };
+  if (o.discountType === "fixed" && v > 0) return { big: `৳${v}`, small: "OFF" };
+  return null;
+};
+
 const BLANK = {
   highlight: "",
   subtitle: "",
   couponCode: "",
+  image: { url: "", public_id: "" },
   bgColor: DEFAULT_BG,
   buttonColor: DEFAULT_BUTTON,
   textColor: DEFAULT_TEXT,
@@ -35,20 +59,6 @@ const BLANK = {
 const inp =
   "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400";
 const lbl = "block text-sm font-medium text-gray-700 mb-1";
-
-const EDGE_NOTCHES = [8, 26, 44, 62, 80, 98];
-
-function TicketEdge({ side }) {
-  return EDGE_NOTCHES.map((top) => (
-    <div
-      key={`${side}-${top}`}
-      className={`absolute w-3.5 h-3.5 bg-white rounded-full z-10 -translate-y-1/2 ${
-        side === "left" ? "-left-1.75" : "-right-1.75"
-      }`}
-      style={{ top: `${top}%` }}
-    />
-  ));
-}
 
 function ColorField({ label, value, onChange, fallback }) {
   const handleTextChange = (raw) => {
@@ -78,64 +88,99 @@ function ColorField({ label, value, onChange, fallback }) {
   );
 }
 
+// WYSIWYG mirror of the homepage OffersToSayYes card (see components/home/OffersToSayYes.jsx).
 function OfferCard({ offer }) {
   const bg = safeColor(offer.bgColor, DEFAULT_BG);
-  const buttonColor = safeColor(offer.buttonColor, DEFAULT_BUTTON);
-  const textColor = safeColor(offer.textColor, DEFAULT_TEXT);
+  const accent = safeColor(offer.buttonColor, DEFAULT_BUTTON);
+  const text = safeColor(offer.textColor, DEFAULT_TEXT);
+  const stubInk = readableInk(accent);
+  const badge = discountBadge(offer);
+  const minSpend = Number(offer.minOrderAmount) > 0 ? `Min. spend ৳${offer.minOrderAmount}` : "";
+
   return (
-    <div
-      className="relative flex rounded-2xl overflow-hidden h-44 shadow-lg"
-      style={{ backgroundColor: bg }}
-    >
-      {/* Scalloped tear edges on the two outer short sides */}
-      <TicketEdge side="left" />
-      <TicketEdge side="right" />
-
-      {/* Ticket-perforation notches on the seam between the stub and the body */}
-      <div className="absolute -top-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
-      <div className="absolute -bottom-3 left-16 -translate-x-1/2 w-6 h-6 bg-white rounded-full z-10" />
+    <div className="relative flex min-h-42 overflow-hidden rounded-2xl shadow-lg">
+      {/* Ticket body */}
       <div
-        className="absolute left-16 -translate-x-1/2 top-0 bottom-0 w-0.5 border-l-2 border-dashed"
-        style={{ borderColor: `${buttonColor}80` }}
-      />
-
-      {/* Ticket stub: vertical COUPON label */}
-      <div className="w-16 shrink-0 flex items-center justify-center">
-        <span
-          className="text-[10px] font-bold tracking-[0.3em] uppercase whitespace-nowrap opacity-30"
+        className="relative flex flex-1 flex-col justify-between gap-3 p-5"
+        style={{ backgroundColor: bg, color: text }}
+      >
+        <div
+          className="pointer-events-none absolute inset-0"
           style={{
-            writingMode: "vertical-rl",
-            transform: "rotate(180deg)",
-            color: textColor,
+            background: `radial-gradient(120% 100% at 0% 0%, ${withAlpha(accent, 0.16)} 0%, transparent 55%)`,
           }}
-        >
-          COUPON • COUPON • COUPON
-        </span>
+        />
+        <div className="relative flex items-start gap-3.5">
+          {offer.image?.url && (
+            <img
+              src={offer.image.url}
+              alt=""
+              className="h-[72px] w-[72px] shrink-0 object-contain drop-shadow-sm"
+            />
+          )}
+          <div className="min-w-0">
+            <span
+              className="text-[10px] font-bold uppercase tracking-[0.28em]"
+              style={{ color: withAlpha(text, 0.5) }}
+            >
+              COUPON
+            </span>
+            <h2 className="mt-1.5 text-2xl font-extrabold uppercase leading-[1.05] tracking-tight">
+              {offer.highlight || "—"}
+            </h2>
+            {offer.subtitle && (
+              <p
+                className="mt-1.5 line-clamp-2 text-[13px] leading-snug"
+                style={{ color: withAlpha(text, 0.7) }}
+              >
+                {offer.subtitle}
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="relative flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          {offer.couponCode && (
+            <span
+              className="inline-flex items-center gap-2 rounded-lg border border-dashed px-3 py-1.5 text-[13px] font-bold tracking-wide"
+              style={{
+                color: text,
+                backgroundColor: withAlpha(text, 0.1),
+                borderColor: withAlpha(text, 0.4),
+              }}
+            >
+              <span className="font-mono">{offer.couponCode}</span>
+            </span>
+          )}
+          {minSpend && (
+            <span className="text-[11px] font-medium" style={{ color: withAlpha(text, 0.55) }}>
+              {minSpend}
+            </span>
+          )}
+        </div>
       </div>
 
-      {/* Ticket body: title, subtitle, coupon code */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center px-5 py-4">
-        <h2
-          className="text-xl sm:text-2xl font-extrabold uppercase leading-tight"
-          style={{ color: textColor }}
-        >
-          {offer.highlight || "—"}
-        </h2>
-        {offer.subtitle && (
-          <p
-            className="text-xs mt-1 truncate opacity-70"
-            style={{ color: textColor }}
-          >
-            {offer.subtitle}
-          </p>
-        )}
-        {offer.couponCode && (
+      {/* Tear-off stub */}
+      <div
+        className="relative flex w-26 shrink-0 flex-col items-center justify-center gap-1 border-l-2 border-dashed px-2 text-center"
+        style={{ backgroundColor: accent, color: stubInk, borderColor: withAlpha(stubInk, 0.45) }}
+      >
+        <span className="absolute -left-2.5 -top-2.5 z-20 h-5 w-5 rounded-full bg-white" />
+        <span className="absolute -bottom-2.5 -left-2.5 z-20 h-5 w-5 rounded-full bg-white" />
+        {badge ? (
+          <>
+            <div className="text-3xl font-black leading-none tracking-tight">{badge.big}</div>
+            {badge.small && (
+              <div className="text-[10px] font-bold uppercase tracking-[0.22em] opacity-80">
+                {badge.small}
+              </div>
+            )}
+          </>
+        ) : (
           <span
-            className="mt-2 inline-flex items-center gap-1.5 self-start rounded-md px-3 py-1.5 text-[11px] font-bold tracking-wide text-white"
-            style={{ backgroundColor: buttonColor }}
+            className="text-sm font-black uppercase tracking-[0.35em]"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
           >
-            <span className="opacity-80">USE CODE:</span>
-            <span className="truncate max-w-[8rem]">{offer.couponCode}</span>
+            COUPON
           </span>
         )}
       </div>
@@ -157,6 +202,8 @@ export default function DiscountsManager() {
   const [editing, setEditing] = useState(null); // null = closed, 'new' or item._id
   const [form, setForm] = useState(BLANK);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef(null);
   const [showFunctional, setShowFunctional] = useState(false);
   const [sectionTitle, setSectionTitle] = useState(BLANK_SECTION_TITLE);
   const [sectionTitleSaving, setSectionTitleSaving] = useState(false);
@@ -221,12 +268,33 @@ export default function DiscountsManager() {
   const openEdit = (item) => {
     setForm({
       ...item,
+      image: item.image || { url: "", public_id: "" },
       expiresAt: item.expiresAt
         ? new Date(item.expiresAt).toISOString().slice(0, 16)
         : "",
     });
     setEditing(item._id);
     setShowFunctional(!!item.couponCode);
+  };
+
+  const handleImageUpload = async (file) => {
+    if (!file) return;
+    const preview = URL.createObjectURL(file);
+    setForm((p) => ({ ...p, image: { url: preview, public_id: "" } }));
+    setUploading(true);
+    try {
+      const data = await uploadAdminImage(file, "applebd/discounts");
+      setForm((p) => ({
+        ...p,
+        image: { url: data.asset.url, public_id: data.asset.public_id },
+      }));
+    } catch (err) {
+      alert("Image upload failed: " + err.message);
+      setForm((p) => ({ ...p, image: { url: "", public_id: "" } }));
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
   };
   const closeForm = () => {
     setEditing(null);
@@ -449,6 +517,67 @@ export default function DiscountsManager() {
                   }
                   placeholder="e.g. On purchase of 2+ styles"
                 />
+              </div>
+            </div>
+
+            {/* Card image (optional illustration / product photo) */}
+            <div>
+              <label className={lbl}>
+                Card Image{" "}
+                <span className="text-xs text-gray-400">
+                  (optional — a transparent PNG illustration looks best)
+                </span>
+              </label>
+              <div className="flex items-center gap-4">
+                <div
+                  className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50"
+                  style={{ backgroundColor: safeColor(form.bgColor, DEFAULT_BG) }}
+                >
+                  {form.image?.url ? (
+                    <img
+                      src={form.image.url}
+                      alt=""
+                      className="h-full w-full object-contain p-1"
+                    />
+                  ) : (
+                    <span className="text-[10px] text-gray-400">No image</span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(e.target.files?.[0])}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileRef.current?.click()}
+                    disabled={uploading}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-sm hover:bg-gray-50 disabled:opacity-60"
+                  >
+                    {uploading
+                      ? "Uploading…"
+                      : form.image?.url
+                        ? "Change Image"
+                        : "Upload Image"}
+                  </button>
+                  {form.image?.url && !uploading && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm((p) => ({
+                          ...p,
+                          image: { url: "", public_id: "" },
+                        }))
+                      }
+                      className="text-xs text-red-600 hover:text-red-800 underline text-left"
+                    >
+                      Remove image
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 

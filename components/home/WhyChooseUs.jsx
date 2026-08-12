@@ -37,9 +37,10 @@ const DEFAULT_FAQS = [
 // the right. FAQ items come from dashboard → Policy Pages → FAQ; the image is
 // /whychoose.png in the frontend public folder (section adapts if it's absent).
 export default function WhyChooseUs() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [faqs, setFaqs] = useState(DEFAULT_FAQS);
   const [storeName, setStoreName] = useState("");
+  const [cfg, setCfg] = useState(null);
   const [openIndex, setOpenIndex] = useState(0);
   const [hasImage, setHasImage] = useState(true);
 
@@ -47,18 +48,41 @@ export default function WhyChooseUs() {
     fetch(`${API}/api/admin/top-banner`)
       .then((r) => r.json())
       .then((d) => {
-        const items = d.policyContent?.faq || [];
-        if (items.length > 0) setFaqs(items.slice(0, VISIBLE_FAQS));
+        const wc = d.whyChooseUs || {};
+        setCfg(wc);
+        // Dashboard-defined FAQ items take priority; otherwise fall back to
+        // Policy Pages → FAQ, then to the built-in defaults.
+        const own = Array.isArray(wc.items) ? wc.items : [];
+        const policy = d.policyContent?.faq || [];
+        const source = own.length > 0 ? own : policy;
+        if (source.length > 0) setFaqs(source.slice(0, VISIBLE_FAQS));
         setStoreName(d.storeName || "");
       })
       .catch(() => {});
   }, []);
 
+  // Section can be turned off entirely from the dashboard.
+  if (cfg && cfg.enabled === false) return null;
+
+  // Admin overrides fall back to the localized defaults when left blank.
+  const title =
+    (lang === "bn" ? cfg?.titleBn : cfg?.title) ||
+    cfg?.title ||
+    t("home.why_choose_us");
+  const descTemplate =
+    (lang === "bn" ? cfg?.descriptionBn : cfg?.description) ||
+    cfg?.description ||
+    t("home.why_choose_desc");
+  const description = descTemplate.replace("{store}", storeName || "our store");
+  const buttonLabel = cfg?.buttonLabel || t("footer.about");
+  const buttonLink = cfg?.buttonLink || "/about";
+  const imageUrl = cfg?.image?.url || "/whychoose.jpg";
+
   return (
     <section className="w-full py-6 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section title — same style as the other homepage sections */}
-        <SectionHeader title={t("home.why_choose_us")} />
+        <SectionHeader title={title} />
 
         {/* White card: image left, content right */}
         <div
@@ -70,8 +94,8 @@ export default function WhyChooseUs() {
           {hasImage && (
             <div className="relative rounded-l-2xl  overflow-hidden bg-[#F5F6F7] min-h-64 md:min-h-80 ">
               <Image
-                src="/whychoose.jpg"
-                alt={t("home.why_choose_us")}
+                src={imageUrl}
+                alt={title}
                 fill
                 sizes="(max-width: 768px) 100vw, 40vw"
                 className="object-cover"
@@ -83,10 +107,7 @@ export default function WhyChooseUs() {
           {/* Text + accordion */}
           <div className=" p-2 md:p-4 mr-2">
             <p className="text-sm text-[#6B7280] leading-relaxed mb-5">
-              {t("home.why_choose_desc").replace(
-                "{store}",
-                storeName || "our store",
-              )}
+              {description}
             </p>
 
             <div className="divide-y divide-gray-200 border-t border-gray-200">
@@ -134,10 +155,10 @@ export default function WhyChooseUs() {
         {/* About Us pill — bottom right, like the reference */}
         <div className="flex justify-end mt-4">
           <Link
-            href="/about"
+            href={buttonLink}
             className="bg-white border border-[#1D1D1F] text-[#1D1D1F] hover:bg-[#1D1D1F] hover:text-white rounded-full px-5 py-2 text-xs font-semibold transition-colors shadow-sm"
           >
-            {t("footer.about")}
+            {buttonLabel}
           </Link>
         </div>
       </div>

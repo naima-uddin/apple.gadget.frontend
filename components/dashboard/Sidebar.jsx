@@ -319,6 +319,7 @@ const SECTIONS = [
       "/dashboard/promo-panels",
       "/dashboard/testimonials",
       "/dashboard/category-showcase",
+      "/dashboard/why-choose-us",
       "/dashboard/deal-of-day",
       "/dashboard/popup",
       "/dashboard/blog",
@@ -365,6 +366,13 @@ const SECTIONS = [
         label: "Category Spotlight",
         href: "/dashboard/category-showcase",
         icon: "M3 3h5v18H3V3z M10 3h4v8h-4V3z M16 3h5v18h-5V3z M10 13h4v8h-4v-8z",
+        permissionKey: "content.promo",
+      },
+      {
+        key: "why-choose-us",
+        label: "Why Choose Us",
+        href: "/dashboard/why-choose-us",
+        icon: "M12 2l2.4 7.4H22l-6 4.4 2.3 7.2L12 16.8 5.7 21l2.3-7.2-6-4.4h7.6z",
         permissionKey: "content.promo",
       },
       {
