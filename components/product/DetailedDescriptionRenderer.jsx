@@ -38,7 +38,7 @@ export default function DetailedDescriptionRenderer({ value }) {
                     [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
                     [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1
                     [&_strong]:font-semibold [&_em]:italic
-                    [&_a]:text-indigo-600 [&_a]:underline [&_a:hover]:text-indigo-800`}
+                    [&_a]:text-[#1D1D1F] [&_a]:underline [&_a:hover]:text-black`}
                   dangerouslySetInnerHTML={{ __html: block.content || "" }}
                 />
               </div>
