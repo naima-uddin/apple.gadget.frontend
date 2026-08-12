@@ -67,7 +67,9 @@ export default function CategoryEdit({ categoryId }) {
           }
         } else {
           // fallback to public tree
-          const r2 = await fetch(`${API}/api/products/categories`);
+          const r2 = await fetch(`${API}/api/products/categories`, {
+            cache: "no-store",
+          });
           if (r2.ok) {
             const j = await r2.json();
             const find = (nodes, id) => {
@@ -118,7 +120,7 @@ export default function CategoryEdit({ categoryId }) {
 
   // load category tree for dropdowns
   useEffect(() => {
-    fetch(`${API}/api/products/categories`)
+    fetch(`${API}/api/products/categories`, { cache: "no-store" })
       .then((r) => r.json())
       .then((b) => setTree(b.categories || []))
       .catch(() => setTree([]));

@@ -464,7 +464,7 @@ export default function ProductCreate() {
   const [selectedChild, setSelectedChild] = useState(null);
 
   useEffect(() => {
-    fetch(`${API}/api/products/categories`)
+    fetch(`${API}/api/products/categories`, { cache: "no-store" })
       .then((r) => r.json())
       .then((b) => {
         setCategories(b.categories || []);

@@ -31,7 +31,9 @@ export default function CategoryManager() {
   const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
-      const resp = await fetch(`${API}/api/products/categories`);
+      const resp = await fetch(`${API}/api/products/categories`, {
+        cache: "no-store",
+      });
       const body = await resp.json();
       if (resp.ok) setCategories(body.categories || []);
     } catch (err) {

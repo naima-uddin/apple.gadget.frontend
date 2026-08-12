@@ -36,7 +36,7 @@ export default function CategoryCreate({ onSuccess }) {
   }, [user, refreshUser]);
 
   useEffect(() => {
-    fetch(`${API}/api/products/categories`)
+    fetch(`${API}/api/products/categories`, { cache: "no-store" })
       .then((r) => r.json())
       .then((b) => setTree(b.categories || []))
       .catch(() => setTree([]));
