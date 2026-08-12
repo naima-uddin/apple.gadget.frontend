@@ -421,13 +421,13 @@ export default function AuthModal({ isOpen, onClose }) {
         onClick={onClose}
       ></div>
       <div
-        className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5"
+        className="relative z-10 w-full max-w-sm overflow-hidden rounded-[24px] bg-white shadow-2xl ring-1 ring-black/5"
         style={{ animation: "authModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)" }}
       >
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 z-20 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900"
+          className="absolute top-4 right-4 z-20 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-black/5 hover:text-gray-900"
         >
           <svg
             width="16"
@@ -444,28 +444,28 @@ export default function AuthModal({ isOpen, onClose }) {
           </svg>
         </button>
 
-        {/* header area */}
-        <div className="px-8 pt-9 pb-6 text-center">
+        {/* header area — clean & compact */}
+        <div className="px-8 pt-8 pb-5 text-center">
           <div className="mb-4 flex justify-center">
-            <WebsiteLogo className="h-7 w-auto" />
+            <WebsiteLogo className="h-8 w-auto" />
           </div>
-          <h2 className="text-[22px] font-semibold tracking-tight text-[#1D1D1F]">
+          <h2 className="text-[21px] font-semibold leading-tight tracking-tight text-[#1D1D1F]">
             {view === "email-register"
               ? "Create your account"
               : view === "email-login"
                 ? "Welcome back"
                 : "Sign in to continue"}
           </h2>
-          <p className="mt-1.5 text-sm text-gray-500">
+          <p className="mt-1.5 text-[13px] font-medium tracking-wide text-gray-500">
             {view === "email-register"
-              ? "Join us — it only takes a moment."
+              ? "Join the applebd family in seconds."
               : view === "email-login"
-                ? "Enter your details to access your account."
-                : "Style it. Power it. Own it."}
+                ? "We're glad to see you again."
+                : "Premium tech. Effortlessly yours."}
           </p>
         </div>
 
-        <div className="px-8 pb-8">
+        <div className="px-8 pb-6">
           {view === "choose" && (
             <div className="space-y-3">
               <button
@@ -956,6 +956,24 @@ export default function AuthModal({ isOpen, onClose }) {
               </div>
             </div>
           )}
+
+          {/* premium trust footer */}
+          <div className="mt-5 flex items-center justify-center gap-1.5 border-t border-gray-100 pt-4 text-[11px] font-medium text-gray-400">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span>Secured &amp; encrypted sign-in</span>
+          </div>
         </div>
       </div>
     </div>,

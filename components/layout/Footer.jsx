@@ -173,16 +173,14 @@ export default function Footer() {
           >
             {/* Brand */}
             <div>
-              <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
+              <div className="flex items-center mb-3 sm:mb-4">
                 {displayLogoUrl && (
-                  <span className="flex h-9 w-26 shrink-0 items-center justify-center rounded-lg bg-white p-1">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={displayLogoUrl}
-                      alt={storeName || "Store logo"}
-                      className="h-full w-full object-contain"
-                    />
-                  </span>
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={displayLogoUrl}
+                    alt={storeName || "Store logo"}
+                    className="h-7 w-auto max-w-[140px] object-contain object-left"
+                  />
                 )}
               </div>
               <p className="text-sm text-gray-400 leading-relaxed max-w-72 mb-5">
