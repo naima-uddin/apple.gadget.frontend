@@ -290,7 +290,7 @@ export default function ProductInfoTabs({ product }) {
                 toast.dismiss(t.id);
                 setShowAuthModal(true);
               }}
-              className="font-semibold text-pink-600 underline hover:text-pink-800"
+              className="font-semibold text-[#1D1D1F] underline hover:text-black"
             >
               Login
             </button>
@@ -322,38 +322,40 @@ export default function ProductInfoTabs({ product }) {
   return (
     <section className="w-full bg-white mt-10 mb-6">
       <div className="max-w-7xl mx-auto px-2 lg:px-8">
-        {/* ── Tab bar ── */}
-        <div className="flex gap-1 overflow-x-auto whitespace-nowrap border-b border-gray-200 mb-6">
-          {[
-            { key: "description", label: "Description" },
-            { key: "specification", label: "Specification" },
-            { key: "reviews", label: "Reviews", count: reviews.length },
-            { key: "questions", label: "Q&A", count: faqs.length },
-            { key: "guides", label: "Care & Guides" },
-          ].map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setActiveTab(t.key)}
-              className={`relative flex items-center gap-1.5 px-4 py-3 text-sm font-semibold transition-all duration-200 border-b-2 ${
-                activeTab === t.key
-                  ? "border-[#1D1D1F] text-[#1D1D1F]"
-                  : "border-transparent text-gray-500 hover:text-[#1D1D1F] hover:border-gray-300"
-              }`}
-            >
-              {t.label}
-              {t.count > 0 && (
-                <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none ${
-                    activeTab === t.key
-                      ? "bg-[#1D1D1F] text-white"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
-                >
-                  {t.count}
-                </span>
-              )}
-            </button>
-          ))}
+        {/* ── Tab bar — segmented pill control, sticky under the header ── */}
+        <div className="sticky top-16 z-20 -mx-2 lg:mx-0 mb-8 bg-white/85 backdrop-blur-md">
+          <div className="flex gap-1 overflow-x-auto whitespace-nowrap p-1.5 bg-gray-100 rounded-2xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {[
+              { key: "description", label: "Description" },
+              { key: "specification", label: "Specification" },
+              { key: "reviews", label: "Reviews", count: reviews.length },
+              { key: "questions", label: "Q&A", count: faqs.length },
+              { key: "guides", label: "Care & Guides" },
+            ].map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setActiveTab(t.key)}
+                className={`relative flex items-center gap-1.5 px-4 sm:px-5 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                  activeTab === t.key
+                    ? "bg-white text-[#1D1D1F] shadow-sm"
+                    : "text-gray-500 hover:text-[#1D1D1F]"
+                }`}
+              >
+                {t.label}
+                {t.count > 0 && (
+                  <span
+                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none transition-colors ${
+                      activeTab === t.key
+                        ? "bg-[#1D1D1F] text-white"
+                        : "bg-gray-200 text-gray-500"
+                    }`}
+                  >
+                    {t.count}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* ── Content ── */}
@@ -421,7 +423,7 @@ export default function ProductInfoTabs({ product }) {
                                 <tr key={i}>
                                   <td
                                     colSpan={2}
-                                    className="px-4 py-3 font-bold text-indigo-700 bg-indigo-50 border-b border-indigo-100 text-sm tracking-wide"
+                                    className="px-4 py-3 font-bold text-[#1D1D1F] bg-gray-100 border-b border-gray-200 text-sm tracking-wide font-georgia"
                                   >
                                     {spec.label}
                                   </td>
@@ -615,7 +617,7 @@ export default function ProductInfoTabs({ product }) {
               {/* Top bar */}
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="text-base font-bold text-gray-900">
+                  <h2 className="text-lg font-bold text-[#1F2937] font-georgia">
                     Customer Reviews
                   </h2>
                   <p className="text-xs text-gray-400 mt-0.5">
@@ -634,7 +636,7 @@ export default function ProductInfoTabs({ product }) {
                                 toast.dismiss(t.id);
                                 setShowAuthModal(true);
                               }}
-                              className="font-semibold text-pink-600 underline hover:text-pink-800"
+                              className="font-semibold text-[#1D1D1F] underline hover:text-black"
                             >
                               Login
                             </button>
@@ -950,7 +952,7 @@ export default function ProductInfoTabs({ product }) {
               {/* Top bar */}
               <div className="flex items-center justify-between mb-5">
                 <div>
-                  <h2 className="text-base font-bold text-gray-900">
+                  <h2 className="text-lg font-bold text-[#1F2937] font-georgia">
                     Questions &amp; Answers
                   </h2>
                   <p className="text-xs text-gray-400 mt-0.5">
@@ -980,7 +982,7 @@ export default function ProductInfoTabs({ product }) {
                                 toast.dismiss(t.id);
                                 setShowAuthModal(true);
                               }}
-                              className="font-semibold text-pink-600 underline hover:text-pink-800"
+                              className="font-semibold text-[#1D1D1F] underline hover:text-black"
                             >
                               Login
                             </button>
@@ -1274,9 +1276,9 @@ export default function ProductInfoTabs({ product }) {
                                 return (
                                   <div
                                     key={aIdx}
-                                    className="flex items-start gap-3 p-4 border-l-4 border-blue-300 bg-blue-50/30"
+                                    className="flex items-start gap-3 p-4 border-l-4 border-gray-300 bg-gray-50/60"
                                   >
-                                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs mt-0.5">
+                                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold text-xs mt-0.5">
                                       {initials}
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -1423,7 +1425,7 @@ export default function ProductInfoTabs({ product }) {
                                               toast.dismiss(t.id);
                                               setShowAuthModal(true);
                                             }}
-                                            className="font-semibold text-pink-600 underline hover:text-pink-800"
+                                            className="font-semibold text-[#1D1D1F] underline hover:text-black"
                                           >
                                             Login
                                           </button>
