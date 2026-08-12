@@ -188,7 +188,6 @@ export default function ProductCreate() {
     barcode: "",
     inventory: undefined,
     availability: "in_stock",
-    guidelines: "",
     specifications: [],
     monthlySold: undefined,
     rewardPoints: undefined,
@@ -1540,20 +1539,6 @@ export default function ProductCreate() {
                   </button>
                 </div>
               </div>
-            </div>
-
-            {/* Care Guidelines */}
-            <div className="">
-              <label className={labelClass}>Care & Handling Instructions</label>
-              
-              <RichTextEditor
-                value={product.guidelines || ""}
-                onChange={(html) =>
-                  setProduct((p) => ({ ...p, guidelines: html }))
-                }
-                placeholder="e.g. Machine wash cold, tumble dry low…"
-                minHeight="min-h-[160px]"
-              />
             </div>
 
           </div>

@@ -330,7 +330,6 @@ export default function ProductInfoTabs({ product }) {
               { key: "specification", label: "Specification" },
               { key: "reviews", label: "Reviews", count: reviews.length },
               { key: "questions", label: "Q&A", count: faqs.length },
-              { key: "guides", label: "Care & Guides" },
             ].map((t) => (
               <button
                 key={t.key}
@@ -585,30 +584,6 @@ export default function ProductInfoTabs({ product }) {
                     </p>
                   </div>
                 )}
-            </div>
-          )}
-
-          {activeTab === "guides" && (
-            <div className="animate-fadeIn">
-              {product?.guidelines ? (
-                <div
-                  className="prose prose-sm max-w-none text-gray-700
-                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
-                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1
-                    [&_h2]:text-lg [&_h2]:font-bold [&_h2]:mt-3
-                    [&_h3]:text-base [&_h3]:font-semibold [&_h3]:mt-2
-                    [&_strong]:font-semibold [&_em]:italic"
-                  dangerouslySetInnerHTML={{ __html: product.guidelines }}
-                />
-              ) : (
-                <div className="text-center py-12 border border-dashed border-gray-200 rounded-xl">
-                  <p className="text-2xl mb-2">🫶</p>
-                  <p className="text-sm font-medium text-gray-600">
-                    No care instructions or guides are available for this
-                    product.
-                  </p>
-                </div>
-              )}
             </div>
           )}
 

@@ -186,7 +186,6 @@ export default function ProductEdit({ productId }) {
     // DEPRECATED: colors and sizes are now part of variants
     // colors: [],
     // sizes: [],
-    guidelines: "",
     specifications: [],
     monthlySold: undefined,
     rewardPoints: undefined,
@@ -2108,20 +2107,6 @@ export default function ProductEdit({ productId }) {
                   </button>
                 </div>
               </div>
-            </div>
-
-            {/* Care Guidelines */}
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <label className={labelClass}>Care & Handling Instructions</label>
-              
-              <RichTextEditor
-                value={product.guidelines || ""}
-                onChange={(html) =>
-                  setProduct((p) => ({ ...p, guidelines: html }))
-                }
-                placeholder="e.g. Machine wash cold, tumble dry low…"
-                minHeight="min-h-[160px]"
-              />
             </div>
 
           </div>
