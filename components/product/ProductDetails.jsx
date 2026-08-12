@@ -25,6 +25,7 @@ import {
   FaPencilAlt,
   FaChevronDown,
   FaShieldAlt,
+  FaSearchPlus,
 } from "react-icons/fa";
 import AddToCartSection from "@/components/product/AddToCartSection";
 import {
@@ -566,7 +567,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 onMouseEnter={() => isDesktop && setMagnify(true)}
                 onMouseLeave={() => setMagnify(false)}
                 onMouseMove={handleMagnifyMove}
-                className="relative bg-white border border-gray-100 w-full aspect-square flex items-center justify-center overflow-hidden rounded-2xl shadow-sm"
+                className="group relative bg-gradient-to-br from-gray-50 to-white border border-gray-100 w-full aspect-square flex items-center justify-center overflow-hidden rounded-3xl shadow-sm ring-1 ring-gray-100/50"
               >
                 {images.length > 1 && (
                   <button
@@ -589,15 +590,15 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     className="w-full h-full object-contain p-2 md:p-6"
                   />
                 </button>
-                {/* Magnifier lens — highlights the area being zoomed */}
+                {/* In-place zoom — magnifies inside the image box itself on
+                    hover, so nothing overlaps the buy box beside it */}
                 {magnify && isDesktop && (
-                  <span
-                    className="absolute z-10 pointer-events-none rounded-lg border-2 border-[#1D1D1F]/50 bg-gray-500/10 hidden lg:block"
+                  <div
+                    className="hidden lg:block absolute inset-0 z-10 pointer-events-none bg-white bg-no-repeat rounded-2xl"
                     style={{
-                      width: "40%",
-                      height: "40%",
-                      left: `${zoomPos.x * 0.6}%`,
-                      top: `${zoomPos.y * 0.6}%`,
+                      backgroundImage: `url("${encodeURI(currentImage)}")`,
+                      backgroundSize: "220%",
+                      backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
                     }}
                   />
                 )}
@@ -630,19 +631,13 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     ))}
                   </div>
                 )}
+                {/* Zoom hint — bottom-left, hidden while actively zooming */}
+                {isDesktop && images.length > 0 && !magnify && (
+                  <span className="absolute bottom-3 left-3 z-20 flex items-center gap-1 bg-white/85 backdrop-blur-sm text-[#1D1D1F] text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm pointer-events-none">
+                    <FaSearchPlus className="w-2.5 h-2.5" /> Hover to zoom
+                  </span>
+                )}
               </div>
-
-              {/* Magnifier result panel — floats to the right (desktop, extra-wide screens only) */}
-              {magnify && isDesktop && (
-                <div
-                  className="hidden xl:block absolute top-0 left-full ml-4 z-30 h-full w-[420px] rounded-2xl border border-gray-100 bg-white shadow-2xl pointer-events-none bg-no-repeat"
-                  style={{
-                    backgroundImage: `url("${encodeURI(currentImage)}")`,
-                    backgroundSize: "250%",
-                    backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
-                  }}
-                />
-              )}
             </div>
           </div>
         </div>

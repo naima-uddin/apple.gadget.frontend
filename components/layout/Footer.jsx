@@ -21,7 +21,7 @@ function normalizeHref(href) {
 
 export default function Footer() {
   const { user } = useUser();
-  const { storeName, logoUrl, footerLogoUrl, footerInfo, socialLinks, footerLinks } =
+  const { storeName, logoUrl, footerLogoUrl, footerInfo, socialLinks, footerLinks, footerColumns } =
     useStoreSettings();
   const displayLogoUrl = footerLogoUrl || logoUrl;
   const { t } = useLanguage();
@@ -69,6 +69,21 @@ export default function Footer() {
         { label: t("footer.faq"), href: "/faq" },
         { label: t("footer.contact"), href: "/contact" },
       ];
+
+  // Admin-configured navigation columns (title + links). When present these
+  // fully replace the default Company/Product columns below.
+  const navColumns = (Array.isArray(footerColumns) ? footerColumns : [])
+    .map((col) => ({
+      title: col?.title || "",
+      links: (Array.isArray(col?.links) ? col.links : []).filter(
+        (l) => l && l.label,
+      ),
+    }))
+    .filter((col) => col.title || col.links.length);
+  const useDynamicColumns = navColumns.length > 0;
+  const navCount = useDynamicColumns ? navColumns.length : 2;
+  // Brand column (1.3fr) + N nav columns (0.85fr) + contact form (1.2fr)
+  const gridTemplate = `1.3fr ${Array(navCount).fill("0.85fr").join(" ")} 1.2fr`;
 
   const socials = [
     {
@@ -152,7 +167,10 @@ export default function Footer() {
     <>
       <footer role="contentinfo" className="bg-[#0A0A0A] text-white">
         <div className="max-w-7xl mx-auto px-5 py-10 md:py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_0.85fr_0.85fr_1.2fr] gap-y-10 gap-x-8 lg:gap-x-10">
+          <div
+            style={{ "--footer-cols": gridTemplate }}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-8 lg:gap-x-10 lg:grid-cols-(--footer-cols)"
+          >
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2.5 mb-3 sm:mb-4">
@@ -216,71 +234,94 @@ export default function Footer() {
               )}
             </div>
 
-            {/* Company */}
-            <div>
-              <h4 className="text-sm font-bold mb-4">{t("footer.company")}</h4>
-              <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
-                {quickLinks.map((item, i) => (
-                  <li key={i}>
-                    <Link
-                      href={normalizeHref(item.href)}
-                      className="hover:text-white transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {useDynamicColumns ? (
+              /* Admin-configured navigation columns */
+              navColumns.map((col, ci) => (
+                <div key={ci}>
+                  <h4 className="text-sm font-bold mb-4">{col.title}</h4>
+                  <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
+                    {col.links.map((item, i) => (
+                      <li key={i}>
+                        <Link
+                          href={normalizeHref(item.href)}
+                          className="hover:text-white transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            ) : (
+              <>
+                {/* Company */}
+                <div>
+                  <h4 className="text-sm font-bold mb-4">{t("footer.company")}</h4>
+                  <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
+                    {quickLinks.map((item, i) => (
+                      <li key={i}>
+                        <Link
+                          href={normalizeHref(item.href)}
+                          className="hover:text-white transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-            {/* Product */}
-            <div>
-              <h4 className="text-sm font-bold mb-4">{t("footer.product")}</h4>
-              <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
-                <li>
-                  <Link
-                    href="/user/profile"
-                    className="hover:text-white transition-colors"
-                  >
-                    {t("footer.my_account")}
-                  </Link>
-                </li>
-                {!user && (
-                  <li>
-                    <button
-                      onClick={() => setShowAuthModal(true)}
-                      className="hover:text-white transition-colors"
-                    >
-                      {t("footer.login_register")}
-                    </button>
-                  </li>
-                )}
-                <li>
-                  <Link
-                    href="/cart"
-                    className="hover:text-white transition-colors"
-                  >
-                    {t("profile.cart")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/user/wishlist"
-                    className="hover:text-white transition-colors"
-                  >
-                    {t("footer.wishlist")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/products"
-                    className="hover:text-white transition-colors"
-                  >
-                    {t("footer.shop")}
-                  </Link>
-                </li>
-              </ul>
-            </div>
+                {/* Product */}
+                <div>
+                  <h4 className="text-sm font-bold mb-4">{t("footer.product")}</h4>
+                  <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
+                    <li>
+                      <Link
+                        href="/user/profile"
+                        className="hover:text-white transition-colors"
+                      >
+                        {t("footer.my_account")}
+                      </Link>
+                    </li>
+                    {!user && (
+                      <li>
+                        <button
+                          onClick={() => setShowAuthModal(true)}
+                          className="hover:text-white transition-colors"
+                        >
+                          {t("footer.login_register")}
+                        </button>
+                      </li>
+                    )}
+                    <li>
+                      <Link
+                        href="/cart"
+                        className="hover:text-white transition-colors"
+                      >
+                        {t("profile.cart")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/user/wishlist"
+                        className="hover:text-white transition-colors"
+                      >
+                        {t("footer.wishlist")}
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/products"
+                        className="hover:text-white transition-colors"
+                      >
+                        {t("footer.shop")}
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            )}
 
             {/* Contact form */}
             <div>

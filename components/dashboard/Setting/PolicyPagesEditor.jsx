@@ -474,10 +474,32 @@ function SectionEditor({ items, onChange }) {
   );
 }
 
+const DEFAULT_FOOTER_COLUMNS = [
+  {
+    title: "Company",
+    links: [
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms & Conditions", href: "/terms" },
+      { label: "FAQ", href: "/faq" },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+  {
+    title: "Product",
+    links: [
+      { label: "My Account", href: "/user/profile" },
+      { label: "Cart", href: "/cart" },
+      { label: "Wishlist", href: "/user/wishlist" },
+      { label: "Shop", href: "/products" },
+    ],
+  },
+];
+
 function FooterEditor({
   footerInfo,
   socialLinks,
   footerLinks,
+  footerColumns,
   footerLogo,
   logoUploading,
   logoStatus,
@@ -497,16 +519,26 @@ function FooterEditor({
       },
     });
 
-  const setLinks = (listKey, updater) =>
+  const columns = Array.isArray(footerColumns) ? footerColumns : [];
+  const setColumns = (updater) =>
     onChange({
-      footerLinks: {
-        ...footerLinks,
-        [listKey]:
-          typeof updater === "function"
-            ? updater(footerLinks?.[listKey] || [])
-            : updater,
-      },
+      footerColumns:
+        typeof updater === "function" ? updater(columns) : updater,
     });
+  // Update a single link inside a column
+  const setColLink = (ci, li, patch) =>
+    setColumns((prev) =>
+      prev.map((col, i) =>
+        i === ci
+          ? {
+              ...col,
+              links: (col.links || []).map((l, j) =>
+                j === li ? { ...l, ...patch } : l,
+              ),
+            }
+          : col,
+      ),
+    );
 
   return (
     <div className="space-y-6">
@@ -594,73 +626,104 @@ function FooterEditor({
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার নেভিগেশন লিংক</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {[
-            { key: "quickLinks", title: "Quick Links" },
-            { key: "customerService", title: "Customer Service" },
-          ].map(({ key, title }) => {
-            const links = footerLinks?.[key] || [];
-            const update = (updater) => setLinks(key, updater);
+        <div className="flex items-center justify-between mb-1">
+          <p className="text-sm font-semibold text-gray-700">ফুটার নেভিগেশন কলাম</p>
+          <button
+            type="button"
+            onClick={() =>
+              setColumns((prev) => [...prev, { title: "", links: [{ label: "", href: "" }] }])
+            }
+            className="flex items-center gap-1 text-xs px-2.5 py-1 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+            কলাম যোগ করুন
+          </button>
+        </div>
+        <p className="text-[11px] text-gray-400 mb-3">
+          প্রতিটি কলামের টাইটেল (যেমন Company, Product) ও তার নিচের লিংকগুলো এখান থেকে ঠিক করুন।
+          কোনো কলাম না থাকলে ওয়েবসাইটে ডিফল্ট Company / Product কলাম দেখাবে।
+        </p>
 
-            return (
-              <div key={key}>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-gray-700">{title}</span>
-                  <button
-                    type="button"
-                    onClick={() => update((prev) => [...prev, { label: "", href: "" }])}
-                    className="flex items-center gap-1 text-xs px-2.5 py-1 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100"
-                  >
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <line x1="12" y1="5" x2="12" y2="19" />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Add
-                  </button>
-                </div>
+        {columns.length === 0 ? (
+          <div className="py-6 text-center border border-dashed border-gray-200 rounded-lg">
+            <p className="text-[11px] text-gray-400 italic mb-2">কোনো কাস্টম কলাম নেই</p>
+            <button
+              type="button"
+              onClick={() => setColumns(DEFAULT_FOOTER_COLUMNS)}
+              className="text-xs px-3 py-1.5 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100"
+            >
+              ডিফল্ট কলাম দিয়ে শুরু করুন
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {columns.map((col, ci) => {
+              const links = col?.links || [];
+              return (
+                <div key={ci} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                  <div className="flex items-center gap-1.5 mb-2.5">
+                    <input
+                      value={col?.title || ""}
+                      onChange={(e) =>
+                        setColumns((prev) =>
+                          prev.map((c, i) => (i === ci ? { ...c, title: e.target.value } : c)),
+                        )
+                      }
+                      placeholder="কলামের টাইটেল"
+                      className="flex-1 border border-gray-300 px-2 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setColumns((prev) => prev.filter((_, i) => i !== ci))}
+                      className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50 bg-white"
+                      title="কলাম মুছুন"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg>
+                    </button>
+                  </div>
 
-                {links.length === 0 ? (
-                  <p className="text-[11px] text-gray-400 italic py-3 text-center border border-dashed border-gray-200 rounded-lg">
-                    কোনো link নেই
-                  </p>
-                ) : (
                   <div className="space-y-1.5">
-                    {links.map((item, idx) => (
-                      <div key={idx} className="flex items-center gap-1.5">
+                    {links.map((item, li) => (
+                      <div key={li} className="flex items-center gap-1.5">
                         <input
                           value={item.label}
-                          onChange={(e) =>
-                            update((prev) =>
-                              prev.map((l, i) => (i === idx ? { ...l, label: e.target.value } : l)),
-                            )
-                          }
+                          onChange={(e) => setColLink(ci, li, { label: e.target.value })}
                           placeholder="Label"
-                          className="w-24 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100"
+                          className="w-24 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
                         />
                         <input
                           value={item.href}
-                          onChange={(e) =>
-                            update((prev) =>
-                              prev.map((l, i) => (i === idx ? { ...l, href: e.target.value } : l)),
-                            )
-                          }
+                          onChange={(e) => setColLink(ci, li, { href: e.target.value })}
                           onBlur={(e) => {
                             const val = e.target.value.trim();
                             if (val && !val.startsWith("/") && !val.startsWith("http://") && !val.startsWith("https://")) {
-                              update((prev) =>
-                                prev.map((l, i) => (i === idx ? { ...l, href: `/${val}` } : l)),
-                              );
+                              setColLink(ci, li, { href: `/${val}` });
                             }
                           }}
                           placeholder="/path"
-                          className="flex-1 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100"
+                          className="flex-1 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
                         />
                         <button
                           type="button"
-                          onClick={() => update((prev) => prev.filter((_, i) => i !== idx))}
-                          className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50"
-                          title="Remove"
+                          onClick={() =>
+                            setColumns((prev) =>
+                              prev.map((c, i) =>
+                                i === ci
+                                  ? { ...c, links: (c.links || []).filter((_, j) => j !== li) }
+                                  : c,
+                              ),
+                            )
+                          }
+                          className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50 bg-white"
+                          title="লিংক মুছুন"
                         >
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="3 6 5 6 21 6" />
@@ -672,11 +735,31 @@ function FooterEditor({
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setColumns((prev) =>
+                        prev.map((c, i) =>
+                          i === ci
+                            ? { ...c, links: [...(c.links || []), { label: "", href: "" }] }
+                            : c,
+                        ),
+                      )
+                    }
+                    className="mt-2 flex items-center gap-1 text-xs px-2.5 py-1 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  >
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="12" y1="5" x2="12" y2="19" />
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    লিংক যোগ করুন
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -839,6 +922,7 @@ export default function PolicyPagesEditor() {
   const [contactInfo, setContactInfo] = useState(EMPTY_CONTACT_INFO);
   const [socialLinks, setSocialLinks] = useState({});
   const [footerLinks, setFooterLinks] = useState(EMPTY_FOOTER_LINKS);
+  const [footerColumns, setFooterColumns] = useState([]);
   const [footerLogo, setFooterLogo] = useState(EMPTY_FOOTER_LOGO);
   const [aboutContent, setAboutContent] = useState(EMPTY_ABOUT);
 
@@ -867,6 +951,7 @@ export default function PolicyPagesEditor() {
         setContactInfo(s.contactInfo || EMPTY_CONTACT_INFO);
         setSocialLinks(s.socialLinks || {});
         setFooterLinks(s.footerLinks || EMPTY_FOOTER_LINKS);
+        setFooterColumns(Array.isArray(s.footerColumns) ? s.footerColumns : []);
         setFooterLogo(s.footerLogo || EMPTY_FOOTER_LOGO);
         setAboutContent(s.aboutContent || EMPTY_ABOUT);
       })
@@ -950,7 +1035,7 @@ export default function PolicyPagesEditor() {
 
   const handleSave = () => {
     if (activeTab === "footer") {
-      return putPolicy({ footerInfo, socialLinks, footerLinks, footerLogo });
+      return putPolicy({ footerInfo, socialLinks, footerLinks, footerColumns, footerLogo });
     }
     if (activeTab === "contact") {
       return putPolicy({ contactInfo });
@@ -1116,6 +1201,7 @@ export default function PolicyPagesEditor() {
               footerInfo={footerInfo}
               socialLinks={socialLinks}
               footerLinks={footerLinks}
+              footerColumns={footerColumns}
               footerLogo={footerLogo}
               logoUploading={logoUploading}
               logoStatus={logoStatus}
@@ -1126,6 +1212,7 @@ export default function PolicyPagesEditor() {
                 if (patch.footerInfo) setFooterInfo(patch.footerInfo);
                 if (patch.socialLinks) setSocialLinks(patch.socialLinks);
                 if (patch.footerLinks) setFooterLinks(patch.footerLinks);
+                if (patch.footerColumns) setFooterColumns(patch.footerColumns);
               }}
             />
           )}

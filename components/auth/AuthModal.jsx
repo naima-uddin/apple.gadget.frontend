@@ -404,39 +404,74 @@ export default function AuthModal({ isOpen, onClose }) {
   // Render via portal so fixed positioning is always relative to viewport,
   // not a parent with CSS transform (e.g. slider cards, carousels).
   return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/40" onClick={onClose}></div>
-      <div className="bg-white rounded-lg p-0 relative z-10 w-full max-w-md overflow-hidden shadow-xl">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      <style>{`
+        @keyframes authModalIn {
+          from { opacity: 0; transform: translateY(12px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes authOverlayIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+      `}</style>
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        style={{ animation: "authOverlayIn 0.25s ease-out" }}
+        onClick={onClose}
+      ></div>
+      <div
+        className="relative z-10 w-full max-w-sm overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-black/5"
+        style={{ animation: "authModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)" }}
+      >
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-600 hover:text-gray-900"
+          aria-label="Close"
+          className="absolute top-4 right-4 z-20 flex h-8 w-8 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900"
         >
-          ✕
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
+
         {/* header area */}
-        <div className="bg-gradient-to-r from-gray-100 to-white px-6 py-5 text-center">
-          <p className="text-lg font-semibold text-gray-800">
-            Hello Trendsetter!
-          </p>
-          <p className="text-sm text-gray-600 italic ">
-            "Style it. Power it. Own it."
-          </p>
-          <div className="flex justify-center items-center gap-2">
-            <h2 className="text-xl font-bold text-gray-900 mt-2">
-              Continue with
-            </h2>
-            <div className="flex items-center justify-center">
-              <WebsiteLogo className="w-20 h-6 " />
-            </div>
+        <div className="px-8 pt-9 pb-6 text-center">
+          <div className="mb-4 flex justify-center">
+            <WebsiteLogo className="h-7 w-auto" />
           </div>
+          <h2 className="text-[22px] font-semibold tracking-tight text-[#1D1D1F]">
+            {view === "email-register"
+              ? "Create your account"
+              : view === "email-login"
+                ? "Welcome back"
+                : "Sign in to continue"}
+          </h2>
+          <p className="mt-1.5 text-sm text-gray-500">
+            {view === "email-register"
+              ? "Join us — it only takes a moment."
+              : view === "email-login"
+                ? "Enter your details to access your account."
+                : "Style it. Power it. Own it."}
+          </p>
         </div>
-        <div className="px-6 py-3">
+
+        <div className="px-8 pb-8">
           {view === "choose" && (
-            <div className="space-y-3 bg-gray-50 px-4 rounded-lg">
+            <div className="space-y-3">
               <button
                 onClick={handleGoogle}
                 disabled={isLoading || isLockedOut}
-                className="w-full border border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-gray-800 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="group flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-[#1D1D1F] transition-all hover:border-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {isLoading ? (
                   <svg
@@ -488,13 +523,22 @@ export default function AuthModal({ isOpen, onClose }) {
                   {isLoading ? "Please wait..." : "Continue with Google"}
                 </span>
               </button>
+
+              <div className="flex items-center gap-3 py-1">
+                <div className="h-px flex-1 bg-gray-200" />
+                <span className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                  or
+                </span>
+                <div className="h-px flex-1 bg-gray-200" />
+              </div>
+
               <button
                 onClick={() => {
                   clearMessages();
                   setView("email-login");
                 }}
                 disabled={isLoading}
-                className="w-full border border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-gray-800 bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                className="group flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-[#1D1D1F] transition-all hover:border-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <svg
                   className="w-5 h-5 text-gray-800"
@@ -525,16 +569,13 @@ export default function AuthModal({ isOpen, onClose }) {
 
           {view === "email-register" && (
             <form onSubmit={handleEmailRegister} className="space-y-3">
-              <p className="text-sm text-gray-600 text-center mb-2">
-                Create your account
-              </p>
               <div>
                 <input
                   required
                   placeholder="Full Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-[#1D1D1F] placeholder-gray-400 transition-all focus:border-[#1D1D1F] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]/10"
                   disabled={isLoading}
                 />
               </div>
@@ -545,7 +586,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-[#1D1D1F] placeholder-gray-400 transition-all focus:border-[#1D1D1F] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]/10"
                   disabled={isLoading}
                 />
               </div>
@@ -556,7 +597,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 pr-11 text-sm text-[#1D1D1F] placeholder-gray-400 transition-all focus:border-[#1D1D1F] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]/10"
                   disabled={isLoading}
                 />
                 <button
@@ -597,49 +638,36 @@ export default function AuthModal({ isOpen, onClose }) {
                   )}
                 </button>
               </div>
-              <div className="flex gap-2">
-                <button
-                  type="submit"
-                  disabled={isLoading || isLockedOut}
-                  className="bg-[#1D1D1F] hover:bg-black text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-opacity"
-                >
-                  {isLoading && (
-                    <svg
-                      className="animate-spin h-4 w-4 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                  )}
-                  {isLoading ? "Creating account..." : "Create Account"}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    clearMessages();
-                    setView("choose");
-                  }}
-                  disabled={isLoading}
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded disabled:opacity-50 transition-opacity"
-                >
-                  Back
-                </button>
-              </div>
-              <p className="text-sm text-gray-500 text-center">
+              <button
+                type="submit"
+                disabled={isLoading || isLockedOut}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1D1D1F] px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isLoading && (
+                  <svg
+                    className="h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                )}
+                {isLoading ? "Creating account..." : "Create Account"}
+              </button>
+              <p className="pt-1 text-center text-sm text-gray-500">
                 Already have an account?{" "}
                 <button
                   type="button"
@@ -647,21 +675,42 @@ export default function AuthModal({ isOpen, onClose }) {
                     clearMessages();
                     setView("email-login");
                   }}
-                  className="text-[#1D1D1F] hover:text-black font-medium underline"
+                  className="font-semibold text-[#1D1D1F] transition-colors hover:text-black"
                 >
-                  Login here
+                  Log in
                 </button>
               </p>
+              <button
+                type="button"
+                onClick={() => {
+                  clearMessages();
+                  setView("choose");
+                }}
+                disabled={isLoading}
+                className="mx-auto flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-gray-700 disabled:opacity-50"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="19" y1="12" x2="5" y2="12" />
+                  <polyline points="12 19 5 12 12 5" />
+                </svg>
+                All sign-in options
+              </button>
             </form>
           )}
 
           {view === "email-login" && (
             <form onSubmit={handleEmailLogin} className="space-y-3">
-              <p className="text-sm text-gray-600 text-center mb-2">
-                Login to your account
-              </p>
               {failedAttempts > 0 && !isLockedOut && (
-                <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">
+                <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
                   {MAX_ATTEMPTS - failedAttempts} attempt
                   {MAX_ATTEMPTS - failedAttempts !== 1 ? "s" : ""} remaining
                   before temporary lockout.
@@ -674,7 +723,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 text-sm text-[#1D1D1F] placeholder-gray-400 transition-all focus:border-[#1D1D1F] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]/10 disabled:opacity-50"
                   disabled={isLoading || isLockedOut}
                 />
               </div>
@@ -685,7 +734,7 @@ export default function AuthModal({ isOpen, onClose }) {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pr-10 border border-gray-200 bg-white text-gray-900 placeholder-gray-400 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 px-4 py-3 pr-11 text-sm text-[#1D1D1F] placeholder-gray-400 transition-all focus:border-[#1D1D1F] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]/10 disabled:opacity-50"
                   disabled={isLoading || isLockedOut}
                 />
                 <button
@@ -726,36 +775,47 @@ export default function AuthModal({ isOpen, onClose }) {
                   )}
                 </button>
               </div>
-              <div className="flex gap-2">
+              <div className="flex justify-end">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleForgot}
                   disabled={isLoading || isLockedOut}
-                  className="bg-[#1D1D1F] hover:bg-black text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-opacity"
+                  className="text-xs font-medium text-gray-500 transition-colors hover:text-[#1D1D1F] disabled:opacity-50"
                 >
-                  {isLoading && (
-                    <svg
-                      className="animate-spin h-4 w-4 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      ></circle>
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                  )}
-                  {isLoading ? "Logging in..." : "Login"}
+                  Forgot password?
                 </button>
+              </div>
+              <button
+                type="submit"
+                disabled={isLoading || isLockedOut}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1D1D1F] px-4 py-3 text-sm font-semibold text-white transition-all hover:bg-black disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isLoading && (
+                  <svg
+                    className="h-4 w-4 animate-spin text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                )}
+                {isLoading ? "Logging in..." : "Login"}
+              </button>
+              <p className="pt-1 text-center text-sm text-gray-500">
+                Don&apos;t have an account?{" "}
                 <button
                   type="button"
                   onClick={() => {
@@ -763,32 +823,35 @@ export default function AuthModal({ isOpen, onClose }) {
                     setView("email-register");
                   }}
                   disabled={isLoading || isLockedOut}
-                  className="px-4 py-2 text-gray-700 hover:bg-gray-50 rounded disabled:opacity-50 transition-opacity"
+                  className="font-semibold text-[#1D1D1F] transition-colors hover:text-black disabled:opacity-50"
                 >
-                  Register
+                  Sign up
                 </button>
-              </div>
-              <div className="flex justify-between items-center">
-                <button
-                  type="button"
-                  onClick={handleForgot}
-                  disabled={isLoading || isLockedOut}
-                  className="text-sm text-[#1D1D1F] hover:text-black disabled:opacity-50"
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  clearMessages();
+                  setView("choose");
+                }}
+                disabled={isLoading}
+                className="mx-auto flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-gray-700 disabled:opacity-50"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  Forgot password?
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    clearMessages();
-                    setView("choose");
-                  }}
-                  disabled={isLoading}
-                  className="text-sm text-gray-500 hover:text-gray-700 disabled:opacity-50"
-                >
-                  ← Back
-                </button>
-              </div>
+                  <line x1="19" y1="12" x2="5" y2="12" />
+                  <polyline points="12 19 5 12 12 5" />
+                </svg>
+                All sign-in options
+              </button>
             </form>
           )}
 
