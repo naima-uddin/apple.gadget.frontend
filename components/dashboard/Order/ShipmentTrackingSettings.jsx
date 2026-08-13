@@ -10,39 +10,77 @@ const INTEGRATION_SLUGS = ["pathao", "steadfast", "redx"];
 
 const CREDENTIAL_FIELDS = {
   pathao: [
-    { key: "clientId", label: "Client ID", type: "text", secret: true },
+    {
+      key: "clientId",
+      label: "Client ID",
+      type: "text",
+      secret: true,
+      placeholder: "Pathao API access → Client ID",
+    },
     {
       key: "clientSecret",
       label: "Client Secret",
       type: "password",
       secret: true,
+      placeholder: "Pathao API access → Client Secret",
     },
-    { key: "username", label: "Merchant username", type: "text", secret: true },
+    {
+      key: "username",
+      label: "Merchant username (login email)",
+      type: "text",
+      secret: true,
+      placeholder: "merchant.pathao.com login email (phone নয়)",
+    },
     {
       key: "password",
       label: "Merchant password",
       type: "password",
       secret: true,
+      placeholder: "merchant panel login password",
     },
   ],
   steadfast: [
-    { key: "apiKey", label: "API Key", type: "password", secret: true },
-    { key: "secretKey", label: "Secret Key", type: "password", secret: true },
-    { key: "email", label: "Login email", type: "email" },
+    {
+      key: "apiKey",
+      label: "API Key",
+      type: "password",
+      secret: true,
+      placeholder: "Dashboard → API → Api-Key",
+    },
+    {
+      key: "secretKey",
+      label: "Secret Key",
+      type: "password",
+      secret: true,
+      placeholder: "Dashboard → API → Secret-Key",
+    },
+    {
+      key: "email",
+      label: "Login email",
+      type: "email",
+      placeholder: "steadfast.com.bd login email",
+    },
     {
       key: "password",
       label: "Login password",
       type: "password",
       secret: true,
+      placeholder: "steadfast.com.bd login password",
     },
   ],
   redx: [
-    { key: "phone", label: "Merchant phone (01XXXXXXXXX)", type: "text" },
+    {
+      key: "phone",
+      label: "Merchant phone (01XXXXXXXXX)",
+      type: "text",
+      placeholder: "01XXXXXXXXX (app/web login phone)",
+    },
     {
       key: "password",
       label: "Merchant password",
       type: "password",
       secret: true,
+      placeholder: "redx.com.bd login password",
     },
   ],
 };
@@ -453,7 +491,9 @@ function CourierIntegrationCard({ courier, onSaved }) {
                               [f.key]: e.target.value,
                             }))
                           }
-                          placeholder={isUnchanged ? "Clear to update" : ""}
+                          placeholder={
+                            isUnchanged ? "Clear to update" : f.placeholder || ""
+                          }
                           className={`w-full text-sm border rounded-xl px-3 py-2 bg-white outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F] ${isPassword ? "pr-9" : ""} ${isUnchanged ? "border-green-200" : "border-gray-200"}`}
                         />
                         {isPassword && (
