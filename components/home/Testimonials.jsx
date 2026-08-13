@@ -78,7 +78,7 @@ function TestimonialCard({ item, featured }) {
     <div
       className={`relative h-full flex flex-col bg-white rounded-3xl border overflow-hidden transition-shadow duration-300 ${
         featured
-          ? "border-[#1D1D1F]/15 shadow-xl px-7 py-8 md:px-8 md:py-10"
+          ? "border-[#1D1D1F]/15 shadow-xl px-5 py-7 sm:px-7 sm:py-8 md:px-8 md:py-10"
           : "border-gray-100 shadow-sm p-6 md:p-7 opacity-70"
       }`}
     >
@@ -197,8 +197,8 @@ export default function Testimonials() {
   const centerItem = items[currentIndex];
 
   return (
-    <section className="w-full py-4 md:py-8">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+    <section className="w-full py-8 md:py-14 bg-gradient-to-b from-[#faf9ff] via-white to-[#faf9ff]">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
         <SectionHeader title={t("home.testimonials_title")} />
 
         <div
@@ -211,7 +211,7 @@ export default function Testimonials() {
               type="button"
               onClick={() => go(-1)}
               aria-label="Previous"
-              className="absolute left-1 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
+              className="absolute -left-1 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur border border-gray-100 shadow-lg rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path
@@ -285,7 +285,7 @@ export default function Testimonials() {
               type="button"
               onClick={() => go(1)}
               aria-label="Next"
-              className="absolute right-1 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
+              className="absolute -right-1 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur border border-gray-100 shadow-lg rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path
