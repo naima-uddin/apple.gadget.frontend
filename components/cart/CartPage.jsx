@@ -105,7 +105,6 @@ export default function CartPage({ embedded = false }) {
   // Fetch recommended products — tries popular_pics badge first, falls back to recent
   useEffect(() => {
     const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-    setRecLoading(true);
     fetch(`${API}/api/products?badge=popular_pics&limit=12`)
       .then((r) => r.json())
       .then((json) => {
