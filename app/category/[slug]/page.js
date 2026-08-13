@@ -1,4 +1,6 @@
 import CategoryPageWrapper from "./PageClient";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, collectionJsonLd } from "@/lib/seoSchema";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
@@ -82,6 +84,42 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
-  return <CategoryPageWrapper />;
+export default async function Page({ params }) {
+  const { slug } = await params;
+  let schemas = [];
+
+  if (slug !== "__placeholder__") {
+    try {
+      const res = await fetch(`${API}/api/products/categories`, {
+        next: { revalidate: 60 },
+      });
+      if (res.ok) {
+        const { categories = [] } = await res.json();
+        const category = flattenCategories(categories).find(
+          (c) => c.slug === slug,
+        );
+        if (category) {
+          const url = `${SITE_URL}/category/${slug}`;
+          schemas = [
+            collectionJsonLd({
+              name: category.name,
+              description: category.description,
+              url,
+            }),
+            breadcrumbJsonLd([
+              { name: "Home", url: SITE_URL },
+              { name: category.name, url },
+            ]),
+          ];
+        }
+      }
+    } catch {}
+  }
+
+  return (
+    <>
+      <JsonLd data={schemas} />
+      <CategoryPageWrapper />
+    </>
+  );
 }

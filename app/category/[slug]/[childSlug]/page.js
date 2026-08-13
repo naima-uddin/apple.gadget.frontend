@@ -1,4 +1,6 @@
 import ChildCategoryPageWrapper from "./PageClient";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbJsonLd, collectionJsonLd } from "@/lib/seoSchema";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";

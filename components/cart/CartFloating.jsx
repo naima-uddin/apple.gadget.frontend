@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useCart, getItemPrice } from "@/components/context/CartContext";
-import { FiShoppingBag } from "react-icons/fi";
+import { FiShoppingCart } from "react-icons/fi";
 import { useLanguage } from "@/components/context/LanguageContext";
 
 export default function CartFloating() {
@@ -37,11 +37,11 @@ export default function CartFloating() {
       <button
         onClick={toggleSidebar}
         aria-label={label}
-        className={`relative flex items-center justify-center bg-[#1D1D1F] text-white rounded-full shadow-lg shadow-gray-300 w-12 h-12 hover:bg-black active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
+        className={`relative flex items-center justify-center bg-[#1D1D1F] text-white rounded-full shadow-lg shadow-gray-300 w-10 h-10 sm:w-12 sm:h-12 hover:bg-black active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
       >
         <span className="relative">
-          <FiShoppingBag className="w-5 h-5" />
-          <span className="absolute -top-2.5 -right-2.5 bg-white text-[#1D1D1F] text-[10px] font-bold min-w-4.5 h-4.5 rounded-full flex items-center justify-center leading-none px-0.5 border border-gray-100 shadow-sm">
+          <FiShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+          <span className="absolute -top-2 -right-2 sm:-top-2.5 sm:-right-2.5 bg-white text-[#1D1D1F] text-[9px] sm:text-[10px] font-bold min-w-4 h-4 sm:min-w-4.5 sm:h-4.5 rounded-full flex items-center justify-center leading-none px-0.5 border border-gray-100 shadow-sm">
             {count}
           </span>
         </span>

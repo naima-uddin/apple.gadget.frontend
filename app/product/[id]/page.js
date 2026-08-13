@@ -1,4 +1,7 @@
 import ProductPageClient from "./PageClient";
+import JsonLd from "@/components/seo/JsonLd";
+import { productJsonLd, breadcrumbJsonLd } from "@/lib/seoSchema";
+import { getStoreName } from "@/lib/storeMeta";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
@@ -77,6 +80,35 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
-  return <ProductPageClient />;
+export default async function Page({ params }) {
+  const { id } = await params;
+  let schemas = [];
+
+  if (id !== "__placeholder__") {
+    try {
+      const [res, storeName] = await Promise.all([
+        fetch(`${API}/api/products/${id}`, { cache: "force-cache" }),
+        getStoreName(),
+      ]);
+      if (res.ok) {
+        const { product } = await res.json();
+        const url = `${SITE_URL}/product/${id}`;
+        schemas = [
+          productJsonLd(product, { url, storeName }),
+          breadcrumbJsonLd([
+            { name: "Home", url: SITE_URL },
+            { name: "Products", url: `${SITE_URL}/products` },
+            { name: product?.title, url },
+          ]),
+        ];
+      }
+    } catch {}
+  }
+
+  return (
+    <>
+      <JsonLd data={schemas} />
+      <ProductPageClient />
+    </>
+  );
 }
