@@ -5,6 +5,16 @@ DirectoryIndex index.html
   RewriteEngine On
   RewriteBase /
 
+  # ── Static-exported API route handlers ─────────────────────────────────
+  # Next.js writes each force-static Route Handler's body to /api/<name> as
+  # an extension-less file (no trailing-slash directory). A request WITH a
+  # trailing slash (e.g. checkout's /api/locations/) fails the -f test below
+  # and would fall through to the SPA-shell fallback, returning HTML instead
+  # of JSON. Map both /api/<name> and /api/<name>/ to the real file here,
+  # BEFORE the -f/-d rule, so the endpoint resolves either way.
+  RewriteRule ^api/locations/?$ /api/locations [L]
+  RewriteRule ^api/locations-dhaka/?$ /api/locations-dhaka [L]
+
   # Serve existing files and directories directly (JS, CSS, images, etc.)
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
@@ -66,6 +76,12 @@ DirectoryIndex index.html
   # Fallback for any remaining unknown routes
   RewriteRule ^ index.html [L]
 </IfModule>
+
+# Static-exported API route files have no extension — force JSON so browsers
+# and fetch().json() treat them correctly.
+<FilesMatch "^(locations|locations-dhaka)$">
+  ForceType application/json
+</FilesMatch>
 
 # Security headers
 <IfModule mod_headers.c>
