@@ -10,6 +10,30 @@ const DEFAULT_COURIER_LABELS = {
   other: "Courier",
 };
 
+// Human-readable labels for each order status in the timeline
+const STATUS_STEP_LABELS = {
+  pending: "Order Placed",
+  accepted: "Order Accepted",
+  picked: "Being Prepared",
+  approved: "Order Approved",
+  confirmed: "Order Confirmed",
+  processing: "Processing",
+  shipped: "Shipped",
+  delivered: "Delivered",
+  returned: "Returned",
+  rejected: "Rejected",
+  failed: "Delivery Failed",
+  cancelled: "Cancelled",
+};
+
+// Statuses that should render with a "negative" (red) tone
+const NEGATIVE_STATUSES = new Set([
+  "rejected",
+  "failed",
+  "cancelled",
+  "returned",
+]);
+
 function fmtDateTime(value) {
   if (!value) return null;
   return new Date(value).toLocaleString("en-GB", {
@@ -26,67 +50,73 @@ function getCourierLabel(courier, courierLabels = {}) {
   return courierLabels[courier] || DEFAULT_COURIER_LABELS[courier] || courier;
 }
 
-function buildCourierTimeline(order) {
+// Builds a full chronological timeline of everything that happened to the
+// order: when it was placed, every status change (confirmed, processing,
+// shipped, delivered, …), and any live courier updates — merged and sorted
+// oldest → newest so the customer can see exactly "kokhn ki hoyeche".
+function buildCourierTimeline(order, courierLabels = {}) {
   const shipment = order.shipment || {};
-  const events = Array.isArray(shipment.trackingEvents) ? shipment.trackingEvents : [];
-  const courierEvents = events.filter((e) => e.source === "courier" && e.message);
+  const events = [];
 
-  if (courierEvents.length > 0) {
-    return [...courierEvents]
-      .sort((a, b) => new Date(b.at) - new Date(a.at))
-      .map((ev, i) => ({
+  // 1. Order placed — always the first event
+  events.push({
+    key: "placed",
+    at: order.createdAt,
+    title: "Order Placed",
+    reached: true,
+  });
+
+  // 2. Every recorded status change
+  const history = Array.isArray(order.statusHistory) ? order.statusHistory : [];
+  history.forEach((h, i) => {
+    // The very first "pending" entry duplicates "Order Placed"
+    if (!h.newStatus || h.newStatus === "pending") return;
+    events.push({
+      key: `status-${i}-${h.at}`,
+      at: h.at,
+      title: STATUS_STEP_LABELS[h.newStatus] || h.newStatus,
+      reached: true,
+      tone: NEGATIVE_STATUSES.has(h.newStatus) ? "cancelled" : undefined,
+    });
+  });
+
+  // Fallback for older orders that have no statusHistory recorded but are
+  // no longer pending — surface the current status as one step.
+  if (history.length === 0 && order.status && order.status !== "pending") {
+    events.push({
+      key: "status-current",
+      at: order.updatedAt || order.createdAt,
+      title: STATUS_STEP_LABELS[order.status] || order.status,
+      reached: true,
+      tone: NEGATIVE_STATUSES.has(order.status) ? "cancelled" : undefined,
+    });
+  }
+
+  // 3. Live courier updates
+  const courierLabel = getCourierLabel(shipment.courier, courierLabels);
+  (shipment.trackingEvents || [])
+    .filter((e) => e.source === "courier" && e.message)
+    .forEach((ev, i) => {
+      events.push({
         key: `courier-${i}-${ev.at}`,
+        at: ev.at,
         title: ev.message,
-        subtitle: fmtDateTime(ev.at),
+        note: courierLabel,
         reached: true,
-      }));
-  }
-
-  const steps = [
-    {
-      key: "placed",
-      title: "Order Placed",
-      subtitle: fmtDateTime(order.createdAt),
-      reached: true,
-    },
-  ];
-
-  if (order.status === "cancelled") {
-    steps.push({
-      key: "cancelled",
-      title: "Order Cancelled",
-      subtitle: "This order was cancelled",
-      reached: true,
-      tone: "cancelled",
+      });
     });
-    return steps;
-  }
 
-  if (shipment.trackingUrl || shipment.trackingId) {
-    steps.push({
-      key: "awaiting-sync",
-      title: "Tracking link saved",
-      subtitle: shipment.courierStatus
-        ? `Latest: ${shipment.courierStatus}`
-        : "Courier updates will appear here automatically",
-      reached: Boolean(shipment.courierStatus),
-    });
-  }
+  // Sort oldest → newest, then attach a formatted timestamp subtitle
+  events.sort((a, b) => new Date(a.at || 0) - new Date(b.at || 0));
 
-  if (order.status === "delivered") {
-    steps.push({
-      key: "delivered",
-      title: "Delivered",
-      subtitle: fmtDateTime(shipment.deliveredAt) || "Package delivered",
-      reached: true,
-    });
-  }
-
-  return steps;
+  return events.map((ev) => ({
+    ...ev,
+    subtitle: [ev.note, fmtDateTime(ev.at)].filter(Boolean).join(" · "),
+  }));
 }
 
 export default function OrderTrackingTimeline({ order, courierLabels = {} }) {
-  const steps = buildCourierTimeline(order);
+  const steps = buildCourierTimeline(order, courierLabels);
   const shipment = order.shipment || {};
   const trackingUrl = shipment.trackingUrl;
   const courierLabel = getCourierLabel(shipment.courier, courierLabels);

@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 
-const WebsiteLogo = ({ className = "h-7 mb-0 object-contain" }) => {
+const WebsiteLogo = ({ className = "h-10 mb-0 object-contain" }) => {
   const { logoUrl, storeName } = useStoreSettings();
 
   if (!logoUrl) return null;

@@ -415,18 +415,18 @@ export default function Navbar() {
 
   return (
     <header className="relative bg-transparent z-50 work-sans">
-      <div className="flex items-center justify-between max-w-7xl md:px-3  lg:px-4 mx-auto h-14 md:h-16">
+      <div className="flex items-center justify-between max-w-7xl md:px-3  lg:px-4 mx-auto h-12 md:h-14">
         {/* Left: hamburger (mobile) + logo */}
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => setCatSidebarOpen((v) => !v)}
-            className="p-2 text-gray-800 hover:text-[#1D1D1F] lg:hidden"
+            className="px-2 text-gray-800 hover:text-[#1D1D1F] lg:hidden"
             aria-label="Categories"
             title="Categories"
           >
             <svg
-              width="20"
-              height="20"
+              width="30"
+              height="30"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
