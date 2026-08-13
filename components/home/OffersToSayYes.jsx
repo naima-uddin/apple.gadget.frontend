@@ -293,7 +293,7 @@ export default function OffersToSayYes() {
       />
 
       {/* ── Mobile slider: one card at a time (hidden on md+) ── */}
-      <div className="relative md:hidden px-3 -mt-2">
+      <div className="relative md:hidden px-3 -mt-2 md:mt-0">
         {/* Sliding track */}
         <div className="overflow-hidden">
           <div

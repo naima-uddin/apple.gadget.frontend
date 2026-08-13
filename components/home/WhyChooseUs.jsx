@@ -86,7 +86,7 @@ export default function WhyChooseUs() {
 
         {/* White card: image left, content right */}
         <div
-          className={`bg-white border border-gray-100 rounded-3xl shadow- grid grid-cols-1 gap-6 md:gap-8 items-stretch ${
+          className={`bg-white border border-gray-100 rounded-3xl shadow- grid grid-cols-1 gap-4 md:gap-6 items-stretch ${
             hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
           }`}
         >
