@@ -282,7 +282,7 @@ export default function OffersToSayYes() {
     t("offers.title_rest");
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-1 md:px-2 lg:px-3 py-4 md:py-8">
+    <div className="w-full max-w-7xl mx-auto px-1 md:px-2 lg:px-3 py-4 md:py-4">
       {/* Header */}
       <SectionHeader
         title={
@@ -293,7 +293,7 @@ export default function OffersToSayYes() {
       />
 
       {/* ── Mobile slider: one card at a time (hidden on md+) ── */}
-      <div className="relative md:hidden px-3">
+      <div className="relative md:hidden px-3 -mt-2">
         {/* Sliding track */}
         <div className="overflow-hidden">
           <div
