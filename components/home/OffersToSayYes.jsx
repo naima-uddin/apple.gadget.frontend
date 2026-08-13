@@ -111,10 +111,10 @@ function OfferCard({ offer }) {
         aria-hidden="true"
       />
 
-      <article className="relative flex h-full min-h-42 overflow-hidden rounded-2xl shadow-[0_12px_30px_-14px_rgba(0,0,0,0.5)] ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-1">
+      <article className="relative flex h-full min-h-36 sm:min-h-42 overflow-hidden rounded-2xl shadow-[0_12px_30px_-14px_rgba(0,0,0,0.5)] ring-1 ring-black/5 transition-transform duration-300 group-hover:-translate-y-1">
         {/* ── Ticket body ── */}
         <div
-          className="relative flex flex-1 flex-col justify-between gap-3 p-5 sm:p-6"
+          className="relative flex flex-1 flex-col justify-between gap-2.5 p-4 sm:gap-3 sm:p-6"
           style={{ backgroundColor: bg, color: text }}
         >
           {/* subtle depth highlight */}
@@ -129,13 +129,13 @@ function OfferCard({ offer }) {
             aria-hidden="true"
           />
 
-          <div className="relative flex items-start gap-3.5">
+          <div className="relative flex items-start gap-3 sm:gap-3.5">
             {offer.image?.url && (
               <img
                 src={offer.image.url}
                 alt=""
                 loading="lazy"
-                className="h-16 w-16 shrink-0 object-contain drop-shadow-sm sm:h-[72px] sm:w-[72px]"
+                className="h-12 w-12 shrink-0 object-contain drop-shadow-sm sm:h-[72px] sm:w-[72px]"
               />
             )}
             <div className="min-w-0">
@@ -145,7 +145,7 @@ function OfferCard({ offer }) {
               >
                 {couponLabel}
               </span>
-              <h3 className="mt-1.5 text-[22px] font-extrabold uppercase leading-[1.05] tracking-tight sm:text-2xl">
+              <h3 className="mt-1 text-lg font-extrabold uppercase leading-[1.05] tracking-tight sm:mt-1.5 sm:text-2xl">
                 {offer.highlight}
                 {offer.highlightSecondary && (
                   <>
@@ -182,7 +182,7 @@ function OfferCard({ offer }) {
 
         {/* ── Tear-off stub (two-tone, accent panel) ── */}
         <div
-          className="relative flex w-23 shrink-0 flex-col items-center justify-center gap-1 border-l-2 border-dashed px-2 text-center sm:w-26"
+          className="relative flex w-20 shrink-0 flex-col items-center justify-center gap-1 border-l-2 border-dashed px-2 text-center sm:w-26"
           style={{
             backgroundColor: accent,
             color: stubInk,
@@ -201,7 +201,7 @@ function OfferCard({ offer }) {
 
           {badge ? (
             <>
-              <div className="text-[28px] font-black leading-none tracking-tight sm:text-3xl">
+              <div className="text-2xl font-black leading-none tracking-tight sm:text-3xl">
                 {badge.big}
               </div>
               {badge.small && (

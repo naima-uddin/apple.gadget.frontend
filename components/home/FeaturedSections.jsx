@@ -67,7 +67,7 @@ export function FeaturedSlider({ products }) {
       {maxIndex > 0 && (
         <button
           onClick={() => go(-1)}
-          className="absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#1D1D1F] hover:text-white transition sm:-translate-x-4"
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:-translate-x-4 z-10 w-7 h-7 sm:w-8 sm:h-8 text-base leading-none bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#1D1D1F] hover:text-white transition"
           aria-label="Previous"
         >
           ‹
@@ -101,7 +101,7 @@ export function FeaturedSlider({ products }) {
       {maxIndex > 0 && (
         <button
           onClick={() => go(1)}
-          className="absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#1D1D1F] hover:text-white transition sm:translate-x-4"
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 sm:translate-x-4 z-10 w-7 h-7 sm:w-8 sm:h-8 text-base leading-none bg-white shadow-md rounded-full flex items-center justify-center text-gray-600 hover:bg-[#1D1D1F] hover:text-white transition"
           aria-label="Next"
         >
           ›
@@ -155,7 +155,7 @@ export default function FeaturedSections() {
     <section className="w-full py-4 space-y-6 md:space-y-8 bg-white">
       {sections.map((sec) => (
         <div key={sec._id} className="w-full bg-[#f7f5ff] py-6 md:py-8">
-          <div className="max-w-7xl mx-auto px-2">
+          <div className="max-w-7xl mx-auto px-0.5 sm:px-2">
             {/* Section header */}
             <SectionHeader
               title={lang === "bn" ? sec.titleBn || sec.title : sec.title}
