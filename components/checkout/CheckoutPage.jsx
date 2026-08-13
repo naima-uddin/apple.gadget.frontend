@@ -349,7 +349,10 @@ export default function CheckoutPage() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const resp = await fetch("/api/locations");
+        // Trailing slash matches next.config `trailingSlash: true`;
+        // without it the request 308-redirects and the fetch can come back
+        // empty on static/cPanel hosting, leaving the city list blank.
+        const resp = await fetch("/api/locations/");
         const json = await resp.json();
         setLocationData(json.locationData || {});
         const cityList = json.locationData
