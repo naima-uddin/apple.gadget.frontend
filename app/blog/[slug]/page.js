@@ -1,4 +1,7 @@
 import BlogPageClient from "./PageClient";
+import JsonLd from "@/components/seo/JsonLd";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seoSchema";
+import { getStoreName } from "@/lib/storeMeta";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://applebd.com";
@@ -76,6 +79,35 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
-  return <BlogPageClient />;
+export default async function Page({ params }) {
+  const { slug } = await params;
+  let schemas = [];
+
+  if (slug !== "__placeholder__") {
+    try {
+      const [res, storeName] = await Promise.all([
+        fetch(`${API}/api/blog/${slug}`, { cache: "force-cache" }),
+        getStoreName(),
+      ]);
+      if (res.ok) {
+        const { post } = await res.json();
+        const url = `${SITE_URL}/blog/${slug}`;
+        schemas = [
+          articleJsonLd(post, { url, storeName }),
+          breadcrumbJsonLd([
+            { name: "Home", url: SITE_URL },
+            { name: "Blog", url: `${SITE_URL}/blog` },
+            { name: post?.title, url },
+          ]),
+        ];
+      }
+    } catch {}
+  }
+
+  return (
+    <>
+      <JsonLd data={schemas} />
+      <BlogPageClient />
+    </>
+  );
 }

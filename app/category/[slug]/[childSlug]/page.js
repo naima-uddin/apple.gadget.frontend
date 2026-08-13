@@ -92,6 +92,45 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export default function Page() {
-  return <ChildCategoryPageWrapper />;
+export default async function Page({ params }) {
+  const { slug, childSlug } = await params;
+  let schemas = [];
+
+  if (childSlug !== "__placeholder__") {
+    try {
+      const res = await fetch(`${API}/api/products/categories`, {
+        next: { revalidate: 60 },
+      });
+      if (res.ok) {
+        const { categories = [] } = await res.json();
+        const all = flattenCategories(categories);
+        const parent = all.find((c) => c.slug === slug);
+        const category = all.find((c) => c.slug === childSlug);
+        if (category) {
+          const url = `${SITE_URL}/category/${slug}/${childSlug}`;
+          schemas = [
+            collectionJsonLd({
+              name: category.name,
+              description: category.description,
+              url,
+            }),
+            breadcrumbJsonLd([
+              { name: "Home", url: SITE_URL },
+              ...(parent
+                ? [{ name: parent.name, url: `${SITE_URL}/category/${slug}` }]
+                : []),
+              { name: category.name, url },
+            ]),
+          ];
+        }
+      }
+    } catch {}
+  }
+
+  return (
+    <>
+      <JsonLd data={schemas} />
+      <ChildCategoryPageWrapper />
+    </>
+  );
 }

@@ -16,7 +16,17 @@ export async function generateMetadata() {
       description:
         "Authentic gadgets, electronics & smart accessories. Free shipping on ৳999+. Fast delivery across Bangladesh.",
       url: SITE_URL,
+      siteName: storeName,
+      locale: "bn_BD",
       type: "website",
+      images: [`${SITE_URL}/mainLogo.png`],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${storeName} — Gadgets & Electronics Online Shop in Bangladesh`,
+      description:
+        "Authentic gadgets, electronics & smart accessories. Best prices, fast delivery across Bangladesh.",
+      images: [`${SITE_URL}/mainLogo.png`],
     },
   };
 }
