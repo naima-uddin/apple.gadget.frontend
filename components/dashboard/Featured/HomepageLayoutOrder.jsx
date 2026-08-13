@@ -63,9 +63,9 @@ export default function HomepageLayoutOrder() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
+    <div className="max-w-4xl mx-auto bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
           Homepage Section Order
         </h1>
         <p className="text-sm text-gray-500 mt-0.5">

@@ -102,11 +102,11 @@ export default function FeaturedSectionsList() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
+    <div className="max-w-4xl mx-auto bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
             Featured Sections
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
@@ -115,16 +115,16 @@ export default function FeaturedSectionsList() {
             appears on the homepage.
           </p>
         </div>
-        <div className="flex gap-2 shrink-0">
+        <div className="flex flex-col sm:flex-row gap-2 sm:shrink-0">
           <button
             onClick={() => setView("create")}
-            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm whitespace-nowrap"
           >
             + Product Section
           </button>
           <button
             onClick={() => setView("create-video")}
-            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm"
+            className="px-4 py-2 bg-[#1D1D1F] text-white rounded-xl font-semibold hover:bg-black transition-colors text-sm whitespace-nowrap"
           >
             + Video Carousel
           </button>
@@ -145,7 +145,7 @@ export default function FeaturedSectionsList() {
           {sections.map((sec) => (
             <li
               key={sec._id}
-              className="bg-white border rounded-2xl p-4 flex items-center gap-4 shadow-sm"
+              className="bg-white border rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 shadow-sm"
             >
               {/* Info */}
               <div className="flex-1 min-w-0">
@@ -157,7 +157,7 @@ export default function FeaturedSectionsList() {
                   )}
                   {sec.type === "video" ? sec.subtitle || sec.title : sec.title}
                 </p>
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-xs text-gray-400 mt-0.5 break-words">
                   {sec.type === "video" ? (
                     `${sec.videos?.length || 0} video${(sec.videos?.length || 0) !== 1 ? "s" : ""} · ${sec.videos?.filter((v) => v.productId).length || 0} linked product${(sec.videos?.filter((v) => v.productId).length || 0) !== 1 ? "s" : ""}`
                   ) : (
@@ -170,7 +170,7 @@ export default function FeaturedSectionsList() {
                       {" · "}
                       <a
                         href={sec.viewAllLink}
-                        className="text-blue-400 hover:underline"
+                        className="text-blue-400 hover:underline break-all"
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -181,15 +181,17 @@ export default function FeaturedSectionsList() {
                 </p>
               </div>
 
-              {/* Active toggle */}
-              <Toggle
-                checked={sec.isActive}
-                onChange={() => handleToggleActive(sec)}
-                label={sec.title || "Featured section"}
-              />
+              {/* Controls */}
+              <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0">
+                {/* Active toggle */}
+                <Toggle
+                  checked={sec.isActive}
+                  onChange={() => handleToggleActive(sec)}
+                  label={sec.title || "Featured section"}
+                />
 
-              {/* Edit / Delete */}
-              <div className="flex gap-2 shrink-0">
+                {/* Edit / Delete */}
+                <div className="flex gap-2 shrink-0">
                 <button
                   onClick={() => {
                     setEditId(sec._id);
@@ -209,6 +211,7 @@ export default function FeaturedSectionsList() {
                     {deleting === sec._id ? "…" : "Delete"}
                   </button>
                 )}
+                </div>
               </div>
             </li>
           ))}
