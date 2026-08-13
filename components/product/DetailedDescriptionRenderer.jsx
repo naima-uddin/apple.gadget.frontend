@@ -9,6 +9,102 @@ const normalizeBlocks = (value) => {
   return [];
 };
 
+/* Side-by-side image row: grid on desktop, one-at-a-time carousel on mobile */
+function ImageRow({ block, onPreview }) {
+  const imgs = (block.images || []).filter((img) => img?.url);
+  const [current, setCurrent] = useState(0);
+
+  if (!imgs.length) return null;
+
+  const cols = block.cols || imgs.length;
+  const gridClass =
+    cols <= 1
+      ? "sm:grid-cols-1"
+      : cols === 2
+        ? "sm:grid-cols-2"
+        : cols === 3
+          ? "sm:grid-cols-3"
+          : "sm:grid-cols-4";
+
+  const total = imgs.length;
+  const go = (dir) => setCurrent((prev) => (prev + dir + total) % total);
+
+  return (
+    <div className="py-1">
+      {/* Desktop / tablet: full grid */}
+      <div className={`hidden sm:grid gap-1 ${gridClass}`}>
+        {imgs.map((img, idx) => (
+          <div
+            key={idx}
+            className="h-64 overflow-hidden cursor-zoom-in"
+            onClick={() => onPreview(img.url)}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={img.url}
+              alt={img.alt || ""}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile: one image + arrows */}
+      <div className="sm:hidden relative">
+        <div
+          className="w-full overflow-hidden cursor-zoom-in"
+          onClick={() => onPreview(imgs[current].url)}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imgs[current].url}
+            alt={imgs[current].alt || ""}
+            className="w-full h-auto object-cover"
+            loading="lazy"
+          />
+        </div>
+
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              aria-label="Previous image"
+              onClick={() => go(-1)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-black/50 text-white text-xl leading-none hover:bg-black/70"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              aria-label="Next image"
+              onClick={() => go(1)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center rounded-full bg-black/50 text-white text-xl leading-none hover:bg-black/70"
+            >
+              ›
+            </button>
+
+            {/* Dots */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {imgs.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  aria-label={`Go to image ${idx + 1}`}
+                  onClick={() => setCurrent(idx)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    idx === current ? "bg-white" : "bg-white/50"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function DetailedDescriptionRenderer({ value }) {
   const blocks = normalizeBlocks(value);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -66,38 +162,12 @@ export default function DetailedDescriptionRenderer({ value }) {
 
           /* ── Side-by-side images ── */
           if (block.type === "image-row") {
-            const imgs = (block.images || []).filter((img) => img?.url);
-            if (!imgs.length) return null;
-            const cols = block.cols || imgs.length;
-            const gridClass =
-              cols <= 1
-                ? "grid-cols-1"
-                : cols === 2
-                  ? "grid-cols-2"
-                  : cols === 3
-                    ? "grid-cols-3"
-                    : "grid-cols-4";
             return (
-              <div
+              <ImageRow
                 key={block.id || i}
-                className={`grid gap-1 ${gridClass} py-1`}
-              >
-                {imgs.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="h-64 overflow-hidden cursor-zoom-in"
-                    onClick={() => setPreviewUrl(img.url)}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={img.url}
-                      alt={img.alt || ""}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
+                block={block}
+                onPreview={setPreviewUrl}
+              />
             );
           }
 
