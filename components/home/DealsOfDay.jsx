@@ -212,7 +212,7 @@ export default function DealsOfDay() {
                 </div>
 
                 {/* Thumbnail Gallery */}
-                <div className="grid grid-cols-5 gap-2">
+                <div className="grid grid-cols-6 gap-2 -mt-2">
                   {productImages.map((img, index) => (
                     <button
                       key={index}
@@ -327,7 +327,7 @@ export default function DealsOfDay() {
                     <>
                       <button
                         disabled
-                        className="flex-none bg-gray-100 text-red-500 py-3 px-4 rounded-lg text-sm font-medium cursor-not-allowed whitespace-nowrap"
+                        className="flex-none bg-gray-200 text-red-500 py-3 px-4 rounded-lg text-sm font-medium cursor-not-allowed whitespace-nowrap"
                       >
                         {t("home.out_of_stock")}
                       </button>

@@ -23,7 +23,7 @@ function Tile({ tile, big = false, className = "", delay = 0 }) {
         alt={tile.label || "Category"}
         fill
         sizes={big ? "(max-width: 768px) 100vw, 30vw" : "25vw"}
-        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+        className="object-contain transition-transform duration-700 ease-out group-hover:scale-110"
       />
       {/* soft sheen sweeping across on hover */}
       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-out pointer-events-none" />
