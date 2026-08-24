@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import WebsiteLogo from "@/components/ui/WebsiteLogo";
 import AuthModal from "@/components/auth/AuthModal";
 
@@ -13,7 +12,6 @@ import { usePathname } from "next/navigation";
 import SearchBox from "@/components/ui/SearchBox";
 import CategorySidebar from "../home/CategorySidebar";
 import { useLanguage } from "@/components/context/LanguageContext";
-import { useCategories } from "@/components/context/CategoryContext";
 
 function CountBadge({ count }) {
   if (!count) return null;
@@ -367,23 +365,12 @@ function ProfileMenu() {
 
 export default function Navbar() {
   const { getCartCount, toggleSidebar } = useCart();
-  const { lang, t } = useLanguage();
-  const { categories, subcategories } = useCategories();
+  const { t } = useLanguage();
   const pathname = usePathname() || "/";
   const [searchOpen, setSearchOpen] = useState(false);
   const [catSidebarOpen, setCatSidebarOpen] = useState(false);
-  const [shopOpen, setShopOpen] = useState(false);
-  const [activeShopCat, setActiveShopCat] = useState(null);
   const searchRef = useRef(null);
   const searchIconRef = useRef(null);
-
-  const openShopMenu = () => {
-    setShopOpen(true);
-    const firstWithSubs = (categories || []).find(
-      (c) => (subcategories[c._id] || []).length > 0,
-    );
-    setActiveShopCat(firstWithSubs ? firstWithSubs._id : null);
-  };
 
   // close search overlay when clicking outside
   React.useEffect(() => {
@@ -404,7 +391,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/", label: t("nav.home") },
-    { href: "/products", label: t("nav.shop"), dropdown: true },
+    { href: "/products", label: t("nav.all_products") },
     { href: "/about", label: t("nav.about") },
     { href: "/blog", label: t("nav.blogs") },
     { href: "/contact", label: t("nav.contact") },
@@ -445,156 +432,19 @@ export default function Navbar() {
 
         {/* Center: nav links (desktop) */}
         <nav className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) =>
-            link.dropdown ? (
-              <div
-                key={link.href}
-                className="relative"
-                onMouseEnter={openShopMenu}
-                onMouseLeave={() => setShopOpen(false)}
-              >
-                <Link
-                  href={link.href}
-                  className={`flex items-center gap-1 text-sm font-medium transition-colors ${
-                    isActive(link.href)
-                      ? "text-[#1D1D1F]"
-                      : "text-gray-800 hover:text-[#1D1D1F]"
-                  }`}
-                >
-                  {link.label}
-                  <svg
-                    className={`w-3.5 h-3.5 transition-transform ${shopOpen ? "rotate-180" : ""}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </Link>
-
-                {/* Shop mega dropdown */}
-                {shopOpen && (
-                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-50">
-                    <div className="flex bg-white border border-gray-100 rounded-2xl shadow-xl overflow-hidden">
-                      {/* Categories column */}
-                      <div className="w-56 py-2 border-r border-gray-100 shrink-0">
-                        <Link
-                          href="/products"
-                          onClick={() => setShopOpen(false)}
-                          className="block px-4 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-100 hover:text-[#1D1D1F] transition-colors"
-                        >
-                          {t("nav.all_products")}
-                        </Link>
-                        <div className="my-1 border-t border-gray-100" />
-                        <div className="max-h-[60vh] overflow-y-auto">
-                          {(categories || []).map((c) => {
-                            const slug =
-                              c.slug || (c.name || "").replace(/\s+/g, "-");
-                            const subs = subcategories[c._id] || [];
-                            const isActive = activeShopCat === c._id;
-                            return (
-                              <Link
-                                key={c._id}
-                                href={`/category/${slug}/`}
-                                onClick={() => setShopOpen(false)}
-                                onMouseEnter={() => setActiveShopCat(c._id)}
-                                className={`flex items-center justify-between gap-2 px-4 py-2 text-sm transition-colors ${
-                                  isActive
-                                    ? "bg-gray-100 text-[#1D1D1F] font-medium"
-                                    : "text-gray-700 hover:bg-gray-100 hover:text-[#1D1D1F]"
-                                }`}
-                              >
-                                <span className="truncate">
-                                  {lang === "bn" ? c.nameBn || c.name : c.name}
-                                </span>
-                                {subs.length > 0 && (
-                                  <svg
-                                    className="w-3.5 h-3.5 shrink-0"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M9 5l7 7-7 7"
-                                    />
-                                  </svg>
-                                )}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      {/* Subcategories panel — name + image */}
-                      {activeShopCat &&
-                        (subcategories[activeShopCat] || []).length > 0 &&
-                        (() => {
-                          const activeCat = (categories || []).find(
-                            (c) => c._id === activeShopCat,
-                          );
-                          const activeSlug =
-                            activeCat?.slug ||
-                            (activeCat?.name || "").replace(/\s+/g, "-");
-                          const subs = subcategories[activeShopCat] || [];
-                          return (
-                            <div className="w-105 max-h-[60vh] overflow-y-auto p-4">
-                              <div className="grid grid-cols-3 gap-3">
-                                {subs.map((sub) => (
-                                  <Link
-                                    key={sub._id}
-                                    href={`/category/${activeSlug}/${sub.slug}/`}
-                                    onClick={() => setShopOpen(false)}
-                                    className="flex flex-col items-center gap-1.5 group"
-                                  >
-                                    <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 group-hover:border-[#1D1D1F] transition-colors flex items-center justify-center">
-                                      {sub.images && sub.images[0]?.url ? (
-                                        <Image
-                                          src={sub.images[0].url}
-                                          alt={sub.name}
-                                          fill
-                                          className="object-cover"
-                                        />
-                                      ) : (
-                                        <span className="text-2xl">📦</span>
-                                      )}
-                                    </div>
-                                    <span className="text-xs text-center text-gray-700 group-hover:text-[#1D1D1F] transition-colors line-clamp-2">
-                                      {lang === "bn"
-                                        ? sub.nameBn || sub.name
-                                        : sub.name}
-                                    </span>
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          );
-                        })()}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(link.href)
-                    ? "text-[#1D1D1F]"
-                    : "text-gray-800 hover:text-[#1D1D1F]"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ),
-          )}
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`text-sm font-medium transition-colors ${
+                isActive(link.href)
+                  ? "text-[#1D1D1F]"
+                  : "text-gray-800 hover:text-[#1D1D1F]"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Right: actions */}
