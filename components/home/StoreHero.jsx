@@ -82,7 +82,7 @@ export default function StoreHero({ className = "" }) {
         <div className={heading || subheading || overflowing ? "mt-6" : ""}>
           <div
             ref={rowRef}
-            className="flex flex-wrap justify-start gap-x-8 sm:gap-x-10 gap-y-8 overflow-hidden"
+            className="flex flex-wrap justify-center gap-x-8 sm:gap-x-10 gap-y-8 overflow-hidden"
             style={collapsed && rowH ? { maxHeight: rowH } : undefined}
           >
             {items.map((item, i) => (
