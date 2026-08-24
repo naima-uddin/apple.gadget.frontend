@@ -80,7 +80,10 @@ export default function ProductsList() {
           : "";
       const trashParam = viewTrash ? "&trashed=true" : "";
       const q = `${API}/api/admin/products?limit=${LIMIT}&page=${page}&q=${encodeURIComponent(query || "")}${catParam ? `&categoryId=${encodeURIComponent(catParam)}` : ""}${statusParam}${trashParam}`;
-      const resp = await fetch(q, { credentials: "include" });
+      const resp = await fetch(q, {
+        credentials: "include",
+        cache: "no-store",
+      });
       const body = await resp.json();
       if (resp.ok) {
         setItems(body.items || []);

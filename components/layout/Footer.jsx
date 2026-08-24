@@ -125,38 +125,84 @@ export default function Footer() {
     },
   ].filter((s) => s.url);
 
-  // Brand column (1.5fr) + N nav columns (1fr) + optional Social column (1fr)
-  const gridTemplate = `1.5fr ${Array(navCount + (socials.length ? 1 : 0))
-    .fill("1fr")
-    .join(" ")}`;
+  // Brand column (1.5fr) + N nav columns (1fr). Socials now render as an
+  // icon row inside the brand column, so they no longer consume a grid column.
+  const gridTemplate = `1.5fr ${Array(navCount).fill("1fr").join(" ")}`;
 
   return (
     <>
-      <footer role="contentinfo" className="bg-[#0A0A0A] text-white">
-        <div className="max-w-7xl mx-auto px-5 py-10 md:py-16">
+      <footer role="contentinfo" className="relative bg-[#0A0A0A] text-white overflow-hidden">
+        {/* Oversized brand watermark — absolute so it adds no height */}
+        {displayLogoUrl && (
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-8 max-w-7xl mx-auto px-5 overflow-hidden flex justify-center"
+            aria-hidden="true"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={displayLogoUrl}
+              alt=""
+              className="w-auto max-w-full h-16 sm:h-24 lg:h-32 object-contain object-center opacity-[0.05] grayscale select-none"
+            />
+          </div>
+        )}
+        <div className="relative max-w-7xl mx-auto px-5 py-10 md:py-12">
           <div
             style={{ "--footer-cols": gridTemplate }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-8 lg:gap-x-10 lg:grid-cols-(--footer-cols)"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-8 lg:gap-x-12 lg:grid-cols-(--footer-cols)"
           >
             {/* Brand */}
-            <div>
-              <div className="flex items-center mb-3 sm:mb-4">
+            <div className="sm:col-span-2 lg:col-span-1">
+              <div className="flex items-center mb-4 -mt-4">
                 {displayLogoUrl && (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
                     src={displayLogoUrl}
                     alt={storeName || "Store logo"}
-                    className="h-7 w-auto max-w-[140px] object-contain object-left"
+                    className="h-14 w-auto max-w-[150px] object-contain object-left"
                   />
                 )}
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed max-w-72 mb-5">
+              <p className="text-sm text-gray-400 leading-relaxed max-w-xs mb-6">
+                {storeName ? `${storeName} ` : ""}
                 {t("footer.store_desc")}
               </p>
-              <ul className="space-y-2 text-sm text-gray-400 wrap-break-word">
-                {footerInfo?.address && <li>{footerInfo.address}</li>}
+              <ul className="space-y-3 text-sm text-gray-400 wrap-break-word">
+                {footerInfo?.address && (
+                  <li className="flex items-start gap-2.5">
+                    <svg
+                      className="mt-0.5 shrink-0 text-gray-500"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <span>{footerInfo.address}</span>
+                  </li>
+                )}
                 {footerInfo?.email && (
-                  <li className="break-all">
+                  <li className="flex items-start gap-2.5 break-all">
+                    <svg
+                      className="mt-0.5 shrink-0 text-gray-500"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="2" y="4" width="20" height="16" rx="2" />
+                      <path d="m22 7-10 6L2 7" />
+                    </svg>
                     <a
                       href={`mailto:${footerInfo.email}`}
                       className="hover:text-white transition-colors"
@@ -166,7 +212,20 @@ export default function Footer() {
                   </li>
                 )}
                 {footerInfo?.phone && (
-                  <li>
+                  <li className="flex items-start gap-2.5">
+                    <svg
+                      className="mt-0.5 shrink-0 text-gray-500"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
                     <a
                       href={`tel:${footerInfo.phone}`}
                       className="hover:text-white transition-colors"
@@ -176,13 +235,39 @@ export default function Footer() {
                   </li>
                 )}
               </ul>
+
+              {/* Social icons */}
+              {socials.length > 0 && (
+                <div className="mt-7">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                    {t("footer.follow_us")}
+                  </h4>
+                  <div className="flex flex-wrap gap-2.5">
+                    {socials.map((s) => (
+                      <a
+                        key={s.key}
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={s.label}
+                        title={s.label}
+                        className="flex items-center justify-center w-9 h-9 rounded-full bg-white/5 border border-white/10 text-gray-300 hover:bg-white hover:text-[#0A0A0A] hover:border-white transition-colors"
+                      >
+                        {s.icon}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {useDynamicColumns ? (
               /* Admin-configured navigation columns */
               navColumns.map((col, ci) => (
                 <div key={ci}>
-                  <h4 className="text-sm font-bold mb-4">{col.title}</h4>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">
+                    {col.title}
+                  </h4>
                   <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
                     {col.links.map((item, i) => (
                       <li key={i}>
@@ -201,7 +286,9 @@ export default function Footer() {
               <>
                 {/* Company */}
                 <div>
-                  <h4 className="text-sm font-bold mb-4">{t("footer.company")}</h4>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">
+                    {t("footer.company")}
+                  </h4>
                   <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
                     {quickLinks.map((item, i) => (
                       <li key={i}>
@@ -218,7 +305,9 @@ export default function Footer() {
 
                 {/* Product */}
                 <div>
-                  <h4 className="text-sm font-bold mb-4">{t("footer.product")}</h4>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-4">
+                    {t("footer.product")}
+                  </h4>
                   <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
                     <li>
                       <Link
@@ -266,47 +355,11 @@ export default function Footer() {
                 </div>
               </>
             )}
-
-            {/* Social */}
-            {socials.length > 0 && (
-              <div>
-                <h4 className="text-sm font-bold mb-4">
-                  {t("footer.follow_us")}
-                </h4>
-                <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
-                  {socials.map((s) => (
-                    <li key={s.key}>
-                      <a
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="hover:text-white transition-colors"
-                      >
-                        {s.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Oversized brand logo */}
-        {displayLogoUrl && (
-          <div className="max-w-7xl mx-auto px-5 overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={displayLogoUrl}
-              alt=""
-              aria-hidden="true"
-              className="w-auto max-w-full h-24 sm:h-36 lg:h-52 object-contain object-left opacity-90 select-none pointer-events-none -mb-4 sm:-mb-6 lg:-mb-10"
-            />
-          </div>
-        )}
-
         {/* Bottom bar */}
-        <div className="border-t border-white/10 py-3 sm:py-4 px-4 text-center text-xs text-gray-500 leading-relaxed">
+        <div className="relative border-t border-white/10 py-4 px-4 text-center text-xs text-gray-500 leading-relaxed">
           © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
           {t("footer.rights")}
         </div>

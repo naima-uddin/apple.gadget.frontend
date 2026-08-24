@@ -490,7 +490,10 @@ export default function ProductEdit({ productId }) {
     );
 
     setLoading(true);
-    fetch(`${API}/api/admin/products/${productId}`, { credentials: "include" })
+    fetch(`${API}/api/admin/products/${productId}`, {
+      credentials: "include",
+      cache: "no-store",
+    })
       .then((r) => {
         console.log("ProductEdit: Response status:", r.status);
         if (!r.ok) {
