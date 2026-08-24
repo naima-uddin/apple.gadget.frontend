@@ -114,7 +114,7 @@ export default function ProductHistoryModal({ product, onClose }) {
             </div>
           ) : (
             <ol className="relative border-l border-gray-200 ml-3">
-              {items.map((it) => {
+              {items.slice(0, 5).map((it) => {
                 const meta = ACTION_META[it.action] || {
                   label: it.action,
                   icon: FaHistory,
@@ -126,18 +126,8 @@ export default function ProductHistoryModal({ product, onClose }) {
                     <span className="absolute -left-3 flex items-center justify-center w-6 h-6 rounded-full ring-4 ring-white bg-gray-100 text-gray-500">
                       <Icon className="h-3 w-3" />
                     </span>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={`px-2 py-0.5 rounded-lg text-xs font-medium ${meta.cls}`}
-                      >
-                        {meta.label}
-                      </span>
-                      <span className="text-xs text-gray-400">
-                        {fmtTime(it.createdAt)}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-sm text-gray-700">
-                      by{" "}
+                    <p className="text-sm text-gray-700">
+                      {meta.label} by{" "}
                       <span className="font-medium">
                         {it.actorName || "Unknown admin"}
                       </span>
@@ -145,18 +135,6 @@ export default function ProductHistoryModal({ product, onClose }) {
                         <span className="text-gray-400"> ({it.actorEmail})</span>
                       )}
                     </p>
-                    {it.action === "update" &&
-                      Array.isArray(it.meta?.fields) &&
-                      it.meta.fields.length > 0 && (
-                        <p className="mt-0.5 text-xs text-gray-400">
-                          Changed: {it.meta.fields.join(", ")}
-                        </p>
-                      )}
-                    {it.action === "duplicate" && it.meta?.sourceTitle && (
-                      <p className="mt-0.5 text-xs text-gray-400">
-                        Copied from: {it.meta.sourceTitle}
-                      </p>
-                    )}
                   </li>
                 );
               })}
