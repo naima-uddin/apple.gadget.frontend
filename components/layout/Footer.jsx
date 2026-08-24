@@ -6,8 +6,6 @@ import { useUser } from "@/components/context/UserContext";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 import { useLanguage } from "@/components/context/LanguageContext";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-
 function normalizeHref(href) {
   if (!href) return "/";
   if (
@@ -26,40 +24,6 @@ export default function Footer() {
   const displayLogoUrl = footerLogoUrl || logoUrl;
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState(null); // 'loading' | 'success' | 'error'
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const handleFormChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    setStatus("loading");
-    setErrorMsg("");
-    const controller = new AbortController();
-    const tid = setTimeout(() => controller.abort(), 30000);
-    try {
-      const res = await fetch(`${API_URL}/api/contact`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-        signal: controller.signal,
-      });
-      clearTimeout(tid);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Something went wrong.");
-      setStatus("success");
-      setForm({ name: "", email: "", message: "" });
-    } catch (err) {
-      clearTimeout(tid);
-      setStatus("error");
-      setErrorMsg(
-        err.name === "AbortError" ? t("contact.timeout_error") : err.message,
-      );
-    }
-  };
 
   const quickLinks = footerLinks?.customerService?.length
     ? footerLinks.customerService
@@ -82,8 +46,6 @@ export default function Footer() {
     .filter((col) => col.title || col.links.length);
   const useDynamicColumns = navColumns.length > 0;
   const navCount = useDynamicColumns ? navColumns.length : 2;
-  // Brand column (1.3fr) + N nav columns (0.85fr) + contact form (1.2fr)
-  const gridTemplate = `1.3fr ${Array(navCount).fill("0.85fr").join(" ")} 1.2fr`;
 
   const socials = [
     {
@@ -163,6 +125,11 @@ export default function Footer() {
     },
   ].filter((s) => s.url);
 
+  // Brand column (1.5fr) + N nav columns (1fr) + optional Social column (1fr)
+  const gridTemplate = `1.5fr ${Array(navCount + (socials.length ? 1 : 0))
+    .fill("1fr")
+    .join(" ")}`;
+
   return (
     <>
       <footer role="contentinfo" className="bg-[#0A0A0A] text-white">
@@ -186,7 +153,7 @@ export default function Footer() {
               <p className="text-sm text-gray-400 leading-relaxed max-w-72 mb-5">
                 {t("footer.store_desc")}
               </p>
-              <ul className="space-y-2 text-sm text-gray-400 wrap-break-word mb-6">
+              <ul className="space-y-2 text-sm text-gray-400 wrap-break-word">
                 {footerInfo?.address && <li>{footerInfo.address}</li>}
                 {footerInfo?.email && (
                   <li className="break-all">
@@ -209,27 +176,6 @@ export default function Footer() {
                   </li>
                 )}
               </ul>
-              {socials.length > 0 && (
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">
-                    {t("footer.follow_us")}
-                  </p>
-                  <div className="flex items-center gap-3">
-                    {socials.map((s) => (
-                      <a
-                        key={s.key}
-                        href={s.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={s.label}
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white transition-colors"
-                      >
-                        {s.icon}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
             {useDynamicColumns ? (
@@ -321,61 +267,43 @@ export default function Footer() {
               </>
             )}
 
-            {/* Contact form */}
-            <div>
-              <h4 className="text-sm font-bold mb-4">
-                {t("footer.contact_title")}
-              </h4>
-              {status === "success" ? (
-                <div className="rounded-sm border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
-                  {t("contact.success_msg")}
-                </div>
-              ) : (
-                <form className="space-y-3" onSubmit={handleFormSubmit}>
-                  <input
-                    type="text"
-                    name="name"
-                    value={form.name}
-                    onChange={handleFormChange}
-                    required
-                    placeholder={t("footer.contact_name_ph")}
-                    className="w-full rounded-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
-                  />
-                  <input
-                    type="text"
-                    name="email"
-                    value={form.email}
-                    onChange={handleFormChange}
-                    required
-                    placeholder={t("footer.contact_email_ph")}
-                    className="w-full rounded-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30"
-                  />
-                  <textarea
-                    name="message"
-                    value={form.message}
-                    onChange={handleFormChange}
-                    required
-                    rows={4}
-                    placeholder={t("footer.contact_message_ph")}
-                    className="w-full rounded-sm border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-gray-500 outline-none transition focus:border-white/30 resize-none"
-                  />
-                  {status === "error" && (
-                    <p className="text-sm text-red-400">{errorMsg}</p>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className="w-full rounded-sm bg-white px-4 py-2.5 text-sm font-medium text-[#0A0A0A] transition hover:bg-gray-200 disabled:opacity-60"
-                  >
-                    {status === "loading"
-                      ? t("contact.sending")
-                      : t("footer.send_message")}
-                  </button>
-                </form>
-              )}
-            </div>
+            {/* Social */}
+            {socials.length > 0 && (
+              <div>
+                <h4 className="text-sm font-bold mb-4">
+                  {t("footer.follow_us")}
+                </h4>
+                <ul className="space-y-2.5 sm:space-y-3 text-sm text-gray-400">
+                  {socials.map((s) => (
+                    <li key={s.key}>
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white transition-colors"
+                      >
+                        {s.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Oversized brand logo */}
+        {displayLogoUrl && (
+          <div className="max-w-7xl mx-auto px-5 overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={displayLogoUrl}
+              alt=""
+              aria-hidden="true"
+              className="w-auto max-w-full h-24 sm:h-36 lg:h-52 object-contain object-left opacity-90 select-none pointer-events-none -mb-4 sm:-mb-6 lg:-mb-10"
+            />
+          </div>
+        )}
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 py-3 sm:py-4 px-4 text-center text-xs text-gray-500 leading-relaxed">
