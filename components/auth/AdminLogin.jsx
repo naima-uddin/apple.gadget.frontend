@@ -49,9 +49,12 @@ export default function AdminLogin() {
         throw new Error(body.error || `Server responded ${resp.status}`);
       }
 
-      await refreshUser();
+      const loggedInUser = await refreshUser();
       showMessage("Login successful — redirecting...", "success");
-      setTimeout(() => router.push("/dashboard"), 1000);
+      // Admins land on the dashboard overview; moderators go straight to products.
+      const dest =
+        loggedInUser?.role === "moderator" ? "/dashboard/products" : "/dashboard";
+      setTimeout(() => router.push(dest), 1000);
     } catch (err) {
       console.error("Admin login error:", err);
       showMessage(err.message || "Login failed");

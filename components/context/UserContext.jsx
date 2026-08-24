@@ -20,8 +20,10 @@ export const UserProvider = ({ children }) => {
       const r = await fetch(`${API}/api/auth/me`, { credentials: "include" });
       const data = await r.json();
       setUser(data.user || null);
+      return data.user || null;
     } catch (err) {
       setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }
