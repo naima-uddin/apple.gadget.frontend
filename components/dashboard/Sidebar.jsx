@@ -363,7 +363,7 @@ const SECTIONS = [
       },
       {
         key: "category-showcase",
-        label: "Category Spotlight",
+        label: "Shop By Your Preference",
         href: "/dashboard/category-showcase",
         icon: "M3 3h5v18H3V3z M10 3h4v8h-4V3z M16 3h5v18h-5V3z M10 13h4v8h-4v-8z",
         permissionKey: "content.promo",
@@ -377,7 +377,7 @@ const SECTIONS = [
       },
       {
         key: "deal-of-day",
-        label: "Daily Deals",
+        label: "Deals of the Day",
         href: "/dashboard/deal-of-day",
         icon: "M12 8V4l8 8-8 8v-4H4V8h8z",
         permissionKey: "content.promo",

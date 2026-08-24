@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Banner from "./Banner";
 import ShopByCategory from "./ShopByCategory";
 import FeaturedSections from "./FeaturedSections";
@@ -15,7 +17,8 @@ import StoreHero from "./StoreHero";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
-// Fallback order used only if the layout API is entirely unreachable — the old
+// Fallback order used only as the initial render (before the live layout
+// arrives) and if the layout API is entirely unreachable — the old
 // pre-feature static layout, with all product carousels grouped together
 // (rather than showing nothing).
 const FALLBACK_ORDER = [
@@ -33,21 +36,29 @@ const FALLBACK_ORDER = [
   "shoppableVideo",
 ].map((key, i) => ({ type: "fixed", key, order: i }));
 
-async function getHomepageLayout() {
-  try {
-    const r = await fetch(`${API}/api/homepage-layout`, {
-      next: { revalidate: 60 },
-    });
-    const d = await r.json();
-    if (Array.isArray(d.items)) return d.items;
-  } catch {
-    // fall through to the degraded fallback below
-  }
-  return FALLBACK_ORDER;
-}
+export default function Home() {
+  // Fetch the layout at runtime (client-side) so admin reordering in the
+  // dashboard reflects on the live homepage immediately on the next visit —
+  // even when the storefront is deployed as a static export, where a
+  // build-time fetch would freeze the order until the next rebuild.
+  const [layout, setLayout] = useState(FALLBACK_ORDER);
 
-export default async function Home() {
-  const layout = await getHomepageLayout();
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API}/api/homepage-layout`, { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => {
+        if (!cancelled && Array.isArray(d.items) && d.items.length) {
+          setLayout(d.items);
+        }
+      })
+      .catch(() => {
+        // keep the degraded fallback already in state
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const FIXED_MAP = {
     banner: <Banner />,
