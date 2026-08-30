@@ -115,6 +115,39 @@ function itemSummary(items) {
   return items.length === 1 ? first : `${first} +${items.length - 1} more`;
 }
 
+// Absolute date + time for abandoned cart/checkout rows, e.g.
+// "2 December 2026, 5 am" (minutes shown only when non-zero: "5:30 am").
+function fmtDateTime(date) {
+  if (!date) return "—";
+  const d = new Date(date);
+  if (Number.isNaN(d.getTime())) return "—";
+  const day = d.getDate();
+  const month = d.toLocaleString("en-US", { month: "long" });
+  const year = d.getFullYear();
+  const ampm = d.getHours() < 12 ? "am" : "pm";
+  let h = d.getHours() % 12;
+  if (h === 0) h = 12;
+  const mins = d.getMinutes();
+  const time = mins ? `${h}:${String(mins).padStart(2, "0")} ${ampm}` : `${h} ${ampm}`;
+  return `${day} ${month} ${year}, ${time}`;
+}
+
+// Latest editors of an order, newest first, de-duplicated, capped at `max`.
+// Returns e.g. ["Tanni", "Rahim"] for rendering as "by Tanni".
+function recentEditors(editedBy, max = 5) {
+  if (!Array.isArray(editedBy) || editedBy.length === 0) return [];
+  const seen = new Set();
+  const names = [];
+  for (let i = editedBy.length - 1; i >= 0; i--) {
+    const name = String(editedBy[i]?.name || "").trim();
+    if (!name || seen.has(name)) continue;
+    seen.add(name);
+    names.push(name);
+    if (names.length >= max) break;
+  }
+  return names;
+}
+
 // Returns ISO dateFrom string for a quick-filter preset
 function dateFromPreset(preset) {
   if (!preset || preset === "all") return null;
@@ -341,10 +374,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
   const [submitting, setSubmitting] = useState(false);
 
   const submit = async () => {
-    if (!reason.trim()) {
-      setError("Status update reason is required.");
-      return;
-    }
+    // Reason is optional — a status change no longer requires a note.
     setSubmitting(true);
     setError("");
     try {
@@ -399,7 +429,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
         </div>
         <div>
           <label className="block text-xs font-medium text-gray-500 mb-1">
-            Reason <span className="text-gray-800">*</span>
+            Reason <span className="text-gray-400 font-normal">(optional)</span>
           </label>
           <textarea
             autoFocus
@@ -409,7 +439,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
               setReason(e.target.value);
               setError("");
             }}
-            placeholder="Why are you changing this status? The customer can see this."
+            placeholder="Optional — the customer can see this if you add a note."
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300 resize-none"
           />
         </div>
@@ -488,6 +518,7 @@ function OrdersTable({
             <th className="px-4 py-3 font-medium">Total</th>
             <th className="px-4 py-3 font-medium">Payment</th>
             <th className="px-4 py-3 font-medium">Status</th>
+            <th className="px-4 py-3 font-medium">Edited by</th>
             <th className="px-4 py-3 font-medium">Date</th>
             <th className="px-4 py-3 font-medium">Actions</th>
           </tr>
@@ -517,6 +548,8 @@ function OrdersTable({
               <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                 <Link
                   href={`/dashboard/orders/${order._id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:bg-gray-50 hover:underline"
                 >
                   {formatOrderId(order._id)}
@@ -598,6 +631,22 @@ function OrdersTable({
                     </svg>
                   </button>
                 )}
+              </td>
+              <td className="px-4 py-3 text-xs text-gray-500 align-top">
+                {(() => {
+                  const editors = recentEditors(order.editedBy);
+                  if (editors.length === 0)
+                    return <span className="text-gray-300">—</span>;
+                  return (
+                    <div className="space-y-0.5 max-w-[9rem]">
+                      {editors.map((name, i) => (
+                        <div key={i} className="truncate" title={name}>
+                          by {name}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })()}
               </td>
               <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">
                 {fmt(order.createdAt)}
@@ -3408,11 +3457,20 @@ function AbandonedCartSection() {
                       ৳{cartValue.toLocaleString("en-BD")}
                     </td>
 
-                    {/* Time ago */}
-                    <td className="px-4 py-3 text-gray-400 text-xs whitespace-nowrap">
-                      {u.savedCart?.updatedAt
-                        ? timeAgo(u.savedCart.updatedAt)
-                        : "—"}
+                    {/* Time ago + absolute date/time */}
+                    <td className="px-4 py-3 text-xs whitespace-nowrap">
+                      {u.savedCart?.updatedAt ? (
+                        <div className="space-y-0.5">
+                          <div className="text-gray-500">
+                            {timeAgo(u.savedCart.updatedAt)}
+                          </div>
+                          <div className="text-gray-400">
+                            {fmtDateTime(u.savedCart.updatedAt)}
+                          </div>
+                        </div>
+                      ) : (
+                        "—"
+                      )}
                     </td>
 
                     {/* Delete */}
@@ -4110,10 +4168,11 @@ function AbandonCheckoutSection() {
                       ৳{itemTotal.toLocaleString("en-BD")}
                     </td>
 
-                    {/* Time ago */}
+                    {/* Time ago + absolute date/time */}
                     <td className="px-4 py-3 text-xs whitespace-nowrap">
-                      {s.createdAt
-                        ? (() => {
+                      {s.createdAt ? (
+                        <div className="space-y-0.5">
+                          {(() => {
                             const mins = Math.floor(
                               (Date.now() - new Date(s.createdAt)) / 60000,
                             );
@@ -4123,12 +4182,18 @@ function AbandonCheckoutSection() {
                                 Active
                               </span>
                             ) : (
-                              <span className="text-gray-400">
+                              <div className="text-gray-500">
                                 {timeAgo(s.createdAt)}
-                              </span>
+                              </div>
                             );
-                          })()
-                        : "—"}
+                          })()}
+                          <div className="text-gray-400">
+                            {fmtDateTime(s.createdAt)}
+                          </div>
+                        </div>
+                      ) : (
+                        "—"
+                      )}
                     </td>
 
                     {/* Delete */}

@@ -692,7 +692,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             {toPlainText(description) && (
               <div>
                 <p
-                  className={`text-[#6B7280] text-sm leading-relaxed ${
+                  className={`text-[#6B7280] text-sm leading-relaxed whitespace-pre-line ${
                     descOpen ? "" : "line-clamp-4"
                   }`}
                 >

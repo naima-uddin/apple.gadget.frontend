@@ -80,8 +80,10 @@ export default function OrderDetails({ orderId }) {
   const [editItems, setEditItems] = useState([]);
   const [editShipping, setEditShipping] = useState(0);
   const [editDiscount, setEditDiscount] = useState(0);
+  const [editSubtotal, setEditSubtotal] = useState(0);
   const [shippingEdit, setShippingEdit] = useState(false);
   const [discountEdit, setDiscountEdit] = useState(false);
+  const [subtotalEdit, setSubtotalEdit] = useState(false);
   const [statusModal, setStatusModal] = useState({
     open: false,
     status: "pending",
@@ -111,6 +113,7 @@ export default function OrderDetails({ orderId }) {
         setEditItems((d?.items || []).map((item) => ({ ...item })));
         setEditShipping(d?.shipping || 0);
         setEditDiscount(d?.discount || 0);
+        setEditSubtotal(d?.subtotal || 0);
         setStatusModal((prev) => ({ ...prev, status: d?.status || "pending" }));
       })
       .catch(() => setOrder(null))
@@ -121,14 +124,17 @@ export default function OrderDetails({ orderId }) {
     if (orderId) loadOrder();
   }, [orderId, loadOrder]);
 
-  const saveLineItems = async (items, shipping, discount) => {
+  // Send a line-items patch to the backend and sync local edit state from the
+  // saved order. `payload` may carry items/shipping/discount/subtotal — the
+  // backend recalculates the total accordingly.
+  const patchOrderAmounts = async (payload) => {
     setSaving(true);
     try {
       const r = await fetch(`${API}/api/admin/orders/${orderId}/line-items`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, shipping, discount }),
+        body: JSON.stringify(payload),
       });
       const data = await r.json();
       if (r.ok) {
@@ -136,12 +142,27 @@ export default function OrderDetails({ orderId }) {
         setEditItems((data.items || []).map((item) => ({ ...item })));
         setEditShipping(data.shipping || 0);
         setEditDiscount(data.discount || 0);
+        setEditSubtotal(data.subtotal || 0);
       } else {
         alert(data.error || "Could not save order.");
       }
     } finally {
       setSaving(false);
     }
+  };
+
+  const saveLineItems = (items, shipping, discount) =>
+    patchOrderAmounts({ items, shipping, discount });
+
+  const saveSubtotal = () => {
+    // No `items` in the payload → backend applies the subtotal override and
+    // recomputes the total from subtotal + shipping − discount.
+    patchOrderAmounts({
+      subtotal: editSubtotal,
+      shipping: editShipping,
+      discount: editDiscount,
+    });
+    setSubtotalEdit(false);
   };
 
   const updateItemQty = (index, qty) => {
@@ -215,8 +236,7 @@ export default function OrderDetails({ orderId }) {
   };
 
   const updateStatus = async () => {
-    if (!statusModal.reason.trim())
-      return alert("Status update reason is required.");
+    // Reason is optional — a status change no longer requires a note.
     setStatusModal((prev) => ({ ...prev, submitting: true }));
     try {
       const r = await fetch(`${API}/api/admin/orders/${orderId}/status`, {
@@ -493,10 +513,48 @@ export default function OrderDetails({ orderId }) {
               </span>
             </div>
             <div className="px-5 py-4 space-y-2 text-sm">
-              <div className="flex justify-between py-1.5 border-b border-gray-50">
-                <span className="text-gray-500">
-                  Original Order · {fmt(order.createdAt)}
-                </span>
+              <div className="flex justify-between items-center py-1.5 border-b border-gray-50">
+                {subtotalEdit ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500">Original Order</span>
+                    <input
+                      type="number"
+                      min={0}
+                      value={editSubtotal}
+                      onChange={(e) =>
+                        setEditSubtotal(Number(e.target.value) || 0)
+                      }
+                      className="w-24 border border-gray-200 px-2 py-1 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
+                    />
+                    <button
+                      type="button"
+                      onClick={saveSubtotal}
+                      disabled={saving}
+                      className="text-xs text-gray-800 hover:underline"
+                    >
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditSubtotal(order.subtotal || 0);
+                        setSubtotalEdit(false);
+                      }}
+                      className="text-xs text-gray-400 hover:underline"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setSubtotalEdit(true)}
+                    className="text-gray-800 hover:underline text-left"
+                    title={`Original Order · ${fmt(order.createdAt)}`}
+                  >
+                    Edit Original Order
+                  </button>
+                )}
                 <span className="font-medium">
                   ৳ {order.subtotal?.toLocaleString()}
                 </span>
