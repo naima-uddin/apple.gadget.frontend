@@ -329,12 +329,12 @@ export default function VideoCarouselEditor({
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Tagline (বাংলা)
+            Tagline (Bengali)
           </label>
           <input
             value={subtitleBn}
             onChange={(e) => setSubtitleBn(e.target.value)}
-            placeholder="ছোট ট্যাগলাইন (ঐচ্ছিক)"
+            placeholder="Short tagline (optional)"
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]"
           />
         </div>

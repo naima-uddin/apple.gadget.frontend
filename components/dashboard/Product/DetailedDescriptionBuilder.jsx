@@ -39,7 +39,7 @@ function ImageSlot({
       const file = files?.[0];
       if (!file || !file.type.startsWith("image/")) return;
       if (file.size > MAX_UPLOAD_BYTES) {
-        alert(`"${file.name}" সাইজ ${(file.size / 1024 / 1024).toFixed(1)}MB — সর্বোচ্চ ১০MB অনুমোদিত।`);
+        alert(`"${file.name}" is ${(file.size / 1024 / 1024).toFixed(1)}MB — maximum 10MB allowed.`);
         return;
       }
       setUploading(true);
@@ -199,7 +199,7 @@ function ImageRowBlock({
         alert(
           oversized
             .map((f) => `"${f.name}" (${(f.size / 1024 / 1024).toFixed(1)}MB)`)
-            .join("\n") + "\n\nসর্বোচ্চ ১০MB অনুমোদিত — এই ছবিগুলো বাদ দেওয়া হয়েছে।",
+            .join("\n") + "\n\nMaximum 10MB allowed — these images were skipped.",
         );
       }
       const fileArr = Array.from(files)

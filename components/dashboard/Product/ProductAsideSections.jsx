@@ -876,8 +876,8 @@ export default function ProductAsideSections({
               step="0.01"
             />
             <p className="mt-1 text-xs text-gray-500">
-              Customer pays this price. Always fill this — offer বা no offer
-              সবসময় এটা দিতে হবে।
+              Customer pays this price. Always fill this — offer or no offer,
+              this must always be set.
             </p>
           </div>
           <div>
@@ -897,8 +897,8 @@ export default function ProductAsideSections({
               step="0.01"
             />
             <p className="mt-1 text-xs text-gray-500">
-              Discount না থাকলে খালি রাখুন। এটা Selling Price-এর চেয়ে বেশি হলে
-              frontend-এ কাটা দাম ও % discount দেখাবে।
+              Leave empty if there's no discount. If it's higher than the Selling
+              Price, the frontend shows the struck-through price and % discount.
             </p>
           </div>
           <div>

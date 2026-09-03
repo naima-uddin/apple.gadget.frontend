@@ -805,7 +805,7 @@ function CancelledOrdersTable({
                     </span>
                   ) : (
                     <span className="text-xs text-gray-300 italic">
-                      কারণ দেওয়া হয়নি
+                      No reason given
                     </span>
                   )}
                 </td>
@@ -928,11 +928,11 @@ function FeatureGate({ icon, title, description, whatItDoes, mockRows }) {
           </svg>
           <div>
             <p className="text-sm font-semibold text-amber-800 mb-0.5">
-              এই ফিচারটি এখনো চালু হয়নি
+              This feature is not enabled yet
             </p>
             <p className="text-xs text-amber-700">
-              এই পেজে ডেটা দেখতে হলে আপনার store admin-কে এই ফিচারটি চালু করতে
-              বলুন। চালু হলে এখানে সব তথ্য দেখা যাবে।
+              To see data on this page, ask your store admin to enable this
+              feature. Once enabled, all information will appear here.
             </p>
           </div>
         </div>
@@ -940,7 +940,7 @@ function FeatureGate({ icon, title, description, whatItDoes, mockRows }) {
         {whatItDoes && (
           <div className="mt-4 max-w-md text-left">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-              এই পেজে কী দেখা যাবে
+              What you can see on this page
             </p>
             <ul className="space-y-1.5">
               {whatItDoes.map((item, i) => (
@@ -2549,7 +2549,7 @@ function CustomerNoteModal({ order, onClose }) {
               </p>
             ) : prevOrders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
-                অন্য কোনো order নেই
+                No other orders
               </p>
             ) : (
               <div className="space-y-2">
@@ -2635,7 +2635,7 @@ function CustomerNotesSection() {
   }, [page, load]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const deleteOrder = async (id) => {
-    if (!window.confirm("এই order টি মুছে ফেলবেন?")) return;
+    if (!window.confirm("Delete this order?")) return;
     setDeletingId(id);
     try {
       await fetch(`${API}/api/admin/orders/${id}`, {
@@ -2675,7 +2675,7 @@ function CustomerNotesSection() {
       <div>
         <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Customer Notes</h2>
         <p className="text-sm text-gray-500 mt-0.5">
-          {total} টি order যেখানে customer checkout-এ note দিয়েছেন
+          {total} orders where the customer left a note at checkout
         </p>
       </div>
 
@@ -2686,7 +2686,7 @@ function CustomerNotesSection() {
           </div>
         ) : orders.length === 0 ? (
           <div className="py-16 text-center text-gray-400 text-sm">
-            কোনো customer note নেই।
+            No customer notes.
           </div>
         ) : (
           <div className="divide-y divide-gray-100">
@@ -3140,7 +3140,7 @@ function AbandonedCartModal({ user, onClose }) {
           {/* Cart items */}
           <div className="px-6 py-4 border-b">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
-              Abandoned Cart ({user.savedCart?.items?.length || 0} টি পণ্য)
+              Abandoned Cart ({user.savedCart?.items?.length || 0} items)
             </p>
             <div className="space-y-2">
               {(user.savedCart?.items || []).map((item, idx) => (
@@ -3186,7 +3186,7 @@ function AbandonedCartModal({ user, onClose }) {
               ))}
             </div>
             <div className="flex justify-between items-center mt-3 pt-3 border-t">
-              <span className="text-sm text-gray-500">মোট Cart Value</span>
+              <span className="text-sm text-gray-500">Total Cart Value</span>
               <span className="font-bold text-gray-900">
                 ৳{cartValue.toLocaleString("en-BD")}
               </span>
@@ -3319,7 +3319,7 @@ function AbandonedCartSection() {
   };
 
   const deleteCart = async (userId) => {
-    if (!confirm("এই customer-এর abandoned cart delete করবেন?")) return;
+    if (!confirm("Delete this customer's abandoned cart?")) return;
     setDeletingId(userId);
     try {
       await fetch(`${API}/api/admin/abandoned-carts/${userId}/clear`, {
@@ -3345,13 +3345,13 @@ function AbandonedCartSection() {
         <div>
           <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Abandoned Carts</h2>
           <p className="text-sm text-gray-500 mt-0.5">
-            {total} জন logged-in customer পণ্য cart-এ রেখে চলে গেছেন
+            {total} logged-in customers left products in their cart
           </p>
         </div>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="নাম, ইমেইল বা ফোন দিয়ে খুঁজুন…"
+          placeholder="Search by name, email or phone…"
           className="text-sm border border-gray-200 rounded-lg px-3 py-2 w-64"
         />
       </div>
@@ -3360,9 +3360,9 @@ function AbandonedCartSection() {
       <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
         <span className="text-base mt-0.5">ℹ️</span>
         <span>
-          শুধুমাত্র <strong>account-এ login করা</strong> customer-দের abandoned
-          cart দেখা যাবে। Customer-এর নামে click করলে full details ও order
-          history দেখা যাবে, item-এ click করলে product page।
+          Only customers <strong>logged into an account</strong> have their
+          abandoned cart shown. Click a customer's name for full details and
+          order history; click an item for the product page.
         </span>
       </div>
 
@@ -3379,7 +3379,7 @@ function AbandonedCartSection() {
                 <th className="px-4 py-3 text-left">Contact</th>
                 <th className="px-4 py-3 text-left">Cart Items</th>
                 <th className="px-4 py-3 text-right">Cart Value</th>
-                <th className="px-4 py-3 text-left">কতক্ষণ আগে</th>
+                <th className="px-4 py-3 text-left">Time ago</th>
                 <th className="px-4 py-3 text-left"></th>
               </tr>
             </thead>
@@ -3440,7 +3440,7 @@ function AbandonedCartSection() {
                               />
                             )}
                             <span className="truncate">
-                              {item.title || "পণ্য"}
+                              {item.title || "Product"}
                             </span>
                             {item.quantity > 1 && (
                               <span className="text-gray-400 shrink-0">
@@ -3494,7 +3494,7 @@ function AbandonedCartSection() {
                     colSpan={7}
                     className="px-4 py-12 text-center text-gray-400"
                   >
-                    কোনো abandoned cart নেই
+                    No abandoned carts
                   </td>
                 </tr>
               )}
@@ -3687,7 +3687,7 @@ function OrderCustomerModal({ name, phone, email, userId, onClose }) {
               </p>
             ) : prevOrders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
-                কোনো আগের order নেই
+                No previous orders
               </p>
             ) : (
               <div className="space-y-2">
@@ -3853,7 +3853,7 @@ function CheckoutSessionModal({ session, onClose }) {
           {/* Abandoned cart items */}
           <div className="px-6 py-4 border-b">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
-              Abandoned Cart ({session.items?.length || 0} টি পণ্য)
+              Abandoned Cart ({session.items?.length || 0} items)
             </p>
             <div className="space-y-2">
               {(session.items || []).map((item, idx) => (
@@ -3883,7 +3883,7 @@ function CheckoutSessionModal({ session, onClose }) {
               ))}
             </div>
             <div className="flex justify-between items-center mt-3 pt-3 border-t">
-              <span className="text-sm text-gray-500">মোট Cart Value</span>
+              <span className="text-sm text-gray-500">Total Cart Value</span>
               <span className="font-bold text-gray-900">
                 ৳{itemTotal.toLocaleString("en-BD")}
               </span>
@@ -3917,7 +3917,7 @@ function CheckoutSessionModal({ session, onClose }) {
               </p>
             ) : !session.userId && !session.userPhone && !session.userEmail ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
-                Customer-এর contact info নেই — order history দেখা সম্ভব নয়
+                No contact info for this customer — order history unavailable
               </p>
             ) : orders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
@@ -3986,7 +3986,7 @@ function AbandonCheckoutSection() {
   const PAGE_SIZE = 20;
 
   const deleteSession = async (id) => {
-    if (!confirm("এই record টি delete করবেন?")) return;
+    if (!confirm("Delete this record?")) return;
     setDeletingId(id);
     try {
       await fetch(`${API}/api/admin/abandoned-checkouts/${id}`, {
@@ -4052,13 +4052,13 @@ function AbandonCheckoutSection() {
             Abandoned Checkouts
           </h2>
           <p className="text-sm text-gray-500 mt-0.5">
-            {total} জন customer checkout শুরু করে order দেননি
+            {total} customers started checkout but didn't place an order
           </p>
         </div>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="নাম, ইমেইল বা ফোন দিয়ে খুঁজুন…"
+          placeholder="Search by name, email or phone…"
           className="text-sm border border-gray-200 rounded-lg px-3 py-2 w-64"
         />
       </div>
@@ -4067,12 +4067,13 @@ function AbandonCheckoutSection() {
       <div className="flex items-start gap-2 bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-800">
         <span className="text-base mt-0.5">✓</span>
         <span>
-          Guest user-রাও এখানে track হয় — checkout page খোলার সাথে সাথে record
-          তৈরি হয়, এবং নাম ও ফোন টাইপ করলে সেই তথ্য automatically আপডেট হয়।{" "}
-          <strong>শেষ ৩০ দিনের সব incomplete sessions দেখানো হচ্ছে।</strong>{" "}
-          <span className="text-orange-600 font-medium">🟡 Active</span> মানে
-          customer এখনো checkout-এ থাকতে পারে। Customer-এর নামে click করলে full
-          details, item-এ click করলে product page।
+          Guest users are tracked here too — a record is created as soon as the
+          checkout page opens, and typing a name and phone updates that info
+          automatically.{" "}
+          <strong>Showing all incomplete sessions from the last 30 days.</strong>{" "}
+          <span className="text-orange-600 font-medium">🟡 Active</span> means
+          the customer may still be at checkout. Click a customer's name for full
+          details, click an item for the product page.
         </span>
       </div>
 
@@ -4089,7 +4090,7 @@ function AbandonCheckoutSection() {
                 <th className="px-4 py-3 text-left">Contact</th>
                 <th className="px-4 py-3 text-left">Items</th>
                 <th className="px-4 py-3 text-right">Cart Value</th>
-                <th className="px-4 py-3 text-left">কতক্ষণ আগে</th>
+                <th className="px-4 py-3 text-left">Time ago</th>
                 <th className="px-4 py-3 text-left"></th>
               </tr>
             </thead>
@@ -4151,7 +4152,7 @@ function AbandonCheckoutSection() {
                               />
                             )}
                             <span className="truncate">
-                              {item.title || "পণ্য"}
+                              {item.title || "Product"}
                             </span>
                             {item.quantity > 1 && (
                               <span className="text-gray-400 shrink-0">
@@ -4218,7 +4219,7 @@ function AbandonCheckoutSection() {
                     colSpan={7}
                     className="px-4 py-14 text-center text-gray-400"
                   >
-                    কোনো abandoned checkout নেই
+                    No abandoned checkouts
                   </td>
                 </tr>
               )}
@@ -4486,7 +4487,7 @@ function AllWishlistSection() {
   }, [load]);
 
   const deleteProduct = async (productId) => {
-    if (!window.confirm("এই পণ্যটি সব customer-এর wishlist থেকে সরিয়ে দেবেন?"))
+    if (!window.confirm("Remove this product from all customers' wishlists?"))
       return;
     setDeletingProductId(productId);
     try {
@@ -4554,7 +4555,7 @@ function AllWishlistSection() {
       <div>
         <h2 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">All Wishlists</h2>
         <p className="text-sm text-gray-500 mt-0.5">
-          {total} টি unique পণ্য customer-দের wishlist-এ আছে
+          {total} unique products are in customers' wishlists
         </p>
       </div>
 
@@ -4694,7 +4695,7 @@ function AllWishlistSection() {
                     colSpan={6}
                     className="px-4 py-12 text-center text-gray-400"
                   >
-                    কোনো wishlist data নেই
+                    No wishlist data
                   </td>
                 </tr>
               )}

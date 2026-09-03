@@ -1163,8 +1163,8 @@ export default function ProfitMarginManager() {
               ))}
             </div>
             <p className="text-gray-400 mt-1">
-              Cost price set না থাকলে margin calculate করা যাবে না। পণ্যের Edit
-              পেজে buying price, delivery charge ও packaging cost যোগ করুন।
+              Margin can't be calculated without a cost price set. Add the buying
+              price, delivery charge and packaging cost on the product's Edit page.
             </p>
           </div>
         </div>

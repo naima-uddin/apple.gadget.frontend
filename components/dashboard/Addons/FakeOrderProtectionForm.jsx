@@ -186,17 +186,17 @@ export default function FakeOrderProtectionForm() {
                   }
                   className="border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F] bg-white"
                 >
-                  <option value="minutes">মিনিট</option>
-                  <option value="hours">ঘণ্টা</option>
+                  <option value="minutes">Minutes</option>
+                  <option value="hours">Hours</option>
                 </select>
               </div>
               <p className="text-xs text-gray-400 mt-1">
-                এই সময়ের মধ্যে একই নম্বর থেকে দ্বিতীয় অর্ডার block হবে।
+                A second order from the same number within this time will be blocked.
               </p>
             </div>
             <div>
               <label className="block text-sm font-medium text-amber-600 mb-1.5">
-                Phone Number Blocklist (কমা দিয়ে আলাদা করুন)
+                Phone Number Blocklist (separate with commas)
               </label>
               <textarea
                 value={cfg.phoneOrder.blocklist}
@@ -249,17 +249,17 @@ export default function FakeOrderProtectionForm() {
                   }
                   className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
                 >
-                  <option value="minutes">মিনিট</option>
-                  <option value="hours">ঘণ্টা</option>
+                  <option value="minutes">Minutes</option>
+                  <option value="hours">Hours</option>
                 </select>
               </div>
               <p className="text-xs text-gray-400 mt-1">
-                একই IP থেকে এই সময়ের মধ্যে দ্বিতীয় অর্ডার block হবে।
+                A second order from the same IP within this time will be blocked.
               </p>
             </div>
             <div>
               <label className="block text-sm font-medium text-amber-600 mb-1.5">
-                IP Address Blocklist (কমা দিয়ে আলাদা করুন)
+                IP Address Blocklist (separate with commas)
               </label>
               <textarea
                 value={cfg.ipOrder.blocklist}
@@ -311,12 +311,12 @@ export default function FakeOrderProtectionForm() {
                 }
                 className="rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
               >
-                <option value="minutes">মিনিট</option>
-                <option value="hours">ঘণ্টা</option>
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
               </select>
             </div>
             <p className="text-xs text-gray-400 mt-1">
-              একই ডিভাইস থেকে এই সময়ের মধ্যে দ্বিতীয় অর্ডার block হবে।
+              A second order from the same device within this time will be blocked.
             </p>
           </div>
         </div>

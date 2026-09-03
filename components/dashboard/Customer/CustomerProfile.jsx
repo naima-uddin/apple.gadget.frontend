@@ -234,7 +234,7 @@ export default function CustomerProfile({ userId }) {
       {lifetime?.summary?.risk ? (
         <RiskCard
           title="Lifetime risk score"
-          subtitle="Courier panels থেকে aggregated risk"
+          subtitle="Aggregated risk from courier panels"
           risk={lifetime.summary.risk}
           percentages={{
             deliverySuccessRate: lifetime.summary?.deliverySuccessRate,
@@ -254,7 +254,7 @@ export default function CustomerProfile({ userId }) {
                 <span className="font-mono font-semibold text-gray-700">
                   {user.mobile}
                 </span>{" "}
-                দিয়ে বা এই account থেকে করা সব orders
+                or all orders made from this account
               </p>
             )}
           </div>
@@ -309,7 +309,7 @@ export default function CustomerProfile({ userId }) {
                           className={`font-mono text-xs ${phoneMismatch ? "text-amber-600 font-semibold" : "text-gray-600"}`}
                           title={
                             phoneMismatch
-                              ? "Profile mobile-এর সাথে মিলছে না"
+                              ? "Doesn't match the profile mobile"
                               : undefined
                           }
                         >
@@ -345,7 +345,7 @@ export default function CustomerProfile({ userId }) {
             AppleBD orders only
           </h2>
           <p className="text-sm text-gray-500">
-            শুধু এই সাইটে করা অর্ডারের history ও risk score।
+            History and risk score for orders placed on this site only.
           </p>
         </div>
 

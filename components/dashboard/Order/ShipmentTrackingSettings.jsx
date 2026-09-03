@@ -29,7 +29,7 @@ const CREDENTIAL_FIELDS = {
       label: "Merchant username (login email)",
       type: "text",
       secret: true,
-      placeholder: "merchant.pathao.com login email (phone নয়)",
+      placeholder: "merchant.pathao.com login email (not phone)",
     },
     {
       key: "password",
@@ -85,33 +85,33 @@ const CREDENTIAL_FIELDS = {
   ],
 };
 
-/** কোথায় পাবেন — settings page এ দেখানো হয় */
+/** Where to find them — shown on the settings page */
 const COURIER_HELP = {
   pathao: {
     summary: "Pathao merchant panel + API access",
     steps: [
-      "merchant.pathao.com এ login করুন",
-      "API access apply করুন (Developer/API section)",
-      "Client ID, Client Secret, Username, Password নিন",
-      "Store ID: Merchant panel → Stores → আপনার shop's ID",
+      "Log in at merchant.pathao.com",
+      "Apply for API access (Developer/API section)",
+      "Get your Client ID, Client Secret, Username and Password",
+      "Store ID: Merchant panel → Stores → your shop's ID",
     ],
-    storeId: "Stores মেনুতে shop list এ ID দেখাবে",
+    storeId: "The ID appears in the shop list under the Stores menu",
   },
   steadfast: {
     summary: "Steadfast merchant panel",
     steps: [
-      "steadfast.com.bd এ merchant account খুলুন এবং account active/approved আছে কিনা নিশ্চিত করুন",
-      "Parcel book: Dashboard → API → Api-Key ও Secret-Key copy করুন",
-      "Test connection balance check পাস করলেও book fail হলে — account activate করতে Steadfast support (09678-045045)",
-      "Customer lifetime check: যে email/password দিয়ে steadfast.com.bd login করেন সেটাই দিন",
+      "Open a merchant account at steadfast.com.bd and make sure the account is active/approved",
+      "Parcel book: Dashboard → API → copy the Api-Key and Secret-Key",
+      "If the test connection balance check passes but booking fails — contact Steadfast support to activate the account (09678-045045)",
+      "Customer lifetime check: use the same email/password you log in to steadfast.com.bd with",
     ],
   },
   redx: {
     summary: "RedX merchant panel",
     steps: [
-      "redx.com.bd merchant panel এ login করুন",
-      "যে phone ও password দিয়ে app/web login করেন সেটাই দিন",
-      "Book parcel's সময় delivery area order modal এ দিতে পারবেন — settings এ লাগে না",
+      "Log in to the redx.com.bd merchant panel",
+      "Use the same phone and password you log in to the app/web with",
+      "You can set the delivery area in the order modal while booking a parcel — not needed in settings",
     ],
   },
 };
@@ -181,8 +181,8 @@ function CourierManager({ couriers, onChange }) {
     <section className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm space-y-4">
       <h2 className="text-base font-semibold text-gray-800">Courier Names</h2>
       <p className="text-xs text-gray-500">
-        Names shown in order forms. API Key/Secret connect করতে উপরের
-        &quot;Merchant API connections&quot; সেকশন ব্যবহার করুন।
+        Names shown in order forms. To connect API Key/Secret, use the
+        &quot;Merchant API connections&quot; section above.
       </p>
       <div className="flex flex-wrap gap-2">
         <input
@@ -547,7 +547,7 @@ function CourierIntegrationCard({ courier, onSaved }) {
                 <div>
                   <label className="block text-xs text-gray-500 mb-1">
                     Store ID{" "}
-                    <span className="text-gray-400">(parcel book's জন্য)</span>
+                    <span className="text-gray-400">(for parcel booking)</span>
                   </label>
                   <input
                     type="number"
@@ -568,9 +568,9 @@ function CourierIntegrationCard({ courier, onSaved }) {
 
               {courier.slug === "steadfast" && (
                 <p className="text-[11px] text-gray-500">
-                  API Key + Secret Key দিয়ে parcel book এবং customer courier
-                  score দুটোই হয়। Login email/password শুধু backup (API fraud
-                  check fail হলে)।
+                  The API Key + Secret Key handle both parcel booking and the
+                  customer courier score. Login email/password is only a backup
+                  (if the API fraud check fails).
                 </p>
               )}
 
@@ -758,9 +758,10 @@ export default function ShipmentTrackingSettings() {
           Merchant API connections (Courier Connect)
         </h2>
         <p className="text-xs text-gray-500">
-          Pathao, Steadfast, RedX — API Key/Secret বা merchant login এখানে দিন।
-          Credentials encrypted থাকে। Save credentials → Test connection।
-          Customer profile এ lifetime delivery history-ও এখান থেকেই কাজ করে।
+          Pathao, Steadfast, RedX — enter the API Key/Secret or merchant login
+          here. Credentials are stored encrypted. Save credentials → Test
+          connection. The lifetime delivery history on the customer profile also
+          works from here.
         </p>
         <div className="rounded-lg bg-emerald-50 border border-emerald-100 p-3 text-xs text-emerald-900 space-y-1">
           <p className="font-semibold">
@@ -773,9 +774,9 @@ export default function ShipmentTrackingSettings() {
               : "/api/orders/webhooks/steadfast"}
           </code>
           <p>
-            Bearer token: backend <code>.env</code> এ{" "}
-            <code>STEADFAST_WEBHOOK_BEARER</code> set করুন। Tracking URL save
-            করলে auto sync-ও চলে।
+            Bearer token: set{" "}
+            <code>STEADFAST_WEBHOOK_BEARER</code> in the backend <code>.env</code>.
+            Saving the Tracking URL also enables auto sync.
           </p>
         </div>
         {integrationCouriers.length === 0 ? (

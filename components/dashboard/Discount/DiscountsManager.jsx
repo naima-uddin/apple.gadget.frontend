@@ -457,7 +457,7 @@ export default function DiscountsManager() {
                   highlightBn: e.target.value,
                 }))
               }
-              placeholder="e.g. অফার!"
+              placeholder="e.g. Offer!"
             />
           </div>
           <div>
@@ -468,7 +468,7 @@ export default function DiscountsManager() {
               onChange={(e) =>
                 setSectionTitle((p) => ({ ...p, restBn: e.target.value }))
               }
-              placeholder="e.g. মিস করবেন না!!"
+              placeholder="e.g. Don't miss out!!"
             />
           </div>
         </div>

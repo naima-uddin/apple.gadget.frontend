@@ -322,9 +322,9 @@ export default function PaymentSettingsPage() {
       </div>
 
       <div className="mt-6 p-4 bg-blue-50 rounded-xl text-sm text-blue-700 border border-blue-200">
-        <strong>Note:</strong> Merchant Number দিলেই payment page কাজ করবে
-        (manual verification)। API credentials পরে দিলে automated payment flow
-        চালু হবে।
+        <strong>Note:</strong> Just providing a Merchant Number makes the payment
+        page work (manual verification). Adding API credentials later enables the
+        automated payment flow.
       </div>
     </div>
   );

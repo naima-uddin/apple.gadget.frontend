@@ -209,8 +209,8 @@ function OrderTrackingCard({
               className="w-full text-sm border border-gray-200 rounded-xl px-3 py-2.5 outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F]"
             />
             <p className="text-[11px] text-gray-400 mt-1">
-              Save করলে customer's /track-order/ ও My Orders page-এ এই link auto
-              update হবে।
+              When you save, this link auto-updates on the customer's
+              /track-order/ and My Orders page.
             </p>
           </div>
 
@@ -332,8 +332,8 @@ export default function ShipmentTrackingManager() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">Order Tracking</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            সব order collapsed — expand করে courier name ও live tracking URL
-            save করুন।
+            All orders are collapsed — expand one to save the courier name and
+            live tracking URL.
           </p>
         </div>
         <Link

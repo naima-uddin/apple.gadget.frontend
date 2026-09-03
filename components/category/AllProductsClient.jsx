@@ -13,7 +13,7 @@ import NoProductsFound from "@/components/ui/NoProductsFound";
 import StoreHero from "@/components/home/StoreHero";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-const PRODUCTS_PER_PAGE = 10;
+const PRODUCTS_PER_PAGE = 20;
 
 export default function AllProductsClient() {
   const router = useRouter();
@@ -221,8 +221,9 @@ export default function AllProductsClient() {
 
   return (
     <>
-      {/* ── Hero header ── */}
       <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-200/60">
+      
+
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 pt-6 pb-8 relative overflow-hidden">
           {/* decorative blobs */}
           <div className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full bg-gray-200/30 blur-3xl" />
@@ -244,9 +245,11 @@ export default function AllProductsClient() {
           </nav>
 
         
-
+{/* Category icon row (admin-controlled, dashboard → Store Hero) */}
+      <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
+      {/* ── Hero header ── */}
           {/* Title */}
-          <div className="relative text-center max-w-3xl mx-auto">
+          <div className="relative text-left max-w-7xl mx-auto">
             <h1 className="text-3xl md:text-5xl text-[#1F2937] tracking-tight font-georgia">
               All Products
             </h1>
@@ -459,8 +462,7 @@ export default function AllProductsClient() {
         </div>
       </div>
 
-      {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
-      <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
+    
     </>
   );
 }

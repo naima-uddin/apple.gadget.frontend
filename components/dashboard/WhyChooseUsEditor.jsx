@@ -176,7 +176,7 @@ export default function WhyChooseUsEditor() {
           <input
             value={titleBn}
             onChange={(e) => setTitleBn(e.target.value)}
-            placeholder="e.g. কেন আমাদের বেছে নেবেন"
+            placeholder="e.g. Why choose us"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>
@@ -204,7 +204,7 @@ export default function WhyChooseUsEditor() {
             value={descriptionBn}
             onChange={(e) => setDescriptionBn(e.target.value)}
             rows={4}
-            placeholder="{store} লিখলে দোকানের নাম বসবে।"
+            placeholder="Type {store} to insert the store name."
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
           />
         </div>

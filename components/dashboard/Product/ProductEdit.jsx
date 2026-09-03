@@ -746,7 +746,7 @@ export default function ProductEdit({ productId }) {
   const handleFile = async (file) => {
     if (file.size > MAX_UPLOAD_BYTES) {
       alert(
-        `"${file.name}" সাইজ ${(file.size / 1024 / 1024).toFixed(1)}MB — সর্বোচ্চ ১০MB অনুমোদিত।`,
+        `"${file.name}" is ${(file.size / 1024 / 1024).toFixed(1)}MB — maximum 10MB allowed.`,
       );
       return;
     }

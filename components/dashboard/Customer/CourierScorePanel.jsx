@@ -67,8 +67,8 @@ export default function CourierScorePanel({
   if (!phone) {
     return (
       <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm text-amber-800">
-        Customer's mobile number নেই — courier score check's জন্য 01XXXXXXXXX
-        লাগবে।
+        No customer mobile number — a 01XXXXXXXXX number is required for the
+        courier score check.
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function CourierScorePanel({
   if (loading && !lifetime) {
     return (
       <div className="rounded-2xl border bg-white p-10 text-center text-gray-400 text-sm">
-        Courier panels theke lifetime history load হচ্ছে…
+        Loading lifetime history from courier panels…
       </div>
     );
   }
@@ -102,8 +102,8 @@ export default function CourierScorePanel({
             View Courier Score
           </h2>
           <p className="text-xs text-gray-500 mt-0.5">
-            Mobile <span className="font-mono font-semibold">{phone}</span> — সব
-            দোকান/platform মিলিয়ে lifetime parcel history
+            Mobile <span className="font-mono font-semibold">{phone}</span> —
+            lifetime parcel history across all shops/platforms
           </p>
         </div>
         <button
@@ -118,14 +118,14 @@ export default function CourierScorePanel({
 
       {!lifetime.anyConfigured ? (
         <div className="m-5 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800">
-          Courier connect করা নেই।{" "}
+          No courier connected.{" "}
           <Link
             href="/dashboard/shipment-tracking/settings"
             className="font-semibold underline"
           >
             Shipment Settings
           </Link>{" "}
-          এ credentials save করে API enabled ON করুন, তারপর Refresh চাপুন।
+          , save your credentials and turn API enabled ON, then press Refresh.
         </div>
       ) : null}
 

@@ -218,7 +218,7 @@ export default function GoogleAdsenseForm() {
             <code className="bg-gray-100 px-1 rounded-lg">
               ca-pub-XXXXXXXXXXXXXXXX
             </code>{" "}
-            — Google AdSense dashboard থেকে পাবেন।
+            — get it from your Google AdSense dashboard.
           </p>
         </div>
 
@@ -238,9 +238,9 @@ export default function GoogleAdsenseForm() {
             className="w-full border border-gray-200 px-3 py-2 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F] font-mono"
           />
           <p className="mt-1.5 text-xs text-gray-400">
-            AdSense → Ads → By ad unit → Display ads থেকে{" "}
+            Copy the{" "}
             <code className="bg-gray-100 px-1 rounded-lg">data-ad-slot</code>{" "}
-            নম্বরটি কপি করুন।
+            number from AdSense → Ads → By ad unit → Display ads.
           </p>
         </div>
 
@@ -249,7 +249,7 @@ export default function GoogleAdsenseForm() {
           <div>
             <p className="text-sm font-medium text-gray-800">Auto Ads</p>
             <p className="text-xs text-gray-400 mt-0.5">
-              Google নিজেই best জায়গায় ads রাখবে — Ad Slot ID ছাড়াও কাজ করে
+              Google automatically places ads in the best spots — works even without an Ad Slot ID
             </p>
           </div>
           <Toggle
@@ -264,7 +264,7 @@ export default function GoogleAdsenseForm() {
             Page Visibility
           </p>
           <p className="text-xs text-gray-400 mb-3">
-            কোন কোন page-এ in-page ads দেখাবে সেটি নিয়ন্ত্রণ করুন।
+            Control which pages show in-page ads.
           </p>
           <div className="space-y-3">
             {PAGE_OPTIONS.map(({ key, label, desc }) => (
@@ -284,19 +284,19 @@ export default function GoogleAdsenseForm() {
 
         {/* How to guide */}
         <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-blue-900 text-xs">
-          <p className="font-semibold mb-1.5">Publisher ID কীভাবে পাবেন:</p>
+          <p className="font-semibold mb-1.5">How to get your Publisher ID:</p>
           <ol className="list-decimal pl-4 space-y-1">
             <li>
-              <strong>adsense.google.com</strong>-এ sign in করুন
+              Sign in at <strong>adsense.google.com</strong>
             </li>
             <li>Account → Settings → Account information</li>
             <li>
-              <strong>Publisher ID</strong> কপি করুন —{" "}
+              Copy your <strong>Publisher ID</strong> —{" "}
               <code className="bg-blue-100 px-1 rounded-lg">
                 ca-pub-XXXXXXXXXXXXXXXX
               </code>
             </li>
-            <li>এখানে paste করে Save করুন</li>
+            <li>Paste it here and click Save</li>
           </ol>
         </div>
 

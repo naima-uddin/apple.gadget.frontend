@@ -69,7 +69,7 @@ function ImageAssetField({
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-xs text-gray-300">খালি</span>
+            <span className="text-xs text-gray-300">Empty</span>
           )}
         </div>
         <div className="flex flex-wrap gap-2">
@@ -240,7 +240,7 @@ export default function SettingsForm() {
         <div>
           <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Settings</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Store info manage করুন
+            Manage store info
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -322,7 +322,7 @@ export default function SettingsForm() {
 
         <ImageAssetField
           label="Website Favicon"
-          desc="Browser tab-এ ছোট icon হিসেবে দেখাবে। বর্গাকার ছবি (যেমন 32x32, 64x64) ভালো কাজ করে।"
+          desc="Shown as a small icon in the browser tab. Square images (e.g. 32x32, 64x64) work best."
           previewClassName="w-14 h-14"
           value={settings.websiteFavicon}
           uploading={faviconUploading}

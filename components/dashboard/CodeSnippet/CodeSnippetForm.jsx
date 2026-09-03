@@ -11,8 +11,8 @@ const SLOTS = [
     label: "Header Code",
     badge: "<head>",
     badgeColor: "bg-gray-100 text-[#1D1D1F]",
-    hint: "<head> ট্যাগের ভেতরে inject হবে — meta tag, script, stylesheet সব দেওয়া যাবে",
-    placeholder: `<!-- উদাহরণ -->
+    hint: "Injected inside the <head> tag — you can add meta tags, scripts and stylesheets",
+    placeholder: `<!-- Example -->
 <meta name="google-site-verification" content="XXXX" />
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX"></script>
 <script>
@@ -25,20 +25,20 @@ const SLOTS = [
   {
     key: "bodyCode",
     label: "Body Code",
-    badge: "<body> শুরু",
+    badge: "<body> start",
     badgeColor: "bg-blue-100 text-blue-700",
-    hint: "<body> ট্যাগ খোলার ঠিক পরে inject হবে — noscript ট্যাগ দেওয়ার জন্য আদর্শ",
-    placeholder: `<!-- উদাহরণ: GTM noscript -->
+    hint: "Injected right after the opening <body> tag — ideal for noscript tags",
+    placeholder: `<!-- Example: GTM noscript -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>`,
   },
   {
     key: "footerCode",
     label: "Footer Code",
-    badge: "</body> আগে",
+    badge: "before </body>",
     badgeColor: "bg-green-100 text-green-700",
-    hint: "</body> বন্ধ হওয়ার ঠিক আগে inject হবে — async tracking script দেওয়ার জন্য আদর্শ",
-    placeholder: `<!-- উদাহরণ: Facebook Pixel, TikTok Pixel -->
+    hint: "Injected right before the closing </body> tag — ideal for async tracking scripts",
+    placeholder: `<!-- Example: Facebook Pixel, TikTok Pixel -->
 <script>
   !function(f,b,e,v,n,t,s){...}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
@@ -104,7 +104,7 @@ export default function CodeSnippetForm() {
         <div>
           <h1 className="text-xl font-bold tracking-tight text-[#1F2937] work-sans">Code Snippet</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            Header, Body ও Footer-এ custom code inject করুন
+            Inject custom code into the Header, Body and Footer
           </p>
         </div>
         <button
@@ -146,7 +146,7 @@ export default function CodeSnippetForm() {
           <div>
             <p className="text-sm font-semibold text-gray-800">Active</p>
             <p className="text-xs text-gray-400 mt-0.5">
-              Disable করলে কোনো code site-এ inject হবে না
+              When disabled, no code is injected into the site
             </p>
           </div>
           <Toggle
