@@ -191,35 +191,63 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   useEffect(() => {
     clearTimeout(quoteRef.current);
     quoteRef.current = setTimeout(async () => {
-      if (!items.length) {
-        setQuote(null);
-        return;
-      }
+      const applyShipping = (val) => {
+        if (!shippingEditedRef.current) {
+          setShippingOverride(val != null ? String(val) : "0");
+        }
+      };
       setQuoting(true);
       try {
-        const r = await fetch(`${API}/api/orders/quote`, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            items: items.map((it) => ({
-              productId: it.productId,
-              quantity: it.quantity,
-              color: it.color || undefined,
-              size: it.size || undefined,
-            })),
-            couponCodes,
-            city: resolvedCity || null,
-            zone: resolvedZone || null,
-            area: resolvedArea || null,
-          }),
-        });
-        const body = await r.json();
-        setQuote(r.ok ? body : null);
-        // Auto-fill the delivery charge from the address, unless the admin has
-        // already typed their own value.
-        if (r.ok && !shippingEditedRef.current) {
-          setShippingOverride(body.shipping != null ? String(body.shipping) : "0");
+        let shippingFromQuote = null;
+        if (items.length) {
+          // Full quote — needs items; also yields coupon discount + free-shipping.
+          const r = await fetch(`${API}/api/orders/quote`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              items: items.map((it) => ({
+                productId: it.productId,
+                quantity: it.quantity,
+                color: it.color || undefined,
+                size: it.size || undefined,
+              })),
+              couponCodes,
+              city: resolvedCity || null,
+              zone: resolvedZone || null,
+              area: resolvedArea || null,
+            }),
+          });
+          const body = await r.json();
+          if (r.ok) {
+            setQuote(body);
+            shippingFromQuote = body.shipping;
+          } else {
+            setQuote(null);
+          }
+        } else {
+          setQuote(null);
+        }
+
+        // Always make the delivery charge reflect the address. If the full quote
+        // gave us a shipping figure, use it (it accounts for free-shipping
+        // products/coupons); otherwise — no products yet, or the quote failed to
+        // resolve an item — fall back to the address-only charge so it still shows.
+        if (shippingFromQuote != null) {
+          applyShipping(shippingFromQuote);
+        } else if (resolvedCity) {
+          const rs = await fetch(`${API}/api/orders/shipping-quote`, {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              city: resolvedCity || null,
+              zone: resolvedZone || null,
+              area: resolvedArea || null,
+            }),
+          });
+          const bs = await rs.json();
+          if (rs.ok) applyShipping(bs.shipping);
         }
       } catch {
         setQuote(null);
