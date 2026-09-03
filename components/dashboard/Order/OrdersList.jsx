@@ -13,6 +13,7 @@ import { useUser } from "@/components/context/UserContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formatOrderId } from "@/lib/orderId";
 import CourierScorePanel from "@/components/dashboard/Customer/CourierScorePanel";
+import CreateOrderModal from "@/components/dashboard/Order/CreateOrderModal";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -1827,6 +1828,7 @@ function AllOrdersSection() {
   const [viewTrash, setViewTrash] = useState(false); // recycle-bin view
   const [selectedIds, setSelectedIds] = useState([]); // bulk-selected order ids
   const [bulkBusy, setBulkBusy] = useState(false);
+  const [showCreate, setShowCreate] = useState(false); // manual order create modal
 
   const fetchOrders = useCallback(async (tab, q, pg, preset, trash) => {
     setLoading(true);
@@ -1984,6 +1986,15 @@ function AllOrdersSection() {
               <span className="text-xs text-gray-400">
                 {total} result{total !== 1 ? "s" : ""}
               </span>
+              {!viewTrash && (
+                <button
+                  type="button"
+                  onClick={() => setShowCreate(true)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-gray-900 bg-gray-900 text-white hover:bg-[#1D1D1F] transition"
+                >
+                  + Create Order
+                </button>
+              )}
               {user?.role === "admin" && (
                 <button
                   type="button"
@@ -2115,6 +2126,15 @@ function AllOrdersSection() {
         <OrderCustomerModal
           {...selectedCustomer}
           onClose={() => setSelectedCustomer(null)}
+        />
+      )}
+      {showCreate && (
+        <CreateOrderModal
+          onClose={() => setShowCreate(false)}
+          onCreated={() => {
+            setPage(1);
+            refresh();
+          }}
         />
       )}
     </div>
@@ -3277,6 +3297,7 @@ function AbandonedCartSection() {
   const [q, setQ] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [createFor, setCreateFor] = useState(null); // prefill for CreateOrderModal
   const searchRef = useRef(null);
   const PAGE_SIZE = 20;
 
@@ -3473,17 +3494,47 @@ function AbandonedCartSection() {
                       )}
                     </td>
 
-                    {/* Delete */}
+                    {/* Actions */}
                     <td className="px-4 py-3">
-                      {user?.role === "admin" && (
+                      <div className="flex items-center gap-2 whitespace-nowrap">
                         <button
-                          onClick={() => deleteCart(u._id)}
-                          disabled={deletingId === u._id}
-                          className="text-xs text-red-500 hover:text-red-700 hover:underline disabled:opacity-40 font-medium"
+                          onClick={() =>
+                            setCreateFor({
+                              billingDetails: {
+                                name: u.name || "",
+                                phone: u.mobile || "",
+                                email: u.email || "",
+                              },
+                              items: (u.savedCart?.items || []).map((it) => ({
+                                productId: it.productId,
+                                title: it.title,
+                                image: it.image,
+                                price: it.price,
+                                quantity: it.quantity,
+                                color: it.color,
+                                size: it.size,
+                              })),
+                              sourceCartUserId: u._id,
+                            })
+                          }
+                          disabled={!(u.savedCart?.items || []).length}
+                          className="text-xs font-medium text-gray-900 hover:underline disabled:opacity-40"
                         >
-                          {deletingId === u._id ? "…" : "Delete"}
+                          Create Order
                         </button>
-                      )}
+                        {user?.role === "admin" && (
+                          <>
+                            <span className="text-gray-200">|</span>
+                            <button
+                              onClick={() => deleteCart(u._id)}
+                              disabled={deletingId === u._id}
+                              className="text-xs text-red-500 hover:text-red-700 hover:underline disabled:opacity-40 font-medium"
+                            >
+                              {deletingId === u._id ? "…" : "Delete"}
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
@@ -3558,6 +3609,20 @@ function AbandonedCartSection() {
         <AbandonedCartModal
           user={selectedUser}
           onClose={() => setSelectedUser(null)}
+        />
+      )}
+
+      {/* Manual order create (prefilled from this abandoned cart) */}
+      {createFor && (
+        <CreateOrderModal
+          prefill={createFor}
+          onClose={() => setCreateFor(null)}
+          onCreated={() => {
+            setRows((prev) =>
+              prev.filter((r) => r._id !== createFor.sourceCartUserId),
+            );
+            setTotal((prev) => Math.max(0, prev - 1));
+          }}
         />
       )}
     </div>
@@ -3982,6 +4047,7 @@ function AbandonCheckoutSection() {
   const [q, setQ] = useState("");
   const [selectedSession, setSelectedSession] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [createFor, setCreateFor] = useState(null); // prefill for CreateOrderModal
   const searchRef = useRef(null);
   const PAGE_SIZE = 20;
 
@@ -4197,18 +4263,46 @@ function AbandonCheckoutSection() {
                       )}
                     </td>
 
-                    {/* Delete */}
+                    {/* Actions */}
                     <td className="px-4 py-3">
-                      {user?.role === "admin" && (
+                      <div className="flex items-center gap-2 whitespace-nowrap">
                         <button
-                          onClick={() => deleteSession(s._id)}
-                          disabled={deletingId === s._id}
-                          className="text-xs text-red-400 hover:text-red-600 hover:underline disabled:opacity-40"
-                          title="Delete record"
+                          onClick={() =>
+                            setCreateFor({
+                              billingDetails: {
+                                name: s.userName || "",
+                                phone: s.userPhone || "",
+                                email: s.userEmail || "",
+                              },
+                              items: (s.items || []).map((it) => ({
+                                productId: it.productId,
+                                title: it.title,
+                                image: it.image,
+                                price: it.price,
+                                quantity: it.quantity,
+                              })),
+                              sourceCheckoutId: s._id,
+                            })
+                          }
+                          disabled={!(s.items || []).length}
+                          className="text-xs font-medium text-gray-900 hover:underline disabled:opacity-40"
                         >
-                          {deletingId === s._id ? "…" : "Delete"}
+                          Create Order
                         </button>
-                      )}
+                        {user?.role === "admin" && (
+                          <>
+                            <span className="text-gray-200">|</span>
+                            <button
+                              onClick={() => deleteSession(s._id)}
+                              disabled={deletingId === s._id}
+                              className="text-xs text-red-400 hover:text-red-600 hover:underline disabled:opacity-40"
+                              title="Delete record"
+                            >
+                              {deletingId === s._id ? "…" : "Delete"}
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
@@ -4291,6 +4385,20 @@ function AbandonCheckoutSection() {
         <CheckoutSessionModal
           session={selectedSession}
           onClose={() => setSelectedSession(null)}
+        />
+      )}
+
+      {/* Manual order create (prefilled from this abandoned checkout) */}
+      {createFor && (
+        <CreateOrderModal
+          prefill={createFor}
+          onClose={() => setCreateFor(null)}
+          onCreated={() => {
+            setRows((prev) =>
+              prev.filter((r) => r._id !== createFor.sourceCheckoutId),
+            );
+            setTotal((prev) => Math.max(0, prev - 1));
+          }}
         />
       )}
     </div>
