@@ -15,13 +15,13 @@ export default function ShippingAccordion() {
     <div>
       <PolicyHeader
         icon={SHIPPING_ICON}
-        title="শিপিং ও ডেলিভারি"
-        subtitle="সারাবাংলাদেশে দ্রুত ও নিরাপদ ডেলিভারি"
+        title="Shipping & Delivery"
+        subtitle="Fast and secure delivery across Bangladesh"
       />
       {items.length > 0 ? (
         <Accordion items={items} />
       ) : (
-        <p className="text-sm text-gray-400">কোনো তথ্য পাওয়া যায়নি।</p>
+        <p className="text-sm text-gray-400">No information available.</p>
       )}
     </div>
   );

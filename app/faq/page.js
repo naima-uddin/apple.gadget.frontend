@@ -49,13 +49,13 @@ export default async function FaqPage() {
         <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8">
           <PolicyHeader
             icon={FAQ_ICON}
-            title="সাধারণ জিজ্ঞাসা"
-            subtitle="আপনার প্রশ্নের উত্তর এখানে খুঁজুন"
+            title="Frequently Asked Questions"
+            subtitle="Find answers to your questions here"
           />
           {faqs.length > 0 ? (
             <Accordion items={faqs} />
           ) : (
-            <p className="text-sm text-gray-400">কোনো তথ্য পাওয়া যায়নি।</p>
+            <p className="text-sm text-gray-400">No information available.</p>
           )}
         </div>
       </main>

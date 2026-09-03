@@ -7,14 +7,14 @@ import { uploadAdminImage } from "@/lib/uploadImage";
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const TABS = [
-  { key: "shipping", label: "শিপিং", type: "qa", icon: "🚚" },
-  { key: "return", label: "রিটার্ন", type: "qa", icon: "↩️" },
+  { key: "shipping", label: "Shipping", type: "qa", icon: "🚚" },
+  { key: "return", label: "Return", type: "qa", icon: "↩️" },
   { key: "faq", label: "FAQ", type: "qa", icon: "❓" },
-  { key: "privacy", label: "প্রাইভেসি", type: "section", icon: "🔒" },
-  { key: "terms", label: "শর্তাবলী", type: "section", icon: "📄" },
-  { key: "footer", label: "ফুটার", type: "footer", icon: "🦶" },
-  { key: "contact", label: "যোগাযোগ", type: "contact", icon: "📞" },
-  { key: "about", label: "আমাদের সম্পর্কে", type: "about", icon: "ℹ️" },
+  { key: "privacy", label: "Privacy", type: "section", icon: "🔒" },
+  { key: "terms", label: "Terms", type: "section", icon: "📄" },
+  { key: "footer", label: "Footer", type: "footer", icon: "🦶" },
+  { key: "contact", label: "Contact", type: "contact", icon: "📞" },
+  { key: "about", label: "About Us", type: "about", icon: "ℹ️" },
 ];
 
 const POLICY_KEYS = ["shipping", "return", "faq", "privacy", "terms"];
@@ -37,230 +37,230 @@ const SOCIAL_PLATFORMS = [
   { key: "youtube", label: "YouTube", color: "#FF0000", placeholder: "https://youtube.com/@yourchannel" },
 ];
 
-/* ───────────── Default Bengali content ───────────── */
+/* ───────────── Default content ───────────── */
 const DEFAULT_CONTENT = {
   shipping: [
     {
-      question: "ফ্রি শিপিং কি পাওয়া যায়?",
+      question: "Is free shipping available?",
       answer:
-        "হ্যাঁ! ৳১৫৯৯ বা তার বেশি কেনাকাটায় সারাদেশে সম্পূর্ণ বিনামূল্যে ডেলিভারি পাবেন।",
+        "Yes! On purchases of ৳1599 or more, you get completely free delivery nationwide.",
     },
     {
-      question: "ডেলিভারি চার্জ কত?",
+      question: "What is the delivery charge?",
       answer:
-        "৳১৫৯৯ এর নিচে যেকোনো অর্ডারে মাত্র ৳৬৯ ডেলিভারি চার্জ প্রযোজ্য — ঢাকার ভেতরে ও বাইরে উভয় ক্ষেত্রে।",
+        "For any order under ৳1599, a flat ৳69 delivery charge applies — both inside and outside Dhaka.",
     },
     {
-      question: "ঢাকায় ডেলিভারি পেতে কতদিন লাগে?",
+      question: "How long does delivery take in Dhaka?",
       answer:
-        "ঢাকা ও চট্টগ্রামের ভেতরে সাধারণত ১–২ কার্যদিবসের মধ্যে ডেলিভারি দেওয়া হয়।",
+        "Within Dhaka and Chattogram, delivery is usually made within 1–2 working days.",
     },
     {
-      question: "ঢাকার বাইরে কতদিনে ডেলিভারি পাব?",
+      question: "How long does delivery take outside Dhaka?",
       answer:
-        "সারাদেশে ৩–৫ কার্যদিবসের মধ্যে ডেলিভারি দেওয়া হয়। হরতাল বা প্রাকৃতিক দুর্যোগে সামান্য বিলম্ব হতে পারে।",
+        "Delivery is made nationwide within 3–5 working days. Slight delays may occur during strikes or natural disasters.",
     },
     {
-      question: "bKash / Nagad / Rocket-এ পেমেন্ট করা যাবে?",
+      question: "Can I pay with bKash / Nagad / Rocket?",
       answer:
-        "হ্যাঁ! আমরা bKash, Nagad ও Rocket সহ সকল মোবাইল ব্যাংকিং সেবা সমর্থন করি। এছাড়া ক্রেডিট/ডেবিট কার্ডেও পেমেন্ট করা যাবে।",
+        "Yes! We support all mobile banking services including bKash, Nagad and Rocket. You can also pay with credit/debit cards.",
     },
     {
-      question: "ক্যাশ অন ডেলিভারি (COD) পাওয়া যায়?",
+      question: "Is Cash on Delivery (COD) available?",
       answer:
-        "হ্যাঁ! পণ্য হাতে পাওয়ার পর পেমেন্ট করার সুবিধা রয়েছে। COD-তে অর্ডার করলে পণ্য দেখে সন্তুষ্ট হয়ে পেমেন্ট করুন।",
+        "Yes! You have the option to pay after receiving the product. With COD, inspect the product and pay once you're satisfied.",
     },
     {
-      question: "ডেলিভারি ট্র্যাক করব কীভাবে?",
+      question: "How do I track my delivery?",
       answer:
-        "অর্ডার শিপ হওয়ার পর আপনার ফোন নম্বরে SMS এবং ইমেইলে ট্র্যাকিং নম্বর পাঠানো হবে। সেটি দিয়ে আপনার পার্সেল ট্র্যাক করতে পারবেন।",
+        "Once your order ships, a tracking number is sent to your phone via SMS and email. You can track your parcel with it.",
     },
     {
-      question: "ডেলিভারি ঠিকানা পরিবর্তন করা যাবে?",
+      question: "Can I change the delivery address?",
       answer:
-        "হ্যাঁ, তবে অর্ডার দেওয়ার ২ ঘণ্টার মধ্যে কাস্টমার কেয়ারে যোগাযোগ করতে হবে। একবার শিপমেন্ট হয়ে গেলে ঠিকানা পরিবর্তন সম্ভব নয়।",
+        "Yes, but you must contact customer care within 2 hours of placing the order. Once the shipment is dispatched, the address cannot be changed.",
     },
     {
-      question: "ডেলিভারি মিস হলে কী হবে?",
+      question: "What happens if a delivery is missed?",
       answer:
-        "আমাদের ডেলিভারি এজেন্ট আপনাকে কল করবে। সংযোগ না পেলে পরের কার্যদিবসে পুনরায় ডেলিভারির চেষ্টা করা হবে। পরপর ৩ বার মিস হলে অর্ডার বাতিল ও রিফান্ড প্রক্রিয়া শুরু হবে।",
+        "Our delivery agent will call you. If we can't reach you, delivery will be reattempted the next working day. After 3 consecutive misses, the order will be cancelled and the refund process started.",
     },
     {
-      question: "Pickup Point থেকে পণ্য নেওয়া যাবে?",
+      question: "Can I collect products from a Pickup Point?",
       answer:
-        "হ্যাঁ! অর্ডার করার সময় 'Click & Collect' অপশন বেছে নিলে ডেলিভারি চার্জ ছাড়াই আমাদের পয়েন্ট থেকে পণ্য সংগ্রহ করতে পারবেন।",
+        "Yes! If you choose the 'Click & Collect' option while ordering, you can collect the product from our point without any delivery charge.",
     },
     {
-      question: "আন্তর্জাতিক ডেলিভারি কি হয়?",
-      answer: "না, আমরা বর্তমানে শুধুমাত্র বাংলাদেশের ভেতরে ডেলিভারি দিচ্ছি।",
+      question: "Do you offer international delivery?",
+      answer: "No, we currently deliver only within Bangladesh.",
     },
     {
-      question: "পণ্য কীভাবে প্যাক করা হয়?",
+      question: "How are products packed?",
       answer:
-        "প্রতিটি পণ্য মজবুত কার্ডবোর্ড বক্সে এবং ইনভয়েস সহ প্যাক করা হয়। ভঙ্গুর পণ্য বাড়তি বাবল র‍্যাপে সুরক্ষিত করা হয়।",
+        "Every product is packed in a sturdy cardboard box along with an invoice. Fragile items are protected with extra bubble wrap.",
     },
   ],
   return: [
     {
-      question: "কতদিনের মধ্যে পণ্য ফেরত দেওয়া যাবে?",
+      question: "Within how many days can a product be returned?",
       answer:
-        "পণ্য হাতে পাওয়ার ৩ দিনের (৭২ ঘণ্টার) মধ্যে রিটার্নের জন্য আবেদন করতে হবে। এর পরে রিটার্ন গ্রহণ করা হবে না।",
+        "You must apply for a return within 3 days (72 hours) of receiving the product. Returns will not be accepted after that.",
     },
     {
-      question: "কোন কোন ক্ষেত্রে পণ্য ফেরত দেওয়া যাবে?",
+      question: "In which cases can a product be returned?",
       answer:
-        "নিচের কারণে পণ্য ফেরত দেওয়া যাবে:\n• ত্রুটিপূর্ণ বা নষ্ট পণ্য\n• ভুল পণ্য ডেলিভারি\n• ক্ষতিগ্রস্ত প্যাকেজিং\n• বিজ্ঞাপনের সাথে পণ্যের মিল নেই",
+        "A product can be returned for the following reasons:\n• Defective or damaged product\n• Wrong product delivered\n• Damaged packaging\n• Product does not match the advertisement",
     },
     {
-      question: "কোন পণ্য ফেরত দেওয়া যাবে না?",
+      question: "Which products cannot be returned?",
       answer:
-        "নিচের পণ্যগুলো রিটার্ন করা যাবে না:\n• ব্যবহৃত বা সীল ভাঙা পণ্য\n• ডিজিটাল পণ্য ও সফটওয়্যার\n• কাস্টমাইজড পণ্য\n• ইনারওয়্যার ও হাইজিন পণ্য\n• খাদ্যপণ্য",
+        "The following products cannot be returned:\n• Used or seal-broken products\n• Digital products and software\n• Customized products\n• Innerwear and hygiene products\n• Food items",
     },
     {
-      question: "রিটার্ন কীভাবে করব?",
+      question: "How do I make a return?",
       answer:
-        "রিটার্নের জন্য:\n১. আমাদের কাস্টমার কেয়ারে ফোন করুন\n২. পণ্যের ছবি বা ভিডিও সহ সমস্যা জানান\n৩. আমাদের টিম ২৪ ঘণ্টার মধ্যে যোগাযোগ করবে",
+        "To make a return:\n1. Call our customer care\n2. Report the issue with photos or a video of the product\n3. Our team will contact you within 24 hours",
     },
     {
-      question: "ঢাকায় কি পিক-আপ সুবিধা আছে?",
+      question: "Is there a pick-up facility in Dhaka?",
       answer:
-        "হ্যাঁ! ঢাকার মধ্যে ত্রুটিপূর্ণ পণ্যের ক্ষেত্রে আমাদের এজেন্ট বিনামূল্যে বাসা থেকে পিক-আপ করবে। ঢাকার বাইরে থেকে কুরিয়ারে পাঠাতে হবে।",
+        "Yes! For defective products within Dhaka, our agent will pick up from your home free of charge. From outside Dhaka, you'll need to send it by courier.",
     },
     {
-      question: "রিটার্নের পর পণ্য কি চেক করা হয়?",
+      question: "Is the product checked after a return?",
       answer:
-        "হ্যাঁ, পণ্য পাওয়ার পর আমাদের QC টিম যাচাই করে। ত্রুটি প্রমাণিত হলে রিপ্লেসমেন্ট বা সম্পূর্ণ রিফান্ড দেওয়া হবে।",
+        "Yes, our QC team verifies the product after receiving it. If a defect is confirmed, a replacement or full refund will be provided.",
     },
     {
-      question: "রিফান্ড কতদিনে পাব?",
+      question: "How long until I get my refund?",
       answer:
-        "পণ্য যাচাইয়ের পর ৭–১০ কার্যদিবসের মধ্যে রিফান্ড দেওয়া হবে — bKash, Nagad বা কার্ডে (যেটায় পেমেন্ট করেছিলেন)।",
+        "After the product is verified, the refund is issued within 7–10 working days — to bKash, Nagad or the card you paid with.",
     },
     {
-      question: "রিটার্ন চার্জ কত?",
+      question: "What is the return charge?",
       answer:
-        "ত্রুটিপূর্ণ পণ্যের ক্ষেত্রে রিটার্ন চার্জ সম্পূর্ণ বিনামূল্যে। কাস্টমারের ভুলে (ভুল সাইজ, মন পরিবর্তন) রিটার্নের ক্ষেত্রে কুরিয়ার চার্জ কাস্টমার বহন করবেন।",
+        "For defective products the return charge is completely free. For returns due to a customer mistake (wrong size, change of mind), the customer bears the courier charge.",
     },
     {
-      question: "ডেলিভারির পরপরই সমস্যা পেলে কী করব?",
+      question: "What should I do if I find a problem right after delivery?",
       answer:
-        "প্যাকেজ খোলার সময় ভিডিও করুন। সমস্যা দেখামাত্র ছবি/ভিডিও সহ আমাদের কাস্টমার কেয়ারে ৩ দিনের মধ্যে জানান।",
+        "Record a video while opening the package. As soon as you notice a problem, report it to our customer care within 3 days with photos/video.",
     },
   ],
   faq: [
     {
-      question: "অর্ডার ট্র্যাক করব কীভাবে?",
+      question: "How do I track my order?",
       answer:
-        "অর্ডার শিপ হলে আপনার ফোনে SMS ও ইমেইলে ট্র্যাকিং নম্বর পাঠানো হবে। 'My Orders' থেকেও রিয়েল-টাইম স্ট্যাটাস দেখতে পারবেন।",
+        "When your order ships, a tracking number is sent to your phone via SMS and email. You can also see the real-time status from 'My Orders'.",
     },
     {
-      question: "অর্ডার বাতিল করা যাবে?",
+      question: "Can I cancel an order?",
       answer:
-        "অর্ডার দেওয়ার ১ ঘণ্টার মধ্যে বাতিল করা যাবে। এরপর প্রসেসিং শুরু হলে বাতিল সম্ভব নয়। বাতিলের জন্য কাস্টমার কেয়ারে যোগাযোগ করুন।",
+        "An order can be cancelled within 1 hour of placing it. After processing begins, cancellation is not possible. Contact customer care to cancel.",
     },
     {
-      question: "পণ্যগুলো কি আসল ও মানসম্পন্ন?",
+      question: "Are the products genuine and good quality?",
       answer:
-        "হ্যাঁ। আমরা শুধুমাত্র অনুমোদিত পরিবেশক ও যাচাইকৃত সরবরাহকারীদের কাছ থেকে পণ্য সংগ্রহ করি। প্রতিটি পণ্য মান নিয়ন্ত্রণ পরীক্ষায় পাস করে।",
+        "Yes. We source products only from authorized distributors and verified suppliers. Every product passes a quality control check.",
     },
     {
-      question: "ওয়ারেন্টি আছে?",
+      question: "Is there a warranty?",
       answer:
-        "নির্বাচিত পণ্যে ব্র্যান্ডের অফিশিয়াল ওয়ারেন্টি প্রযোজ্য। পণ্যের পেজে ওয়ারেন্টির বিস্তারিত তথ্য দেওয়া থাকে।",
+        "Selected products carry the brand's official warranty. Warranty details are provided on the product page.",
     },
     {
-      question: "ডিসকাউন্ট বা কুপন কোড কোথায় পাব?",
+      question: "Where can I find discount or coupon codes?",
       answer:
-        "আমাদের Facebook পেজ ও ওয়েবসাইটের প্রমো ব্যানারে নিয়মিত অফার দেওয়া হয়। নিউজলেটার সাবস্ক্রাইব করলে এক্সক্লুসিভ ডিল পাবেন।",
+        "We regularly post offers on our Facebook page and website promo banners. Subscribe to the newsletter for exclusive deals.",
     },
     {
-      question: "অ্যাকাউন্ট না খুলে অর্ডার করা যাবে?",
+      question: "Can I order without creating an account?",
       answer:
-        "হ্যাঁ, গেস্ট হিসেবেও অর্ডার করা যাবে। তবে অ্যাকাউন্ট খুললে অর্ডার ট্র্যাক, রিটার্ন এবং ভবিষ্যৎ অর্ডার আরও সহজ হবে।",
+        "Yes, you can order as a guest. However, creating an account makes order tracking, returns and future orders much easier.",
     },
     {
-      question: "পেমেন্ট কি নিরাপদ?",
+      question: "Is payment secure?",
       answer:
-        "হ্যাঁ, আমাদের সকল পেমেন্ট SSL এনক্রিপশনের মাধ্যমে নিরাপদে প্রক্রিয়া করা হয়। আপনার কার্ড বা মোবাইল ব্যাংকিং তথ্য আমাদের সার্ভারে সংরক্ষণ করা হয় না।",
+        "Yes, all our payments are processed securely with SSL encryption. Your card or mobile banking details are never stored on our servers.",
     },
     {
-      question: "পণ্যের স্টক শেষ হলে কী করব?",
+      question: "What should I do if a product is out of stock?",
       answer:
-        "'Notify Me' বাটনে ক্লিক করুন — স্টকে আসার সাথে সাথে আপনাকে SMS/ইমেইলে জানানো হবে।",
+        "Click the 'Notify Me' button — you'll be notified by SMS/email as soon as it's back in stock.",
     },
     {
-      question: "কাস্টমার কেয়ারের সময় কখন?",
+      question: "What are the customer care hours?",
       answer:
-        "আমাদের কাস্টমার কেয়ার সকাল ১০টা থেকে রাত ৮টা পর্যন্ত (শুক্রবার ছাড়া) সপ্তাহের ৬ দিন সেবা দিচ্ছে।",
+        "Our customer care is available from 10 AM to 8 PM (except Fridays), 6 days a week.",
     },
   ],
   privacy: [
     {
-      heading: "আমরা কী তথ্য সংগ্রহ করি",
+      heading: "What information we collect",
       content:
-        "অ্যাকাউন্ট তৈরি বা অর্ডার দেওয়ার সময় আপনার নাম, ফোন নম্বর, ইমেইল, ডেলিভারি ঠিকানা এবং অর্ডার ইতিহাস সংগ্রহ করা হয়। সাইটের মান উন্নয়নের জন্য ব্যবহারের তথ্য (পেজ ভিজিট, ক্লিক) ও সংগ্রহ করা হয়।",
+        "When you create an account or place an order, we collect your name, phone number, email, delivery address and order history. We also collect usage data (page visits, clicks) to improve the site.",
     },
     {
-      heading: "আপনার তথ্য কীভাবে ব্যবহার করা হয়",
+      heading: "How your information is used",
       content:
-        "অর্ডার প্রসেস করা, ডেলিভারি নিশ্চিত করা এবং কাস্টমার সাপোর্ট দেওয়ার জন্য আপনার তথ্য ব্যবহার করা হয়। আমরা কখনো আপনার ব্যক্তিগত তথ্য তৃতীয় পক্ষের কাছে বিক্রি করি না।",
+        "Your information is used to process orders, ensure delivery and provide customer support. We never sell your personal information to third parties.",
     },
     {
-      heading: "কুকিজ নীতি",
+      heading: "Cookies policy",
       content:
-        "আমরা লগইন সেশন ও পছন্দ সংরক্ষণের জন্য প্রয়োজনীয় কুকিজ ব্যবহার করি। অ্যানালিটিক্স কুকিজ শুধুমাত্র আপনার সম্মতিতে ব্যবহার করা হয়।",
+        "We use essential cookies to store login sessions and preferences. Analytics cookies are used only with your consent.",
     },
     {
-      heading: "তথ্য সুরক্ষা",
+      heading: "Data security",
       content:
-        "আপনার সকল তথ্য SSL এনক্রিপশন প্রযুক্তিতে সুরক্ষিত রাখা হয়। আমাদের সার্ভার নিয়মিত নিরাপত্তা অডিটের মধ্য দিয়ে যায়। পেমেন্ট তথ্য কোনো অবস্থায় আমাদের সার্ভারে সংরক্ষণ করা হয় না।",
+        "All your information is protected with SSL encryption technology. Our servers undergo regular security audits. Payment information is never stored on our servers.",
     },
     {
-      heading: "আপনার অধিকার",
+      heading: "Your rights",
       content:
-        "আপনি যেকোনো সময় আমাদের সাপোর্ট টিমের সাথে যোগাযোগ করে আপনার ব্যক্তিগত তথ্য দেখা, সংশোধন করা বা মুছে ফেলার অনুরোধ করতে পারবেন।",
+        "You can contact our support team at any time to request to view, correct or delete your personal information.",
     },
     {
-      heading: "পরিবর্তনের বিজ্ঞপ্তি",
+      heading: "Notice of changes",
       content:
-        "এই গোপনীয়তা নীতিতে কোনো পরিবর্তন আনা হলে ওয়েবসাইটে এবং নিবন্ধিত ইমেইলে আপনাকে জানানো হবে।",
+        "If any changes are made to this privacy policy, you will be notified on the website and via your registered email.",
     },
   ],
   terms: [
     {
-      heading: "সাইট ব্যবহারের শর্ত",
+      heading: "Terms of site use",
       content:
-        "AppleBD BD ব্যবহার করতে আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে। আপনি অননুমোদিতভাবে সাইটে প্রবেশ বা অপব্যবহার করবেন না বলে সম্মত হচ্ছেন।",
+        "To use AppleBD BD you must be at least 18 years old. You agree not to access or misuse the site in any unauthorized manner.",
     },
     {
-      heading: "অর্ডার ও মূল্য নির্ধারণ",
+      heading: "Orders and pricing",
       content:
-        "সকল মূল্য বাংলাদেশি টাকায় (BDT) নির্ধারিত। মূল্য ত্রুটি বা অস্বাভাবিক পরিস্থিতিতে আমরা যেকোনো অর্ডার বাতিল করার অধিকার রাখি। অর্ডার কনফার্মেশনের পর চূড়ান্ত মূল্য নির্ধারিত হয়।",
+        "All prices are set in Bangladeshi Taka (BDT). In case of a pricing error or unusual circumstances, we reserve the right to cancel any order. The final price is fixed after order confirmation.",
     },
     {
-      heading: "পেমেন্ট নীতি",
+      heading: "Payment policy",
       content:
-        "আমরা bKash, Nagad, Rocket, ক্রেডিট/ডেবিট কার্ড এবং ক্যাশ অন ডেলিভারি (COD) গ্রহণ করি। সকল পেমেন্ট নিরাপদ এনক্রিপশনের মাধ্যমে প্রক্রিয়া করা হয়।",
+        "We accept bKash, Nagad, Rocket, credit/debit cards and Cash on Delivery (COD). All payments are processed through secure encryption.",
     },
     {
-      heading: "ডেলিভারি ও রিটার্ন",
+      heading: "Delivery and returns",
       content:
-        "ডেলিভারি ও রিটার্ন সংক্রান্ত বিস্তারিত আমাদের শিপিং পলিসি ও রিটার্ন পলিসি পেজে দেওয়া আছে। উক্ত নীতিগুলো এই শর্তাবলীর অংশ হিসেবে গণ্য হবে।",
+        "Details about delivery and returns are provided on our Shipping Policy and Return Policy pages. Those policies are considered part of these terms.",
     },
     {
-      heading: "মেধাস্বত্ব",
+      heading: "Intellectual property",
       content:
-        "এই সাইটের সকল কনটেন্ট — লোগো, ছবি, লেখা — AppleBD BD-এর মালিকানাধীন। লিখিত অনুমতি ছাড়া পুনরুৎপাদন বা বাণিজ্যিক ব্যবহার নিষিদ্ধ।",
+        "All content on this site — logos, images, text — is owned by AppleBD BD. Reproduction or commercial use without written permission is prohibited.",
     },
     {
-      heading: "দায় সীমাবদ্ধতা",
+      heading: "Limitation of liability",
       content:
-        "AppleBD BD সাইট ব্যবহার বা ক্রয়কৃত পণ্য থেকে সৃষ্ট পরোক্ষ বা আনুষঙ্গিক ক্ষতির জন্য দায়ী নয়। তৃতীয় পক্ষের কুরিয়ার সার্ভিসের কারণে ডেলিভারিতে বিলম্বের জন্য আমরা দায়ী নই।",
+        "AppleBD BD is not liable for any indirect or incidental damages arising from use of the site or products purchased. We are not responsible for delivery delays caused by third-party courier services.",
     },
     {
-      heading: "শর্তাবলী পরিবর্তন",
+      heading: "Changes to terms",
       content:
-        "আমরা যেকোনো সময় এই শর্তাবলী পরিবর্তন করার অধিকার রাখি। পরিবর্তনের পরও সাইট ব্যবহার অব্যাহত রাখলে আপনি নতুন শর্তাবলী মেনে নিয়েছেন বলে গণ্য হবে।",
+        "We reserve the right to change these terms at any time. If you continue to use the site after changes, you are deemed to have accepted the new terms.",
     },
   ],
 };
@@ -302,7 +302,7 @@ function ImageAssetField({
               className="max-w-full max-h-full object-contain"
             />
           ) : (
-            <span className="text-xs text-gray-300">খালি</span>
+            <span className="text-xs text-gray-300">Empty</span>
           )}
         </div>
         <div className="flex flex-wrap gap-2">
@@ -342,7 +342,7 @@ function ImageAssetField({
         {status && status !== "saving" && status !== "saved" && (
           <span className="text-red-500">Error: {status}</span>
         )}
-        {!status && (desc || "সেভ করলে সাথে সাথে ওয়েবসাইটে প্রয়োগ হবে।")}
+        {!status && (desc || "Changes apply to the website immediately after saving.")}
       </p>
     </div>
   );
@@ -371,30 +371,30 @@ function QAEditor({ items, onChange }) {
             onClick={() => remove(i)}
             className="absolute top-3 right-3 text-red-400 hover:text-red-600 text-xs"
           >
-            ✕ মুছুন
+            ✕ Delete
           </button>
           <div className="mt-4 space-y-2">
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
-                প্রশ্ন
+                Question
               </label>
               <input
                 value={item.question}
                 onChange={(e) => update(i, "question", e.target.value)}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
-                placeholder="প্রশ্ন লিখুন…"
+                placeholder="Write a question…"
               />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
-                উত্তর
+                Answer
               </label>
               <textarea
                 value={item.answer}
                 onChange={(e) => update(i, "answer", e.target.value)}
                 rows={4}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 resize-y"
-                placeholder="উত্তর লিখুন…"
+                placeholder="Write an answer…"
               />
             </div>
           </div>
@@ -405,7 +405,7 @@ function QAEditor({ items, onChange }) {
         onClick={add}
         className="w-full border-2 border-dashed border-gray-300 hover:border-gray-400 text-gray-500 hover:text-gray-800 rounded-xl py-3 text-sm transition"
       >
-        + নতুন প্রশ্ন যোগ করুন
+        + Add new question
       </button>
     </div>
   );
@@ -434,30 +434,30 @@ function SectionEditor({ items, onChange }) {
             onClick={() => remove(i)}
             className="absolute top-3 right-3 text-red-400 hover:text-red-600 text-xs"
           >
-            ✕ মুছুন
+            ✕ Delete
           </button>
           <div className="mt-4 space-y-2">
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
-                শিরোনাম
+                Heading
               </label>
               <input
                 value={item.heading}
                 onChange={(e) => update(i, "heading", e.target.value)}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
-                placeholder="বিভাগের শিরোনাম লিখুন…"
+                placeholder="Write the section heading…"
               />
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">
-                বিষয়বস্তু
+                Content
               </label>
               <textarea
                 value={item.content}
                 onChange={(e) => update(i, "content", e.target.value)}
                 rows={5}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 resize-y"
-                placeholder="বিষয়বস্তু লিখুন…"
+                placeholder="Write the content…"
               />
             </div>
           </div>
@@ -468,7 +468,7 @@ function SectionEditor({ items, onChange }) {
         onClick={add}
         className="w-full border-2 border-dashed border-gray-300 hover:border-gray-400 text-gray-500 hover:text-gray-800 rounded-xl py-3 text-sm transition"
       >
-        + নতুন বিভাগ যোগ করুন
+        + Add new section
       </button>
     </div>
   );
@@ -543,10 +543,10 @@ function FooterEditor({
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার লোগো</p>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Footer Logo</p>
         <ImageAssetField
           label="Footer Logo"
-          desc="আলাদা লোগো না দিলে ওয়েবসাইটের প্রধান লোগোই ফুটারে দেখাবে।"
+          desc="If you don't set a separate logo, the website's main logo will be shown in the footer."
           value={footerLogo}
           uploading={logoUploading}
           status={logoStatus}
@@ -557,9 +557,9 @@ function FooterEditor({
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">ফুটার — যোগাযোগের তথ্য</p>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Footer — Contact Information</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="ফোন নম্বর">
+          <Field label="Phone Number">
             <input
               value={footerInfo?.phone || ""}
               onChange={(e) => setInfo("phone", e.target.value)}
@@ -567,7 +567,7 @@ function FooterEditor({
               placeholder="+880 1700-000000"
             />
           </Field>
-          <Field label="ইমেইল">
+          <Field label="Email">
             <input
               value={footerInfo?.email || ""}
               onChange={(e) => setInfo("email", e.target.value)}
@@ -575,7 +575,7 @@ function FooterEditor({
               placeholder="info@example.com"
             />
           </Field>
-          <Field label="ঠিকানা">
+          <Field label="Address">
             <input
               value={footerInfo?.address || ""}
               onChange={(e) => setInfo("address", e.target.value)}
@@ -587,7 +587,7 @@ function FooterEditor({
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">সোশ্যাল মিডিয়া লিংক</p>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Social Media Links</p>
         <div className="space-y-2">
           {SOCIAL_PLATFORMS.map(({ key, label, color, placeholder }) => {
             const link = socialLinks?.[key] || {};
@@ -627,7 +627,7 @@ function FooterEditor({
 
       <div>
         <div className="flex items-center justify-between mb-1">
-          <p className="text-sm font-semibold text-gray-700">ফুটার নেভিগেশন কলাম</p>
+          <p className="text-sm font-semibold text-gray-700">Footer Navigation Columns</p>
           <button
             type="button"
             onClick={() =>
@@ -639,23 +639,23 @@ function FooterEditor({
               <line x1="12" y1="5" x2="12" y2="19" />
               <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            কলাম যোগ করুন
+            Add column
           </button>
         </div>
         <p className="text-[11px] text-gray-400 mb-3">
-          প্রতিটি কলামের টাইটেল (যেমন Company, Product) ও তার নিচের লিংকগুলো এখান থেকে ঠিক করুন।
-          কোনো কলাম না থাকলে ওয়েবসাইটে ডিফল্ট Company / Product কলাম দেখাবে।
+          Set each column's title (e.g. Company, Product) and the links under it here.
+          If there are no columns, the website shows the default Company / Product columns.
         </p>
 
         {columns.length === 0 ? (
           <div className="py-6 text-center border border-dashed border-gray-200 rounded-lg">
-            <p className="text-[11px] text-gray-400 italic mb-2">কোনো কাস্টম কলাম নেই</p>
+            <p className="text-[11px] text-gray-400 italic mb-2">No custom columns</p>
             <button
               type="button"
               onClick={() => setColumns(DEFAULT_FOOTER_COLUMNS)}
               className="text-xs px-3 py-1.5 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100"
             >
-              ডিফল্ট কলাম দিয়ে শুরু করুন
+              Start with default columns
             </button>
           </div>
         ) : (
@@ -672,14 +672,14 @@ function FooterEditor({
                           prev.map((c, i) => (i === ci ? { ...c, title: e.target.value } : c)),
                         )
                       }
-                      placeholder="কলামের টাইটেল"
+                      placeholder="Column title"
                       className="flex-1 border border-gray-300 px-2 py-1.5 rounded-lg text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
                     />
                     <button
                       type="button"
                       onClick={() => setColumns((prev) => prev.filter((_, i) => i !== ci))}
                       className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50 bg-white"
-                      title="কলাম মুছুন"
+                      title="Delete column"
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="3 6 5 6 21 6" />
@@ -723,7 +723,7 @@ function FooterEditor({
                             )
                           }
                           className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50 bg-white"
-                          title="লিংক মুছুন"
+                          title="Delete link"
                         >
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="3 6 5 6 21 6" />
@@ -753,7 +753,7 @@ function FooterEditor({
                       <line x1="12" y1="5" x2="12" y2="19" />
                       <line x1="5" y1="12" x2="19" y2="12" />
                     </svg>
-                    লিংক যোগ করুন
+                    Add link
                   </button>
                 </div>
               );
@@ -772,10 +772,10 @@ function ContactEditor({ contactInfo, onChange }) {
   return (
     <div>
       <p className="text-sm font-semibold text-gray-700 mb-2">
-        Contact Us পেজে দেখানো যোগাযোগের তথ্য
+        Contact information shown on the Contact Us page
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Field label="ফোন নম্বর">
+        <Field label="Phone Number">
           <input
             value={contactInfo?.phone || ""}
             onChange={(e) => setInfo("phone", e.target.value)}
@@ -783,7 +783,7 @@ function ContactEditor({ contactInfo, onChange }) {
             placeholder="+880 1700-000000"
           />
         </Field>
-        <Field label="ইমেইল">
+        <Field label="Email">
           <input
             value={contactInfo?.email || ""}
             onChange={(e) => setInfo("email", e.target.value)}
@@ -791,7 +791,7 @@ function ContactEditor({ contactInfo, onChange }) {
             placeholder="support@example.com"
           />
         </Field>
-        <Field label="ঠিকানা">
+        <Field label="Address">
           <input
             value={contactInfo?.address || ""}
             onChange={(e) => setInfo("address", e.target.value)}
@@ -835,23 +835,23 @@ function AboutEditor({ aboutContent, onChange }) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">হিরো সেকশন</p>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Hero Section</p>
         <div className="space-y-3">
-          <Field label="শিরোনাম">
+          <Field label="Title">
             <input
               value={hero.title || ""}
               onChange={(e) => setHero("title", e.target.value)}
               className={INPUT}
-              placeholder="About আমাদের স্টোর"
+              placeholder="About Our Store"
             />
           </Field>
-          <Field label="বিবরণ">
+          <Field label="Description">
             <textarea
               value={hero.description || ""}
               onChange={(e) => setHero("description", e.target.value)}
               rows={3}
               className={`${INPUT} resize-y`}
-              placeholder="আমাদের স্টোর সম্পর্কে সংক্ষিপ্ত বিবরণ লিখুন…"
+              placeholder="Write a short description about our store…"
             />
           </Field>
         </div>
@@ -859,7 +859,7 @@ function AboutEditor({ aboutContent, onChange }) {
 
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-2">
-          Why Shop With Us — ৪টি ফিচার
+          Why Shop With Us — 4 features
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {features.map((f, i) => (
@@ -869,14 +869,14 @@ function AboutEditor({ aboutContent, onChange }) {
                 value={f.title || ""}
                 onChange={(e) => setFeature(i, "title", e.target.value)}
                 className={`${INPUT} mb-2`}
-                placeholder="ফিচারের শিরোনাম"
+                placeholder="Feature title"
               />
               <textarea
                 value={f.desc || ""}
                 onChange={(e) => setFeature(i, "desc", e.target.value)}
                 rows={2}
                 className={`${INPUT} resize-y`}
-                placeholder="ফিচারের বিবরণ"
+                placeholder="Feature description"
               />
             </div>
           ))}
@@ -884,7 +884,7 @@ function AboutEditor({ aboutContent, onChange }) {
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-gray-700 mb-2">স্ট্যাটিস্টিক্স — ৪টি সংখ্যা</p>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Statistics — 4 numbers</p>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {stats.map((s, i) => (
             <div key={i} className="border border-gray-200 rounded-xl p-3 bg-gray-50">
@@ -974,9 +974,9 @@ export default function PolicyPagesEditor() {
         body: JSON.stringify(payload),
       });
       if (!resp.ok) throw new Error((await resp.json()).error || "Save failed");
-      showToast("✅ সেভ হয়েছে!");
+      showToast("✅ Saved!");
     } catch (err) {
-      alert(err.message || "সেভ করতে সমস্যা হয়েছে");
+      alert(err.message || "There was a problem saving");
     } finally {
       setSaving(false);
     }
@@ -1025,7 +1025,7 @@ export default function PolicyPagesEditor() {
   const handleQuickSetup = async () => {
     if (
       !confirm(
-        "সব ট্যাবে বাংলা কনটেন্ট যোগ করে সেভ করা হবে। বিদ্যমান কনটেন্ট মুছে যাবে। নিশ্চিত?",
+        "Default content will be added to all tabs and saved. Existing content will be erased. Are you sure?",
       )
     )
       return;
@@ -1052,7 +1052,7 @@ export default function PolicyPagesEditor() {
   const handleLoadTabDefault = () => {
     if (
       !confirm(
-        `"${TABS.find((t) => t.key === activeTab)?.label}" ট্যাবে default কনটেন্ট লোড করা হবে। নিশ্চিত?`,
+        `Default content will be loaded into the "${TABS.find((t) => t.key === activeTab)?.label}" tab. Are you sure?`,
       )
     )
       return;
@@ -1060,12 +1060,12 @@ export default function PolicyPagesEditor() {
       ...prev,
       [activeTab]: DEFAULT_CONTENT[activeTab],
     }));
-    showToast("Default কনটেন্ট লোড হয়েছে — সেভ করুন");
+    showToast("Default content loaded — please save");
   };
 
   if (loading)
     return (
-      <div className="text-center py-16 text-gray-400 text-sm">লোড হচ্ছে…</div>
+      <div className="text-center py-16 text-gray-400 text-sm">Loading…</div>
     );
 
   const activeTabConfig = TABS.find((t) => t.key === activeTab);
@@ -1081,11 +1081,11 @@ export default function PolicyPagesEditor() {
         <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-4 flex items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-amber-800">
-              কনটেন্ট এখনো যোগ করা হয়নি
+              No content added yet
             </p>
             <p className="text-xs text-amber-600 mt-0.5">
-              নিচের বাটনে ক্লিক করলে সব পলিসি পেজে বাংলা কনটেন্ট একসাথে সেভ হয়ে
-              যাবে।
+              Clicking the button below will save default content to all policy
+              pages at once.
             </p>
           </div>
           <button
@@ -1093,7 +1093,7 @@ export default function PolicyPagesEditor() {
             disabled={saving}
             className="shrink-0 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-lg transition disabled:opacity-60"
           >
-            {saving ? "সেভ হচ্ছে…" : "⚡ Quick Setup — সব কনটেন্ট যোগ করুন"}
+            {saving ? "Saving…" : "⚡ Quick Setup — Add all content"}
           </button>
         </div>
       )}
@@ -1106,7 +1106,7 @@ export default function PolicyPagesEditor() {
               Policy Pages Editor
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
-              Dashboard থেকে সাইটের সব পলিসি ও কনটেন্ট পেজ এডিট করুন
+              Edit all the site's policy and content pages from the Dashboard
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -1129,7 +1129,7 @@ export default function PolicyPagesEditor() {
               disabled={saving}
               className="px-4 py-2 bg-gray-800 hover:bg-[#1D1D1F] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
             >
-              {saving ? "সেভ হচ্ছে…" : "সেভ করুন"}
+              {saving ? "Saving…" : "Save"}
             </button>
           </div>
         </div>
@@ -1162,7 +1162,7 @@ export default function PolicyPagesEditor() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-gray-700">
-                  {activeTabConfig?.icon} {activeTabConfig?.label} পেজ
+                  {activeTabConfig?.icon} {activeTabConfig?.label} page
                 </span>
                 <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-lg">
                   /
@@ -1179,7 +1179,7 @@ export default function PolicyPagesEditor() {
                 onClick={handleLoadTabDefault}
                 className="text-xs text-gray-800 hover:text-[#1D1D1F] border border-gray-300 hover:bg-gray-50 px-3 py-1 rounded-lg transition"
               >
-                এই ট্যাবে default কনটেন্ট লোড করুন
+                Load default content into this tab
               </button>
             </div>
           )}
@@ -1239,11 +1239,11 @@ export default function PolicyPagesEditor() {
             <button
               onClick={() => {
                 handleChange(activeTab, []);
-                showToast("ট্যাব খালি করা হয়েছে");
+                showToast("Tab cleared");
               }}
               className="text-xs text-gray-400 hover:text-red-500 transition"
             >
-              এই ট্যাব রিসেট করুন
+              Reset this tab
             </button>
           ) : (
             <span />
@@ -1253,7 +1253,7 @@ export default function PolicyPagesEditor() {
             disabled={saving}
             className="px-4 py-2 bg-gray-800 hover:bg-[#1D1D1F] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition"
           >
-            {saving ? "সেভ হচ্ছে…" : "সেভ করুন"}
+            {saving ? "Saving…" : "Save"}
           </button>
         </div>
       </div>

@@ -2465,26 +2465,26 @@ function CustomerNoteModal({ order, onClose }) {
             </p>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">নাম</p>
+                <p className="text-xs text-gray-400 mb-0.5">Name</p>
                 <p className="font-medium text-gray-800">
                   {order.billingDetails?.name || "—"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">ফোন</p>
+                <p className="text-xs text-gray-400 mb-0.5">Phone</p>
                 <p className="font-medium text-gray-800">
                   {order.billingDetails?.phone || "—"}
                 </p>
               </div>
               <div className="col-span-2">
-                <p className="text-xs text-gray-400 mb-0.5">ইমেইল</p>
+                <p className="text-xs text-gray-400 mb-0.5">Email</p>
                 <p className="font-medium text-gray-800">
                   {order.billingDetails?.email || "—"}
                 </p>
               </div>
               {order.billingDetails?.address && (
                 <div className="col-span-2">
-                  <p className="text-xs text-gray-400 mb-0.5">ঠিকানা</p>
+                  <p className="text-xs text-gray-400 mb-0.5">Address</p>
                   <p className="font-medium text-gray-800">
                     {order.billingDetails.address}
                   </p>
@@ -2539,13 +2539,13 @@ function CustomerNoteModal({ order, onClose }) {
               Previous Orders
               {!prevLoading && (
                 <span className="ml-2 text-gray-300 font-normal normal-case">
-                  ({prevOrders.length} টি পাওয়া গেছে)
+                  ({prevOrders.length} found)
                 </span>
               )}
             </p>
             {prevLoading ? (
               <p className="text-xs text-gray-400 py-3 text-center">
-                লোড হচ্ছে…
+                Loading…
               </p>
             ) : prevOrders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
@@ -2682,7 +2682,7 @@ function CustomerNotesSection() {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-gray-400 text-sm">
-            লোড হচ্ছে…
+            Loading…
           </div>
         ) : orders.length === 0 ? (
           <div className="py-16 text-center text-gray-400 text-sm">
@@ -3059,11 +3059,11 @@ function AbandonedCartModal({ user, onClose }) {
 
   const timeAgo = (date) => {
     const mins = Math.floor((Date.now() - new Date(date)) / 60000);
-    if (mins < 60) return `${mins} মিনিট আগে`;
+    if (mins < 60) return `${mins} min ago`;
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs} ঘন্টা আগে`;
+    if (hrs < 24) return `${hrs} hr ago`;
     const days = Math.floor(hrs / 24);
-    if (days < 30) return `${days} দিন আগে`;
+    if (days < 30) return `${days} days ago`;
     return new Date(date).toLocaleDateString("en-BD");
   };
 
@@ -3121,17 +3121,17 @@ function AbandonedCartModal({ user, onClose }) {
             </p>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">নাম</p>
+                <p className="text-xs text-gray-400 mb-0.5">Name</p>
                 <p className="font-medium text-gray-800">{user.name || "—"}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">ফোন</p>
+                <p className="text-xs text-gray-400 mb-0.5">Phone</p>
                 <p className="font-medium text-gray-800">
                   {user.mobile || "—"}
                 </p>
               </div>
               <div className="col-span-2">
-                <p className="text-xs text-gray-400 mb-0.5">ইমেইল</p>
+                <p className="text-xs text-gray-400 mb-0.5">Email</p>
                 <p className="font-medium text-gray-800">{user.email || "—"}</p>
               </div>
             </div>
@@ -3209,17 +3209,17 @@ function AbandonedCartModal({ user, onClose }) {
               Previous Orders
               {!ordersLoading && (
                 <span className="ml-2 text-gray-300 font-normal normal-case">
-                  ({orders.length} টি পাওয়া গেছে)
+                  ({orders.length} found)
                 </span>
               )}
             </p>
             {ordersLoading ? (
               <p className="text-xs text-gray-400 py-3 text-center">
-                লোড হচ্ছে…
+                Loading…
               </p>
             ) : orders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
-                এই customer-এর কোনো আগের order নেই
+                This customer has no previous orders
               </p>
             ) : (
               <div className="space-y-2">
@@ -3312,10 +3312,10 @@ function AbandonedCartSection() {
 
   const timeAgo = (date) => {
     const mins = Math.floor((Date.now() - new Date(date)) / 60000);
-    if (mins < 60) return `${mins} মিনিট আগে`;
+    if (mins < 60) return `${mins} min ago`;
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs} ঘন্টা আগে`;
-    return `${Math.floor(hrs / 24)} দিন আগে`;
+    if (hrs < 24) return `${hrs} hr ago`;
+    return `${Math.floor(hrs / 24)} days ago`;
   };
 
   const deleteCart = async (userId) => {
@@ -3369,7 +3369,7 @@ function AbandonedCartSection() {
       {/* Table */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
+          <div className="py-16 text-center text-gray-400">Loading…</div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
@@ -3645,16 +3645,16 @@ function OrderCustomerModal({ name, phone, email, userId, onClose }) {
             </p>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">নাম</p>
+                <p className="text-xs text-gray-400 mb-0.5">Name</p>
                 <p className="font-medium text-gray-800">{name || "—"}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">ফোন</p>
+                <p className="text-xs text-gray-400 mb-0.5">Phone</p>
                 <p className="font-medium text-gray-800">{phone || "—"}</p>
               </div>
               {email && (
                 <div className="col-span-2">
-                  <p className="text-xs text-gray-400 mb-0.5">ইমেইল</p>
+                  <p className="text-xs text-gray-400 mb-0.5">Email</p>
                   <p className="font-medium text-gray-800">{email}</p>
                 </div>
               )}
@@ -3677,13 +3677,13 @@ function OrderCustomerModal({ name, phone, email, userId, onClose }) {
               Previous Orders
               {!prevLoading && (
                 <span className="ml-2 text-gray-300 font-normal normal-case">
-                  ({prevOrders.length} টি পাওয়া গেছে)
+                  ({prevOrders.length} found)
                 </span>
               )}
             </p>
             {prevLoading ? (
               <p className="text-xs text-gray-400 py-3 text-center">
-                লোড হচ্ছে…
+                Loading…
               </p>
             ) : prevOrders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
@@ -3751,11 +3751,11 @@ function CheckoutSessionModal({ session, onClose }) {
 
   const timeAgo = (date) => {
     const mins = Math.floor((Date.now() - new Date(date)) / 60000);
-    if (mins < 60) return `${mins} মিনিট আগে`;
+    if (mins < 60) return `${mins} min ago`;
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs} ঘন্টা আগে`;
+    if (hrs < 24) return `${hrs} hr ago`;
     const days = Math.floor(hrs / 24);
-    if (days < 30) return `${days} দিন আগে`;
+    if (days < 30) return `${days} days ago`;
     return new Date(date).toLocaleDateString("en-BD");
   };
 
@@ -3830,19 +3830,19 @@ function CheckoutSessionModal({ session, onClose }) {
             </p>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">নাম</p>
+                <p className="text-xs text-gray-400 mb-0.5">Name</p>
                 <p className="font-medium text-gray-800">
                   {session.userName || "—"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">ফোন</p>
+                <p className="text-xs text-gray-400 mb-0.5">Phone</p>
                 <p className="font-medium text-gray-800">
                   {session.userPhone || "—"}
                 </p>
               </div>
               <div className="col-span-2">
-                <p className="text-xs text-gray-400 mb-0.5">ইমেইল</p>
+                <p className="text-xs text-gray-400 mb-0.5">Email</p>
                 <p className="font-medium text-gray-800">
                   {session.userEmail || "—"}
                 </p>
@@ -3906,14 +3906,14 @@ function CheckoutSessionModal({ session, onClose }) {
               Previous Orders
               {!ordersLoading && (
                 <span className="ml-2 text-gray-300 font-normal normal-case">
-                  ({orders.length} টি পাওয়া গেছে)
+                  ({orders.length} found)
                 </span>
               )}
             </p>
 
             {ordersLoading ? (
               <p className="text-xs text-gray-400 py-3 text-center">
-                লোড হচ্ছে…
+                Loading…
               </p>
             ) : !session.userId && !session.userPhone && !session.userEmail ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
@@ -3921,7 +3921,7 @@ function CheckoutSessionModal({ session, onClose }) {
               </p>
             ) : orders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
-                এই customer-এর কোনো আগের order নেই
+                This customer has no previous orders
               </p>
             ) : (
               <div className="space-y-2">
@@ -4032,10 +4032,10 @@ function AbandonCheckoutSection() {
 
   const timeAgo = (date) => {
     const mins = Math.floor((Date.now() - new Date(date)) / 60000);
-    if (mins < 60) return `${mins} মিনিট আগে`;
+    if (mins < 60) return `${mins} min ago`;
     const hrs = Math.floor(mins / 60);
-    if (hrs < 24) return `${hrs} ঘন্টা আগে`;
-    return `${Math.floor(hrs / 24)} দিন আগে`;
+    if (hrs < 24) return `${hrs} hr ago`;
+    return `${Math.floor(hrs / 24)} days ago`;
   };
 
   const goPage = (p) => {
@@ -4079,7 +4079,7 @@ function AbandonCheckoutSection() {
       {/* Table */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
+          <div className="py-16 text-center text-gray-400">Loading…</div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
@@ -4359,19 +4359,19 @@ function WishlistCustomerModal({ customer, productId, onClose }) {
             </p>
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">নাম</p>
+                <p className="text-xs text-gray-400 mb-0.5">Name</p>
                 <p className="font-medium text-gray-800">
                   {customer.name || "—"}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-gray-400 mb-0.5">ফোন</p>
+                <p className="text-xs text-gray-400 mb-0.5">Phone</p>
                 <p className="font-medium text-gray-800">
                   {customer.mobile || "—"}
                 </p>
               </div>
               <div className="col-span-2">
-                <p className="text-xs text-gray-400 mb-0.5">ইমেইল</p>
+                <p className="text-xs text-gray-400 mb-0.5">Email</p>
                 <p className="font-medium text-gray-800">
                   {customer.email || "—"}
                 </p>
@@ -4395,17 +4395,17 @@ function WishlistCustomerModal({ customer, productId, onClose }) {
               Previous Orders
               {!ordersLoading && (
                 <span className="ml-2 text-gray-300 font-normal normal-case">
-                  ({orders.length} টি পাওয়া গেছে)
+                  ({orders.length} found)
                 </span>
               )}
             </p>
             {ordersLoading ? (
               <p className="text-xs text-gray-400 py-3 text-center">
-                লোড হচ্ছে…
+                Loading…
               </p>
             ) : orders.length === 0 ? (
               <p className="text-xs text-gray-400 py-3 text-center italic">
-                এই customer-এর কোনো আগের order নেই
+                This customer has no previous orders
               </p>
             ) : (
               <div className="space-y-2">
@@ -4560,7 +4560,7 @@ function AllWishlistSection() {
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="py-16 text-center text-gray-400">লোড হচ্ছে…</div>
+          <div className="py-16 text-center text-gray-400">Loading…</div>
         ) : (
           <table className="w-full text-sm">
             <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">

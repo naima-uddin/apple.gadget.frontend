@@ -238,7 +238,7 @@ export default function ProductCard({
           </div>
 
           <div
-            className={`absolute inset-0 z-30 flex items-center justify-center gap-2.5 transition-opacity duration-300 pointer-events-none ${showActionsOnHover ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}
+            className={`absolute top-2 right-2 z-30 flex flex-col items-center gap-2.5 transition-opacity duration-300 pointer-events-none ${showActionsOnHover ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}
           >
             <button
               onClick={(e) => {

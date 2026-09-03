@@ -29,14 +29,14 @@ export default async function PrivacyPage() {
       <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8">
         <PolicyHeader
           icon={PRIVACY_ICON}
-          title="গোপনীয়তা নীতি"
-          subtitle="আপনার তথ্য সুরক্ষায় আমরা প্রতিশ্রুতিবদ্ধ"
+          title="Privacy Policy"
+          subtitle="We are committed to protecting your information"
         />
 
         {sections.length > 0 ? (
           <>
             <p className="text-sm text-[#6B7280] mb-6 leading-relaxed">
-              {storeName} আপনার ব্যক্তিগত তথ্য সুরক্ষায় প্রতিশ্রুতিবদ্ধ।
+              {storeName} is committed to protecting your personal information.
             </p>
             <div className="space-y-6">
               {sections.map((sec, i) => (
@@ -48,7 +48,7 @@ export default async function PrivacyPage() {
             </div>
           </>
         ) : (
-          <p className="text-sm text-gray-400">কোনো তথ্য পাওয়া যায়নি।</p>
+          <p className="text-sm text-gray-400">No information available.</p>
         )}
       </div>
     </main>

@@ -10,7 +10,6 @@ import { useCategories } from "@/components/context/CategoryContext";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
-import SectionHeader from "@/components/home/SectionHeader";
 import StoreHero from "@/components/home/StoreHero";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -25,16 +24,12 @@ export default function AllProductsClient() {
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [bestSelling, setBestSelling] = useState([]);
-  const [loadingBestSelling, setLoadingBestSelling] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productsLoadedOnce, setProductsLoadedOnce] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   // Desktop filter sidebar — collapsed by default; grid gains an extra column
   const [showDesktopFilters, setShowDesktopFilters] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
-  const [bestSellingStartIndex, setBestSellingStartIndex] = useState(0);
-  const [bestSellingPerView, setBestSellingPerView] = useState(1);
   const [sortOption, setSortOption] = useState("position");
   const [activeFilters, setActiveFilters] = useState({
     priceRange: [0, 0],
@@ -47,25 +42,11 @@ export default function AllProductsClient() {
     const updateResponsiveState = () => {
       const width = window.innerWidth;
       setIsMobileView(width < 640);
-
-      if (width >= 1280) setBestSellingPerView(5);
-      else if (width >= 1024) setBestSellingPerView(4);
-      else if (width >= 768) setBestSellingPerView(3);
-      else setBestSellingPerView(2);
     };
 
     updateResponsiveState();
     window.addEventListener("resize", updateResponsiveState);
     return () => window.removeEventListener("resize", updateResponsiveState);
-  }, []);
-
-  // Site-wide best sellers (badge-based, same convention as the category page)
-  useEffect(() => {
-    fetch(`${API}/api/products?badge=best_seller&page=1&limit=50`)
-      .then((r) => r.json())
-      .then((d) => setBestSelling(d.items || []))
-      .catch(() => setBestSelling([]))
-      .finally(() => setLoadingBestSelling(false));
   }, []);
 
   // Build a flat top-level-category list (with depth) and an id -> descendant-ids
@@ -185,19 +166,7 @@ export default function AllProductsClient() {
 
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
 
-  const maxBestSellingStart = Math.max(
-    0,
-    bestSelling.length - bestSellingPerView,
-  );
-  const canSlideBestSelling = bestSelling.length > bestSellingPerView;
-  const visibleBestSelling = bestSelling.slice(
-    bestSellingStartIndex,
-    bestSellingStartIndex + bestSellingPerView,
-  );
-
-  useEffect(() => {
-    setBestSellingStartIndex((prev) => Math.min(prev, maxBestSellingStart));
-  }, [maxBestSellingStart]);
+  const mainCategories = getMainCategories();
 
   const paginationControls =
     !loadingProducts && totalPages > 1 ? (
@@ -295,6 +264,21 @@ export default function AllProductsClient() {
       {/* ── Listing area ── */}
       <div className="bg-[#f7f5ff] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
+          {/* Main categories row */}
+          {mainCategories.length > 0 && (
+            <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {mainCategories.map((cat) => (
+                <Link
+                  key={cat._id}
+                  href={`/category/${cat.slug}/`}
+                  className="shrink-0 h-9 px-4 inline-flex items-center rounded-full border border-gray-200 bg-white text-sm font-medium text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F] shadow-sm transition-colors"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          )}
+
           {/* Mobile sticky filter/sort bar */}
           <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#f7f5ff]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
@@ -419,7 +403,6 @@ export default function AllProductsClient() {
                       {showDesktopFilters ? "▲" : "▼"}
                     </span>
                   </button>
-                  {paginationControls}
                 </div>
                 <SortDropdown
                   value={sortOption}
@@ -467,7 +450,7 @@ export default function AllProductsClient() {
               )}
 
               {paginationControls && (
-                <div className="mt-10 flex justify-center lg:hidden">
+                <div className="mt-10 flex justify-center">
                   {paginationControls}
                 </div>
               )}
@@ -478,79 +461,6 @@ export default function AllProductsClient() {
 
       {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
       <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
-
-      {/* ── Best Selling — below Store Hero ── */}
-      {(loadingBestSelling || bestSelling.length > 0) && (
-        <div className="bg-[#f7f5ff] w-full">
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 mt-10">
-            <SectionHeader
-              title={
-                <>
-                  Best <span className="text-[#1D1D1F]">Selling</span>
-                </>
-              }
-              seeMoreHref="/tag/best-seller"
-              seeMoreLabel="See More"
-            />
-
-            {loadingBestSelling ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {Array(5)
-                  .fill(0)
-                  .map((_, i) => (
-                    <ProductCard key={i} loading={true} />
-                  ))}
-              </div>
-            ) : (
-              <div className="relative">
-                {canSlideBestSelling && (
-                  <div className="flex items-center justify-end gap-2 mb-4">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setBestSellingStartIndex((i) => Math.max(0, i - 1))
-                      }
-                      disabled={bestSellingStartIndex === 0}
-                      className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
-                      aria-label="Previous best selling products"
-                    >
-                      ‹
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setBestSellingStartIndex((i) =>
-                          Math.min(maxBestSellingStart, i + 1),
-                        )
-                      }
-                      disabled={bestSellingStartIndex >= maxBestSellingStart}
-                      className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
-                      aria-label="Next best selling products"
-                    >
-                      ›
-                    </button>
-                  </div>
-                )}
-
-                <div className="min-w-0 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {visibleBestSelling.map((p) => (
-                    <ProductCard
-                      key={p._id}
-                      product={p}
-                      imageWidth={360}
-                      imageHeight={160}
-                      showDiscount={true}
-                      maxTags={2}
-                      showActionsOnHover={true}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }

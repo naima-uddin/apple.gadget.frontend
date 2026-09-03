@@ -159,7 +159,7 @@ export default function ContactContent() {
         <p className="text-xs font-semibold uppercase tracking-wider text-gray-300">
           {t("contact.title")}
         </p>
-        <h2 className="mt-1 text-lg font-bold">যোগাযোগের তথ্য</h2>
+        <h2 className="mt-1 text-lg font-bold">Contact Information</h2>
 
         {hasContactInfo ? (
           <div className="mt-6 space-y-4">

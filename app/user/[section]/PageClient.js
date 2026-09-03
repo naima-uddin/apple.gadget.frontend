@@ -997,7 +997,7 @@ function OrdersSection({ API }) {
                                       );
                                     }}
                                     className="w-6 h-6 rounded bg-red-100 text-red-500 hover:bg-red-200 text-xs font-bold flex items-center justify-center ml-1"
-                                    title="সরিয়ে দিন"
+                                    title="Remove"
                                   >
                                     ✕
                                   </button>

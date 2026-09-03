@@ -38,12 +38,12 @@ function NotFoundHelp({ byPhone }) {
         </span>
         <div>
           <p className="text-sm font-semibold text-amber-900">
-            অর্ডার খুঁজে পাওয়া যায়নি
+            No order found
           </p>
           <p className="text-sm text-amber-800/90 mt-1 leading-relaxed">
             {byPhone
-              ? "এই phone number-এ কোনো অর্ডার নেই। নম্বরটি আবার চেক করুন।"
-              : "Order ID আবার চেক করুন। Confirmation email বা My Orders page থেকে নিন।"}
+              ? "No orders found for this phone number. Please check the number and try again."
+              : "Please check the Order ID again. You can find it in your confirmation email or the My Orders page."}
           </p>
         </div>
       </div>
@@ -198,7 +198,7 @@ export default function TrackOrderPage() {
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Track Your Order</h1>
           <p className="text-sm text-gray-500 mt-2">
-            Order ID বা Phone Number দিয়ে আপনার অর্ডার ট্র্যাক করুন।
+            Track your order using your Order ID or Phone Number.
           </p>
         </div>
 
@@ -238,7 +238,7 @@ export default function TrackOrderPage() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300"
                 />
                 <p className="text-xs text-gray-400 mt-1.5">
-                  Confirmation email বা My Orders page থেকে নিন
+                  Find it in your confirmation email or the My Orders page
                 </p>
               </div>
 
@@ -275,7 +275,7 @@ export default function TrackOrderPage() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-300"
                 />
                 <p className="text-xs text-gray-400 mt-1.5">
-                  অর্ডারে যে phone number দিয়েছিলেন সেটি দিন
+                  Enter the phone number you used on the order
                 </p>
               </div>
 
@@ -336,8 +336,7 @@ export default function TrackOrderPage() {
         {mode === "phone" && phoneOrders.length > 0 && (
           <div className="mt-6 space-y-3">
             <p className="text-sm font-medium text-gray-600">
-              {phoneOrders.length}টি অর্ডার পাওয়া গেছে — বিস্তারিত দেখতে select
-              করুন
+              {phoneOrders.length} order(s) found — select one to see details
             </p>
             <div className="space-y-2">
               {phoneOrders.map((o) => (

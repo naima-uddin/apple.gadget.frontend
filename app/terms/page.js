@@ -29,14 +29,14 @@ export default async function TermsPage() {
       <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8">
         <PolicyHeader
           icon={TERMS_ICON}
-          title="শর্তাবলী"
-          subtitle="সাইট ব্যবহারের আগে অনুগ্রহ করে পড়ুন"
+          title="Terms & Conditions"
+          subtitle="Please read before using the site"
         />
 
         {sections.length > 0 ? (
           <>
             <p className="text-sm text-[#6B7280] mb-6 leading-relaxed">
-              {storeName} ব্যবহার করে আপনি এই শর্তাবলীতে সম্মত হচ্ছেন।
+              By using {storeName}, you agree to these terms and conditions.
             </p>
             <div className="space-y-6">
               {sections.map((sec, i) => (
@@ -48,7 +48,7 @@ export default async function TermsPage() {
             </div>
           </>
         ) : (
-          <p className="text-sm text-gray-400">কোনো তথ্য পাওয়া যায়নি।</p>
+          <p className="text-sm text-gray-400">No information available.</p>
         )}
       </div>
     </main>

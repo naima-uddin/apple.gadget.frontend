@@ -14,13 +14,13 @@ export default function ReturnAccordion() {
     <div>
       <PolicyHeader
         icon={RETURN_ICON}
-        title="রিটার্ন ও রিফান্ড"
-        subtitle="সহজ রিটার্ন প্রক্রিয়া ও দ্রুত রিফান্ড"
+        title="Returns & Refund"
+        subtitle="Easy return process and fast refunds"
       />
       {items.length > 0 ? (
         <Accordion items={items} />
       ) : (
-        <p className="text-sm text-gray-400">কোনো তথ্য পাওয়া যায়নি।</p>
+        <p className="text-sm text-gray-400">No information available.</p>
       )}
     </div>
   );

@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items = [
-  { key: "shipping", label: "শিপিং ও ডেলিভারি", href: "/shipping" },
-  { key: "returns", label: "রিটার্ন ও রিপ্লেসমেন্ট", href: "/returns" },
-  { key: "faq", label: "সাধারণ জিজ্ঞাসা", href: "/faq" },
-  { key: "privacy", label: "গোপনীয়তা নীতি", href: "/privacy" },
-  { key: "terms", label: "শর্তাবলী", href: "/terms" },
-  { key: "contact", label: "যোগাযোগ করুন", href: "/contact" },
-  { key: "about", label: "আমাদের সম্পর্কে", href: "/about" },
+  { key: "shipping", label: "Shipping & Delivery", href: "/shipping" },
+  { key: "returns", label: "Returns & Replacement", href: "/returns" },
+  { key: "faq", label: "FAQ", href: "/faq" },
+  { key: "privacy", label: "Privacy Policy", href: "/privacy" },
+  { key: "terms", label: "Terms & Conditions", href: "/terms" },
+  { key: "contact", label: "Contact Us", href: "/contact" },
+  { key: "about", label: "About Us", href: "/about" },
 ];
 
 // next.config.mjs sets trailingSlash: true, so usePathname() returns paths
@@ -24,7 +24,7 @@ export default function PolicyTabs() {
 
   return (
     <nav
-      aria-label="সহায়তা বিভাগ"
+      aria-label="Help sections"
       className="no-scrollbar mb-6 flex gap-2 overflow-x-auto rounded-2xl border border-gray-100 bg-white p-2 shadow-sm"
     >
       {items.map((item) => {

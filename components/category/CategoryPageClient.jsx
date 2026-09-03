@@ -11,7 +11,6 @@ import { useCategories } from "@/components/context/CategoryContext";
 import { getDisplayPrice } from "@/lib/pricing";
 import AdSlot from "@/components/ui/AdSlot";
 import NoProductsFound from "@/components/ui/NoProductsFound";
-import SectionHeader from "@/components/home/SectionHeader";
 import StoreHero from "@/components/home/StoreHero";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -34,16 +33,12 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [categoryIdsParam, setCategoryIdsParam] = useState("");
-  const [bestSelling, setBestSelling] = useState([]);
-  const [loadingBestSelling, setLoadingBestSelling] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [productsLoadedOnce, setProductsLoadedOnce] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   // Desktop filter sidebar — collapsed by default; grid gains an extra column
   const [showDesktopFilters, setShowDesktopFilters] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
-  const [bestSellingStartIndex, setBestSellingStartIndex] = useState(0);
-  const [bestSellingPerView, setBestSellingPerView] = useState(1);
   const [sortOption, setSortOption] = useState("position");
   const [activeFilters, setActiveFilters] = useState({
     priceRange: [0, 0],
@@ -56,11 +51,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     const updateResponsiveState = () => {
       const width = window.innerWidth;
       setIsMobileView(width < 640);
-
-      if (width >= 1280) setBestSellingPerView(5);
-      else if (width >= 1024) setBestSellingPerView(4);
-      else if (width >= 768) setBestSellingPerView(3);
-      else setBestSellingPerView(2);
     };
 
     updateResponsiveState();
@@ -77,14 +67,12 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     setTotalProducts(0);
     setCategoryIdsParam("");
     setShowMobileFilters(false);
-    setBestSellingStartIndex(0);
     setActiveFilters({
       priceRange: [0, 0],
       expandedSubIds: new Set(),
       brands: new Set(),
       minRating: null,
     });
-    setLoadingBestSelling(true);
     setLoadingProducts(true);
     setProductsLoadedOnce(false);
     (async () => {
@@ -100,10 +88,8 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           setSubcategories([]);
           setDescendantMap(new Map());
           setProducts([]);
-          setBestSelling([]);
           setCategoryIdsParam("");
           setIsSubcategoryPage(false);
-          setLoadingBestSelling(false);
           setLoadingProducts(false);
           return;
         }
@@ -160,31 +146,9 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         const param = ids.join(",");
         setCategoryIdsParam(param);
         shouldLoadProducts = true;
-
-        // Best-selling strip — try category-specific first, fall back to global
-        const bestResp = await fetch(
-          `${API}/api/products?categoryId=${encodeURIComponent(param)}&badge=best_seller&page=1&limit=50`,
-        );
-        const bestJson = await bestResp.json();
-        const catBest = bestJson.items || [];
-        if (catBest.length > 0) {
-          setBestSelling(catBest);
-        } else {
-          // fallback: show all best-sellers site-wide (badge only, no category filter)
-          const globalResp = await fetch(
-            `${API}/api/products?badge=best_seller&page=1&limit=50`,
-          ).catch(() => null);
-          const globalJson = globalResp
-            ? await globalResp.json().catch(() => ({}))
-            : {};
-          setBestSelling(globalJson.items || []);
-        }
-        setLoadingBestSelling(false);
       } catch (err) {
         console.error(err);
         setProducts([]);
-        setBestSelling([]);
-        setLoadingBestSelling(false);
         setLoadingProducts(false);
       } finally {
         if (!shouldLoadProducts) {
@@ -337,21 +301,13 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
   const { user } = useUser();
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
-  const maxBestSellingStart = Math.max(
-    0,
-    bestSelling.length - bestSellingPerView,
-  );
-  const canSlideBestSelling = bestSelling.length > bestSellingPerView;
-  const visibleBestSelling = bestSelling.slice(
-    bestSellingStartIndex,
-    bestSellingStartIndex + bestSellingPerView,
-  );
 
-  useEffect(() => {
-    setBestSellingStartIndex((prev) => Math.min(prev, maxBestSellingStart));
-  }, [maxBestSellingStart]);
+  // Direct child categories of the current category — shown as chips on top
+  const directSubcategories = category?._id
+    ? getSubcategories(category._id)
+    : [];
 
-  // Rendered next to the sort dropdown on desktop and below the grid on mobile
+  // Rendered below the grid
   const paginationControls =
     !loadingProducts && totalPages > 1 ? (
       <div className="flex items-center gap-1.5 flex-wrap">
@@ -468,6 +424,25 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
       {/* ── Listing area ── */}
       <div className="bg-[#f7f5ff] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
+          {/* Subcategories row */}
+          {directSubcategories.length > 0 && (
+            <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {directSubcategories.map((sub) => (
+                <Link
+                  key={sub._id}
+                  href={
+                    parentSlug
+                      ? `/category/${sub.slug}/`
+                      : `/category/${slug}/${sub.slug}/`
+                  }
+                  className="shrink-0 h-9 px-4 inline-flex items-center rounded-full border border-gray-200 bg-white text-sm font-medium text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F] shadow-sm transition-colors"
+                >
+                  {sub.name}
+                </Link>
+              ))}
+            </div>
+          )}
+
           {/* Mobile sticky filter/sort bar */}
           <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#f7f5ff]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
@@ -591,7 +566,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                       {showDesktopFilters ? "▲" : "▼"}
                     </span>
                   </button>
-                  {paginationControls}
                 </div>
                 <SortDropdown
                   value={sortOption}
@@ -639,7 +613,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
               )}
 
               {paginationControls && (
-                <div className="mt-10 flex justify-center lg:hidden">
+                <div className="mt-10 flex justify-center">
                   {paginationControls}
                 </div>
               )}
@@ -650,79 +624,6 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
       {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
       <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
-
-      {/* ── Best Selling — below Store Hero ── */}
-      {(loadingBestSelling || bestSelling.length > 0) && (
-        <div className="bg-[#f7f5ff] w-full">
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8 mt-10">
-            <SectionHeader
-              title={
-                <>
-                  Best <span className="text-[#1D1D1F]">Selling</span>
-                </>
-              }
-              seeMoreHref="/tag/best-seller"
-              seeMoreLabel="See More"
-            />
-
-            {loadingBestSelling ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {Array(5)
-                  .fill(0)
-                  .map((_, i) => (
-                    <ProductCard key={i} loading={true} />
-                  ))}
-              </div>
-            ) : (
-              <div className="relative">
-                {canSlideBestSelling && (
-                  <div className="flex items-center justify-end gap-2 mb-4">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setBestSellingStartIndex((i) => Math.max(0, i - 1))
-                      }
-                      disabled={bestSellingStartIndex === 0}
-                      className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
-                      aria-label="Previous best selling products"
-                    >
-                      ‹
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setBestSellingStartIndex((i) =>
-                          Math.min(maxBestSellingStart, i + 1),
-                        )
-                      }
-                      disabled={bestSellingStartIndex >= maxBestSellingStart}
-                      className="h-8 w-8 rounded-full bg-white border border-gray-200 text-[#1D1D1F] shadow-sm hover:bg-[#1D1D1F] hover:text-white hover:border-[#1D1D1F] transition-colors disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-[#1D1D1F] disabled:hover:border-gray-200"
-                      aria-label="Next best selling products"
-                    >
-                      ›
-                    </button>
-                  </div>
-                )}
-
-                <div className="min-w-0 grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-                  {visibleBestSelling.map((p) => (
-                    <ProductCard
-                      key={p._id}
-                      product={p}
-                      imageWidth={360}
-                      imageHeight={160}
-                      showDiscount={true}
-                      maxTags={2}
-                      showActionsOnHover={true}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }

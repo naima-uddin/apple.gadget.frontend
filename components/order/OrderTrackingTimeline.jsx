@@ -188,8 +188,8 @@ export default function OrderTrackingTimeline({ order, courierLabels = {} }) {
 
       {!hasCourierEvents && trackingUrl && (
         <p className="text-[11px] text-gray-400 mt-3 border-t border-gray-200 pt-3">
-          Tracking URL save করার পর courier থেকে updates auto fetch হবে। কিছুক্ষণ পর
-          refresh করুন।
+          Once the tracking URL is saved, updates are fetched automatically from
+          the courier. Please refresh in a little while.
         </p>
       )}
     </div>

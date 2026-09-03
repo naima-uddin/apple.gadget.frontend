@@ -16,10 +16,9 @@ function BkashLogo() {
         className="text-4xl font-black leading-none tracking-tight"
         style={{
           color: "#E2136E",
-          fontFamily: "'Noto Serif Bengali', Georgia, serif",
         }}
       >
-        বিকাশ
+        bKash
       </span>
       {/* origami crane */}
       <svg width="44" height="40" viewBox="0 0 44 40" fill="none">
@@ -45,10 +44,9 @@ function NagadLogo() {
         className="text-4xl font-black leading-none"
         style={{
           color: "#F16821",
-          fontFamily: "'Noto Serif Bengali', Georgia, serif",
         }}
       >
-        নগদ
+        Nagad
       </span>
     </div>
   );
@@ -95,7 +93,7 @@ const CONFIG = {
   bkash: {
     brand: "#E2136E",
     name: "bKash",
-    bangla: "বিকাশ",
+    bangla: "bKash",
     numberLabel: "Your bKash Account Number",
     txLabel: "bKash Transaction ID",
     txPlaceholder: "e.g. 8M3X5K9P2Q",
@@ -105,7 +103,7 @@ const CONFIG = {
   nagad: {
     brand: "#F16821",
     name: "Nagad",
-    bangla: "নগদ",
+    bangla: "Nagad",
     numberLabel: "Your Nagad Account Number",
     txLabel: "Nagad Transaction ID",
     txPlaceholder: "e.g. NAG1234567890",
@@ -115,7 +113,7 @@ const CONFIG = {
   rocket: {
     brand: "#8B2FC9",
     name: "Rocket",
-    bangla: "রকেট",
+    bangla: "Rocket",
     numberLabel: "Your Rocket Account Number",
     txLabel: "Rocket Transaction ID",
     txPlaceholder: "e.g. TXN1234567890",
@@ -320,11 +318,11 @@ function PaymentPageInner() {
                     >
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                     </svg>
-                    কিভাবে পেমেন্ট করবেন
+                    How to pay
                   </p>
                   <ol className="space-y-1.5">
                     {[
-                      `আপনার ${cfg.name} অ্যাপ খুলুন`,
+                      `Open your ${cfg.name} app`,
                       <>
                         Send Money &rarr;{" "}
                         <span className="font-bold tracking-wider">
@@ -340,7 +338,7 @@ function PaymentPageInner() {
                           ৳{amount.toLocaleString("en-BD")}
                         </span>
                       </>,
-                      "Transaction ID সংরক্ষণ করুন",
+                      "Save the Transaction ID",
                     ].map((txt, i) => (
                       <li
                         key={i}
@@ -386,9 +384,9 @@ function PaymentPageInner() {
               )}
 
               <p className="text-[11px] text-gray-400 mt-3 text-center leading-relaxed">
-                পেমেন্ট করার পর Transaction ID দিয়ে Confirm করুন।
+                After paying, confirm with your Transaction ID.
                 <br />
-                আমরা verify করে order process করব।
+                We&apos;ll verify it and process your order.
               </p>
             </div>
 
@@ -403,7 +401,7 @@ function PaymentPageInner() {
               <button
                 onClick={() => {
                   if (!txId.trim()) {
-                    setTxError("Transaction ID দিন।");
+                    setTxError("Please enter the Transaction ID.");
                     return;
                   }
                   setStep(STEP.PROCESSING);
@@ -502,10 +500,10 @@ function PaymentPageInner() {
                   </svg>
                 </div>
                 <h3 className="font-bold text-gray-800 text-base">
-                  কী করতে চান?
+                  What would you like to do?
                 </h3>
                 <p className="text-xs text-gray-500 mt-1">
-                  {cfg.name} payment বাতিল করবেন?
+                  Cancel {cfg.name} payment?
                 </p>
               </div>
 
@@ -518,7 +516,7 @@ function PaymentPageInner() {
                   className="w-full py-3 rounded-xl border-2 text-sm font-semibold transition disabled:opacity-50"
                   style={{ borderColor: cfg.brand, color: cfg.brand }}
                 >
-                  না, {cfg.name} দিয়েই পেমেন্ট করব
+                  No, I&apos;ll pay with {cfg.name}
                 </button>
 
                 {/* Option 2: switch to COD */}
@@ -548,10 +546,10 @@ function PaymentPageInner() {
                           d="M4 12a8 8 0 018-8v8H4z"
                         />
                       </svg>
-                      সেভ হচ্ছে…
+                      Saving…
                     </>
                   ) : (
-                    "Cash on Delivery তে পরিবর্তন করুন"
+                    "Switch to Cash on Delivery"
                   )}
                 </button>
 
@@ -561,12 +559,12 @@ function PaymentPageInner() {
                   disabled={switching}
                   className="w-full py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-medium transition disabled:opacity-50"
                 >
-                  Home এ ফিরে যাই
+                  Go back home
                 </button>
               </div>
 
               <p className="text-[10px] text-gray-400 text-center pb-3 px-4">
-                Home এ গেলেও অর্ডারটি সেভ থাকবে — My Orders থেকে দেখতে পারবেন।
+                Your order stays saved even if you leave — you can view it in My Orders.
               </p>
             </div>
           </div>
