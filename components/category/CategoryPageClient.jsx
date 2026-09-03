@@ -39,6 +39,8 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   // Desktop filter sidebar — collapsed by default; grid gains an extra column
   const [showDesktopFilters, setShowDesktopFilters] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  // In-page subcategory chip filter — null means "All" (whole category scope)
+  const [activeSubId, setActiveSubId] = useState(null);
   const [sortOption, setSortOption] = useState("position");
   const [activeFilters, setActiveFilters] = useState({
     priceRange: [0, 0],
@@ -66,6 +68,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     setCurrentPage(1);
     setTotalProducts(0);
     setCategoryIdsParam("");
+    setActiveSubId(null);
     setShowMobileFilters(false);
     setActiveFilters({
       priceRange: [0, 0],
@@ -96,6 +99,12 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
         setCategory(match);
 
+        // Root all chip/filter logic at the top-level category so the
+        // subcategory chips (and the filter sidebar) work identically whether
+        // the user is on the main category page or landed directly on a
+        // subcategory URL. On a subcategory URL we preselect that chip.
+        const filterRootId = match.parent || match._id;
+
         // Build flat descendant list with depth for filter sidebar
         const collectAllDescendants = (catId, depth = 0) => {
           const results = [];
@@ -106,7 +115,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           });
           return results;
         };
-        setSubcategories(collectAllDescendants(match._id));
+        setSubcategories(collectAllDescendants(filterRootId));
 
         // Build descendant map: id → Set<all descendant ids + self>
         const buildDescendantMap = (rootId) => {
@@ -125,7 +134,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           processNode(rootId);
           return map;
         };
-        setDescendantMap(buildDescendantMap(match._id));
+        setDescendantMap(buildDescendantMap(filterRootId));
 
         // determine if this category has a parent
         setIsSubcategoryPage(Boolean(match.parent));
@@ -135,14 +144,17 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           setParentCategory(null);
         }
 
-        // gather all descendant category ids (include self)
+        // Preselect the current subcategory chip when landing on a sub URL
+        setActiveSubId(match.parent ? String(match._id) : null);
+
+        // gather all descendant category ids (include self) for the full scope
         const collectIds = (catId) => {
           let ids = [String(catId)];
           const children = getSubcategories(catId);
           children.forEach((c) => (ids = ids.concat(collectIds(c._id))));
           return ids;
         };
-        const ids = collectIds(match._id);
+        const ids = collectIds(filterRootId);
         const param = ids.join(",");
         setCategoryIdsParam(param);
         shouldLoadProducts = true;
@@ -245,10 +257,25 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
         params.set("limit", String(PRODUCTS_PER_PAGE));
         params.set("sort", sortOption);
 
-        const selectedCategoryIds =
-          activeFilters.expandedSubIds && activeFilters.expandedSubIds.size > 0
-            ? Array.from(activeFilters.expandedSubIds).join(",")
-            : categoryIdsParam;
+        let selectedCategoryIds;
+        if (
+          activeFilters.expandedSubIds &&
+          activeFilters.expandedSubIds.size > 0
+        ) {
+          // Filter sidebar selection takes precedence
+          selectedCategoryIds = Array.from(activeFilters.expandedSubIds).join(
+            ",",
+          );
+        } else if (activeSubId) {
+          // Subcategory chip selection (self + all descendants)
+          const subIds = descendantMap.get(String(activeSubId));
+          selectedCategoryIds = subIds
+            ? Array.from(subIds).join(",")
+            : String(activeSubId);
+        } else {
+          // "All" — whole category scope
+          selectedCategoryIds = categoryIdsParam;
+        }
         params.set("categoryId", selectedCategoryIds);
 
         if (Array.isArray(activeFilters.priceRange)) {
@@ -297,26 +324,24 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
     };
 
     loadProducts();
-  }, [categoryIdsParam, currentPage, sortOption, activeFilters]);
+  }, [
+    categoryIdsParam,
+    currentPage,
+    sortOption,
+    activeFilters,
+    activeSubId,
+    descendantMap,
+  ]);
 
   const { user } = useUser();
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
 
-  // Subcategory chips shown on top of the listing.
-  // On a subcategory page the current category is a leaf (no children of its
-  // own), so instead of hiding the row we show the *sibling* chips (children of
-  // the parent) and highlight the active one — this keeps the subcategory
-  // navigation visible while clicking simply filters the results.
-  const isOnSubcategoryPage = Boolean(category?.parent);
-  const chipParentSlug = isOnSubcategoryPage ? parentSlug : slug;
-  const chipCategories = isOnSubcategoryPage
-    ? category?.parent
-      ? getSubcategories(category.parent)
-      : []
-    : category?._id
-      ? getSubcategories(category._id)
-      : [];
-  const activeChipId = isOnSubcategoryPage ? String(category?._id) : null;
+  // Subcategory chips filter the listing in-page (like the All Products page):
+  // the row stays visible with the active chip highlighted and clicking never
+  // navigates. Chips are the children of the top-level category, so sibling
+  // chips are shown even when the user landed directly on a subcategory URL.
+  const filterRootId = category?.parent || category?._id;
+  const chipCategories = filterRootId ? getSubcategories(filterRootId) : [];
 
   // Rendered below the grid
   const paginationControls =
@@ -435,26 +460,34 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
       {/* ── Listing area ── */}
       <div className="bg-[#f7f5ff] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
-          {/* Subcategories row — stays visible on subcategory pages so the
-              chips act as persistent filters (active chip highlighted). */}
+          {/* Subcategories row — in-page filter chips; the row stays visible
+              with the active chip highlighted (clicking never navigates). */}
           {chipCategories.length > 0 && (
             <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-              <Link
-                href={`/category/${chipParentSlug}/`}
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveSubId(null);
+                  setCurrentPage(1);
+                }}
                 className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
-                  !activeChipId
+                  !activeSubId
                     ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
                     : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
                 }`}
               >
                 All
-              </Link>
+              </button>
               {chipCategories.map((sub) => {
-                const isActive = String(sub._id) === activeChipId;
+                const isActive = String(sub._id) === String(activeSubId);
                 return (
-                  <Link
+                  <button
                     key={sub._id}
-                    href={`/category/${chipParentSlug}/${sub.slug}/`}
+                    type="button"
+                    onClick={() => {
+                      setActiveSubId(sub._id);
+                      setCurrentPage(1);
+                    }}
                     className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
                       isActive
                         ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
@@ -462,7 +495,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                     }`}
                   >
                     {sub.name}
-                  </Link>
+                  </button>
                 );
               })}
             </div>
