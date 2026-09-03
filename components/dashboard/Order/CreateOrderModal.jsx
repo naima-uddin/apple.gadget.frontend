@@ -1,7 +1,14 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
+import SearchableSelect from "@/components/ui/SearchableSelect";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -33,14 +40,23 @@ const emptyBilling = {
   note: "",
 };
 
-// Shared manual-order form. Opened from the Orders page header (blank) and from
-// each abandoned-cart / abandoned-checkout row (prefilled via `prefill`).
+const inputClass =
+  "w-full text-sm text-gray-900 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder:text-gray-400";
+const labelClass = "block text-xs font-medium text-gray-700 mb-1";
+
+// Shared manual-order form. Opened blank from the Orders page header, or
+// prefilled from an abandoned cart / checkout row.
 // prefill = { billingDetails?, items?, sourceCartUserId?, sourceCheckoutId? }
 export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   const [billing, setBilling] = useState({
     ...emptyBilling,
     ...(prefill.billingDetails || {}),
   });
+  // Free-text fallbacks used when the district/area isn't in the dropdown list.
+  const [customCity, setCustomCity] = useState("");
+  const [customZone, setCustomZone] = useState("");
+  const [customArea, setCustomArea] = useState("");
+
   // line item shape: { productId, title, image, price, quantity, color, size }
   const [items, setItems] = useState(() =>
     (prefill.items || []).map((it) => ({
@@ -56,9 +72,12 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   const [paymentMethod, setPaymentMethod] = useState("cash-on-delivery");
   const [status, setStatus] = useState("pending");
   const [couponInput, setCouponInput] = useState("");
-  const [shippingOverride, setShippingOverride] = useState(""); // blank = auto
+  const [shippingOverride, setShippingOverride] = useState(""); // auto-filled from quote
+  const shippingEditedRef = useRef(false); // true once the admin types their own charge
+  const [shippingEdited, setShippingEdited] = useState(false); // render-safe mirror of the ref
   const [manualDiscount, setManualDiscount] = useState("");
 
+  const [locationData, setLocationData] = useState({});
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -75,6 +94,42 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
     .split(",")
     .map((c) => c.trim().toUpperCase())
     .filter(Boolean);
+
+  // Resolve the "Other (type your own)" selections to their typed values.
+  const resolvedCity = billing.city === "other" ? customCity : billing.city;
+  const resolvedZone = billing.zone === "other" ? customZone : billing.zone;
+  const resolvedArea = billing.area === "other" ? customArea : billing.area;
+
+  // ── Location dropdowns (district → area → union) ──────────────────────────────
+  useEffect(() => {
+    fetch("/api/locations/")
+      .then((r) => r.json())
+      .then((j) => setLocationData(j.locationData || {}))
+      .catch(() => {});
+  }, []);
+
+  const cities = useMemo(() => Object.keys(locationData), [locationData]);
+  const zones = useMemo(() => {
+    const c = billing.city;
+    if (!c || c === "other" || !locationData[c]) return [];
+    return Object.keys(locationData[c].zones || {});
+  }, [locationData, billing.city]);
+  const areas = useMemo(() => {
+    const c = billing.city;
+    const z = billing.zone;
+    if (!c || !z || z === "other" || !locationData[c]) return [];
+    return locationData[c].zones?.[z] || [];
+  }, [locationData, billing.city, billing.zone]);
+
+  const onCityChange = (e) => {
+    setBilling((prev) => ({ ...prev, city: e.target.value, zone: "", area: "" }));
+    setCustomZone("");
+    setCustomArea("");
+  };
+  const onZoneChange = (e) =>
+    setBilling((prev) => ({ ...prev, zone: e.target.value, area: "" }));
+  const onAreaChange = (e) =>
+    setBilling((prev) => ({ ...prev, area: e.target.value }));
 
   // ── Product search ──────────────────────────────────────────────────────────
   const runSearch = useCallback(async (q) => {
@@ -127,7 +182,12 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   const removeItem = (idx) =>
     setItems((prev) => prev.filter((_, i) => i !== idx));
 
-  // ── Live quote (server-authoritative pricing preview) ─────────────────────────
+  // ── Live quote — supplies the auto delivery charge + coupon discount ─────────
+  // Keyed on product/qty/variant + address only (NOT edited prices), so editing a
+  // price never triggers a refetch.
+  const itemsKey = JSON.stringify(
+    items.map((it) => [it.productId, it.quantity, it.color, it.size]),
+  );
   useEffect(() => {
     clearTimeout(quoteRef.current);
     quoteRef.current = setTimeout(async () => {
@@ -149,13 +209,18 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
               size: it.size || undefined,
             })),
             couponCodes,
-            city: billing.city || null,
-            zone: billing.zone || null,
-            area: billing.area || null,
+            city: resolvedCity || null,
+            zone: resolvedZone || null,
+            area: resolvedArea || null,
           }),
         });
         const body = await r.json();
         setQuote(r.ok ? body : null);
+        // Auto-fill the delivery charge from the address, unless the admin has
+        // already typed their own value.
+        if (r.ok && !shippingEditedRef.current) {
+          setShippingOverride(body.shipping != null ? String(body.shipping) : "0");
+        }
       } catch {
         setQuote(null);
       } finally {
@@ -164,20 +229,18 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
     }, 400);
     return () => clearTimeout(quoteRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, billing.city, billing.zone, billing.area, couponInput]);
+  }, [itemsKey, resolvedCity, resolvedZone, resolvedArea, couponInput]);
 
-  // Displayed totals: subtotal + coupon discount come from the server quote;
-  // shipping and the manual discount can be overridden by the admin.
-  const subtotal = quote?.subtotal ?? 0;
-  const autoShipping = quote?.shipping ?? 0;
-  const shipping =
-    shippingOverride === "" ? autoShipping : Math.max(0, Number(shippingOverride) || 0);
+  // Subtotal comes from the (editable) line prices; shipping + coupon discount
+  // come from the server quote. Extra discount + shipping can be overridden.
+  const subtotal = items.reduce(
+    (s, it) => s + (Number(it.price) || 0) * it.quantity,
+    0,
+  );
+  const shipping = shippingOverride === "" ? 0 : Math.max(0, Number(shippingOverride) || 0);
   const couponDiscount = quote?.discount ?? 0;
   const extraDiscount = Math.max(0, Number(manualDiscount) || 0);
   const total = Math.max(0, subtotal + shipping - couponDiscount - extraDiscount);
-
-  const priceFor = (idx) =>
-    quote?.items?.[idx]?.price != null ? quote.items[idx].price : items[idx].price;
 
   // ── Submit ────────────────────────────────────────────────────────────────────
   const submit = async () => {
@@ -186,10 +249,10 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
     if (
       !billing.name.trim() ||
       !billing.phone.trim() ||
-      !billing.city.trim() ||
-      !billing.zone.trim()
+      !resolvedCity?.trim() ||
+      !resolvedZone?.trim()
     ) {
-      return setError("Customer name, phone, city and zone are required.");
+      return setError("Customer name, phone, district and area are required.");
     }
     setSubmitting(true);
     try {
@@ -202,22 +265,24 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
             name: billing.name.trim(),
             phone: billing.phone.trim(),
             email: billing.email.trim() || null,
-            city: billing.city.trim(),
-            zone: billing.zone.trim(),
-            area: billing.area.trim() || null,
+            city: resolvedCity.trim(),
+            zone: resolvedZone.trim(),
+            area: resolvedArea?.trim() || null,
             address: billing.address.trim() || null,
             note: billing.note.trim() || null,
           },
           items: items.map((it) => ({
             productId: it.productId,
             quantity: it.quantity,
+            price: Number(it.price) || 0,
             color: it.color || undefined,
             size: it.size || undefined,
           })),
           paymentMethod,
           status,
           couponCodes,
-          shipping: shippingOverride === "" ? undefined : Number(shippingOverride),
+          shipping:
+            shippingOverride === "" ? undefined : Number(shippingOverride),
           manualDiscount: extraDiscount || undefined,
           sourceCartUserId: prefill.sourceCartUserId || undefined,
           sourceCheckoutId: prefill.sourceCheckoutId || undefined,
@@ -250,8 +315,9 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
               <h3 className="text-base font-semibold text-gray-900">
                 Create Order
               </h3>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Manually place an order — prices are computed automatically.
+              <p className="text-xs text-gray-500 mt-0.5">
+                Place an order for a customer. Choose the address and the
+                delivery charge is added automatically.
               </p>
             </div>
             <button
@@ -266,51 +332,137 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
           <div className="px-6 py-5 space-y-6">
             {/* Customer */}
             <section>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
-                Customer
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                Customer details
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  ["name", "Name *", "sm:col-span-1"],
-                  ["phone", "Phone *", "sm:col-span-1"],
-                  ["email", "Email", "sm:col-span-2"],
-                  ["city", "City *", "sm:col-span-1"],
-                  ["zone", "Zone *", "sm:col-span-1"],
-                  ["area", "Area", "sm:col-span-1"],
-                  ["address", "Address", "sm:col-span-1"],
-                  ["note", "Note", "sm:col-span-2"],
-                ].map(([key, label, span]) => (
-                  <div key={key} className={span}>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      {label}
-                    </label>
+                <div>
+                  <label className={labelClass}>Name *</label>
+                  <input
+                    value={billing.name}
+                    onChange={(e) =>
+                      setBilling((p) => ({ ...p, name: e.target.value }))
+                    }
+                    className={inputClass}
+                    placeholder="Customer full name"
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Phone *</label>
+                  <input
+                    value={billing.phone}
+                    onChange={(e) =>
+                      setBilling((p) => ({ ...p, phone: e.target.value }))
+                    }
+                    className={inputClass}
+                    placeholder="01XXXXXXXXX"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>Email (optional)</label>
+                  <input
+                    value={billing.email}
+                    onChange={(e) =>
+                      setBilling((p) => ({ ...p, email: e.target.value }))
+                    }
+                    className={inputClass}
+                    placeholder="name@example.com"
+                  />
+                </div>
+
+                {/* District / Area / Union — drives the delivery charge */}
+                <div>
+                  <label className={labelClass}>District (city) *</label>
+                  <SearchableSelect
+                    name="city"
+                    options={cities}
+                    value={billing.city}
+                    onChange={onCityChange}
+                    placeholder="Select district"
+                  />
+                  {billing.city === "other" && (
                     <input
-                      value={billing[key]}
-                      onChange={(e) =>
-                        setBilling((prev) => ({ ...prev, [key]: e.target.value }))
-                      }
-                      className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      value={customCity}
+                      onChange={(e) => setCustomCity(e.target.value)}
+                      className={`${inputClass} mt-2`}
+                      placeholder="Type district name"
                     />
-                  </div>
-                ))}
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass}>Area (zone) *</label>
+                  <SearchableSelect
+                    name="zone"
+                    options={zones}
+                    value={billing.zone}
+                    onChange={onZoneChange}
+                    placeholder="Select area"
+                    disabled={!billing.city}
+                  />
+                  {billing.zone === "other" && (
+                    <input
+                      value={customZone}
+                      onChange={(e) => setCustomZone(e.target.value)}
+                      className={`${inputClass} mt-2`}
+                      placeholder="Type area name"
+                    />
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass}>Union (optional)</label>
+                  <SearchableSelect
+                    name="area"
+                    options={areas}
+                    value={billing.area}
+                    onChange={onAreaChange}
+                    placeholder="Select union"
+                    disabled={!billing.zone}
+                  />
+                  {billing.area === "other" && (
+                    <input
+                      value={customArea}
+                      onChange={(e) => setCustomArea(e.target.value)}
+                      className={`${inputClass} mt-2`}
+                      placeholder="Type union name"
+                    />
+                  )}
+                </div>
+                <div>
+                  <label className={labelClass}>Street address (optional)</label>
+                  <input
+                    value={billing.address}
+                    onChange={(e) =>
+                      setBilling((p) => ({ ...p, address: e.target.value }))
+                    }
+                    className={inputClass}
+                    placeholder="House, road, landmark"
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className={labelClass}>Order note (optional)</label>
+                  <input
+                    value={billing.note}
+                    onChange={(e) =>
+                      setBilling((p) => ({ ...p, note: e.target.value }))
+                    }
+                    className={inputClass}
+                    placeholder="Any instruction for this order"
+                  />
+                </div>
               </div>
-              <p className="text-[11px] text-gray-400 mt-2">
-                Use <strong>Dhaka</strong> as the city for inside-Dhaka delivery
-                charge; the matching zone/area sets the exact shipping rate.
-              </p>
             </section>
 
             {/* Products */}
             <section>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">
                 Products
               </h4>
               <div className="relative">
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search products by name…"
-                  className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  placeholder="Search products by name to add…"
+                  className={`${inputClass} pr-8`}
                 />
                 {searching && (
                   <span className="absolute right-3 top-2.5 text-xs text-gray-400">
@@ -346,7 +498,7 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
               </div>
 
               {items.length === 0 ? (
-                <p className="text-xs text-gray-400 mt-3 text-center py-4 border border-dashed rounded-xl">
+                <p className="text-xs text-gray-500 mt-3 text-center py-4 border border-dashed rounded-xl">
                   No products added yet.
                 </p>
               ) : (
@@ -363,21 +515,16 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                           className="w-9 h-9 rounded-lg object-cover shrink-0"
                         />
                       )}
-                      <div className="flex-1 min-w-[8rem]">
-                        <p className="text-sm font-medium text-gray-800 truncate">
-                          {it.title}
-                        </p>
-                        <p className="text-xs text-gray-500">
-                          ৳{(priceFor(idx) || 0).toLocaleString()} each
-                        </p>
-                      </div>
+                      <p className="flex-1 min-w-[8rem] text-sm font-medium text-gray-900 truncate">
+                        {it.title}
+                      </p>
                       <input
                         value={it.color}
                         onChange={(e) =>
                           updateItem(idx, { color: e.target.value })
                         }
                         placeholder="Color"
-                        className="w-20 text-xs border border-gray-200 rounded-lg px-2 py-1.5"
+                        className="w-20 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
                       />
                       <input
                         value={it.size}
@@ -385,9 +532,26 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                           updateItem(idx, { size: e.target.value })
                         }
                         placeholder="Size"
-                        className="w-16 text-xs border border-gray-200 rounded-lg px-2 py-1.5"
+                        className="w-16 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
                       />
-                      <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                      {/* Editable unit price */}
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-gray-400">৳</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={it.price}
+                          onChange={(e) =>
+                            updateItem(idx, {
+                              price: Math.max(0, Number(e.target.value) || 0),
+                            })
+                          }
+                          title="Unit price"
+                          className="w-20 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
+                        />
+                      </div>
+                      {/* Quantity stepper */}
+                      <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
                         <button
                           type="button"
                           onClick={() =>
@@ -408,7 +572,7 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                               quantity: Math.max(1, Number(e.target.value) || 1),
                             })
                           }
-                          className="w-10 text-center text-xs py-1 focus:outline-none"
+                          className="w-10 text-center text-xs text-gray-900 py-1 focus:outline-none"
                         />
                         <button
                           type="button"
@@ -420,6 +584,9 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                           +
                         </button>
                       </div>
+                      <span className="w-20 text-right text-xs font-semibold text-gray-900">
+                        ৳{((Number(it.price) || 0) * it.quantity).toLocaleString()}
+                      </span>
                       <button
                         type="button"
                         onClick={() => removeItem(idx)}
@@ -430,24 +597,26 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                       </button>
                     </div>
                   ))}
+                  <p className="text-[11px] text-gray-500 pt-0.5">
+                    Prices are filled in from the product — edit the ৳ box to
+                    change the unit price.
+                  </p>
                 </div>
               )}
             </section>
 
             {/* Payment & pricing */}
             <section>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">
-                Payment & Pricing
+              <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                Payment & pricing
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Payment method
-                  </label>
+                  <label className={labelClass}>Payment method</label>
                   <select
                     value={paymentMethod}
                     onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    className={inputClass}
                   >
                     {PAYMENT_METHODS.map((m) => (
                       <option key={m.value} value={m.value}>
@@ -457,13 +626,11 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Initial status
-                  </label>
+                  <label className={labelClass}>Initial status</label>
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value)}
-                    className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 capitalize focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    className={`${inputClass} capitalize`}
                   >
                     {INITIAL_STATUSES.map((s) => (
                       <option key={s} value={s} className="capitalize">
@@ -473,40 +640,42 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs text-gray-500 mb-1">
-                    Coupon code(s){" "}
-                    <span className="text-gray-400">(comma-separated)</span>
+                  <label className={labelClass}>
+                    Coupon code(s) — comma-separated
                   </label>
                   <input
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
                     placeholder="e.g. SAVE10"
-                    className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 uppercase focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    className={`${inputClass} uppercase`}
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      Shipping (৳)
-                    </label>
+                    <label className={labelClass}>Delivery charge (৳)</label>
                     <input
                       type="number"
                       value={shippingOverride}
-                      onChange={(e) => setShippingOverride(e.target.value)}
-                      placeholder="Auto"
-                      className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      onChange={(e) => {
+                        shippingEditedRef.current = true;
+                        setShippingEdited(true);
+                        setShippingOverride(e.target.value);
+                      }}
+                      placeholder={quoting ? "Calculating…" : "Select address"}
+                      className={inputClass}
                     />
+                    <p className="text-[11px] text-gray-400 mt-1">
+                      Auto-filled from the address — edit to override.
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      Extra discount (৳)
-                    </label>
+                    <label className={labelClass}>Extra discount (৳)</label>
                     <input
                       type="number"
                       value={manualDiscount}
                       onChange={(e) => setManualDiscount(e.target.value)}
                       placeholder="0"
-                      className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                      className={inputClass}
                     />
                   </div>
                 </div>
@@ -515,13 +684,15 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
 
             {/* Summary */}
             <section className="bg-gray-50 rounded-xl px-4 py-3 text-sm space-y-1.5">
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-700">
                 <span>Subtotal</span>
                 <span>৳{subtotal.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-700">
                 <span>
-                  Shipping{shippingOverride === "" ? " (auto)" : " (manual)"}
+                  Delivery charge
+                  {shippingEdited ? " (manual)" : " (auto)"}
+                  {quoting ? " …" : ""}
                 </span>
                 <span>৳{shipping.toLocaleString()}</span>
               </div>
@@ -538,7 +709,7 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                 </div>
               )}
               <div className="flex justify-between font-bold text-gray-900 pt-1 border-t border-gray-200">
-                <span>Total{quoting ? " …" : ""}</span>
+                <span>Total to collect</span>
                 <span>৳{total.toLocaleString()}</span>
               </div>
               {quote?.couponErrors?.length > 0 && (
@@ -561,7 +732,7 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
               type="button"
               onClick={onClose}
               disabled={submitting}
-              className="px-4 py-2 text-sm text-gray-600 border rounded-xl hover:bg-gray-50 disabled:opacity-60"
+              className="px-4 py-2 text-sm text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 disabled:opacity-60"
             >
               Cancel
             </button>

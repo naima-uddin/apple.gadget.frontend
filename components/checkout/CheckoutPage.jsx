@@ -144,7 +144,10 @@ export default function CheckoutPage() {
   // is still pending when the user starts typing.
   useEffect(() => {
     const { name, phone, email } = formData;
-    if (!name && !phone && !email) return;
+    const rCity = formData.city === "other" ? customCity : formData.city;
+    const rZone = formData.zone === "other" ? customZone : formData.zone;
+    const rArea = formData.area === "other" ? customArea : formData.area;
+    if (!name && !phone && !email && !rCity && !formData.address) return;
     clearTimeout(sessionPatchTimer.current);
     sessionPatchTimer.current = setTimeout(() => {
       if (!checkoutSessionId.current) return;
@@ -157,11 +160,27 @@ export default function CheckoutPage() {
           userName: name || undefined,
           userPhone: phone || undefined,
           userEmail: email || undefined,
+          userCity: rCity || undefined,
+          userZone: rZone || undefined,
+          userArea: rArea || undefined,
+          userAddress: formData.address || undefined,
         }),
       }).catch(() => {});
     }, 2000);
     return () => clearTimeout(sessionPatchTimer.current);
-  }, [formData.name, formData.phone, formData.email]); // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    formData.name,
+    formData.phone,
+    formData.email,
+    formData.city,
+    formData.zone,
+    formData.area,
+    formData.address,
+    customCity,
+    customZone,
+    customArea,
+  ]);
 
   // Redirect if cart is empty — but NOT before hydration or after a successful order
   useEffect(() => {

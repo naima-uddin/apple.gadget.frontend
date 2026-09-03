@@ -133,20 +133,34 @@ function fmtDateTime(date) {
   return `${day} ${month} ${year}, ${time}`;
 }
 
-// Latest editors of an order, newest first, de-duplicated, capped at `max`.
-// Returns e.g. ["Tanni", "Rahim"] for rendering as "by Tanni".
+// Latest editors of an order, newest first, de-duplicated by name, capped at
+// `max`. Keeps each editor's most-recent edit time so the column can render
+// "23 August, 10:56 am by tahsin".
 function recentEditors(editedBy, max = 5) {
   if (!Array.isArray(editedBy) || editedBy.length === 0) return [];
   const seen = new Set();
-  const names = [];
+  const entries = [];
   for (let i = editedBy.length - 1; i >= 0; i--) {
     const name = String(editedBy[i]?.name || "").trim();
     if (!name || seen.has(name)) continue;
     seen.add(name);
-    names.push(name);
-    if (names.length >= max) break;
+    entries.push({ name, at: editedBy[i]?.at });
+    if (entries.length >= max) break;
   }
-  return names;
+  return entries;
+}
+
+// "23 August, 10:56 am by tahsin" — who edited an order and when.
+function fmtEditedBy(entry) {
+  const name = entry?.name || "admin";
+  if (!entry?.at) return `by ${name}`;
+  const d = new Date(entry.at);
+  if (Number.isNaN(d.getTime())) return `by ${name}`;
+  const date = d.toLocaleString("en-GB", { day: "numeric", month: "long" });
+  const time = d
+    .toLocaleString("en-US", { hour: "numeric", minute: "2-digit", hour12: true })
+    .toLowerCase();
+  return `${date}, ${time} by ${name}`;
 }
 
 // Returns ISO dateFrom string for a quick-filter preset
@@ -639,12 +653,19 @@ function OrdersTable({
                   if (editors.length === 0)
                     return <span className="text-gray-300">—</span>;
                   return (
-                    <div className="space-y-0.5 max-w-[9rem]">
-                      {editors.map((name, i) => (
-                        <div key={i} className="truncate" title={name}>
-                          by {name}
-                        </div>
-                      ))}
+                    <div className="space-y-0.5 max-w-[12rem]">
+                      {editors.map((entry, i) => {
+                        const label = fmtEditedBy(entry);
+                        return (
+                          <div
+                            key={i}
+                            className="whitespace-nowrap"
+                            title={label}
+                          >
+                            {label}
+                          </div>
+                        );
+                      })}
                     </div>
                   );
                 })()}
@@ -4273,6 +4294,10 @@ function AbandonCheckoutSection() {
                                 name: s.userName || "",
                                 phone: s.userPhone || "",
                                 email: s.userEmail || "",
+                                city: s.userCity || "",
+                                zone: s.userZone || "",
+                                area: s.userArea || "",
+                                address: s.userAddress || "",
                               },
                               items: (s.items || []).map((it) => ({
                                 productId: it.productId,

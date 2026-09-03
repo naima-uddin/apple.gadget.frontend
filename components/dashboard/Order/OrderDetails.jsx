@@ -42,6 +42,22 @@ function fmt(date) {
   });
 }
 
+// "23 August, 10:56 am by tahsin" — how the dashboard shows who last edited
+// an order and when.
+function fmtEditedBy(entry) {
+  if (!entry?.at) return "";
+  const d = new Date(entry.at);
+  const date = d.toLocaleString("en-GB", { day: "numeric", month: "long" });
+  const time = d
+    .toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    })
+    .toLowerCase();
+  return `${date}, ${time} by ${entry.name || "admin"}`;
+}
+
 function describeDevice(ua) {
   if (!ua) return "Unknown";
   let os = "Unknown OS";
@@ -362,6 +378,14 @@ export default function OrderDetails({ orderId }) {
             Device: {describeDevice(order.userAgent)} · IP Address:{" "}
             {order.clientIp || "Unknown"}
           </p>
+          {order.editedBy?.length > 0 && (
+            <p className="text-sm text-gray-500 mt-1">
+              Edited{" "}
+              <span className="text-gray-700 font-medium">
+                {fmtEditedBy(order.editedBy[order.editedBy.length - 1])}
+              </span>
+            </p>
+          )}
         </div>
         <div className="flex flex-wrap gap-2">
           <Link

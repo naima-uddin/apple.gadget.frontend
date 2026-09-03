@@ -30,6 +30,8 @@ export default function AllProductsClient() {
   // Desktop filter sidebar — collapsed by default; grid gains an extra column
   const [showDesktopFilters, setShowDesktopFilters] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  // In-page category chip filter — null means "All"
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [sortOption, setSortOption] = useState("position");
   const [activeFilters, setActiveFilters] = useState({
     priceRange: [0, 0],
@@ -114,6 +116,13 @@ export default function AllProductsClient() {
             "categoryId",
             Array.from(activeFilters.expandedSubIds).join(","),
           );
+        } else if (activeCategoryId) {
+          // Filter by the chip-selected main category (self + all descendants)
+          const ids = descendantMap.get(String(activeCategoryId));
+          params.set(
+            "categoryId",
+            ids ? Array.from(ids).join(",") : String(activeCategoryId),
+          );
         }
 
         if (Array.isArray(activeFilters.priceRange)) {
@@ -162,7 +171,7 @@ export default function AllProductsClient() {
     };
 
     load();
-  }, [currentPage, sortOption, activeFilters]);
+  }, [currentPage, sortOption, activeFilters, activeCategoryId, descendantMap]);
 
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
 
@@ -267,18 +276,44 @@ export default function AllProductsClient() {
       {/* ── Listing area ── */}
       <div className="bg-[#f7f5ff] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
-          {/* Main categories row */}
+          {/* Main categories row — chips filter the listing in-place so the
+              full row stays visible with the selected category highlighted. */}
           {mainCategories.length > 0 && (
             <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-              {mainCategories.map((cat) => (
-                <Link
-                  key={cat._id}
-                  href={`/category/${cat.slug}/`}
-                  className="shrink-0 h-9 px-4 inline-flex items-center rounded-full border border-gray-200 bg-white text-sm font-medium text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F] shadow-sm transition-colors"
-                >
-                  {cat.name}
-                </Link>
-              ))}
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveCategoryId(null);
+                  setCurrentPage(1);
+                }}
+                className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
+                  !activeCategoryId
+                    ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                    : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                }`}
+              >
+                All
+              </button>
+              {mainCategories.map((cat) => {
+                const isActive = String(cat._id) === String(activeCategoryId);
+                return (
+                  <button
+                    key={cat._id}
+                    type="button"
+                    onClick={() => {
+                      setActiveCategoryId(cat._id);
+                      setCurrentPage(1);
+                    }}
+                    className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
+                      isActive
+                        ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                        : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                    }`}
+                  >
+                    {cat.name}
+                  </button>
+                );
+              })}
             </div>
           )}
 

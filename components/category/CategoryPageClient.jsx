@@ -302,10 +302,21 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
   const { user } = useUser();
   const totalPages = Math.max(1, Math.ceil(totalProducts / PRODUCTS_PER_PAGE));
 
-  // Direct child categories of the current category — shown as chips on top
-  const directSubcategories = category?._id
-    ? getSubcategories(category._id)
-    : [];
+  // Subcategory chips shown on top of the listing.
+  // On a subcategory page the current category is a leaf (no children of its
+  // own), so instead of hiding the row we show the *sibling* chips (children of
+  // the parent) and highlight the active one — this keeps the subcategory
+  // navigation visible while clicking simply filters the results.
+  const isOnSubcategoryPage = Boolean(category?.parent);
+  const chipParentSlug = isOnSubcategoryPage ? parentSlug : slug;
+  const chipCategories = isOnSubcategoryPage
+    ? category?.parent
+      ? getSubcategories(category.parent)
+      : []
+    : category?._id
+      ? getSubcategories(category._id)
+      : [];
+  const activeChipId = isOnSubcategoryPage ? String(category?._id) : null;
 
   // Rendered below the grid
   const paginationControls =
@@ -424,22 +435,36 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
       {/* ── Listing area ── */}
       <div className="bg-[#f7f5ff] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
-          {/* Subcategories row */}
-          {directSubcategories.length > 0 && (
+          {/* Subcategories row — stays visible on subcategory pages so the
+              chips act as persistent filters (active chip highlighted). */}
+          {chipCategories.length > 0 && (
             <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-              {directSubcategories.map((sub) => (
-                <Link
-                  key={sub._id}
-                  href={
-                    parentSlug
-                      ? `/category/${sub.slug}/`
-                      : `/category/${slug}/${sub.slug}/`
-                  }
-                  className="shrink-0 h-9 px-4 inline-flex items-center rounded-full border border-gray-200 bg-white text-sm font-medium text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F] shadow-sm transition-colors"
-                >
-                  {sub.name}
-                </Link>
-              ))}
+              <Link
+                href={`/category/${chipParentSlug}/`}
+                className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
+                  !activeChipId
+                    ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                    : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                }`}
+              >
+                All
+              </Link>
+              {chipCategories.map((sub) => {
+                const isActive = String(sub._id) === activeChipId;
+                return (
+                  <Link
+                    key={sub._id}
+                    href={`/category/${chipParentSlug}/${sub.slug}/`}
+                    className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
+                      isActive
+                        ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
+                        : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                    }`}
+                  >
+                    {sub.name}
+                  </Link>
+                );
+              })}
             </div>
           )}
 
