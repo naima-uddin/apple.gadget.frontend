@@ -37,7 +37,6 @@ export default function CategoryBannerEditor() {
   // picker target: { kind: "product" | "brand", idx }
   const [picker, setPicker] = useState(null);
   const [uploading, setUploading] = useState(null); // `${kind}-${idx}`
-  const fileRefs = useRef({});
 
   useEffect(() => {
     fetch(`${API}/api/admin/settings`, { credentials: "include" })
@@ -178,6 +177,51 @@ export default function CategoryBannerEditor() {
         </label>
       </div>
 
+      {/* ── Direct banner image (recommended) ── */}
+      <div className="rounded-xl border border-gray-200 bg-gray-50/60 p-4 space-y-3">
+        <div>
+          <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
+            Banner Image
+          </h3>
+          <p className="text-xs text-gray-500 mt-1">
+            Upload a ready-made banner image and it becomes the whole banner
+            (clickable to the link below). When set, all the text/color fields
+            underneath are ignored. Leave empty to build the banner from those
+            fields instead. Tip: wide, short image (e.g. 1200×300).
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <SingleImage
+            label="Banner Image (desktop)"
+            field="image"
+            value={cfg.image}
+            uploading={uploading}
+            onFile={(f) => handleSingleUpload("image", f)}
+            onPick={() => setPicker({ kind: "single", field: "image" })}
+            onClear={() => set({ image: { url: "", public_id: "" } })}
+          />
+          <SingleImage
+            label="Mobile Image (optional)"
+            field="mobileImage"
+            value={cfg.mobileImage}
+            uploading={uploading}
+            onFile={(f) => handleSingleUpload("mobileImage", f)}
+            onPick={() => setPicker({ kind: "single", field: "mobileImage" })}
+            onClear={() => set({ mobileImage: { url: "", public_id: "" } })}
+          />
+        </div>
+
+        {field("Banner Link", "link", "e.g. /products/")}
+      </div>
+
+      {cfg.image?.url && (
+        <p className="text-xs text-amber-600 font-medium -mt-2">
+          A banner image is set — the fields below are ignored on the live
+          site. Remove the image to use them.
+        </p>
+      )}
+
       {/* ── Text fields ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {field("Label (small caps)", "label", "e.g. LIMITED TIME DEAL")}
@@ -243,7 +287,6 @@ export default function CategoryBannerEditor() {
         onClear={(i) => patchItem("products", i, { image: { url: "", public_id: "" } })}
         onFile={(i, f) => handleUpload("products", i, f)}
         uploading={uploading}
-        fileRefs={fileRefs}
       />
 
       {/* ── Brand logos ── */}
@@ -261,7 +304,6 @@ export default function CategoryBannerEditor() {
         onClear={(i) => patchItem("brands", i, { image: { url: "", public_id: "" } })}
         onFile={(i, f) => handleUpload("brands", i, f)}
         uploading={uploading}
-        fileRefs={fileRefs}
       />
 
       {/* ── Live preview ── */}
@@ -269,6 +311,14 @@ export default function CategoryBannerEditor() {
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-3">
           Live Preview
         </h3>
+        {cfg.image?.url ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={cfg.image.url}
+            alt=""
+            className="w-full h-auto object-contain rounded-2xl"
+          />
+        ) : (
         <div
           className="relative overflow-hidden rounded-2xl px-6 py-5"
           style={{ backgroundColor: cfg.bgColor || "#111114" }}
@@ -344,6 +394,7 @@ export default function CategoryBannerEditor() {
             </div>
           )}
         </div>
+        )}
       </div>
 
       {message && (
@@ -382,6 +433,66 @@ export default function CategoryBannerEditor() {
   );
 }
 
+// Single uploadable image slot (desktop / mobile banner image).
+function SingleImage({ label, field, value, uploading, onFile, onPick, onClear }) {
+  const inputRef = useRef(null);
+  const isUploading = uploading === field;
+  return (
+    <div>
+      <label className="block text-sm font-semibold text-gray-700 mb-1">
+        {label}
+      </label>
+      <div
+        onClick={() => inputRef.current?.click()}
+        className="relative h-28 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition flex items-center justify-center bg-white"
+      >
+        {value?.url ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={value.url}
+            alt=""
+            className="w-full h-full object-contain p-1"
+          />
+        ) : (
+          <span className="text-xs text-gray-400">Click to upload</span>
+        )}
+        {isUploading && (
+          <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
+            <span className="text-[#1D1D1F] font-semibold text-xs">
+              Uploading…
+            </span>
+          </div>
+        )}
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        className="hidden"
+        onChange={(e) => onFile(e.target.files[0])}
+      />
+      <div className="flex items-center gap-1.5 flex-wrap mt-2">
+        <button
+          type="button"
+          onClick={onPick}
+          className="text-[11px] px-2 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-1"
+        >
+          <span>🖼</span> Library
+        </button>
+        {value?.url && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="text-[11px] px-2 py-1 border border-red-200 rounded-lg text-red-500 hover:bg-red-50"
+          >
+            Remove image
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // Reusable image-card grid used for both product photos and brand logos.
 function ImageList({
   title,
@@ -397,8 +508,8 @@ function ImageList({
   onFile,
   onLink,
   uploading,
-  fileRefs,
 }) {
+  const fileRefs = useRef({});
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">

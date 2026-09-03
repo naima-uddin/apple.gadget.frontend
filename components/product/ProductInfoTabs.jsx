@@ -6,6 +6,7 @@ import AuthModal from "@/components/auth/AuthModal";
 import Image from "next/image";
 import { FaCamera, FaTimes } from "react-icons/fa";
 import { uploadUserImage } from "@/lib/uploadImage";
+import DetailedDescriptionRenderer from "@/components/product/DetailedDescriptionRenderer";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -361,46 +362,47 @@ export default function ProductInfoTabs({ product }) {
         <div className="pb-8">
           {activeTab === "description" && (
             <div className="animate-fadeIn">
-              {/* Long/detailed description only — the short description already
-                  appears next to the product image, so it's not repeated here. */}
-              {typeof product?.detailedDescription === "string" &&
-              product.detailedDescription ? (
-                <div
-                  className="prose prose-sm max-w-none text-gray-700
-                    [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
-                    [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1
-                    [&_h2]:text-lg [&_h2]:font-bold [&_h2]:mt-3
-                    [&_h3]:text-base [&_h3]:font-semibold [&_h3]:mt-2
-                    [&_strong]:font-semibold [&_em]:italic"
-                  dangerouslySetInnerHTML={{
-                    __html: product.detailedDescription,
-                  }}
-                />
-              ) : (
-                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                  {(() => {
-                    const d = product?.description;
-                    if (!d) return "No description available for this product.";
-                    if (typeof d === "string") return d;
-                    if (Array.isArray(d))
-                      return (
-                        d
-                          .map((b) =>
-                            typeof b === "string"
-                              ? b
-                              : (b?.content || b?.text || "").replace(
-                                  /<[^>]+>/g,
-                                  "",
-                                ),
-                          )
-                          .filter(Boolean)
-                          .join(" ") ||
-                        "No description available for this product."
-                      );
-                    return "No description available for this product.";
-                  })()}
-                </p>
-              )}
+              {/* Detailed description only. The short description already appears
+                  next to the product image, so it's never repeated here. Falls
+                  back to the short description ONLY when a product has no
+                  detailed description at all. */}
+              {(() => {
+                const dd = product?.detailedDescription;
+                const hasDetailed =
+                  (Array.isArray(dd) && dd.length > 0) ||
+                  (typeof dd === "string" && dd.trim());
+
+                if (hasDetailed) {
+                  return <DetailedDescriptionRenderer value={dd} />;
+                }
+
+                return (
+                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                    {(() => {
+                      const d = product?.description;
+                      if (!d)
+                        return "No description available for this product.";
+                      if (typeof d === "string") return d;
+                      if (Array.isArray(d))
+                        return (
+                          d
+                            .map((b) =>
+                              typeof b === "string"
+                                ? b
+                                : (b?.content || b?.text || "").replace(
+                                    /<[^>]+>/g,
+                                    "",
+                                  ),
+                            )
+                            .filter(Boolean)
+                            .join(" ") ||
+                          "No description available for this product."
+                        );
+                      return "No description available for this product.";
+                    })()}
+                  </p>
+                );
+              })()}
             </div>
           )}
 

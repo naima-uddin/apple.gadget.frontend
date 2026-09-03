@@ -39,7 +39,6 @@ import RecentlyViewed, {
 } from "@/components/product/RecentlyViewed";
 import AdSlot from "@/components/ui/AdSlot";
 import { getDisplayPrice } from "@/lib/pricing";
-import DetailedDescriptionRenderer from "@/components/product/DetailedDescriptionRenderer";
 
 function scrollToReviews() {
   window.dispatchEvent(new Event("openReviews"));
@@ -960,10 +959,8 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
       {/* related products */}
       <RelatedProducts products={relatedProducts} />
 
-      {/* detailed description blocks */}
-      {product?.detailedDescription && (
-        <DetailedDescriptionRenderer value={product.detailedDescription} />
-      )}
+      {/* NOTE: detailed description now renders inside the "Description" tab
+          (ProductInfoTabs), so it is no longer repeated here. */}
 
       {/* recently viewed — always at the very bottom */}
       <RecentlyViewed
