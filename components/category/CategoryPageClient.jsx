@@ -681,7 +681,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
       </div>
 
       {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
-      <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
+      {/* <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" /> */}
     </>
   );
 }

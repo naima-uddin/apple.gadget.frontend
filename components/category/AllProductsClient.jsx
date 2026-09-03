@@ -255,7 +255,7 @@ export default function AllProductsClient() {
 
         
 {/* Category icon row (admin-controlled, dashboard → Store Hero) */}
-      <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" />
+      {/* <StoreHero className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 mt-8" /> */}
       {/* ── Hero header ── */}
           {/* Title */}
           <div className="relative text-left max-w-7xl mx-auto">
