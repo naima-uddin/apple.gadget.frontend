@@ -17,6 +17,7 @@ const pillClass =
 export default function StoreHero({ className = "" }) {
   const [data, setData] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  
   const [overflowing, setOverflowing] = useState(false);
   const [rowH, setRowH] = useState(0);
   const rowRef = useRef(null);
