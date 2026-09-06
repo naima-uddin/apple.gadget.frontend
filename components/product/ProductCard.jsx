@@ -151,7 +151,7 @@ export default function ProductCard({
   return (
     <>
       <div
-        className="relative bg-white border border-gray-200/70 rounded-2xl shadow-premium group hover:shadow-premium-hover hover:-translate-y-1 hover:border-gray-300 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col cursor-pointer h-full"
+        className="relative bg-white border border-gray-200 ring-1 ring-black/[0.02] rounded-[20px] shadow-premium group hover:shadow-premium-hover hover:-translate-y-1.5 hover:border-gray-300 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col cursor-pointer h-full overflow-hidden"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -256,7 +256,7 @@ export default function ProductCard({
                   addToWishlist(product);
                 }
               }}
-              className="pointer-events-auto w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white transition-colors"
+              className="pointer-events-auto w-9 h-9 bg-white/95 backdrop-blur-sm ring-1 ring-black/5 rounded-full flex items-center justify-center shadow-md hover:bg-[#1D1D1F] hover:text-white hover:scale-105 transition-all"
               title="Add to wishlist"
             >
               <FaHeart className="w-4 h-4" />
@@ -267,10 +267,10 @@ export default function ProductCard({
                 if (isInCompare(product._id)) removeFromCompare(product._id);
                 else addToCompare(product);
               }}
-              className={`pointer-events-auto w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-colors ${
+              className={`pointer-events-auto w-9 h-9 rounded-full flex items-center justify-center shadow-md ring-1 ring-black/5 backdrop-blur-sm hover:scale-105 transition-all ${
                 isInCompare(product._id)
                   ? "bg-[#1D1D1F] text-white"
-                  : "bg-white hover:bg-[#1D1D1F] hover:text-white"
+                  : "bg-white/95 hover:bg-[#1D1D1F] hover:text-white"
               }`}
               title={
                 isInCompare(product._id)
@@ -284,7 +284,7 @@ export default function ProductCard({
         </div>
 
         <div className="p-3 pt-2.5 flex flex-col grow">
-          <h3 className="text-sm font-semibold text-[#1F2937] mb-0.5 truncate">
+          <h3 className="text-[13px] font-semibold text-[#1F2937] leading-snug line-clamp-2 mb-0.5">
             {product.title || product.slug}
           </h3>
           {product.description && (
@@ -296,7 +296,7 @@ export default function ProductCard({
           {/* Price + swatches on one tight row */}
           <div className="flex items-center justify-between gap-2 mt-0.5">
             <div className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-base font-bold text-[#1D1D1F] whitespace-nowrap">
+              <span className="text-[17px] font-bold text-[#1D1D1F] tracking-tight whitespace-nowrap">
                 ৳{price?.toLocaleString()}
               </span>
               {compareAt && compareAt > price && (
@@ -369,7 +369,7 @@ export default function ProductCard({
               </button>
             </div>
           ) : (
-            <div className="relative z-2 mt-auto pt-2.5 flex gap-1.5">
+            <div className="relative z-2 mt-auto pt-1 flex gap-1.5">
               {/* Buy Now — light gray, straight to checkout */}
               <button
                 onClick={(e) => {
@@ -378,7 +378,7 @@ export default function ProductCard({
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
-                className="flex-1 bg-[#F5F5F7] border border-gray-200/80 text-[#1D1D1F] py-1.5 rounded-full text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors cursor-pointer"
+                className="flex-1 bg-[#F5F5F7] border border-gray-200/80 text-[#1D1D1F] py-1.5 rounded-full text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
               >
                 {t("product.buy_now")}
               </button>
@@ -389,7 +389,7 @@ export default function ProductCard({
                   flyToCart(imageRef.current, mainImage);
                   addToCart(product, 1);
                 }}
-                className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-3 py-1.5 rounded-full hover:bg-black active:scale-95 transition cursor-pointer"
+                className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-3 py-1.5 rounded-full hover:bg-black active:scale-95 shadow-sm transition-all cursor-pointer"
                 title={t("home.add_to_cart")}
                 aria-label={t("home.add_to_cart")}
               >
