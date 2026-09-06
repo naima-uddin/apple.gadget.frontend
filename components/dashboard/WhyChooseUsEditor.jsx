@@ -19,17 +19,23 @@ export default function WhyChooseUsEditor() {
   const [titleBn, setTitleBn] = useState("");
   const [description, setDescription] = useState("");
   const [descriptionBn, setDescriptionBn] = useState("");
-  const [image, setImage] = useState({ url: "", public_id: "" });
+  // Up to 4 collage images shown on the homepage left side.
+  const [images, setImages] = useState([
+    { url: "", public_id: "" },
+    { url: "", public_id: "" },
+    { url: "", public_id: "" },
+    { url: "", public_id: "" },
+  ]);
+  const [uploadingIdx, setUploadingIdx] = useState(-1);
+  const [pickerIdx, setPickerIdx] = useState(-1);
   const [buttonLabel, setButtonLabel] = useState("");
   const [buttonLink, setButtonLink] = useState("/about");
   const [items, setItems] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [pickerOpen, setPickerOpen] = useState(false);
   const [message, setMessage] = useState(null);
-  const fileRef = useRef(null);
+  const fileRefs = useRef([]);
 
   useEffect(() => {
     fetch(`${API}/api/admin/settings`, { credentials: "include" })
@@ -42,7 +48,21 @@ export default function WhyChooseUsEditor() {
           setTitleBn(cfg.titleBn || "");
           setDescription(cfg.description || "");
           setDescriptionBn(cfg.descriptionBn || "");
-          setImage(cfg.image || { url: "", public_id: "" });
+          // Prefer the new 4-slot `images`; fall back to the legacy single
+          // `image` so existing configs still show a picture.
+          const loaded =
+            Array.isArray(cfg.images) && cfg.images.length > 0
+              ? cfg.images
+              : cfg.image?.url
+                ? [cfg.image]
+                : [];
+          setImages((prev) =>
+            prev.map((slot, i) =>
+              loaded[i]
+                ? { url: loaded[i].url || "", public_id: loaded[i].public_id || "" }
+                : slot,
+            ),
+          );
           setButtonLabel(cfg.buttonLabel || "");
           setButtonLink(cfg.buttonLink || "/about");
           setItems(
@@ -82,19 +102,25 @@ export default function WhyChooseUsEditor() {
     });
   };
 
-  const handleImageUpload = async (file) => {
+  const patchImage = (idx, val) =>
+    setImages((prev) => prev.map((s, i) => (i === idx ? val : s)));
+
+  const handleImageUpload = async (idx, file) => {
     if (!file) return;
     const preview = URL.createObjectURL(file);
-    setImage({ url: preview, public_id: "" });
-    setUploading(true);
+    patchImage(idx, { url: preview, public_id: "" });
+    setUploadingIdx(idx);
     try {
       const data = await uploadAdminImage(file, "applebd/why-choose-us");
-      setImage({ url: data.asset.url, public_id: data.asset.public_id });
+      patchImage(idx, {
+        url: data.asset.url,
+        public_id: data.asset.public_id,
+      });
     } catch (err) {
       alert("Image upload failed: " + err.message);
-      setImage({ url: "", public_id: "" });
+      patchImage(idx, { url: "", public_id: "" });
     } finally {
-      setUploading(false);
+      setUploadingIdx(-1);
     }
   };
 
@@ -113,7 +139,9 @@ export default function WhyChooseUsEditor() {
             titleBn,
             description,
             descriptionBn,
-            image,
+            images,
+            // Keep the legacy single field in sync for backward compatibility.
+            image: images[0]?.url ? images[0] : { url: "", public_id: "" },
             buttonLabel,
             buttonLink,
             items,
@@ -214,54 +242,68 @@ export default function WhyChooseUsEditor() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Side image
+            Collage images (up to 4)
           </label>
-          <div
-            onClick={() => fileRef.current?.click()}
-            className="relative h-40 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition flex items-center justify-center bg-gray-50"
-          >
-            {image?.url ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
-                src={image.url}
-                alt=""
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-xs text-gray-400">Click to upload image</span>
-            )}
-            {uploading && (
-              <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
-                <span className="text-[#1D1D1F] font-semibold text-xs">
-                  Uploading…
-                </span>
+          <p className="text-xs text-gray-400 mb-2">
+            These 4 photos form the collage on the left of the homepage section.
+            Empty slots reuse the other images so the grid stays full.
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            {images.map((img, idx) => (
+              <div key={idx}>
+                <div
+                  onClick={() => fileRefs.current[idx]?.click()}
+                  className="relative h-24 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden cursor-pointer hover:border-gray-400 transition flex items-center justify-center bg-gray-50"
+                >
+                  {img?.url ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={img.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-[11px] text-gray-400">
+                      Image {idx + 1}
+                    </span>
+                  )}
+                  {uploadingIdx === idx && (
+                    <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
+                      <span className="text-[#1D1D1F] font-semibold text-[11px]">
+                        Uploading…
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <input
+                  ref={(el) => (fileRefs.current[idx] = el)}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => handleImageUpload(idx, e.target.files[0])}
+                />
+                <div className="flex items-center gap-1 flex-wrap mt-1">
+                  <button
+                    type="button"
+                    onClick={() => setPickerIdx(idx)}
+                    className="text-[10px] px-1.5 py-0.5 border border-gray-300 rounded text-gray-600 hover:bg-gray-50"
+                  >
+                    🖼 Library
+                  </button>
+                  {img?.url && (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        patchImage(idx, { url: "", public_id: "" })
+                      }
+                      className="text-[10px] px-1.5 py-0.5 border border-red-200 rounded text-red-500 hover:bg-red-50"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => handleImageUpload(e.target.files[0])}
-          />
-          <div className="flex items-center gap-1.5 flex-wrap mt-2">
-            <button
-              type="button"
-              onClick={() => setPickerOpen(true)}
-              className="text-[11px] px-2 py-1 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 flex items-center gap-1"
-            >
-              <span>🖼</span> Media Library
-            </button>
-            {image?.url && (
-              <button
-                type="button"
-                onClick={() => setImage({ url: "", public_id: "" })}
-                className="text-[11px] px-2 py-1 border border-red-200 rounded-lg text-red-500 hover:bg-red-50"
-              >
-                Remove image
-              </button>
-            )}
+            ))}
           </div>
         </div>
 
@@ -377,19 +419,23 @@ export default function WhyChooseUsEditor() {
 
       <button
         onClick={handleSave}
-        disabled={saving || uploading}
+        disabled={saving || uploadingIdx !== -1}
         className="px-6 py-2 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black disabled:opacity-50 transition"
       >
         {saving ? "Saving…" : "Save Why Choose Us"}
       </button>
 
       <MediaPicker
-        open={pickerOpen}
+        open={pickerIdx !== -1}
         onSelect={(asset) => {
-          setImage({ url: asset.url, public_id: asset.public_id });
-          setPickerOpen(false);
+          if (pickerIdx !== -1)
+            patchImage(pickerIdx, {
+              url: asset.url,
+              public_id: asset.public_id,
+            });
+          setPickerIdx(-1);
         }}
-        onClose={() => setPickerOpen(false)}
+        onClose={() => setPickerIdx(-1)}
       />
     </div>
   );

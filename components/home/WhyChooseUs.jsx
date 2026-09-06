@@ -33,6 +33,38 @@ const DEFAULT_FAQS = [
   },
 ];
 
+// Each collage tile rounds its outward-facing corner more, giving the 2×2
+// grid the soft, organic frame from the reference design.
+const CORNERS = [
+  "rounded-2xl rounded-tl-[2.5rem]",
+  "rounded-2xl rounded-tr-[2.5rem]",
+  "rounded-2xl rounded-bl-[2.5rem]",
+  "rounded-2xl rounded-br-[2.5rem]",
+];
+
+function CollageTile({ src, alt, corner, onFail }) {
+  const [broken, setBroken] = useState(false);
+  return (
+    <div
+      className={`relative overflow-hidden bg-[#F5F6F7] ${corner}`}
+    >
+      {!broken && (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 50vw, 20vw"
+          className="object-cover"
+          onError={() => {
+            setBroken(true);
+            onFail?.();
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
 // Cayenne-style "Why Choose Us": image on the left, intro + FAQ accordion on
 // the right. FAQ items come from dashboard → Policy Pages → FAQ; the image is
 // /whychoose.png in the frontend public folder (section adapts if it's absent).
@@ -76,7 +108,22 @@ export default function WhyChooseUs() {
   const description = descTemplate.replace("{store}", storeName || "our store");
   const buttonLabel = cfg?.buttonLabel || t("footer.about");
   const buttonLink = cfg?.buttonLink || "/about";
-  const imageUrl = cfg?.image?.url || "/whychoose.jpg";
+
+  // Build the 4-image collage: dashboard `images` array first, then the legacy
+  // single `image`, then a built-in default. Missing slots cycle through what
+  // we have so the 2×2 grid is always full.
+  const configuredPics = (Array.isArray(cfg?.images) ? cfg.images : [])
+    .map((im) => im?.url)
+    .filter(Boolean);
+  const legacyPic = cfg?.image?.url ? [cfg.image.url] : [];
+  const basePics =
+    configuredPics.length > 0
+      ? configuredPics
+      : legacyPic.length > 0
+        ? legacyPic
+        : ["/whychoose.jpg"];
+  const collage = Array.from({ length: 4 }, (_, i) => basePics[i % basePics.length]);
+  const hasConfigured = configuredPics.length > 0 || legacyPic.length > 0;
 
   return (
     <section className="w-full py-6 md:py-12">
@@ -90,17 +137,47 @@ export default function WhyChooseUs() {
             hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
           }`}
         >
-          {/* Image */}
+          {/* Image collage — 2×2 grid with a center badge */}
           {hasImage && (
-            <div className="relative rounded-l-2xl  overflow-hidden bg-[#F5F6F7] min-h-64 md:min-h-80 ">
-              <Image
-                src={imageUrl}
-                alt={title}
-                fill
-                sizes="(max-width: 768px) 100vw, 40vw"
-                className="object-cover"
-                onError={() => setHasImage(false)}
-              />
+            <div className="relative p-3 md:p-4 min-h-72 md:min-h-96">
+              <div className="grid grid-cols-2 grid-rows-2 gap-2 md:gap-3 h-full">
+                {collage.map((src, i) => (
+                  <CollageTile
+                    key={i}
+                    src={src}
+                    alt={title}
+                    corner={CORNERS[i]}
+                    onFail={() => {
+                      // Only collapse the whole column when we're relying on the
+                      // built-in default (nothing configured) and it fails.
+                      if (!hasConfigured && i === 0) setHasImage(false);
+                    }}
+                  />
+                ))}
+              </div>
+
+              {/* Center authenticity seal, like the reference collage */}
+              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white shadow-lg ring-4 ring-white border border-gray-200 flex flex-col items-center justify-center text-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#1D1D1F"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-6 h-6 md:w-7 md:h-7"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                  <span className="mt-0.5 text-[9px] md:text-[10px] font-semibold uppercase tracking-wide text-[#1D1D1F] leading-tight">
+                    100%
+                    <br />
+                    Authentic
+                  </span>
+                </div>
+              </div>
             </div>
           )}
 
