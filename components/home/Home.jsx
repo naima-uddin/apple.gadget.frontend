@@ -15,6 +15,7 @@ import OffersToSayYes from "./OffersToSayYes";
 import ShoppableVideoSection from "./ShoppableVideoSection";
 import PromoBanner from "./PromoBanner";
 import CategoryBanner from "./CategoryBanner";
+import FeaturedShowcase from "./FeaturedShowcase";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -93,7 +94,12 @@ export default function Home() {
         item.type === "featuredRow" ? (
           <FeaturedRow key={item.featuredSectionId} sectionId={item.featuredSectionId} />
         ) : FIXED_MAP[item.key] ? (
-          <React.Fragment key={item.key}>{FIXED_MAP[item.key]}</React.Fragment>
+          <React.Fragment key={item.key}>
+            {FIXED_MAP[item.key]}
+            {/* The tabbed "Featured Products" showcase always sits directly
+                after the category grid, independent of the admin layout order. */}
+            {item.key === "shopByCategory" && <FeaturedShowcase />}
+          </React.Fragment>
         ) : null,
       )}
     </>
