@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useLanguage } from "@/components/context/LanguageContext";
 import SectionHeader from "./SectionHeader";
 
@@ -33,21 +32,100 @@ const DEFAULT_FAQS = [
   },
 ];
 
-// Each collage tile rounds its outward-facing corner more, giving the 2×2
-// grid the soft, organic frame from the reference design.
-const CORNERS = [
-  "rounded-2xl rounded-tl-[2.5rem]",
-  "rounded-2xl rounded-tr-[2.5rem]",
-  "rounded-2xl rounded-bl-[2.5rem]",
-  "rounded-2xl rounded-br-[2.5rem]",
+// Two flush columns (no center gap) with a staggered horizontal seam, giving
+// four unequal tiles: 1 = very large, 2 = small, 3 = small, 4 = a bit large.
+// Only the outer corner of each tile is rounded so the inner seams meet clean.
+const TILES = [
+  // 1 — top-left, very large
+  "col-start-1 col-span-4 row-start-1 row-span-4 rounded-tl-[4rem]",
+  // 2 — top-right, small
+  "col-start-5 col-span-2 row-start-1 row-span-2 rounded-tr-[4rem]",
+  // 3 — bottom-left, small
+  "col-start-1 col-span-4 row-start-5 row-span-2 rounded-bl-[4rem]",
+  // 4 — bottom-right, a bit large
+  "col-start-5 col-span-2 row-start-3 row-span-4 rounded-br-[4rem]",
 ];
 
-function CollageTile({ src, alt, corner, onFail }) {
+// Accent used for the top corner mark (reference uses a green arc). Kept local
+// to this section — the rest of the theme stays Apple monochrome.
+const MARK_GREEN = "#1E5631";
+
+// Green shield "100% TRUSTED" badge (ribbon banner + stars), drawn inline so
+// it stays crisp at any size and needs no external asset.
+function TrustedBadge() {
+  return (
+    <svg
+      viewBox="0 0 120 140"
+      className="w-16 h-20 md:w-20 md:h-24 drop-shadow-lg"
+      role="img"
+      aria-label="100% Trusted"
+    >
+      <defs>
+        <linearGradient id="wc-shield" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#7ED957" />
+          <stop offset="0.5" stopColor="#3EA537" />
+          <stop offset="1" stopColor="#1E5631" />
+        </linearGradient>
+        <linearGradient id="wc-ribbon" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#2E8B3D" />
+          <stop offset="1" stopColor="#1B5E20" />
+        </linearGradient>
+      </defs>
+
+      {/* Shield */}
+      <path
+        d="M60 4 L110 20 V58 C110 92 88 114 60 128 C32 114 10 92 10 58 V20 Z"
+        fill="#155724"
+      />
+      <path
+        d="M60 12 L102 26 V58 C102 87 83 106 60 118 C37 106 18 87 18 58 V26 Z"
+        fill="url(#wc-shield)"
+      />
+
+      {/* 100% */}
+      <text
+        x="60"
+        y="52"
+        textAnchor="middle"
+        fontSize="22"
+        fontWeight="800"
+        fill="#ffffff"
+        fontFamily="Arial, sans-serif"
+      >
+        100%
+      </text>
+
+      {/* Stars */}
+      <g fill="#ffffff">
+        <path d="M42 96 l1.6 3.4 3.7.4-2.8 2.5.8 3.6-3.3-1.9-3.3 1.9.8-3.6-2.8-2.5 3.7-.4z" />
+        <path d="M60 98 l1.8 3.9 4.2.5-3.1 2.9.9 4.1-3.8-2.2-3.8 2.2.9-4.1-3.1-2.9 4.2-.5z" />
+        <path d="M78 96 l1.6 3.4 3.7.4-2.8 2.5.8 3.6-3.3-1.9-3.3 1.9.8-3.6-2.8-2.5 3.7-.4z" />
+      </g>
+
+      {/* Ribbon banner */}
+      <path d="M6 66 L20 70 L18 88 L4 82 Z" fill="#14481a" />
+      <path d="M114 66 L100 70 L102 88 L116 82 Z" fill="#14481a" />
+      <rect x="14" y="62" width="92" height="24" rx="4" fill="url(#wc-ribbon)" />
+      <text
+        x="60"
+        y="79"
+        textAnchor="middle"
+        fontSize="15"
+        fontWeight="800"
+        letterSpacing="1"
+        fill="#ffffff"
+        fontFamily="Arial, sans-serif"
+      >
+        TRUSTED
+      </text>
+    </svg>
+  );
+}
+
+function CollageTile({ src, alt, className, onFail }) {
   const [broken, setBroken] = useState(false);
   return (
-    <div
-      className={`relative overflow-hidden bg-[#F5F6F7] ${corner}`}
-    >
+    <div className={`relative overflow-hidden bg-[#F5F6F7] ${className}`}>
       {!broken && (
         <Image
           src={src}
@@ -128,25 +206,29 @@ export default function WhyChooseUs() {
   return (
     <section className="w-full py-6 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Section title — same style as the other homepage sections */}
-        <SectionHeader title={title} />
+        {/* Section title with the About/CTA pill on the right of the heading */}
+        <SectionHeader
+          title={title}
+          seeMoreHref={buttonLink}
+          seeMoreLabel={buttonLabel}
+        />
 
         {/* White card: image left, content right */}
         <div
-          className={`bg-white border border-gray-100 rounded-3xl shadow- grid grid-cols-1 gap-4 md:gap-6 items-stretch ${
+          className={`rounded-3xl grid grid-cols-1 gap-4 md:gap-6 items-stretch ${
             hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
           }`}
         >
-          {/* Image collage — 2×2 grid with a center badge */}
+          {/* Image collage — two flush columns, no center gap, center badge */}
           {hasImage && (
-            <div className="relative p-3 md:p-4 min-h-72 md:min-h-96">
-              <div className="grid grid-cols-2 grid-rows-2 gap-2 md:gap-3 h-full">
+            <div className="relative p-3 min-h-80 md:min-h-104">
+              <div className="relative grid grid-cols-6 grid-rows-6 h-full overflow-hidden rounded-3xl">
                 {collage.map((src, i) => (
                   <CollageTile
                     key={i}
                     src={src}
                     alt={title}
-                    corner={CORNERS[i]}
+                    className={TILES[i]}
                     onFail={() => {
                       // Only collapse the whole column when we're relying on the
                       // built-in default (nothing configured) and it fails.
@@ -154,29 +236,17 @@ export default function WhyChooseUs() {
                     }}
                   />
                 ))}
+
+                {/* Green corner mark — top only, sitting on the first image */}
+                <span
+                  className="pointer-events-none absolute top-0 left-0 w-20 h-20 md:w-24 md:h-24 rounded-tl-[4rem] border-t-[6px] border-l-[6px] z-10"
+                  style={{ borderColor: MARK_GREEN }}
+                />
               </div>
 
-              {/* Center authenticity seal, like the reference collage */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-white shadow-lg ring-4 ring-white border border-gray-200 flex flex-col items-center justify-center text-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#1D1D1F"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-6 h-6 md:w-7 md:h-7"
-                    aria-hidden="true"
-                  >
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                  <span className="mt-0.5 text-[9px] md:text-[10px] font-semibold uppercase tracking-wide text-[#1D1D1F] leading-tight">
-                    100%
-                    <br />
-                    Authentic
-                  </span>
-                </div>
+              {/* Trusted shield badge — sits over the seam crossing */}
+              <div className="absolute left-[66%] top-[64%] -translate-x-1/2 -translate-y-1/2 z-20">
+                <TrustedBadge />
               </div>
             </div>
           )}
@@ -187,23 +257,34 @@ export default function WhyChooseUs() {
               {description}
             </p>
 
-            <div className="divide-y divide-gray-200 border-t border-gray-200">
+            <div className="space-y-2">
               {faqs.map((item, i) => {
                 const open = openIndex === i;
                 return (
-                  <div key={i}>
+                  <div
+                    key={i}
+                    className={`rounded-2xl transition-all duration-200 ${
+                      open
+                        ? "bg-[#F5F5F7] shadow-sm ring-1 ring-gray-200 px-4"
+                        : "border-b border-gray-200 px-1"
+                    }`}
+                  >
                     <button
                       type="button"
                       onClick={() => setOpenIndex(open ? -1 : i)}
                       className="w-full flex items-center justify-between gap-4 py-4 text-left"
                       aria-expanded={open}
                     >
-                      <span className="text-sm md:text-base font-semibold text-[#1F2937] font-georgia">
+                      <span
+                        className={`text-sm md:text-base font-semibold font-georgia transition-colors ${
+                          open ? "text-[#1D1D1F]" : "text-[#1F2937]"
+                        }`}
+                      >
                         {item.question}
                       </span>
                       <span
-                        className={`shrink-0 text-[#6B7280] text-xl leading-none transition-transform duration-200 ${
-                          open ? "rotate-45 text-[#1D1D1F]" : ""
+                        className={`shrink-0 text-xl leading-none transition-transform duration-200 ${
+                          open ? "rotate-45 text-[#1D1D1F]" : "text-[#6B7280]"
                         }`}
                       >
                         +
@@ -227,16 +308,6 @@ export default function WhyChooseUs() {
               })}
             </div>
           </div>
-        </div>
-
-        {/* About Us pill — bottom right, like the reference */}
-        <div className="flex justify-end mt-4">
-          <Link
-            href={buttonLink}
-            className="bg-white border border-[#1D1D1F] text-[#1D1D1F] hover:bg-[#1D1D1F] hover:text-white rounded-full px-5 py-2 text-xs font-semibold transition-colors shadow-sm"
-          >
-            {buttonLabel}
-          </Link>
         </div>
       </div>
     </section>

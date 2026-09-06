@@ -9,11 +9,12 @@ const FALLBACK = [
   {
     _id: "fallback-1",
     image: { url: "/banner/Oven_Big_banner_1.jpg" },
-    badge: "",
-    title: "",
-    subtitle: "",
-    buttonText: "",
-    buttonLink: "/",
+    badge: "Smarter Every Day",
+    title: "Your Time. Your *Style.*",
+    subtitle:
+      "Stay connected, track your day and enjoy smart features with a stylish smartwatch designed for your everyday lifestyle.",
+    buttonText: "Shop Now",
+    buttonLink: "/products",
     rightTitle: "",
     rightText: "",
   },
@@ -49,18 +50,18 @@ const Banner = () => {
     return () => clearInterval(autoRef.current);
   }, [startAuto]);
 
-  const go = (dir) => {
-    setCurrent((p) => (p + dir + total) % total);
+  const goTo = (idx) => {
+    setCurrent(((idx % total) + total) % total);
     startAuto();
   };
 
-  // words wrapped in *asterisks* render in the black highlight color
+  // words wrapped in *asterisks* render in a lighter, italic accent
   const renderHighlight = (text) =>
     String(text)
       .split(/(\*[^*]+\*)/g)
       .map((part, i) =>
         part.startsWith("*") && part.endsWith("*") ? (
-          <span key={i} className="text-[#1D1D1F]">
+          <span key={i} className="italic font-light text-gray-400">
             {part.slice(1, -1)}
           </span>
         ) : (
@@ -68,258 +69,170 @@ const Banner = () => {
         ),
       );
 
-  // top-to-bottom fade: pure white under the navbar into soft gray at the base
-  const BG_GRADIENT =
-    "linear-gradient(180deg, #FFFFFF 0%, #FEFDFF 20%, #FAFAFC 40%, #F1F0F5 60%, #EAE9EE 80%, #F3F2F9 100%)";
-
   const slide = slides[current] || slides[0];
-  if (!slide)
-    return (
-      <section className="h-75 md:h-110" style={{ background: BG_GRADIENT }} />
-    );
+  if (!slide) return <section className="h-140 bg-[#EDEBE7]" />;
 
-  const hasSideText =
-    slide.badge ||
-    slide.title ||
-    slide.subtitle ||
-    slide.rightTitle ||
-    slide.rightText;
+  // the other slides shown as small thumbnails (up to 3)
+  const thumbs = slides
+    .map((s, i) => ({ s, i }))
+    .filter((x) => x.i !== current)
+    .slice(0, 3);
+
+  const goToLink = () => {
+    if (slide?.buttonLink) router.push(slide.buttonLink);
+  };
 
   return (
-    <section style={{ background: BG_GRADIENT }}>
-      {/* overflow-x-clip: side texts can slide in without a horizontal scrollbar */}
-      <div
-        className="relative max-w-7xl mx-auto overflow-x-clip"
-        onMouseEnter={() => clearInterval(autoRef.current)}
-        onMouseLeave={startAuto}
-      >
-        <div
-          key={slide._id || current}
-          className="banner-fade grid grid-cols-[1fr_auto_1fr] items-center gap-1 sm:gap-4 md:gap-6 px-8 sm:px-10 md:px-6 pt-2 sm:pt-6 pb-12 sm:pb-16 md:py-0 h-auto md:h-110"
-        >
-          {/* Left text — nudged up so it clears the bottom arrows */}
-          <div className="banner-slide-left text-center md:text-left max-w-36 sm:max-w-xs md:max-w-sm md:mb-24">
-            {slide.badge && (
-              <p className="text-[7px] sm:text-[10px] md:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#6B7280] mb-1.5 sm:mb-2.5">
-                {slide.badge}
-              </p>
-            )}
-            {slide.title && (
-              <h1 className="text-base sm:text-2xl md:text-4xl xl:text-5xl font-bold tracking-tight text-[#1F2937] leading-[1.12] text-balance mb-2 sm:mb-4">
-                {renderHighlight(slide.title)}
-              </h1>
-            )}
-            {slide.subtitle && (
-              <p className="hidden md:block text-[10px] sm:text-sm text-[#6B7280] leading-snug sm:leading-relaxed mb-3 sm:mb-6 max-w-70 mx-auto md:mx-0">
-                {slide.subtitle}
-              </p>
-            )}
-            {/* desktop/tablet button — inside the left column */}
-            {slide.buttonText && slide.buttonLink && (
-              <Link
-                href={slide.buttonLink}
-                className="hidden md:inline-block bg-[#1D1D1F] hover:bg-black text-[#FFFFFF] text-[9px] sm:text-xs md:text-sm font-semibold uppercase tracking-wider px-4 py-2 sm:px-7 sm:py-3 rounded-md transition"
-              >
-                {slide.buttonText}
-              </Link>
-            )}
-          </div>
-
-          {/* Center image — stays fully inside the banner band */}
+    <section
+      className="relative w-full overflow-hidden -mt-12 md:-mt-14"
+      onMouseEnter={() => clearInterval(autoRef.current)}
+      onMouseLeave={startAuto}
+    >
+      {/* ── Blurred backdrop: the same active image, scaled up + heavily
+             blurred, filling the whole band behind the clear card ── */}
+      <div className="absolute inset-0">
+        {slides.map((s, i) => (
           <div
-            className={`relative w-52 sm:w-96 md:w-105 lg:w-120 xl:w-130 h-60 sm:h-96 md:h-100 lg:h-105 cursor-pointer ${
-              hasSideText ? "z-10" : "col-span-3 w-full h-52 sm:h-75 md:h-110"
+            key={s._id || i}
+            className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+              i === current ? "opacity-100" : "opacity-0"
             }`}
-            onClick={() => {
-              if (slide?.buttonLink) router.push(slide.buttonLink);
-            }}
+            aria-hidden="true"
           >
-            {/* Luminous halo behind the product image — bright white core melting into soft black/gray */}
-            {hasSideText && (
-              <div
-                aria-hidden="true"
-                className="banner-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-4/5 rounded-full blur-2xl"
-                style={{
-                  background:
-                    "radial-gradient(closest-side, rgba(255,255,255,0.95) 0%, rgba(248,248,248,0.85) 30%, rgba(209,213,219,0.55) 60%, rgba(209,213,219,0.25) 80%, transparent 100%)",
-                }}
-              />
-            )}
             <Image
-              src={slide.image?.url || "/assets/placeholder.svg"}
-              alt={slide.title || "Banner"}
+              src={s.image?.url || "/assets/placeholder.svg"}
+              alt=""
               fill
-              priority
-              quality={100}
-              sizes="(max-width: 768px) 100vw, 540px"
-              className={
-                hasSideText ? "banner-image object-contain" : "object-cover"
-              }
+              priority={i === 0}
+              quality={60}
+              sizes="100vw"
+              className="scale-110 object-cover blur-2xl"
             />
           </div>
-
-          {/* Right text — nudged up so it clears the bottom arrows */}
-          <div className="banner-slide-right text-center md:text-right max-w-36 sm:max-w-xs md:max-w-sm justify-self-center md:justify-self-end md:mb-24">
-            {slide.rightTitle && (
-              <h2 className="text-xs sm:text-lg md:text-2xl xl:text-3xl font-bold tracking-tight text-[#1F2937] leading-snug text-balance mb-1.5 sm:mb-3">
-                {renderHighlight(slide.rightTitle)}
-              </h2>
-            )}
-            {slide.rightText && (
-              <p className="hidden md:block text-[10px] sm:text-sm text-[#6B7280] leading-snug sm:leading-relaxed max-w-70 mx-auto md:mx-0 md:ml-auto">
-                {slide.rightText}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Prev / Next arrows — minimal chevrons at the bottom corners */}
-        {total > 1 && (
-          <>
-            <button
-              onClick={() => go(-1)}
-              aria-label="Previous slide"
-              className="absolute left-2 sm:left-4 md:left-10 bottom-4 md:bottom-4 p-1.5 sm:p-2 text-gray-800 hover:text-[#1D1D1F] hover:-translate-x-0.5 transition z-20"
-            >
-              <svg
-                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={() => go(1)}
-              aria-label="Next slide"
-              className="absolute right-2 sm:right-4 md:right-10 bottom-4 md:bottom-4 p-1.5 sm:p-2 text-gray-800 hover:text-[#1D1D1F] hover:translate-x-0.5 transition z-20"
-            >
-              <svg
-                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </>
-        )}
-
-        {/* mobile/tablet button — centered at the bottom, between the arrows */}
-        {slide.buttonText && slide.buttonLink && (
-          <Link
-            href={slide.buttonLink}
-            className="md:hidden absolute bottom-3 left-1/2 -translate-x-1/2 z-20 inline-block bg-[#1D1D1F] hover:bg-black text-[#FFFFFF] text-[9px] sm:text-xs font-semibold uppercase tracking-wider px-4 py-2 sm:px-6 sm:py-2.5 rounded-md transition"
-          >
-            {slide.buttonText}
-          </Link>
-        )}
+        ))}
+        {/* light wash so the surrounding blur reads soft + keeps the title
+            (dark text) and the frosted navbar legible */}
+        <div className="absolute inset-0 bg-white/55" />
       </div>
 
-      <style jsx global>{`
-        .banner-fade {
-          animation: bannerFade 0.5s ease;
-        }
-        .banner-slide-left {
-          animation: bannerSlideLeft 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s
-            both;
-        }
-        .banner-slide-right {
-          animation: bannerSlideRight 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s
-            both;
-        }
-        /* image pops in first, then keeps gently floating.
-           filter: slight brightness/saturation lift + soft white glow rim,
-           with only a light grounding shadow so the product stays vivid */
-        .banner-image {
-          filter: brightness(1.06) saturate(1.1) contrast(1.03)
-            drop-shadow(0 0 22px rgba(255, 255, 255, 0.7))
-            drop-shadow(0 0 45px rgba(209, 213, 219, 0.35))
-            drop-shadow(0 22px 26px rgba(15, 23, 42, 0.16));
-          animation:
-            bannerImageIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both,
-            bannerFloat 5s ease-in-out 1s infinite alternate;
-        }
-        /* halo breathes slowly so the glow feels alive */
-        .banner-glow {
-          animation: bannerGlowPulse 4s ease-in-out 1s infinite alternate;
-        }
-        @keyframes bannerGlowPulse {
-          from {
-            opacity: 0.75;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes bannerFade {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes bannerSlideLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-70px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        @keyframes bannerSlideRight {
-          from {
-            opacity: 0;
-            transform: translateX(70px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-        @keyframes bannerImageIn {
-          from {
-            opacity: 0;
-            transform: translateY(30px) scale(0.92);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        @keyframes bannerFloat {
-          from {
-            transform: translateY(0);
-          }
-          to {
-            transform: translateY(-10px);
-          }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .banner-fade,
-          .banner-slide-left,
-          .banner-slide-right,
-          .banner-image,
-          .banner-glow {
-            animation: none;
-          }
-        }
-      `}</style>
+      {/* ── Foreground ── */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-12 pt-16 sm:px-6 md:pt-20">
+        <div className="relative">
+          {/* CLEAR hero card */}
+          <div className="relative h-95 overflow-hidden rounded-[28px] shadow-2xl ring-1 ring-black/5 sm:h-115 lg:h-130">
+            {slides.map((s, i) => (
+              <div
+                key={s._id || i}
+                className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+                  i === current ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={i === current ? undefined : true}
+              >
+                <Image
+                  src={s.image?.url || "/assets/placeholder.svg"}
+                  alt={s.title || "Banner"}
+                  fill
+                  priority={i === 0}
+                  quality={100}
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                  className="object-cover object-center"
+                />
+              </div>
+            ))}
+            {/* soft scrim for the overlaid text */}
+            <div className="absolute inset-0 bg-linear-to-l from-black/45 via-transparent to-black/10" />
+
+            {/* badge chip — top-left */}
+            {slide.badge && (
+              <span className="absolute left-5 top-5 inline-block rounded-full border border-white/25 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm">
+                {slide.badge}
+              </span>
+            )}
+
+            {/* top-right glassy description card */}
+            {(slide.subtitle || slide.buttonText) && (
+              <div className="absolute right-4 top-4 max-w-60 rounded-2xl border border-white/15 bg-black/30 p-5 text-right backdrop-blur-md sm:right-6 sm:top-6 sm:max-w-xs">
+                {slide.subtitle && (
+                  <p className="text-xs leading-relaxed text-white/90 sm:text-sm">
+                    {slide.subtitle}
+                  </p>
+                )}
+                {slide.buttonText && slide.buttonLink && (
+                  <Link
+                    href={slide.buttonLink}
+                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F] transition hover:bg-white/90 sm:text-sm"
+                  >
+                    {slide.buttonText}
+                    <svg
+                      className="h-3.5 w-3.5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 12h14M13 6l6 6-6 6"
+                      />
+                    </svg>
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* dots — bottom center inside the card */}
+            {total > 1 && (
+              <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
+                {slides.map((s, i) => (
+                  <button
+                    key={s._id || i}
+                    onClick={() => goTo(i)}
+                    aria-label={`Go to slide ${i + 1}`}
+                    className={`h-1.5 rounded-full transition-all ${
+                      i === current
+                        ? "w-6 bg-white"
+                        : "w-1.5 bg-white/60 hover:bg-white/90"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* thumbnails — float over the card's lower-right corner */}
+          {thumbs.length > 0 && (
+            <div className="absolute -bottom-5 right-3 hidden items-center gap-2.5 sm:flex md:right-5">
+              {thumbs.map(({ s, i }) => (
+                <button
+                  key={s._id || i}
+                  onClick={() => goTo(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className="group relative h-14 w-14 overflow-hidden rounded-2xl border border-white/70 bg-white shadow-lg ring-1 ring-black/5 transition hover:scale-105 md:h-16 md:w-16 lg:h-20 lg:w-20"
+                >
+                  <Image
+                    src={s.image?.url || "/assets/placeholder.svg"}
+                    alt={s.title || `Slide ${i + 1}`}
+                    fill
+                    sizes="80px"
+                    className="object-cover transition group-hover:scale-110"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* big title — sits just below the card, over the blurred backdrop */}
+          {slide.title && (
+            <h1
+              onClick={goToLink}
+              className="mt-6 max-w-3xl cursor-pointer text-3xl font-bold uppercase leading-[1.05] tracking-tight text-[#1D1D1F] text-balance sm:mt-8 sm:text-5xl lg:text-6xl"
+            >
+              {renderHighlight(slide.title)}
+            </h1>
+          )}
+        </div>
+      </div>
     </section>
   );
 };

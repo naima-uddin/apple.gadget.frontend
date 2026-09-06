@@ -8,6 +8,14 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 const EMPTY_ITEM = () => ({ question: "", answer: "" });
 
+// Positions/sizes of the 4 collage tiles on the homepage, in order.
+const SLOT_LABELS = [
+  "Image 1 · top-left (large)",
+  "Image 2 · top-right (small)",
+  "Image 3 · bottom-left (small)",
+  "Image 4 · bottom-right (medium)",
+];
+
 // Admin editor for the homepage "Why Choose Us" section. Controls the
 // heading, intro paragraph (supports {store} placeholder), side image, the
 // About/CTA pill, and the FAQ accordion items — everything the section on
@@ -263,8 +271,8 @@ export default function WhyChooseUsEditor() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-[11px] text-gray-400">
-                      Image {idx + 1}
+                    <span className="text-[11px] text-gray-400 text-center px-1">
+                      {SLOT_LABELS[idx]}
                     </span>
                   )}
                   {uploadingIdx === idx && (

@@ -223,6 +223,10 @@ export default function LayoutWrapper({ children }) {
     pathname.startsWith("/dashboard") ||
     (pathname.startsWith("/user/orders/") && pathname.endsWith("/invoice"));
 
+  // On the homepage the hero banner slides up behind the navbar, so the
+  // glassy navbar floats over the banner image (no solid border/backdrop).
+  const isHome = pathname === "/";
+
   return (
     <StoreSettingsProvider>
       <div className="min-h-screen flex flex-col">
@@ -233,7 +237,13 @@ export default function LayoutWrapper({ children }) {
         {!hideNav && <TopBanner />}
 
         {!hideNav && (
-          <div className="sticky top-0 z-60 bg-white/70 backdrop-blur-md backdrop-saturate-150 border-b border-black/5">
+          <div
+            className={`sticky top-0 z-60 backdrop-blur-md backdrop-saturate-150 ${
+              isHome
+                ? "bg-white/25 border-b border-white/10"
+                : "bg-white/70 border-b border-black/5"
+            }`}
+          >
             <Navbar />
             {/* <MegaMenuNavbar /> */}
           </div>
