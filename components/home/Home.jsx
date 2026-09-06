@@ -13,7 +13,7 @@ import Testimonials from "./Testimonials";
 import AdSlot from "@/components/ui/AdSlot";
 import OffersToSayYes from "./OffersToSayYes";
 import ShoppableVideoSection from "./ShoppableVideoSection";
-import StoreHero from "./StoreHero";
+import PromoBanner from "./PromoBanner";
 import CategoryBanner from "./CategoryBanner";
 import TypographicHero from "./TypographicHero";
 
@@ -65,8 +65,10 @@ export default function Home() {
 
   const FIXED_MAP = {
     banner: <Banner />,
+    // The old Store Hero (mini category-icon row) was retired — this slot now
+    // renders a thin, admin-controlled promotional strip instead.
     storeHero: (
-      <StoreHero className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-10" />
+      <PromoBanner className="max-w-7xl mx-auto px-4 sm:px-6 mt-2 sm:mt-3 mb-1" />
     ),
     shopByCategory: <ShopByCategory />,
     categoryBanner: <CategoryBanner />,

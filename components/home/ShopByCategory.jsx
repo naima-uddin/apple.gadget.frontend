@@ -31,7 +31,7 @@ export default function ShopByCategory() {
   const visible = expanded ? categories : categories.slice(0, INITIAL_COUNT);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-20 mb-10">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-6 sm:mt-8 mb-10">
       <SectionHeader
         title={t("home.category")}
         onSeeMore={hasMore ? () => setExpanded((v) => !v) : undefined}

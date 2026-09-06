@@ -315,7 +315,7 @@ const SECTIONS = [
     matchPrefixes: [
       "/dashboard/featured",
       "/dashboard/banners",
-      "/dashboard/store-hero",
+      "/dashboard/promo-banner",
       "/dashboard/typographic-hero",
       "/dashboard/category-banner",
       "/dashboard/promo-panels",
@@ -336,9 +336,9 @@ const SECTIONS = [
         permissionKey: "content.banners",
       },
       {
-        key: "store-hero",
-        label: "Store Hero",
-        href: "/dashboard/store-hero",
+        key: "promo-banner",
+        label: "Promo Banner",
+        href: "/dashboard/promo-banner",
         icon: "M4 5h16v10H4z M8 18h8",
         permissionKey: "content.banners",
       },
