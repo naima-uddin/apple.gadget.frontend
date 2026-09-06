@@ -97,6 +97,20 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
     }
   };
 
+  // render *asterisk*-wrapped words as an italic accent, mirroring the banner
+  const renderTitle = (text) =>
+    String(text)
+      .split(/(\*[^*]+\*)/g)
+      .map((part, i) =>
+        part.startsWith("*") && part.endsWith("*") ? (
+          <span key={i} className="font-normal italic text-gray-200">
+            {part.slice(1, -1)}
+          </span>
+        ) : (
+          part
+        ),
+      );
+
   if (loading)
     return <div className="py-16 text-center text-gray-400">Loading…</div>;
 
@@ -105,6 +119,65 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
       <h2 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
         {isEdit ? "Edit Banner Slide" : "New Banner Slide"}
       </h2>
+
+      {/* Live preview — updates as you type so you can place text/button right */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Live Preview
+        </label>
+        <div className="relative h-48 overflow-hidden rounded-2xl border border-gray-200 bg-gray-100">
+          {image.url ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={image.url}
+              alt="preview"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-xs text-gray-400">
+              Upload an image to preview
+            </div>
+          )}
+          <div className="absolute inset-0 bg-linear-to-l from-black/45 via-transparent to-black/10" />
+
+          {/* badge — top-left */}
+          {badge && (
+            <span className="absolute left-3 top-3 rounded-full border border-white/25 bg-black/30 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-white/90 backdrop-blur-sm">
+              {badge}
+            </span>
+          )}
+
+          {/* description + button — top-right */}
+          {(subtitle || buttonText) && (
+            <div className="absolute right-3 top-3 max-w-[46%] rounded-xl border border-white/20 bg-black/25 p-3 text-right backdrop-blur-md">
+              {subtitle && (
+                <p className="line-clamp-3 text-[10px] font-light leading-snug text-white/95">
+                  {subtitle}
+                </p>
+              )}
+              {buttonText && (
+                <span className="mt-2 inline-block rounded-full bg-white px-3 py-1 text-[9px] font-semibold uppercase tracking-wider text-[#1D1D1F]">
+                  {buttonText} →
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* title — bottom-left */}
+          {title && (
+            <h4
+              className="absolute bottom-3 left-3 max-w-[62%] font-serif text-base font-bold uppercase leading-tight tracking-tight text-white"
+              style={{ textShadow: "0 1px 6px rgba(0,0,0,.4)" }}
+            >
+              {renderTitle(title)}
+            </h4>
+          )}
+        </div>
+        <p className="mt-1.5 text-[11px] text-gray-400">
+          Approximate placement. On the live site the title shows below the
+          window and the middle stays sharp with a soft blurred surround.
+        </p>
+      </div>
 
       {/* Image upload */}
       <div>
@@ -140,8 +213,8 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
               </svg>
               <span className="text-sm">Click to upload banner image</span>
               <span className="text-xs text-gray-300">
-                Recommended: transparent PNG product image (shown in the middle
-                of the banner)
+                Recommended: a wide landscape photo — it fills the banner (sharp
+                in the middle window, softly blurred around the edges)
               </span>
             </div>
           )}
@@ -196,97 +269,81 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         onClose={() => setShowPicker(false)}
       />
 
-      {/* Left side text fields */}
+      {/* TOP CARD — glassy box in the top-right corner of the banner */}
       <div className="border border-gray-200 rounded-xl p-4 space-y-4">
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
-          Left Side Text
+          Top Card (text + button)
         </h3>
+        <p className="text-xs text-gray-400 -mt-2">
+          Shown in the glassy box at the top-right of the banner.
+        </p>
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-1">
+            Description
+          </label>
+          <textarea
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+            rows={2}
+            placeholder="e.g. Stay connected and enjoy smart features with a stylish smartwatch designed for your everyday lifestyle."
+            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Small Tagline (above title)
+              Button Text
             </label>
             <input
-              value={badge}
-              onChange={(e) => setBadge(e.target.value)}
-              placeholder="e.g. Feel the Music with"
+              value={buttonText}
+              onChange={(e) => setButtonText(e.target.value)}
+              placeholder="Shop Now"
               className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1">
-              Title (big)
+              Button Link
             </label>
             <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. Sound *Max* Pro — *word* shows in purple"
+              value={buttonLink}
+              onChange={(e) => setButtonLink(e.target.value)}
+              placeholder="/products"
               className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Description
-          </label>
-          <input
-            value={subtitle}
-            onChange={(e) => setSubtitle(e.target.value)}
-            placeholder="e.g. Welcome to the world of high-fidelity headphones."
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
       </div>
 
-      {/* Right side text fields */}
+      {/* BOTTOM TITLE — big headline under the banner window */}
       <div className="border border-gray-200 rounded-xl p-4 space-y-4">
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
-          Right Side Text
+          Bottom Title
         </h3>
+        <p className="text-xs text-gray-400 -mt-2">
+          Badge chip sits at the top-left of the window; the big title shows at
+          the bottom-left. Wrap words in *asterisks* to show them in an elegant
+          italic accent — e.g. <code>Your Time. Your *Style.*</code>
+        </p>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Title (big)
+            Small Badge (chip)
           </label>
           <input
-            value={rightTitle}
-            onChange={(e) => setRightTitle(e.target.value)}
-            placeholder="e.g. Bass *Blaster* X7 — *word* shows in purple"
+            value={badge}
+            onChange={(e) => setBadge(e.target.value)}
+            placeholder="e.g. Smarter Every Day"
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Description
+            Big Title
           </label>
           <input
-            value={rightText}
-            onChange={(e) => setRightText(e.target.value)}
-            placeholder="e.g. Gaming headphones with thunderous bass and noise cancellation."
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Button Text
-          </label>
-          <input
-            value={buttonText}
-            onChange={(e) => setButtonText(e.target.value)}
-            placeholder="Shop Now"
-            className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-1">
-            Button Link
-          </label>
-          <input
-            value={buttonLink}
-            onChange={(e) => setButtonLink(e.target.value)}
-            placeholder="/products"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="e.g. Your Time. Your *Style.*"
             className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
