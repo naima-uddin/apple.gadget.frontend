@@ -95,29 +95,30 @@ const Banner = () => {
       >
         <div
           key={slide._id || current}
-          className="banner-fade flex flex-col md:grid md:grid-cols-[1fr_auto_1fr] items-center gap-4 md:gap-6 px-4 md:px-6 py-8 md:py-0 md:h-110"
+          className="banner-fade grid grid-cols-[1fr_auto_1fr] items-center gap-1 sm:gap-4 md:gap-6 px-8 sm:px-10 md:px-6 pt-2 sm:pt-6 pb-12 sm:pb-16 md:py-0 h-auto md:h-110"
         >
           {/* Left text — nudged up so it clears the bottom arrows */}
-          <div className="banner-slide-left text-center md:text-left max-w-xs md:max-w-sm md:mb-24">
+          <div className="banner-slide-left text-center md:text-left max-w-36 sm:max-w-xs md:max-w-sm md:mb-24">
             {slide.badge && (
-              <p className="text-[11px] md:text-xs font-semibold uppercase tracking-[0.25em] text-[#6B7280] mb-2.5">
+              <p className="text-[7px] sm:text-[10px] md:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.25em] text-[#6B7280] mb-1.5 sm:mb-2.5">
                 {slide.badge}
               </p>
             )}
             {slide.title && (
-              <h1 className="text-3xl md:text-4xl xl:text-5xl font-bold tracking-tight text-[#1F2937] leading-[1.12] text-balance mb-4">
+              <h1 className="text-base sm:text-2xl md:text-4xl xl:text-5xl font-bold tracking-tight text-[#1F2937] leading-[1.12] text-balance mb-2 sm:mb-4">
                 {renderHighlight(slide.title)}
               </h1>
             )}
             {slide.subtitle && (
-              <p className="text-sm text-[#6B7280] leading-relaxed mb-6 max-w-70 mx-auto md:mx-0">
+              <p className="hidden md:block text-[10px] sm:text-sm text-[#6B7280] leading-snug sm:leading-relaxed mb-3 sm:mb-6 max-w-70 mx-auto md:mx-0">
                 {slide.subtitle}
               </p>
             )}
+            {/* desktop/tablet button — inside the left column */}
             {slide.buttonText && slide.buttonLink && (
               <Link
                 href={slide.buttonLink}
-                className="inline-block bg-[#1D1D1F] hover:bg-black text-[#FFFFFF] text-xs md:text-sm font-semibold uppercase tracking-wider px-7 py-3 rounded-md transition"
+                className="hidden md:inline-block bg-[#1D1D1F] hover:bg-black text-[#FFFFFF] text-[9px] sm:text-xs md:text-sm font-semibold uppercase tracking-wider px-4 py-2 sm:px-7 sm:py-3 rounded-md transition"
               >
                 {slide.buttonText}
               </Link>
@@ -126,8 +127,8 @@ const Banner = () => {
 
           {/* Center image — stays fully inside the banner band */}
           <div
-            className={`relative w-full md:w-105 lg:w-120 xl:w-130 h-60 sm:h-75 md:h-100 lg:h-105 cursor-pointer ${
-              hasSideText ? "z-10" : "md:col-span-3 md:w-full md:h-110"
+            className={`relative w-52 sm:w-96 md:w-105 lg:w-120 xl:w-130 h-60 sm:h-96 md:h-100 lg:h-105 cursor-pointer ${
+              hasSideText ? "z-10" : "col-span-3 w-full h-52 sm:h-75 md:h-110"
             }`}
             onClick={() => {
               if (slide?.buttonLink) router.push(slide.buttonLink);
@@ -158,14 +159,14 @@ const Banner = () => {
           </div>
 
           {/* Right text — nudged up so it clears the bottom arrows */}
-          <div className="banner-slide-right text-center md:text-right max-w-xs md:max-w-sm md:justify-self-end md:mb-24">
+          <div className="banner-slide-right text-center md:text-right max-w-36 sm:max-w-xs md:max-w-sm justify-self-center md:justify-self-end md:mb-24">
             {slide.rightTitle && (
-              <h2 className="text-xl md:text-2xl xl:text-3xl font-bold tracking-tight text-[#1F2937] leading-snug text-balance mb-3">
+              <h2 className="text-xs sm:text-lg md:text-2xl xl:text-3xl font-bold tracking-tight text-[#1F2937] leading-snug text-balance mb-1.5 sm:mb-3">
                 {renderHighlight(slide.rightTitle)}
               </h2>
             )}
             {slide.rightText && (
-              <p className="text-sm text-[#6B7280] leading-relaxed max-w-70 mx-auto md:mx-0 md:ml-auto">
+              <p className="hidden md:block text-[10px] sm:text-sm text-[#6B7280] leading-snug sm:leading-relaxed max-w-70 mx-auto md:mx-0 md:ml-auto">
                 {slide.rightText}
               </p>
             )}
@@ -178,10 +179,10 @@ const Banner = () => {
             <button
               onClick={() => go(-1)}
               aria-label="Previous slide"
-              className="absolute left-4 md:left-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#1D1D1F] hover:-translate-x-0.5 transition z-20"
+              className="absolute left-2 sm:left-4 md:left-10 bottom-4 md:bottom-4 p-1.5 sm:p-2 text-gray-800 hover:text-[#1D1D1F] hover:-translate-x-0.5 transition z-20"
             >
               <svg
-                className="w-5 h-5 md:w-6 md:h-6"
+                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -197,10 +198,10 @@ const Banner = () => {
             <button
               onClick={() => go(1)}
               aria-label="Next slide"
-              className="absolute right-4 md:right-10 bottom-2 md:bottom-4 p-2 text-gray-800 hover:text-[#1D1D1F] hover:translate-x-0.5 transition z-20"
+              className="absolute right-2 sm:right-4 md:right-10 bottom-4 md:bottom-4 p-1.5 sm:p-2 text-gray-800 hover:text-[#1D1D1F] hover:translate-x-0.5 transition z-20"
             >
               <svg
-                className="w-5 h-5 md:w-6 md:h-6"
+                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -214,6 +215,16 @@ const Banner = () => {
               </svg>
             </button>
           </>
+        )}
+
+        {/* mobile/tablet button — centered at the bottom, between the arrows */}
+        {slide.buttonText && slide.buttonLink && (
+          <Link
+            href={slide.buttonLink}
+            className="md:hidden absolute bottom-3 left-1/2 -translate-x-1/2 z-20 inline-block bg-[#1D1D1F] hover:bg-black text-[#FFFFFF] text-[9px] sm:text-xs font-semibold uppercase tracking-wider px-4 py-2 sm:px-6 sm:py-2.5 rounded-md transition"
+          >
+            {slide.buttonText}
+          </Link>
         )}
       </div>
 
