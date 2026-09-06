@@ -11,7 +11,7 @@ function useVisibleCount() {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      if (w >= 1280) setCount(4);
+      if (w >= 1280) setCount(5);
       else if (w >= 1024) setCount(4);
       else if (w >= 768) setCount(3);
       else if (w >= 540) setCount(2);

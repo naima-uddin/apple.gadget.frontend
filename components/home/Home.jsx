@@ -15,7 +15,6 @@ import OffersToSayYes from "./OffersToSayYes";
 import ShoppableVideoSection from "./ShoppableVideoSection";
 import PromoBanner from "./PromoBanner";
 import CategoryBanner from "./CategoryBanner";
-import TypographicHero from "./TypographicHero";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -76,12 +75,7 @@ export default function Home() {
       <AdSlot page="homepage" className="max-w-7xl mx-auto px-2 py-3" />
     ),
     categoryShowcase: <CategoryShowcase />,
-    whyChooseUs: (
-      <>
-        <TypographicHero />
-        <WhyChooseUs />
-      </>
-    ),
+    whyChooseUs: <WhyChooseUs />,
     dealsOfDay: <DealsOfDay />,
     ctaSection: <CTASection />,
     offersToSayYes: <OffersToSayYes />,

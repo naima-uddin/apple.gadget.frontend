@@ -146,14 +146,14 @@ export default function Footer() {
             />
           </div>
         )}
-        <div className="relative max-w-7xl mx-auto px-5 py-10 md:py-12">
+        <div className="relative max-w-7xl mx-auto px-5 py-4 md:py-5">
           <div
             style={{ "--footer-cols": gridTemplate }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-8 lg:gap-x-12 lg:grid-cols-(--footer-cols)"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-8 lg:gap-x-12 lg:grid-cols-(--footer-cols)"
           >
             {/* Brand */}
             <div className="sm:col-span-2 lg:col-span-1">
-              <div className="flex items-center mb-4 -mt-4">
+              <div className="flex items-center mb-3 -mt-2">
                 {displayLogoUrl && (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img
@@ -163,7 +163,7 @@ export default function Footer() {
                   />
                 )}
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed max-w-xs mb-6">
+              <p className="text-sm text-gray-400 leading-relaxed max-w-xs mb-4">
                 {storeName ? `${storeName} ` : ""}
                 {t("footer.store_desc")}
               </p>
@@ -238,8 +238,8 @@ export default function Footer() {
 
               {/* Social icons */}
               {socials.length > 0 && (
-                <div className="mt-7">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-3">
+                <div className="mt-4">
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-2">
                     {t("footer.follow_us")}
                   </h4>
                   <div className="flex flex-wrap gap-2.5">
@@ -359,7 +359,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="relative border-t border-white/10 py-4 px-4 text-center text-xs text-gray-500 leading-relaxed">
+        <div className="relative border-t border-white/10 py-3 px-4 text-center text-xs text-gray-500 leading-relaxed">
           © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
           {t("footer.rights")}
         </div>

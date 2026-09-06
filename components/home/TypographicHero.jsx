@@ -62,6 +62,86 @@ function chipAfterMap(letterCount, chipCount) {
   return map;
 }
 
+// Inline newsletter subscribe — lives inside the hero, matching the light
+// poster palette. Anyone can subscribe with just an email (no account needed).
+function SubscribeForm() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle"); // idle | loading | done | error
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (status === "loading") return;
+
+    const value = email.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(value)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    setStatus("loading");
+    setMessage("");
+    try {
+      const res = await fetch(`${API}/api/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: value, source: "typographic-hero" }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Something went wrong.");
+      setStatus("done");
+      setMessage("Thanks for subscribing! 🎉");
+      setEmail("");
+    } catch (err) {
+      setStatus("error");
+      setMessage(err.message || "Something went wrong. Please try again.");
+    }
+  };
+
+  return (
+    <div className="mt-3 sm:mt-4 text-center">
+      <p className="text-[13px] sm:text-sm text-[#6B7280] tracking-tight">
+        Subscribe for new arrivals, exclusive deals and gadget drops.
+      </p>
+      <form
+        onSubmit={handleSubmit}
+        className="mt-3 flex flex-col sm:flex-row items-stretch justify-center gap-2.5 max-w-md mx-auto"
+      >
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (status !== "idle") setStatus("idle");
+          }}
+          placeholder="Enter your email"
+          aria-label="Email address"
+          className="flex-1 rounded-full bg-white border border-black/10 px-5 py-2.5 text-sm text-[#1F2937] placeholder-[#9CA3AF] outline-none focus:border-[#1D1D1F] transition shadow-sm"
+        />
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="rounded-full bg-[#1D1D1F] text-white px-7 py-2.5 text-sm font-semibold hover:bg-black active:scale-[0.98] transition disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {status === "loading" ? "Subscribing…" : "Subscribe"}
+        </button>
+      </form>
+      {message && (
+        <p
+          className={`mt-3 text-sm ${
+            status === "error" ? "text-red-500" : "text-emerald-600"
+          }`}
+          role="status"
+        >
+          {message}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export default function TypographicHero() {
   const [cfg, setCfg] = useState(null);
 
@@ -96,62 +176,62 @@ export default function TypographicHero() {
   const chipCount = letters.length > 1 ? Math.min(chips.length, letters.length) : 0;
   const afterMap = chipAfterMap(letters.length, chipCount);
 
-  // Build the interleaved node list (static — no animation)
+  // Build the node list (static — no animation). Letters keep their natural
+  // spacing (no gap opened up); uploaded images are absolute overlays sitting
+  // ON TOP of the type at the same letter boundaries, so they don't push the
+  // letters apart.
   const nodes = [];
   letters.forEach((ch, i) => {
-    nodes.push(
-      ch === " " ? (
-        <span key={`sp-${i}`} className="inline-block w-[0.28em]" />
-      ) : (
-        <span key={`l-${i}`} className="relative z-10">
-          {ch}
-        </span>
-      ),
-    );
+    if (ch === " ") {
+      nodes.push(<span key={`sp-${i}`} className="inline-block w-[0.28em]" />);
+      return;
+    }
 
     const chipIdx = afterMap[i];
-    if (chipIdx !== undefined && chips[chipIdx]) {
-      const chip = chips[chipIdx];
-      if (chip.type === "image") {
-        // Bare cutout overlapping the letters — alternately in front of / behind
-        // the type for depth, sitting at its staggered height like the reference.
-        const inFront = chipIdx % 2 === 0;
-        nodes.push(
-          <span
-            key={`c-${i}`}
-            aria-hidden="true"
-            className="relative inline-block align-bottom"
-            style={{
-              width: "1em",
-              height: "1.55em",
-              marginLeft: "-0.28em",
-              marginRight: "-0.28em",
-              transform: `translateY(${CHIP_SHIFT[chipIdx % CHIP_SHIFT.length]})`,
-              zIndex: inFront ? 20 : 1,
-            }}
-          >
+    const chip = chipIdx !== undefined ? chips[chipIdx] : null;
+    const imageChip = chip && chip.type === "image" ? chip : null;
+    const iconChip = chip && chip.type === "icon" ? chip : null;
+
+    nodes.push(
+      <span key={`l-${i}`} className="relative z-10 inline-block">
+        {ch}
+        {imageChip && (
+          <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={chip.url}
+              src={imageChip.url}
+              aria-hidden="true"
               alt=""
-              className="w-full h-full object-contain object-bottom"
-              style={{ filter: "drop-shadow(0 8px 12px rgba(15,23,42,0.28))" }}
+              className="absolute pointer-events-none object-contain object-bottom"
+              style={{
+                // text shrank (~0.81×) but the image should keep its size, so
+                // the em multiplier is scaled up by the inverse (~1.24×)
+                width: "1.24em",
+                height: "1.92em",
+                left: "100%",
+                bottom: 0,
+                transform: `translate(-50%, ${CHIP_SHIFT[chipIdx % CHIP_SHIFT.length]})`,
+                zIndex: 20,
+                filter: "drop-shadow(0 8px 12px rgba(15,23,42,0.28))",
+              }}
             />
-          </span>,
-        );
-      } else {
-        // fallback line-icon keeps its soft rounded surface
-        nodes.push(
-          <span
-            key={`c-${i}`}
-            aria-hidden="true"
-            className={`${iconChipClass} w-[0.62em] h-[0.62em]`}
-            style={{ marginTop: CHIP_SHIFT[chipIdx % CHIP_SHIFT.length] }}
-          >
-            <chip.Icon className="w-[72%] h-[72%]" />
-          </span>,
-        );
-      }
+          </>
+        )}
+      </span>,
+    );
+
+    // fallback line-icons stay in the flow with their soft rounded surface
+    if (iconChip) {
+      nodes.push(
+        <span
+          key={`c-${i}`}
+          aria-hidden="true"
+          className={`${iconChipClass} w-[0.62em] h-[0.62em]`}
+          style={{ marginTop: CHIP_SHIFT[chipIdx % CHIP_SHIFT.length] }}
+        >
+          <iconChip.Icon className="w-[72%] h-[72%]" />
+        </span>,
+      );
     }
   });
 
@@ -175,13 +255,15 @@ export default function TypographicHero() {
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 md:pt-28 pb-10 sm:pb-14 md:pb-16">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 pt-10 sm:pt-12 md:pt-14 pb-5 sm:pb-6 md:pb-8">
         <h1
-          className="flex flex-wrap items-end justify-center gap-1 sm:gap-2 font-black text-[#1F2937] leading-none select-none"
-          style={{ fontSize: "clamp(2.25rem, 10vw, 6.5rem)", letterSpacing: "-0.04em" }}
+          className="flex flex-wrap items-end justify-center gap-0.5 sm:gap-1 font-black text-[#1F2937] leading-none select-none"
+          style={{ fontSize: "clamp(1.9rem, 8vw, 5.25rem)", letterSpacing: "-0.05em" }}
         >
           {nodes}
         </h1>
+
+        <SubscribeForm />
       </div>
     </section>
   );
