@@ -1,5 +1,15 @@
 "use client";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Banner (homepage hero)
+// New design: two product images flanking the sides, centred text in the middle
+// and a glassy "frosted" call-to-action button. Reads the same /api/banners
+// data source. Each slide carries its own LEFT image (`image`) and RIGHT image
+// (`rightImage`) — both fully editable from the dashboard. If a slide has no
+// right image it falls back to mirroring the left one. The ORIGINAL banner
+// design lives in <BannerClassic /> and can be reused anywhere.
+// ─────────────────────────────────────────────────────────────────────────────
+
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,16 +38,6 @@ const FALLBACK = [
     rightText: "",
   },
 ];
-
-// The centred "sharp window": the same full-bleed image stays crisp inside this
-// rounded rectangle and is blurred everywhere outside it. Using identical
-// object-cover layers means the sharp window lines up perfectly with the blur.
-// Horizontal inset caps the window at ~1080px and centres it (so it never
-// stretches into a thin strip on wide screens); vertical insets leave room for
-// the frosted navbar (top) and the title/thumbnail band (bottom).
-const SIDE = "max(3.5%, calc((100% - 1260px) / 2))";
-const INSET = { top: "11.5%", bottom: "13%", left: SIDE, right: SIDE };
-const WINDOW_CLIP = `inset(11.5% ${SIDE} 13% ${SIDE} round 28px)`;
 
 const Banner = () => {
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -89,12 +89,7 @@ const Banner = () => {
       );
 
   const slide = slides[current] || slides[0];
-  if (!slide) return <section className="h-120 bg-[#EDEBE7]" />;
-
-  const thumbs = slides
-    .map((s, i) => ({ s, i }))
-    .filter((x) => x.i !== current)
-    .slice(0, 3);
+  if (!slide) return <section className="h-120 bg-[#EEF2F6]" />;
 
   const goToLink = () => {
     if (slide?.buttonLink) router.push(slide.buttonLink);
@@ -106,44 +101,34 @@ const Banner = () => {
       onMouseEnter={() => clearInterval(autoRef.current)}
       onMouseLeave={startAuto}
     >
-      {/* ── Layer 1: full-bleed BLURRED image (the surround) ── */}
-      <div className="absolute inset-0">
-        {slides.map((s, i) => (
-          <Image
-            key={s._id || i}
-            src={s.image?.url || "/assets/placeholder.svg"}
-            alt=""
-            fill
-            aria-hidden="true"
-            priority={i === 0}
-            quality={45}
-            sizes="100vw"
-            className={`scale-105 object-cover object-center blur-[3px] saturate-90 brightness-105 transition-opacity duration-700 ease-out ${
-              i === current ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* soft veil + vignette so the blurred surround stays calm and premium
-          (sits ABOVE the blur but BELOW the sharp window) */}
-      <div className="absolute inset-0 bg-linear-to-b from-white/45 via-white/25 to-white/55" />
+      {/* ── Soft studio backdrop ── */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(115% 80% at 50% 32%, transparent 42%, rgba(244,242,238,0.6) 100%)",
+            "radial-gradient(120% 90% at 50% 20%, #FFFFFF 0%, #EEF2F6 45%, #DDE5EC 100%)",
         }}
       />
 
-      {/* ── Layer 2: the SAME full-bleed image kept SHARP, clipped to the
-             centred rounded window (perfectly aligned with the blur below) ── */}
-      <div className="absolute inset-0" style={{ clipPath: WINDOW_CLIP }}>
+      {/* Giant ghost title behind everything (echoes the centred headline) */}
+      {slide.title && (
+        <span
+          aria-hidden="true"
+          className={`${playfair.className} pointer-events-none absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-center text-[22vw] font-bold uppercase leading-none tracking-tighter text-white/50 sm:text-[18vw]`}
+        >
+          {String(slide.title).replace(/\*/g, "").split(" ")[0]}
+        </span>
+      )}
+
+      {/* ── Left image ── */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 flex w-[42%] items-center justify-start sm:w-[38%] lg:w-[34%]">
         {slides.map((s, i) => (
           <div
-            key={s._id || i}
-            className={`absolute inset-0 transition-opacity duration-700 ease-out ${
-              i === current ? "opacity-100" : "opacity-0"
+            key={`l-${s._id || i}`}
+            className={`absolute inset-0 transition-all duration-700 ease-out ${
+              i === current
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-6 opacity-0"
             }`}
           >
             <Image
@@ -151,121 +136,98 @@ const Banner = () => {
               alt={s.title || "Banner"}
               fill
               priority={i === 0}
-              quality={100}
-              sizes="100vw"
-              className="object-cover object-center"
+              quality={90}
+              sizes="40vw"
+              className="object-contain object-left drop-shadow-[0_30px_50px_rgba(30,40,60,0.25)]"
             />
           </div>
         ))}
-        {/* gentle right-side + bottom shade inside the window for text legibility */}
-        <div className="absolute inset-0 bg-linear-to-l from-black/35 via-transparent to-transparent" />
       </div>
 
-      {/* ── Window frame: border + soft drop shadow that casts onto the blur ── */}
-      <div
-        className="pointer-events-none absolute rounded-[28px] border border-white/50 shadow-[0_40px_90px_-30px_rgba(30,25,20,0.5)]"
-        style={INSET}
-      />
+      {/* ── Right image (each slide's own rightImage, falls back to its left) ── */}
+      <div className="pointer-events-none absolute inset-y-0 right-0 flex w-[42%] items-center justify-end sm:w-[38%] lg:w-[34%]">
+        {slides.map((s, i) => (
+          <div
+            key={`r-${s._id || i}`}
+            className={`absolute inset-0 transition-all duration-700 ease-out ${
+              i === current
+                ? "translate-x-0 opacity-100"
+                : "translate-x-6 opacity-0"
+            }`}
+          >
+            <Image
+              src={s.rightImage?.url || s.image?.url || "/assets/placeholder.svg"}
+              alt=""
+              aria-hidden="true"
+              fill
+              quality={90}
+              sizes="40vw"
+              className="object-contain object-right drop-shadow-[0_30px_50px_rgba(30,40,60,0.25)]"
+            />
+          </div>
+        ))}
+      </div>
 
-      {/* ── Content anchored to the window rectangle (whole window is a link) ── */}
-      <div
-        className={`absolute ${slide.buttonLink ? "cursor-pointer" : ""}`}
-        style={INSET}
-        onClick={goToLink}
-      >
-        {/* badge — top-left */}
+      {/* ── Centre content ── */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-2 text-center">
         {slide.badge && (
-          <span className="absolute left-4 top-4 inline-block rounded-full border border-white/25 bg-black/25 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm sm:left-6 sm:top-6">
+          <span className="mb-4 inline-block rounded-full border border-black/10 bg-white/60 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#1D1D1F] backdrop-blur-md sm:text-[11px]">
             {slide.badge}
           </span>
         )}
 
-        {/* description card — top-right */}
-        {(slide.subtitle || slide.buttonText) && (
-          <div className="absolute right-4 top-4 max-w-52 rounded-3xl border border-white/20 bg-black/15 p-5 text-right backdrop-blur-xl sm:right-6 sm:top-6 sm:max-w-xs">
-            {slide.subtitle && (
-              <p className="text-xs font-light leading-relaxed text-white/95 sm:text-[13px] sm:leading-relaxed">
-                {slide.subtitle}
-              </p>
-            )}
-            {slide.buttonText && slide.buttonLink && (
-              <Link
-                href={slide.buttonLink}
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#1D1D1F] shadow-sm transition hover:bg-white/90 sm:text-xs"
-              >
-                {slide.buttonText}
-                <svg
-                  className="h-3.5 w-3.5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 12h14M13 6l6 6-6 6"
-                  />
-                </svg>
-              </Link>
-            )}
-          </div>
+        {slide.title && (
+          <h1
+            onClick={goToLink}
+            className={`${playfair.className} max-w-[62%] cursor-pointer text-3xl font-bold uppercase leading-[1.02] tracking-tight text-[#1D1D1F] text-balance sm:max-w-md sm:text-5xl lg:text-6xl`}
+          >
+            {renderHighlight(slide.title)}
+          </h1>
         )}
 
-        {/* dots — bottom center of the window */}
-        {total > 1 && (
-          <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-2">
-            {slides.map((s, i) => (
-              <button
-                key={s._id || i}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  goTo(i);
-                }}
-                aria-label={`Go to slide ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === current
-                    ? "w-6 bg-white"
-                    : "w-1.5 bg-white/60 hover:bg-white/90"
-                }`}
+        {slide.subtitle && (
+          <p className="mt-4 hidden max-w-xs text-sm font-light leading-relaxed text-[#6B7280] sm:block sm:max-w-sm">
+            {slide.subtitle}
+          </p>
+        )}
+
+        {slide.buttonText && slide.buttonLink && (
+          <Link
+            href={slide.buttonLink}
+            className="group mt-7 inline-flex items-center gap-2 rounded-full border border-white/60 bg-white/30 px-8 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#1D1D1F] shadow-[0_8px_30px_rgba(30,40,60,0.12)] backdrop-blur-xl transition hover:bg-white/50 hover:shadow-[0_10px_40px_rgba(30,40,60,0.2)] sm:text-sm"
+          >
+            {slide.buttonText}
+            <svg
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 12h14M13 6l6 6-6 6"
               />
-            ))}
-          </div>
+            </svg>
+          </Link>
         )}
       </div>
 
-      {/* ── Big title — bottom-left, over the blurred surround ── */}
-      {slide.title && (
-        <h1
-          onClick={goToLink}
-          style={{ left: SIDE }}
-          className={`${playfair.className} absolute bottom-6 max-w-[60%] cursor-pointer text-xl font-bold uppercase leading-[1.05] tracking-tight text-[#2A2622] text-balance sm:bottom-9 sm:text-3xl lg:text-[2.7rem]`}
-        >
-          {renderHighlight(slide.title)}
-        </h1>
-      )}
-
-      {/* ── Thumbnails — bottom-right, over the blurred surround ── */}
-      {thumbs.length > 0 && (
-        <div
-          style={{ right: SIDE }}
-          className="absolute bottom-6 hidden items-center gap-2.5 sm:flex"
-        >
-          {thumbs.map(({ s, i }) => (
+      {/* ── Dots ── */}
+      {total > 1 && (
+        <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2">
+          {slides.map((s, i) => (
             <button
               key={s._id || i}
               onClick={() => goTo(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="group relative h-11 w-11 overflow-hidden rounded-xl border border-white/70 bg-white shadow-lg ring-1 ring-black/5 transition hover:scale-105 md:h-12 md:w-12 lg:h-14 lg:w-14"
-            >
-              <Image
-                src={s.image?.url || "/assets/placeholder.svg"}
-                alt={s.title || `Slide ${i + 1}`}
-                fill
-                sizes="80px"
-                className="object-cover transition group-hover:scale-110"
-              />
-            </button>
+              className={`h-1.5 rounded-full transition-all ${
+                i === current
+                  ? "w-6 bg-[#1D1D1F]"
+                  : "w-1.5 bg-black/25 hover:bg-black/50"
+              }`}
+            />
           ))}
         </div>
       )}

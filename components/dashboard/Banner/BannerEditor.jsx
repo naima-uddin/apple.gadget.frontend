@@ -9,6 +9,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
   const isEdit = !!bannerId;
 
   const [image, setImage] = useState({ url: "", public_id: "" });
+  const [rightImage, setRightImage] = useState({ url: "", public_id: "" });
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [buttonText, setButtonText] = useState("Shop Now");
@@ -18,10 +19,13 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
   const [rightText, setRightText] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadingRight, setUploadingRight] = useState(false);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
+  const [showRightPicker, setShowRightPicker] = useState(false);
   const fileRef = useRef(null);
+  const rightFileRef = useRef(null);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -31,6 +35,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
       .then((b) => {
         const s = b.banner || {};
         setImage(s.image || { url: "", public_id: "" });
+        setRightImage(s.rightImage || { url: "", public_id: "" });
         setTitle(s.title || "");
         setSubtitle(s.subtitle || "");
         setButtonText(s.buttonText || "Shop Now");
@@ -44,21 +49,26 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
       .finally(() => setLoading(false));
   }, [bannerId, isEdit, API]);
 
-  const handleImageUpload = async (file) => {
+  // shared uploader used by both the left and right image slots
+  const uploadTo = async (file, setter, setBusy) => {
     if (!file) return;
     const preview = URL.createObjectURL(file);
-    setImage({ url: preview, public_id: "", __uploading: true });
-    setUploading(true);
+    setter({ url: preview, public_id: "", __uploading: true });
+    setBusy(true);
     try {
       const data = await uploadAdminImage(file, "applebd/banners");
-      setImage({ url: data.asset.url, public_id: data.asset.public_id });
+      setter({ url: data.asset.url, public_id: data.asset.public_id });
     } catch (err) {
       alert("Image upload failed: " + err.message);
-      setImage({ url: "", public_id: "" });
+      setter({ url: "", public_id: "" });
     } finally {
-      setUploading(false);
+      setBusy(false);
     }
   };
+
+  const handleImageUpload = (file) => uploadTo(file, setImage, setUploading);
+  const handleRightImageUpload = (file) =>
+    uploadTo(file, setRightImage, setUploadingRight);
 
   const handleSave = async () => {
     if (!image.url) {
@@ -69,6 +79,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
     try {
       const body = {
         image,
+        rightImage,
         title,
         subtitle,
         buttonText,
@@ -125,64 +136,76 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Live Preview
         </label>
-        <div className="relative h-48 overflow-hidden rounded-2xl border border-gray-200 bg-gray-100">
+        <div
+          className="relative h-52 overflow-hidden rounded-2xl border border-gray-200"
+          style={{
+            background:
+              "radial-gradient(120% 90% at 50% 20%, #FFFFFF 0%, #EEF2F6 45%, #DDE5EC 100%)",
+          }}
+        >
+          {/* left image */}
           {image.url ? (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
               src={image.url}
-              alt="preview"
-              className="absolute inset-0 h-full w-full object-cover"
+              alt="left"
+              className="absolute inset-y-0 left-0 h-full w-[36%] object-contain object-left drop-shadow-lg"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-xs text-gray-400">
-              Upload an image to preview
-            </div>
-          )}
-          <div className="absolute inset-0 bg-linear-to-l from-black/45 via-transparent to-black/10" />
-
-          {/* badge — top-left */}
-          {badge && (
-            <span className="absolute left-3 top-3 rounded-full border border-white/25 bg-black/30 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-white/90 backdrop-blur-sm">
-              {badge}
-            </span>
-          )}
-
-          {/* description + button — top-right */}
-          {(subtitle || buttonText) && (
-            <div className="absolute right-3 top-3 max-w-[46%] rounded-xl border border-white/20 bg-black/25 p-3 text-right backdrop-blur-md">
-              {subtitle && (
-                <p className="line-clamp-3 text-[10px] font-light leading-snug text-white/95">
-                  {subtitle}
-                </p>
-              )}
-              {buttonText && (
-                <span className="mt-2 inline-block rounded-full bg-white px-3 py-1 text-[9px] font-semibold uppercase tracking-wider text-[#1D1D1F]">
-                  {buttonText} →
-                </span>
-              )}
+            <div className="absolute inset-y-0 left-0 flex w-[36%] items-center justify-center text-center text-[10px] text-gray-400">
+              Left image
             </div>
           )}
 
-          {/* title — bottom-left */}
-          {title && (
-            <h4
-              className="absolute bottom-3 left-3 max-w-[62%] font-serif text-base font-bold uppercase leading-tight tracking-tight text-white"
-              style={{ textShadow: "0 1px 6px rgba(0,0,0,.4)" }}
-            >
-              {renderTitle(title)}
-            </h4>
+          {/* right image */}
+          {rightImage.url ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={rightImage.url}
+              alt="right"
+              className="absolute inset-y-0 right-0 h-full w-[36%] object-contain object-right drop-shadow-lg"
+            />
+          ) : (
+            <div className="absolute inset-y-0 right-0 flex w-[36%] items-center justify-center text-center text-[10px] text-gray-400">
+              Right image
+            </div>
           )}
+
+          {/* centre content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-2 text-center">
+            {badge && (
+              <span className="mb-1.5 rounded-full border border-black/10 bg-white/60 px-2.5 py-0.5 text-[8px] font-semibold uppercase tracking-[0.18em] text-[#1D1D1F] backdrop-blur">
+                {badge}
+              </span>
+            )}
+            {title && (
+              <h4 className="max-w-[52%] font-serif text-lg font-bold uppercase leading-none tracking-tight text-[#1D1D1F]">
+                {renderTitle(title)}
+              </h4>
+            )}
+            {subtitle && (
+              <p className="mt-1 line-clamp-2 max-w-[54%] text-[9px] font-light leading-snug text-[#6B7280]">
+                {subtitle}
+              </p>
+            )}
+            {buttonText && (
+              <span className="mt-2 inline-block rounded-full border border-white/60 bg-white/40 px-3 py-1 text-[8px] font-semibold uppercase tracking-wider text-[#1D1D1F] backdrop-blur">
+                {buttonText} →
+              </span>
+            )}
+          </div>
         </div>
         <p className="mt-1.5 text-[11px] text-gray-400">
-          Approximate placement. On the live site the title shows below the
-          window and the middle stays sharp with a soft blurred surround.
+          Approximate placement. On the live site two images flank the sides, the
+          text sits centred in the middle and the button is a glassy frosted
+          pill. Product cut-outs (transparent PNGs) look best on the sides.
         </p>
       </div>
 
-      {/* Image upload */}
+      {/* Left image upload */}
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Banner Image *
+          Left Image *
         </label>
         <div
           className="relative border-2 border-dashed border-gray-300 rounded-xl overflow-hidden cursor-pointer hover:border-blue-400 transition"
@@ -211,10 +234,10 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
                   d="M4 16l4-4 4 4 4-6 4 6M4 20h16M4 4h16"
                 />
               </svg>
-              <span className="text-sm">Click to upload banner image</span>
+              <span className="text-sm">Click to upload the left image</span>
               <span className="text-xs text-gray-300">
-                Recommended: a wide landscape photo — it fills the banner (sharp
-                in the middle window, softly blurred around the edges)
+                Recommended: a product cut-out (transparent PNG) — it sits on the
+                left side of the banner
               </span>
             </div>
           )}
@@ -269,13 +292,103 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         onClose={() => setShowPicker(false)}
       />
 
-      {/* TOP CARD — glassy box in the top-right corner of the banner */}
+      {/* Right image upload */}
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Right Image
+        </label>
+        <div
+          className="relative border-2 border-dashed border-gray-300 rounded-xl overflow-hidden cursor-pointer hover:border-blue-400 transition"
+          style={{ height: "200px" }}
+          onClick={() => rightFileRef.current?.click()}
+        >
+          {rightImage.url ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={rightImage.url}
+              alt="Right image preview"
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-2">
+              <svg
+                className="w-10 h-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4 16l4-4 4 4 4-6 4 6M4 20h16M4 4h16"
+                />
+              </svg>
+              <span className="text-sm">Click to upload the right image</span>
+              <span className="text-xs text-gray-300">
+                Optional — a second product cut-out for the right side. Leave
+                empty to mirror the left image.
+              </span>
+            </div>
+          )}
+          {uploadingRight && (
+            <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
+              <span className="text-blue-600 font-semibold text-sm">
+                Uploading…
+              </span>
+            </div>
+          )}
+          {rightImage.url && !uploadingRight && (
+            <div className="absolute bottom-2 right-2">
+              <span className="bg-black/50 text-white text-xs px-2 py-1 rounded-lg">
+                Click to change
+              </span>
+            </div>
+          )}
+        </div>
+        <input
+          ref={rightFileRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={(e) => handleRightImageUpload(e.target.files[0])}
+        />
+        <div className="mt-2 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowRightPicker(true)}
+            className="text-xs px-3 py-1.5 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-600 flex items-center gap-1"
+          >
+            <span>🖼</span> Select from Media Library
+          </button>
+          {rightImage.url && (
+            <button
+              type="button"
+              onClick={() => setRightImage({ url: "", public_id: "" })}
+              className="text-xs px-3 py-1.5 border border-red-200 rounded-lg hover:bg-red-50 text-red-500"
+            >
+              Remove
+            </button>
+          )}
+        </div>
+      </div>
+
+      <MediaPicker
+        open={showRightPicker}
+        onSelect={(asset) => {
+          setRightImage({ url: asset.url, public_id: asset.public_id });
+          setShowRightPicker(false);
+        }}
+        onClose={() => setShowRightPicker(false)}
+      />
+
+      {/* CENTRE TEXT — description + glassy button in the middle of the banner */}
       <div className="border border-gray-200 rounded-xl p-4 space-y-4">
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
-          Top Card (text + button)
+          Centre Text &amp; Button
         </h3>
         <p className="text-xs text-gray-400 -mt-2">
-          Shown in the glassy box at the top-right of the banner.
+          Description and the glassy button, shown centred between the two images.
         </p>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -315,15 +428,15 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
         </div>
       </div>
 
-      {/* BOTTOM TITLE — big headline under the banner window */}
+      {/* CENTRE HEADLINE — badge chip + big centred title */}
       <div className="border border-gray-200 rounded-xl p-4 space-y-4">
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide">
-          Bottom Title
+          Badge &amp; Headline
         </h3>
         <p className="text-xs text-gray-400 -mt-2">
-          Badge chip sits at the top-left of the window; the big title shows at
-          the bottom-left. Wrap words in *asterisks* to show them in an elegant
-          italic accent — e.g. <code>Your Time. Your *Style.*</code>
+          The badge chip sits above the centred headline. Wrap words in
+          *asterisks* to show them in an elegant italic accent — e.g.{" "}
+          <code>Your Time. Your *Style.*</code>
         </p>
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1">
@@ -369,7 +482,7 @@ export default function BannerEditor({ bannerId = null, onSuccess, onCancel }) {
       <div className="flex gap-3 pt-2">
         <button
           onClick={handleSave}
-          disabled={saving || uploading}
+          disabled={saving || uploading || uploadingRight}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 transition"
         >
           {saving ? "Saving…" : isEdit ? "Save Changes" : "Add Banner"}

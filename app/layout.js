@@ -92,7 +92,7 @@ export async function generateMetadata() {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#ef4444",
+  themeColor: "#1D1D1F",
 };
 
 import Script from "next/script";

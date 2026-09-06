@@ -118,7 +118,7 @@ export default function AddToCartSection({
     <div className="flex flex-col gap-4">
       {isPreorder ? (
         <>
-          <div className="flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-2.5 rounded-lg text-sm font-medium w-fit">
+          <div className="flex items-center gap-2 bg-[#F5F5F7] border border-gray-200 text-[#1D1D1F] px-4 py-2.5 rounded-xl text-sm font-medium w-fit">
             <FaClock className="w-3.5 h-3.5" />
             Pre-order now — ships as soon as stock arrives
           </div>
@@ -127,7 +127,7 @@ export default function AddToCartSection({
             <QuantitySelector quantity={qty} onChange={setQty} />
             <button
               onClick={handleAdd}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+              className="bg-[#1D1D1F] text-white px-6 py-3 rounded-xl font-medium hover:bg-black transition shadow-sm"
             >
               Pre-order now
             </button>
@@ -151,14 +151,14 @@ export default function AddToCartSection({
           </div>
 
           {/* Inline waitlist notification block */}
-          <div className="rounded-2xl bg-[#e8f5f0] border border-[#c0e4d8] px-5 py-3 mt-1 max-w-sm">
+          <div className="rounded-2xl bg-[#F5F5F7] border border-gray-200 px-5 py-3 mt-1 max-w-sm">
             {notifySuccess ? (
               <div className="text-center py-2">
                 <div className="text-3xl mb-2">🎉</div>
-                <p className="font-semibold text-green-800 font-georgia">
+                <p className="font-semibold text-[#1D1D1F] font-georgia">
                   You&apos;re on the list!
                 </p>
-                <p className="text-sm text-green-700 mt-1">
+                <p className="text-sm text-[#6B7280] mt-1">
                   We&apos;ll notify you when it&apos;s back in stock.
                 </p>
               </div>
@@ -181,7 +181,7 @@ export default function AddToCartSection({
                         setNotifyType("email");
                         setNotifyValue("");
                       }}
-                      className="accent-teal-600"
+                      className="accent-[#1D1D1F]"
                     />
                     Mail address
                   </label>
@@ -195,7 +195,7 @@ export default function AddToCartSection({
                         setNotifyType("phone");
                         setNotifyValue("");
                       }}
-                      className="accent-teal-600"
+                      className="accent-[#1D1D1F]"
                     />
                     Phone number
                   </label>
@@ -213,12 +213,12 @@ export default function AddToCartSection({
                         ? "ex. example@mail.com"
                         : "+880 1XXX-XXXXXX"
                     }
-                    className="flex-1 border-0 bg-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400 shadow-sm"
+                    className="flex-1 border-0 bg-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1D1D1F]/30 shadow-sm"
                   />
                   <button
                     type="submit"
                     disabled={notifyLoading}
-                    className="flex items-center gap-1.5 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition disabled:opacity-60 whitespace-nowrap"
+                    className="flex items-center gap-1.5 bg-[#1D1D1F] hover:bg-black text-white px-4 py-2.5 rounded-lg text-sm font-semibold transition disabled:opacity-60 whitespace-nowrap"
                   >
                     <FaBell className="w-3.5 h-3.5" /> Notify me
                   </button>
@@ -249,7 +249,7 @@ export default function AddToCartSection({
           </div>
           <button
             onClick={handleBuyNow}
-            className="w-full bg-[#E5E7EB] text-[#1D1D1F] py-2.5 rounded-xl font-semibold hover:bg-[#D1D5DB] transition"
+            className="w-full bg-[#F5F5F7] border border-gray-200 text-[#1D1D1F] py-2.5 rounded-xl font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors"
           >
             Buy Now
           </button>

@@ -25,6 +25,21 @@ html {
   scrollbar-width: none;
   /* IE 10+ */
   -ms-overflow-style: none;
+  /* premium: smooth in-page anchor scrolling */
+  scroll-behavior: smooth;
+}
+
+/* Respect users who prefer reduced motion — disable smooth scroll + long transitions */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Premium text selection — matches the Apple monochrome accent */
+::selection {
+  background: #1d1d1f;
+  color: #ffffff;
 }
 
 html::-webkit-scrollbar {
@@ -147,14 +162,40 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-/* Heading font — applies site-wide to every h1-h6 */
+/* Premium heading stack — clean Apple-style sans.
+   On Apple devices this renders true SF Pro; elsewhere it falls back to the
+   loaded Work Sans / system sans. Applied site-wide to every h1-h6. */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-work-sans), "Work Sans", "Helvetica Neue", Arial, sans-serif;
+  /* tight negative tracking is the signature of Apple display type */
+  letter-spacing: -0.022em;
+}
+
+/* ── Premium surface + elevation helpers ─────────────────────────────────────
+   Apple-grade cards rest almost flat and lift on interaction. These tokens keep
+   shadows consistent and soft across the storefront. */
+.shadow-premium {
+  box-shadow:
+    0 1px 2px rgba(17, 17, 19, 0.04),
+    0 4px 12px -6px rgba(17, 17, 19, 0.08);
+}
+.shadow-premium-hover {
+  box-shadow:
+    0 2px 4px rgba(17, 17, 19, 0.05),
+    0 18px 40px -18px rgba(17, 17, 19, 0.22);
+}
+
+/* subtle neutral pedestal for product/gadget imagery so shots read as premium */
+.surface-product {
+  background:
+    radial-gradient(120% 90% at 50% 18%, #ffffff 0%, #f6f6f8 78%, #efeff1 100%);
 }
 
 /* NOTE: layout and component-specific styles should use Tailwind utility classes inline. */
@@ -174,7 +215,14 @@ h6 {
   font-style: normal;
 }
 
-/* Georgia serif for heading-like text that isn't a real h1-h6 tag */
+/* NOTE: `.font-georgia` is intentionally repurposed to the premium Apple sans
+   stack (2026-09-06 heading flip). The class name is kept so the ~18 existing
+   usages flip in one place rather than being renamed across the codebase — it
+   no longer renders Georgia. Use it for heading-like text that isn't a real
+   h1-h6 tag; prefer adding new headings as real h1-h6 which inherit the stack. */
 .font-georgia {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-work-sans), "Work Sans", "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.022em;
 }

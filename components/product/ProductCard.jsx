@@ -86,19 +86,25 @@ export default function ProductCard({
     "clearance",
     "coupon",
   ];
+  // Premium monochrome badge system — two tiers only, no rainbow fills:
+  //  • SOLID  = high-emphasis status (solid #1D1D1F pill, white text)
+  //  • CHIP   = informational (frosted white chip, dark text, hairline ring)
+  const SOLID = "bg-[#1D1D1F] text-white shadow-sm";
+  const CHIP =
+    "bg-white/85 text-[#1D1D1F] ring-1 ring-black/10 backdrop-blur-sm shadow-sm";
   const BADGE_MAP = {
-    best_seller: { label: "Best Seller", cls: "bg-yellow-400 text-yellow-900" },
-    hot: { label: "Hot", cls: "bg-red-500 text-white" },
-    new_arrival: { label: "New", cls: "bg-blue-500 text-white" },
-    trending: { label: "Trending", cls: "bg-purple-500 text-white" },
-    limited: { label: "Limited", cls: "bg-orange-500 text-white" },
-    popular_pics: { label: "Popular", cls: "bg-pink-500 text-white" },
-    deals_of_the_day: { label: "Deal", cls: "bg-emerald-500 text-white" },
-    free_shipping: { label: "Free Ship", cls: "bg-green-500 text-white" },
-    flash_sale: { label: "Flash Sale", cls: "bg-rose-600 text-white" },
-    featured: { label: "Featured", cls: "bg-indigo-500 text-white" },
-    clearance: { label: "Clearance", cls: "bg-amber-500 text-white" },
-    coupon: { label: "Coupon", cls: "bg-teal-500 text-white" },
+    best_seller: { label: "Best Seller", cls: SOLID },
+    hot: { label: "Hot", cls: SOLID },
+    new_arrival: { label: "New", cls: CHIP },
+    trending: { label: "Trending", cls: SOLID },
+    limited: { label: "Limited", cls: CHIP },
+    popular_pics: { label: "Popular", cls: CHIP },
+    deals_of_the_day: { label: "Deal", cls: SOLID },
+    free_shipping: { label: "Free Ship", cls: CHIP },
+    flash_sale: { label: "Flash Sale", cls: SOLID },
+    featured: { label: "Featured", cls: SOLID },
+    clearance: { label: "Clearance", cls: CHIP },
+    coupon: { label: "Coupon", cls: CHIP },
   };
 
   // collect active flag-based pseudo-badges
@@ -145,7 +151,7 @@ export default function ProductCard({
   return (
     <>
       <div
-        className="relative bg-white border border-gray-100 rounded-2xl shadow-lg group hover:shadow-lg hover:-translate-y-1 hover:border-gray-300 transition-all duration-300 flex flex-col cursor-pointer h-full"
+        className="relative bg-white border border-gray-200/70 rounded-2xl shadow-premium group hover:shadow-premium-hover hover:-translate-y-1 hover:border-gray-300 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col cursor-pointer h-full"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -159,7 +165,7 @@ export default function ProductCard({
           <span className="sr-only">{product.title || product.slug}</span>
         </Link>
         <div
-          className="relative bg-white rounded-t-2xl overflow-hidden border-b border-gray-100"
+          className="relative surface-product rounded-t-2xl overflow-hidden border-b border-gray-100"
           style={{ height: imageHeight }}
         >
           <div className="absolute inset-0  flex items-center justify-center overflow-hidden">
@@ -176,7 +182,7 @@ export default function ProductCard({
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/assets/placeholder.svg";
               }}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 cursor-pointer"
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer"
             />
           </div>
 
@@ -206,7 +212,7 @@ export default function ProductCard({
             {/* Discount badge — top left */}
             <div>
               {discountPct && (
-                <span className="bg-linear-to-r from-rose-500 to-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full leading-none shadow-sm">
+                <span className="bg-[#1D1D1F]/90 text-white text-[10px] font-bold px-2 py-1 rounded-full leading-none shadow-sm backdrop-blur-sm ring-1 ring-white/10">
                   -{discountPct}%
                 </span>
               )}
@@ -214,7 +220,7 @@ export default function ProductCard({
             {/* Tags — top right, stacked */}
             <div className="flex flex-col items-end gap-0.5">
               {product.availability === "pre_order" && (
-                <span className="bg-blue-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-sm leading-none">
+                <span className={`${CHIP} text-[9px] font-semibold tracking-wide px-2 py-0.5 rounded-full leading-none`}>
                   Pre-Order
                 </span>
               )}
@@ -223,12 +229,12 @@ export default function ProductCard({
                   label: b
                     .replace(/_/g, " ")
                     .replace(/\b\w/g, (c) => c.toUpperCase()),
-                  cls: "bg-gray-700 text-white",
+                  cls: SOLID,
                 };
                 return (
                   <span
                     key={b}
-                    className={`${badge.cls} text-[9px] font-bold px-1.5 py-0.5 rounded-sm leading-none`}
+                    className={`${badge.cls} text-[9px] font-semibold tracking-wide px-2 py-0.5 rounded-full leading-none`}
                   >
                     {badge.label}
                   </span>
@@ -331,13 +337,13 @@ export default function ProductCard({
           </div>
           <div className="flex items-center gap-2">
             {product.freeShipping && (
-              <p className="text-[11px] font-semibold text-green-700">
+              <p className="text-[11px] font-semibold text-[#1D1D1F]">
                 {t("home.free_shipping")}
               </p>
             )}
             {Number(product.rewardPoints) > 0 && (
-              <span className="inline-flex items-center gap-1 bg-gradient-to-r from-amber-300 to-yellow-500 text-amber-900 text-[8px] font-bold px-1.5 py-0.5 rounded-full">
-                <FaStar className="w-2 h-2 text-red-700" />
+              <span className="inline-flex items-center gap-1 bg-[#1D1D1F]/5 text-[#1D1D1F] ring-1 ring-black/10 text-[8px] font-bold px-1.5 py-0.5 rounded-full">
+                <FaStar className="w-2 h-2 text-[#1D1D1F]" />
                 {product.rewardPoints} points
               </span>
             )}
@@ -347,7 +353,7 @@ export default function ProductCard({
             <div className="relative z-2 mt-auto pt-2.5 flex gap-1.5">
               <button
                 disabled
-                className="bg-gray-100 text-red-500 py-2 px-2 rounded-md text-[10px] font-medium cursor-not-allowed whitespace-nowrap"
+                className="bg-gray-100 text-gray-500 py-2 px-2 rounded-full text-[10px] font-medium cursor-not-allowed whitespace-nowrap"
               >
                 {t("home.out_of_stock")}
               </button>
@@ -356,7 +362,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   setWaitlistProduct(product);
                 }}
-                className="flex-1 flex items-center justify-center  border border-teal-500 text-teal-700 gap-0.5 py-2 rounded-md text-[8px] md:text-[8px] font-semibold hover:bg-teal-50 transition"
+                className="flex-1 flex items-center justify-center border border-gray-300 text-[#1D1D1F] gap-0.5 py-2 rounded-full text-[8px] md:text-[8px] font-semibold hover:bg-[#F5F5F7] hover:border-gray-400 transition"
               >
                 <FaBell className="w-2 h-2 hidden md:block -mr-0.5" /> Join
                 Waitlist
@@ -372,7 +378,7 @@ export default function ProductCard({
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
-                className="flex-1 bg-[#E5E7EB]   text-[#1D1D1F] py-1.5 rounded-xl text-xs font-semibold hover:bg-[#D1D5DB] transition cursor:pointer"
+                className="flex-1 bg-[#F5F5F7] border border-gray-200/80 text-[#1D1D1F] py-1.5 rounded-full text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors cursor-pointer"
               >
                 {t("product.buy_now")}
               </button>
@@ -383,7 +389,7 @@ export default function ProductCard({
                   flyToCart(imageRef.current, mainImage);
                   addToCart(product, 1);
                 }}
-                className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-3 py-1.5 rounded-full hover:bg-black transition cursor:pointer"
+                className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-3 py-1.5 rounded-full hover:bg-black active:scale-95 transition cursor-pointer"
                 title={t("home.add_to_cart")}
                 aria-label={t("home.add_to_cart")}
               >

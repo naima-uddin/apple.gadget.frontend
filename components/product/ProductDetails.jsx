@@ -616,7 +616,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   </span>
                 )}
                 {discountPct && (
-                  <span className="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
+                  <span className="absolute top-3 left-3 bg-[#1D1D1F]/90 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-sm backdrop-blur-sm ring-1 ring-white/10">
                     -{discountPct}%
                   </span>
                 )}
@@ -679,7 +679,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 )}
               </div>
               {product.freeShipping && (
-                <p className="inline-flex items-center gap-1.5 w-fit text-sm font-semibold text-green-700 bg-green-50 border border-green-100 rounded-full px-3 py-1 mt-2.5">
+                <p className="inline-flex items-center gap-1.5 w-fit text-sm font-semibold text-[#1D1D1F] bg-[#F5F5F7] border border-gray-200 rounded-full px-3 py-1 mt-2.5">
                   <FaTruck className="w-3.5 h-3.5" /> Free Shipping
                 </p>
               )}
