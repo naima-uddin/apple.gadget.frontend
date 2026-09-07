@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FaStar, FaShoppingCart } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { FaStar, FaShoppingCart, FaBolt } from "react-icons/fa";
 import { useCart } from "@/components/context/CartContext";
 import { getDisplayPrice } from "@/lib/pricing";
 import { getVariantColors } from "@/components/cart/VariantEditModal";
@@ -30,8 +31,17 @@ function heroImage(product) {
   return encodeURI(imgs[1] || imgs[0] || "/assets/placeholder.svg");
 }
 
+// Blurred background image for the dark curved panel: prefer the admin-uploaded
+// panel image, otherwise fall back to a blurred copy of the active product's
+// hero image.
+function panelBg(showcase, product) {
+  if (showcase?.panelImage) return encodeURI(showcase.panelImage);
+  return heroImage(product);
+}
+
 export default function FeaturedShowcase() {
   const { addToCart } = useCart();
+  const router = useRouter();
   // Whole config (title/subtitle + resolved tabs) comes from the admin-driven
   // /api/featured-showcase endpoint; the dashboard editor controls all of it.
   const [showcase, setShowcase] = useState(null);
@@ -141,15 +151,16 @@ export default function FeaturedShowcase() {
       <p className="text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
         More in this pick
       </p>
-      <div className="flex items-center gap-3 overflow-x-auto pb-1">
+      <div className="flex items-end gap-4 overflow-x-auto pb-1">
         {products.map((p, i) => (
           <button
             key={p._id || i}
             onClick={() => setActiveIndex(i)}
-            className={`relative shrink-0 h-16 w-16 rounded-2xl overflow-hidden border transition-all duration-300 ${
+            title={p.title || p.slug}
+            className={`relative shrink-0 h-16 w-16 transition-all duration-300 ${
               i === activeIndex
-                ? "border-[#1D1D1F] ring-2 ring-[#1D1D1F] scale-105"
-                : "border-[#ececf0] hover:border-[#c9c9d1]"
+                ? "scale-110 opacity-100"
+                : "opacity-50 hover:opacity-90"
             }`}
           >
             <Image
@@ -157,7 +168,7 @@ export default function FeaturedShowcase() {
               alt={p.title || p.slug}
               fill
               sizes="64px"
-              className="object-cover"
+              className="object-contain drop-shadow-[0_6px_10px_rgba(0,0,0,0.18)]"
             />
           </button>
         ))}
@@ -196,12 +207,24 @@ export default function FeaturedShowcase() {
       )}
 
       <div className="mt-6 flex flex-col gap-2.5">
+        {/* Buy Now — straight to checkout (adds the admin-defined quantity) */}
         <button
-          onClick={() => addToCart(active, 1)}
+          onClick={() => {
+            addToCart(active, active.showcaseQty || 1, { silent: true });
+            router.push("/checkout");
+          }}
           className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1D1D1F] px-6 py-3 text-sm font-bold hover:bg-white/90 active:scale-[0.98] transition-all"
         >
+          <FaBolt className="w-4 h-4" />
+          Buy Now
+        </button>
+        {/* Add to Cart — adds the admin-defined quantity */}
+        <button
+          onClick={() => addToCart(active, active.showcaseQty || 1)}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 border border-white/25 text-white px-6 py-3 text-sm font-bold hover:bg-white/20 active:scale-[0.98] transition-all"
+        >
           <FaShoppingCart className="w-4 h-4" />
-          Order Now
+          Add to Cart
         </button>
         <Link
           href={`/product/${active._id}/`}
@@ -253,10 +276,10 @@ export default function FeaturedShowcase() {
             <button
               key={i}
               onClick={() => selectTab(i)}
-              className={`px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-300 ${
+              className={`px-4 py-2 rounded-full text-[13px] font-semibold backdrop-blur-md transition-all duration-300 active:scale-[0.97] ${
                 i === activeTabIndex
-                  ? "bg-[#1D1D1F] text-white shadow-sm"
-                  : "bg-white text-[#1D1D1F] border border-[#e5e5ea] hover:border-[#1D1D1F]"
+                  ? "bg-linear-to-b from-[#2b2b2e] to-[#1D1D1F] text-white border border-white/10 shadow-[0_6px_16px_-4px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.2)]"
+                  : "bg-white/40 text-[#1D1D1F] border border-white/70 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70"
               }`}
             >
               {tab.label}
@@ -278,8 +301,9 @@ export default function FeaturedShowcase() {
             <path d={CURVE_D} fill="#1D1D1F" />
           </svg>
 
-          {/* Blurred product image as the panel background, clipped to the same
-              curve via a CSS mask, with a dark tint over it for legibility. */}
+          {/* Blurred background (admin-uploaded panel image, else the active
+              product image), clipped to the same curve via a CSS mask, with a
+              dark tint over it for legibility. */}
           {active && (
             <div
               className="absolute inset-0 z-[1]"
@@ -293,15 +317,26 @@ export default function FeaturedShowcase() {
               }}
             >
               <Image
-                key={`bg-${active._id}`}
-                src={heroImage(active)}
+                key={`bg-${showcase.panelImage || active._id}`}
+                src={panelBg(showcase, active)}
                 alt=""
                 fill
                 aria-hidden="true"
                 sizes="40vw"
-                className="object-cover scale-125 blur-2xl opacity-40"
+                className={
+                  showcase.panelImage
+                    ? "object-contain object-right blur-[1px] opacity-100"
+                    : "object-cover scale-125 blur-2xl opacity-40"
+                }
               />
-              <div className="absolute inset-0 bg-[#1D1D1F]/80" />
+              {/* Only a light wash when there's an uploaded image, so it stays
+                  clearly visible; a stronger scrim behind the text is applied on
+                  the order column itself below. */}
+              <div
+                className={`absolute inset-0 ${
+                  showcase.panelImage ? "bg-[#1D1D1F]/25" : "bg-[#1D1D1F]/80"
+                }`}
+              />
             </div>
           )}
 
@@ -329,7 +364,10 @@ export default function FeaturedShowcase() {
             </div>
           </div>
 
-          {/* Right — order panel over the dark curve */}
+          {/* Right — order panel over the dark curve. A gradient scrim behind
+              just this column keeps the white text/price legible while the rest
+              of the uploaded image stays clearly visible. */}
+          <div className="absolute inset-y-0 right-0 w-[34%] z-15 bg-linear-to-l from-[#1D1D1F]/95 via-[#1D1D1F]/75 to-transparent pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-[26%] p-8 xl:p-10 flex flex-col justify-center text-white z-20">
             {orderBlock}
           </div>
@@ -370,19 +408,27 @@ export default function FeaturedShowcase() {
             )}
           </div>
 
-          {/* Order — blurred product image behind a dark tint */}
+          {/* Order — blurred background (admin panel image, else product) */}
           {active && (
             <div className="relative overflow-hidden bg-[#1D1D1F] text-white rounded-b-[32px]">
               <Image
-                key={`bg-m-${active._id}`}
-                src={heroImage(active)}
+                key={`bg-m-${showcase.panelImage || active._id}`}
+                src={panelBg(showcase, active)}
                 alt=""
                 fill
                 aria-hidden="true"
                 sizes="100vw"
-                className="object-cover blur-2xl opacity-40"
+                className={
+                  showcase.panelImage
+                    ? "object-cover blur-[1px] opacity-100"
+                    : "object-cover blur-2xl opacity-40"
+                }
               />
-              <div className="absolute inset-0 bg-[#1D1D1F]/80" />
+              <div
+                className={`absolute inset-0 ${
+                  showcase.panelImage ? "bg-[#1D1D1F]/45" : "bg-[#1D1D1F]/80"
+                }`}
+              />
               <div className="relative p-6">{orderBlock}</div>
             </div>
           )}

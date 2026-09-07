@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import OrderTrackingTimeline from "@/components/order/OrderTrackingTimeline";
@@ -108,6 +108,11 @@ export default function OrderDetails({ orderId }) {
   });
   const [bookModalOpen, setBookModalOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
+  // Add-product search (append a new line item to the order)
+  const [productSearch, setProductSearch] = useState("");
+  const [productResults, setProductResults] = useState([]);
+  const [productSearching, setProductSearching] = useState(false);
+  const searchTimerRef = useRef(null);
 
   const loadOrder = useCallback(() => {
     setLoading(true);
@@ -194,6 +199,54 @@ export default function OrderDetails({ orderId }) {
       return alert("Order must have at least one item.");
     const next = editItems.filter((_, i) => i !== index);
     setEditItems(next);
+    saveLineItems(next, editShipping, editDiscount);
+  };
+
+  // Live product search — same suggest endpoint the Create Order modal uses.
+  const runProductSearch = useCallback(async (q) => {
+    if (!q.trim()) {
+      setProductResults([]);
+      return;
+    }
+    setProductSearching(true);
+    try {
+      const r = await fetch(
+        `${API}/api/products?q=${encodeURIComponent(q)}&suggest=1&limit=8`,
+        { credentials: "include" },
+      );
+      const body = await r.json();
+      setProductResults(body.items || []);
+    } catch {
+      setProductResults([]);
+    } finally {
+      setProductSearching(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = setTimeout(
+      () => runProductSearch(productSearch),
+      300,
+    );
+    return () => clearTimeout(searchTimerRef.current);
+  }, [productSearch, runProductSearch]);
+
+  // Append the chosen product as a new line item and persist immediately.
+  const addProduct = (p) => {
+    const next = [
+      ...editItems,
+      {
+        productId: String(p._id),
+        title: p.title || "Product",
+        image: p.images?.[0]?.url || null,
+        price: Number(p.price) || 0,
+        quantity: 1,
+      },
+    ];
+    setEditItems(next);
+    setProductSearch("");
+    setProductResults([]);
     saveLineItems(next, editShipping, editDiscount);
   };
 
@@ -516,6 +569,49 @@ export default function OrderDetails({ orderId }) {
                 ))}
               </tbody>
             </table>
+            {/* Add product — search the catalog and append a new line item */}
+            <div className="px-5 py-4 border-t">
+              <div className="relative">
+                <input
+                  value={productSearch}
+                  onChange={(e) => setProductSearch(e.target.value)}
+                  disabled={saving}
+                  placeholder="Search products by name to add…"
+                  className="w-full text-sm border border-gray-200 px-3 py-2 rounded-xl outline-none transition focus:ring-2 focus:ring-[#1D1D1F] focus:border-[#1D1D1F] disabled:opacity-60"
+                />
+                {productSearching && (
+                  <span className="absolute right-3 top-2.5 text-xs text-gray-400">
+                    …
+                  </span>
+                )}
+                {productResults.length > 0 && (
+                  <div className="absolute z-20 mt-1 w-full border border-gray-200 rounded-xl bg-white shadow-lg max-h-64 overflow-y-auto">
+                    {productResults.map((p) => (
+                      <button
+                        key={p._id}
+                        type="button"
+                        onClick={() => addProduct(p)}
+                        className="w-full flex items-center gap-3 text-left px-3 py-2 hover:bg-gray-50 border-b last:border-0"
+                      >
+                        {p.images?.[0]?.url && (
+                          <img
+                            src={p.images[0].url}
+                            alt=""
+                            className="w-8 h-8 rounded-lg object-cover shrink-0"
+                          />
+                        )}
+                        <span className="flex-1 text-sm text-gray-800 truncate">
+                          {p.title}
+                        </span>
+                        <span className="text-xs font-semibold text-gray-600 shrink-0">
+                          ৳{(p.price || 0).toLocaleString()}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
             <div className="px-5 py-4 border-t">
               <button
                 type="button"

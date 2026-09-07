@@ -10,11 +10,12 @@ const DEFAULTS = {
   enabled: true,
   title: "Featured Products",
   subtitle: "Handpicked gadgets, refreshed for you.",
+  panelImage: { url: "", public_id: "" },
   tabs: [
-    { label: "Latest", type: "manual", productIds: [], imageMap: {}, enabled: true },
-    { label: "Top Seller", type: "manual", productIds: [], imageMap: {}, enabled: true },
-    { label: "Featured", type: "manual", productIds: [], imageMap: {}, enabled: true },
-    { label: "Trending", type: "manual", productIds: [], imageMap: {}, enabled: true },
+    { label: "Latest", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
+    { label: "Top Seller", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
+    { label: "Featured", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
+    { label: "Trending", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
   ],
 };
 
@@ -45,13 +46,19 @@ export default function FeaturedShowcaseEditor() {
           setCfg({
             ...DEFAULTS,
             ...c,
+            panelImage: {
+              url: c.panelImage?.url || "",
+              public_id: c.panelImage?.public_id || "",
+            },
             tabs: c.tabs.map((t) => ({
               label: t.label || "",
               type: t.type || "latest",
               productIds: (t.productIds || []).map(String),
               // normalise the per-product image override to a plain object of
-              // { [productId]: index }
+              // { [productId]: index | url }
               imageMap: t.imageMap && typeof t.imageMap === "object" ? { ...t.imageMap } : {},
+              // per-product add-to-cart quantity { [productId]: number }
+              qtyMap: t.qtyMap && typeof t.qtyMap === "object" ? { ...t.qtyMap } : {},
               enabled: t.enabled !== false,
             })),
           });
@@ -74,7 +81,7 @@ export default function FeaturedShowcaseEditor() {
       ...prev,
       tabs: [
         ...prev.tabs,
-        { label: "New Tab", type: "manual", productIds: [], imageMap: {}, enabled: true },
+        { label: "New Tab", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
       ],
     }));
 
@@ -105,11 +112,14 @@ export default function FeaturedShowcaseEditor() {
           // either a custom uploaded image URL (string) or a product image
           // index (number).
           const imageMap = {};
-          if (t.type === "manual" && t.imageMap) {
+          const qtyMap = {};
+          if (t.type === "manual") {
             for (const id of productIds) {
-              const v = t.imageMap[id];
+              const v = t.imageMap?.[id];
               if (Number.isInteger(v) || (typeof v === "string" && v.trim()))
                 imageMap[id] = v;
+              const q = t.qtyMap?.[id];
+              if (Number.isInteger(q) && q > 1) qtyMap[id] = q;
             }
           }
           return {
@@ -118,6 +128,7 @@ export default function FeaturedShowcaseEditor() {
             enabled: t.enabled,
             productIds,
             imageMap,
+            qtyMap,
           };
         }),
       };
@@ -194,6 +205,12 @@ export default function FeaturedShowcaseEditor() {
         </div>
       </div>
 
+      {/* Dark-panel background image */}
+      <PanelImageUploader
+        panelImage={cfg.panelImage || { url: "" }}
+        onChange={(panelImage) => set({ panelImage })}
+      />
+
       {/* Tabs */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -246,6 +263,80 @@ export default function FeaturedShowcaseEditor() {
       >
         {saving ? "Saving…" : "Save Showcase"}
       </button>
+    </div>
+  );
+}
+
+// Upload the background image shown (blurred) inside the dark curved panel on
+// the right of the showcase. Optional — when empty the storefront blurs the
+// active product's own image instead.
+function PanelImageUploader({ panelImage, onChange }) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
+  const fileRef = useRef(null);
+  const url = panelImage?.url || "";
+
+  const handleFile = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setError("");
+    setUploading(true);
+    try {
+      const { asset } = await uploadAdminImage(file, "applebd/featured-showcase");
+      onChange({ url: asset.url, public_id: asset.public_id || "" });
+    } catch (err) {
+      setError(err.message || "Upload failed");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  return (
+    <div className="rounded-xl border border-gray-200 bg-gray-50/60 p-4">
+      <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-1">
+        Dark panel background
+      </h3>
+      <p className="text-xs text-gray-500 mb-3">
+        Optional image shown <strong>blurred</strong> behind the price / buttons
+        on the dark right side. Leave empty to blur the product image instead.
+      </p>
+      <div className="flex items-center gap-3">
+        <div className="relative h-16 w-24 shrink-0 rounded-lg overflow-hidden bg-[#1D1D1F] border border-gray-300">
+          {url && (
+            <Image
+              src={encodeURI(url)}
+              alt=""
+              fill
+              sizes="96px"
+              className="object-cover blur-[2px] opacity-70"
+            />
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="text-xs px-3 py-1.5 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black disabled:opacity-50"
+            >
+              {uploading ? "Uploading…" : url ? "Replace image" : "⬆ Upload image"}
+            </button>
+            {url && (
+              <button
+                type="button"
+                onClick={() => onChange({ url: "", public_id: "" })}
+                className="text-xs px-3 py-1.5 border border-red-200 text-red-500 rounded-lg font-semibold hover:bg-red-50"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+          {error && <p className="text-xs text-red-600">{error}</p>}
+        </div>
+        <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
+      </div>
     </div>
   );
 }
@@ -317,8 +408,10 @@ function TabEditor({ index, tab, isFirst, isLast, onChange, onRemove, onMove }) 
         <ManualProductPicker
           productIds={tab.productIds || []}
           imageMap={tab.imageMap || {}}
+          qtyMap={tab.qtyMap || {}}
           onChange={(productIds) => onChange({ productIds })}
           onImageMapChange={(imageMap) => onChange({ imageMap })}
+          onQtyMapChange={(qtyMap) => onChange({ qtyMap })}
         />
       ) : (
         <p className="text-xs text-gray-400 pl-8">
@@ -332,7 +425,7 @@ function TabEditor({ index, tab, isFirst, isLast, onChange, onRemove, onMove }) 
 // Search + add products, shows selected as an ordered list. Each selected
 // product exposes an image picker so the admin chooses which of its images is
 // shown as the big hero in the storefront showcase.
-function ManualProductPicker({ productIds, imageMap, onChange, onImageMapChange }) {
+function ManualProductPicker({ productIds, imageMap, qtyMap, onChange, onImageMapChange, onQtyMapChange }) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -411,6 +504,11 @@ function ManualProductPicker({ productIds, imageMap, onChange, onImageMapChange 
       delete next[key];
       onImageMapChange(next);
     }
+    if (qtyMap && qtyMap[key] != null) {
+      const next = { ...qtyMap };
+      delete next[key];
+      onQtyMapChange(next);
+    }
   };
 
   // Set (or clear, when idx === null) the showcase-image override for a product.
@@ -420,6 +518,15 @@ function ManualProductPicker({ productIds, imageMap, onChange, onImageMapChange 
     if (idx == null) delete next[key];
     else next[key] = idx;
     onImageMapChange(next);
+  };
+
+  // Set the add-to-cart quantity for a product (1 => cleared/default).
+  const setQty = (id, qty) => {
+    const key = String(id);
+    const next = { ...(qtyMap || {}) };
+    if (!Number.isInteger(qty) || qty <= 1) delete next[key];
+    else next[key] = qty;
+    onQtyMapChange(next);
   };
 
   return (
@@ -462,7 +569,9 @@ function ManualProductPicker({ productIds, imageMap, onChange, onImageMapChange 
               key={p._id}
               product={p}
               override={imageMap ? imageMap[String(p._id)] : undefined}
+              qty={qtyMap && Number.isInteger(qtyMap[String(p._id)]) ? qtyMap[String(p._id)] : 1}
               onSetImage={(val) => setImage(p._id, val)}
+              onSetQty={(q) => setQty(p._id, q)}
               onRemove={() => remove(p._id)}
             />
           ))}
@@ -483,7 +592,7 @@ function ManualProductPicker({ productIds, imageMap, onChange, onImageMapChange 
 // for a product-image index. When nothing is chosen the storefront falls back to
 // the product's 2nd image (index 1), then the 1st — that image is marked
 // "Default".
-function SelectedProductRow({ product, override, onSetImage, onRemove }) {
+function SelectedProductRow({ product, override, qty, onSetImage, onSetQty, onRemove }) {
   const images = (product.images || []).filter((i) => i && i.url);
   // Which product image the storefront uses when there's no explicit override.
   const defaultIndex = images.length > 1 ? 1 : 0;
@@ -619,6 +728,42 @@ function SelectedProductRow({ product, override, onSetImage, onRemove }) {
         Upload your own image (transparent PNG works best), or click a product
         image. Leave unset to use the product&apos;s 2nd image.
       </p>
+
+      {/* Add-to-cart quantity */}
+      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+        <span className="text-xs font-semibold text-gray-600">
+          Add-to-cart quantity
+        </span>
+        <div className="inline-flex items-center rounded-lg border border-gray-300 overflow-hidden">
+          <button
+            type="button"
+            onClick={() => onSetQty(Math.max(1, (qty || 1) - 1))}
+            className="w-7 h-7 text-gray-600 hover:bg-gray-100 disabled:opacity-40"
+            disabled={(qty || 1) <= 1}
+            title="Decrease"
+          >
+            −
+          </button>
+          <input
+            type="number"
+            min="1"
+            value={qty || 1}
+            onChange={(e) => onSetQty(Math.max(1, parseInt(e.target.value, 10) || 1))}
+            className="w-12 h-7 text-center text-sm border-x border-gray-300 focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => onSetQty((qty || 1) + 1)}
+            className="w-7 h-7 text-gray-600 hover:bg-gray-100"
+            title="Increase"
+          >
+            +
+          </button>
+        </div>
+        <span className="text-[11px] text-gray-400">
+          units added per Buy&nbsp;Now / Add&nbsp;to&nbsp;Cart
+        </span>
+      </div>
     </div>
   );
 }
