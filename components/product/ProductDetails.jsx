@@ -31,6 +31,7 @@ import AddToCartSection from "@/components/product/AddToCartSection";
 import {
   getVariantColors,
   getVariantSizes,
+  getColorImageMap,
 } from "@/components/cart/VariantEditModal";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductCard from "@/components/product/ProductCard";
@@ -247,6 +248,16 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
   useEffect(() => {
     if (product) saveRecentlyViewed(product);
   }, [product]);
+
+  // Jump the gallery to the image the admin mapped to a color (if any).
+  // Matches the variant's image URL against the product's uploaded images.
+  const showColorImage = (col) => {
+    const colorMap = getColorImageMap(product);
+    const url = col?.name ? colorMap[col.name.trim().toLowerCase()] : null;
+    if (!url) return;
+    const idx = images.findIndex((img) => img === url);
+    if (idx >= 0) setCurrentIndex(idx);
+  };
 
   useEffect(() => {
     if (product?._id) {
@@ -738,7 +749,11 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     return (
                       <button
                         key={idx}
-                        onClick={() => setSelectedColor(isSelected ? null : col)}
+                        onClick={() => {
+                          const next = isSelected ? null : col;
+                          setSelectedColor(next);
+                          if (next) showColorImage(next);
+                        }}
                         title={col.name}
                         className="flex flex-col items-center gap-1.5 transition-all group"
                       >

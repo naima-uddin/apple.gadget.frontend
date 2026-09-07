@@ -15,7 +15,10 @@ import { useCart } from "@/components/context/CartContext";
 import { useUser } from "@/components/context/UserContext";
 import AuthModal from "@/components/auth/AuthModal";
 import WaitlistModal from "@/components/cart/WaitlistModal";
-import { getVariantColors } from "@/components/cart/VariantEditModal";
+import {
+  getVariantColors,
+  getColorImageMap,
+} from "@/components/cart/VariantEditModal";
 import { getDisplayPrice } from "@/lib/pricing";
 import { useCompare } from "@/components/context/CompareContext";
 import { useLanguage } from "@/components/context/LanguageContext";
@@ -38,6 +41,7 @@ export default function ProductCard({
   const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const { t } = useLanguage();
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  const [selectedColor, setSelectedColor] = React.useState(null);
   const [hovered, setHovered] = React.useState(false);
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const [pendingWishlist, setPendingWishlist] = React.useState(null);
@@ -305,24 +309,46 @@ export default function ProductCard({
                 </span>
               )}
             </div>
-            {/* Color swatches - extracted from variants */}
+            {/* Color swatches - extracted from variants. Clicking a swatch
+                switches the card image to the image mapped to that color. */}
             {(() => {
               const variantColors = getVariantColors(product);
               if (variantColors.length === 0) return null;
+              const colorImageMap = getColorImageMap(product);
               return (
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="relative z-[2] flex items-center gap-1 shrink-0">
                   {variantColors.slice(0, 4).map((c, i) => {
                     const hex = c.hex?.trim()
                       ? c.hex.startsWith("#")
                         ? c.hex
                         : `#${c.hex}`
                       : "#cccccc";
+                    const key = c.name?.trim()?.toLowerCase();
+                    const mappedUrl = key ? colorImageMap[key] : null;
+                    const isSelected = selectedColor === key;
                     return (
-                      <span
+                      <button
                         key={i}
+                        type="button"
                         title={c.name}
-                        className="w-3.5 h-3.5 rounded-full inline-block border border-gray-200"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setSelectedColor(key);
+                          if (mappedUrl) {
+                            const idx = images.findIndex(
+                              (img) => img === mappedUrl,
+                            );
+                            if (idx >= 0) setCurrentImageIndex(idx);
+                          }
+                        }}
+                        className={`pointer-events-auto w-3.5 h-3.5 rounded-full inline-block border transition-all ${
+                          isSelected
+                            ? "ring-2 ring-offset-1 ring-[#1D1D1F] border-white"
+                            : "border-gray-200 hover:scale-110"
+                        }`}
                         style={{ backgroundColor: hex }}
+                        aria-label={`Show ${c.name}`}
                       />
                     );
                   })}

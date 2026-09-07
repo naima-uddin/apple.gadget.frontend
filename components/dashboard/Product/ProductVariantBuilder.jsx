@@ -720,6 +720,7 @@ export default function ProductVariantBuilder({
                     <th className="px-3 py-3">Discount</th>
                     <th className="px-3 py-3">Stock</th>
                     <th className="px-3 py-3">Color</th>
+                    <th className="px-3 py-3">Image</th>
                     <th className="px-3 py-3"></th>
                   </tr>
                 </thead>
@@ -849,6 +850,65 @@ export default function ProductVariantBuilder({
                             placeholder="Color"
                           />
                         </div>
+                      </td>
+                      <td className="px-3 py-3 align-top">
+                        {(product.images || []).length === 0 ? (
+                          <p className="w-40 text-xs text-gray-400">
+                            Upload product images first, then pick one for this
+                            variant.
+                          </p>
+                        ) : (
+                          <div className="flex w-44 flex-wrap gap-1.5">
+                            {(product.images || []).map((img, imgIdx) => {
+                              const url = img?.url;
+                              if (!url) return null;
+                              const isPicked = variant.image === url;
+                              return (
+                                <button
+                                  key={img.public_id || url || imgIdx}
+                                  type="button"
+                                  onClick={() =>
+                                    updateVariant(index, {
+                                      image: isPicked ? "" : url,
+                                    })
+                                  }
+                                  title={
+                                    isPicked
+                                      ? "Selected — click to unset"
+                                      : "Use this image for this variant"
+                                  }
+                                  className={`relative h-10 w-10 overflow-hidden rounded-md border-2 transition ${
+                                    isPicked
+                                      ? "border-[#1D1D1F] ring-2 ring-gray-200"
+                                      : "border-gray-200 hover:border-gray-400"
+                                  }`}
+                                >
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={encodeURI(url)}
+                                    alt={`option ${imgIdx + 1}`}
+                                    className="h-full w-full object-cover"
+                                  />
+                                  {isPicked && (
+                                    <span className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                      <svg
+                                        className="h-4 w-4 text-white"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                      >
+                                        <path
+                                          fillRule="evenodd"
+                                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                          clipRule="evenodd"
+                                        />
+                                      </svg>
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
                       </td>
                       <td className="px-3 py-3 align-top">
                         <button

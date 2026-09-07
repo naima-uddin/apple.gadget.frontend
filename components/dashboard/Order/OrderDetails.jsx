@@ -195,10 +195,11 @@ export default function OrderDetails({ orderId }) {
   };
 
   const removeItem = (index) => {
-    if (editItems.length <= 1)
-      return alert("Order must have at least one item.");
     const next = editItems.filter((_, i) => i !== index);
     setEditItems(next);
+    // An order can't be saved empty, so removing the last product only clears
+    // it locally — add a replacement product to persist the swap.
+    if (next.length === 0) return;
     saveLineItems(next, editShipping, editDiscount);
   };
 
@@ -516,6 +517,16 @@ export default function OrderDetails({ orderId }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
+                {editItems.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={4}
+                      className="px-5 py-6 text-center text-sm text-gray-400"
+                    >
+                      No products in this order — search below to add one.
+                    </td>
+                  </tr>
+                )}
                 {editItems.map((item, i) => (
                   <tr key={i} className="hover:bg-gray-50 transition-colors">
                     <td className="px-5 py-4">
@@ -558,7 +569,7 @@ export default function OrderDetails({ orderId }) {
                       <button
                         type="button"
                         onClick={() => removeItem(i)}
-                        disabled={editItems.length <= 1 || saving}
+                        disabled={saving}
                         className="text-gray-300 hover:text-red-500 disabled:opacity-30"
                         title="Remove item"
                       >

@@ -5,6 +5,20 @@ import Image from "next/image";
 import { FaTimes, FaPlus } from "react-icons/fa";
 import { useCart } from "@/components/context/CartContext";
 
+// Build a { [colorNameLowercased]: imageUrl } map from any variants that have
+// an image mapped to them. Used to switch the gallery / card image when a
+// color is selected on the storefront.
+export function getColorImageMap(product) {
+  const map = {};
+  if (!product?.variants?.length) return map;
+  for (const v of product.variants) {
+    const name = v?.color?.name?.trim()?.toLowerCase();
+    const url = typeof v?.image === "string" ? v.image.trim() : "";
+    if (name && url && !map[name]) map[name] = url;
+  }
+  return map;
+}
+
 // Extract unique colors from variants (optionally filtered by size)
 // filterBySize can be a string like "L" or "16 inch"
 export function getVariantColors(product, filterBySize = null) {

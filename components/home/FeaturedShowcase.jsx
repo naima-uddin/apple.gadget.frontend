@@ -13,10 +13,10 @@ const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
 // Curve silhouette shared by the visible dark panel (SVG fill) and the CSS
 // mask that clips the blurred background image to the exact same shape.
-// Starbucks-style oval sweep (tuned to match the design): the dark panel is
-// narrow at the very top (starts x=79) and widens smoothly all the way down,
-// reaching its leftmost x=52 at the bottom — one clean oval arc, gentle up top.
-const CURVE_D = "M100,0 L79,0 C50,18 58,72 52,100 L100,100 Z";
+// Starbucks-style oval sweep (tuned to match the design), shifted a touch to the
+// right so the dark panel is a little smaller: top starts x=83, leftmost ~x=56
+// near the bottom — same shape, just pressed rightward.
+const CURVE_D = "M100,0 L83,0 C54,18 62,72 56,100 L100,100 Z";
 const CURVE_MASK = `url("data:image/svg+xml,${encodeURIComponent(
   `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><path d='${CURVE_D}' fill='white'/></svg>`,
 )}")`;
@@ -48,6 +48,8 @@ export default function FeaturedShowcase() {
   const [loaded, setLoaded] = useState(false);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  // Pause the auto-rotation while the visitor is interacting (hover/focus).
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,6 +71,21 @@ export default function FeaturedShowcase() {
   const activeTab = tabs[activeTabIndex] || null;
   const products = activeTab?.products || [];
   const active = products[activeIndex] || null;
+
+  // Auto-advance through the tab's products every 5s (fades via the image key).
+  // Pauses on hover/focus and respects reduced-motion.
+  useEffect(() => {
+    if (paused || products.length <= 1) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+    const id = setInterval(() => {
+      setActiveIndex((i) => (i + 1) % products.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [paused, products.length, activeTabIndex]);
 
   const selectTab = (i) => {
     setActiveTabIndex(i);
@@ -260,7 +277,13 @@ export default function FeaturedShowcase() {
   );
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 sm:mt-10 mb-12">
+    <section
+      className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 sm:mt-10 mb-12"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={() => setPaused(false)}
+    >
       {/* Heading + tab buttons */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
         <div>
@@ -316,6 +339,9 @@ export default function FeaturedShowcase() {
                 WebkitMaskRepeat: "no-repeat",
               }}
             >
+              {/* The uploaded image is treated as a soft, premium background
+                  texture: heavily blurred and dimmed so the product and text
+                  read cleanly on top. */}
               <Image
                 key={`bg-${showcase.panelImage || active._id}`}
                 src={panelBg(showcase, active)}
@@ -323,20 +349,9 @@ export default function FeaturedShowcase() {
                 fill
                 aria-hidden="true"
                 sizes="40vw"
-                className={
-                  showcase.panelImage
-                    ? "object-contain object-right blur-[1px] opacity-100"
-                    : "object-cover scale-125 blur-2xl opacity-40"
-                }
+                className="object-cover scale-110 blur-2xl opacity-50"
               />
-              {/* Only a light wash when there's an uploaded image, so it stays
-                  clearly visible; a stronger scrim behind the text is applied on
-                  the order column itself below. */}
-              <div
-                className={`absolute inset-0 ${
-                  showcase.panelImage ? "bg-[#1D1D1F]/25" : "bg-[#1D1D1F]/80"
-                }`}
-              />
+              <div className="absolute inset-0 bg-[#1D1D1F]/65" />
             </div>
           )}
 
@@ -354,9 +369,9 @@ export default function FeaturedShowcase() {
 
           {/* Center — hero image straddling the curve, on a soft spotlight so
               the product reads as "placed" on the arc. Centered on the curve
-              (~56% at mid-height) and enlarged so the product dominates like the
-              Starbucks reference. */}
-          <div className="absolute left-[33%] top-1/2 -translate-y-1/2 w-[44%] h-[92%] z-10">
+              (~60% at mid-height, after the rightward shift) and enlarged so the
+              product dominates like the Starbucks reference. */}
+          <div className="absolute left-[38%] top-1/2 -translate-y-1/2 w-[44%] h-[92%] z-10">
             <div className="absolute inset-[-14%] bg-[radial-gradient(closest-side,rgba(255,255,255,0.92),rgba(255,255,255,0)_78%)] blur-lg" />
             <div className="relative h-full w-full">
               {heroImg}
@@ -418,17 +433,9 @@ export default function FeaturedShowcase() {
                 fill
                 aria-hidden="true"
                 sizes="100vw"
-                className={
-                  showcase.panelImage
-                    ? "object-cover blur-[1px] opacity-100"
-                    : "object-cover blur-2xl opacity-40"
-                }
+                className="object-cover blur-2xl opacity-50"
               />
-              <div
-                className={`absolute inset-0 ${
-                  showcase.panelImage ? "bg-[#1D1D1F]/45" : "bg-[#1D1D1F]/80"
-                }`}
-              />
+              <div className="absolute inset-0 bg-[#1D1D1F]/65" />
               <div className="relative p-6">{orderBlock}</div>
             </div>
           )}
