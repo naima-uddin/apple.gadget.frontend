@@ -116,10 +116,17 @@ export default function FeaturedShowcase() {
 
   const infoBlock = active && (
     <>
-      <span className="inline-flex w-fit items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] mb-3">
-        <span className="h-1.5 w-1.5 rounded-full bg-[#1D1D1F]" />
-        {tabLabel}
-      </span>
+      <div className="flex items-center gap-2 mb-3">
+        {discountPct ? (
+          <span className="inline-flex items-center rounded-full bg-[#1D1D1F] text-white text-[11px] font-extrabold tracking-wide px-2.5 py-1 shadow-sm">
+            −{discountPct}% OFF
+          </span>
+        ) : null}
+        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-[#6B7280]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#1D1D1F]" />
+          {tabLabel}
+        </span>
+      </div>
       <h3 className="text-2xl sm:text-3xl font-bold leading-tight text-[#1D1D1F] font-georgia">
         {active.title || active.slug}
       </h3>
@@ -264,12 +271,6 @@ export default function FeaturedShowcase() {
     />
   );
 
-  const discountBadge = discountPct && (
-    <span className="absolute top-0 left-0 bg-[#1D1D1F] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md ring-2 ring-white/70 z-20">
-      -{discountPct}%
-    </span>
-  );
-
   const emptyState = (
     <div className="py-16 text-center text-[#6B7280] text-sm">
       {loading ? "Loading products…" : "No products in this pick yet."}
@@ -311,17 +312,25 @@ export default function FeaturedShowcase() {
         </div>
       </div>
 
-      <div className="relative overflow-hidden rounded-[32px] bg-white border border-[#ececf0] shadow-[0_18px_50px_-20px_rgba(0,0,0,0.25)]">
+      <div className="relative overflow-hidden rounded-[32px] bg-white border border-[#ececf0] ring-1 ring-black/3 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.35)]">
         {/* ───────── DESKTOP: Starbucks-style curved split ───────── */}
-        <div className="relative hidden lg:block min-h-[480px]">
-          {/* Base dark curved panel (fallback colour if the bg image fails). */}
+        <div className="relative hidden lg:block min-h-[420px]">
+          {/* Base dark curved panel with a subtle vertical gradient + a soft
+              top sheen for depth (fallback colour if the bg image fails). */}
           <svg
             className="absolute inset-0 h-full w-full"
             viewBox="0 0 100 100"
             preserveAspectRatio="none"
             aria-hidden="true"
           >
-            <path d={CURVE_D} fill="#1D1D1F" />
+            <defs>
+              <linearGradient id="fsPanel" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2a2a2d" />
+                <stop offset="55%" stopColor="#1D1D1F" />
+                <stop offset="100%" stopColor="#131315" />
+              </linearGradient>
+            </defs>
+            <path d={CURVE_D} fill="url(#fsPanel)" />
           </svg>
 
           {/* Blurred background (admin-uploaded panel image, else the active
@@ -351,7 +360,9 @@ export default function FeaturedShowcase() {
                 sizes="40vw"
                 className="object-cover scale-110 blur-2xl opacity-50"
               />
-              <div className="absolute inset-0 bg-[#1D1D1F]/65" />
+              {/* Gradient tint for depth + a faint top sheen for a premium feel */}
+              <div className="absolute inset-0 bg-linear-to-b from-[#1D1D1F]/55 via-[#1D1D1F]/68 to-[#101012]/85" />
+              <div className="absolute inset-0 bg-linear-to-b from-white/[0.07] to-transparent to-40%" />
             </div>
           )}
 
@@ -375,7 +386,6 @@ export default function FeaturedShowcase() {
             <div className="absolute inset-[-14%] bg-[radial-gradient(closest-side,rgba(255,255,255,0.92),rgba(255,255,255,0)_78%)] blur-lg" />
             <div className="relative h-full w-full">
               {heroImg}
-              {discountBadge}
             </div>
           </div>
 
@@ -405,7 +415,6 @@ export default function FeaturedShowcase() {
                 <div className="relative w-[60%] max-w-[260px] aspect-square -translate-y-3">
                   <div className="absolute inset-[-16%] bg-[radial-gradient(closest-side,rgba(255,255,255,0.9),rgba(255,255,255,0)_78%)] blur-lg" />
                   {heroImg}
-                  {discountBadge}
                 </div>
               </div>
             )}
