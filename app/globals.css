@@ -211,6 +211,114 @@ h6 {
     radial-gradient(120% 90% at 50% 18%, #ffffff 0%, #f6f6f8 78%, #efeff1 100%);
 }
 
+/* ── Glass chip buttons ───────────────────────────────────────────────────────
+   Frosted-glass pill used for the category/subcategory filter chips at the top of
+   the listing pages. Translucent surface + backdrop blur + a soft top highlight so
+   the buttons read as physical glass resting on the page. */
+/* ── Liquid Glass (Apple iOS-26 style) ──────────────────────────────────────
+   Liquid glass only reads as glass over content it can refract, so the chip row
+   sits on a dark gradient band (.glass-chip-bar). The pills are near-clear
+   lenses over it: heavy backdrop blur + saturation/brightness lift, a luminous
+   refractive rim (bright top edge, glowing lower edge), and a diagonal specular
+   gloss. The selected pill is a brighter lens that lights up over the dark band,
+   matching the reference. */
+/* no backdrop band — the chips sit directly on the page. Kept as a thin
+   layout wrapper only (transparent). */
+.glass-chip-bar {
+  position: relative;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* Refined monochrome frosted glass — clean Apple-style pill: bright top sheen,
+   hairline rim, soft ambient shadow. No colour tint, on-brand with the
+   #1D1D1F / light-surface palette. */
+.glass-chip {
+  position: relative;
+  isolation: isolate;
+  color: #1f2937;
+  background: rgba(255, 255, 255, 0.38);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 1),
+    inset 0 -6px 12px -10px rgba(255, 255, 255, 0.8),
+    0 1px 2px -1px rgba(17, 17, 19, 0.08);
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+/* soft specular sheen along the top of the pill */
+.glass-chip::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px auto 1px;
+  height: 50%;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.85),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+.glass-chip:hover {
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 1),
+    0 2px 5px -2px rgba(17, 17, 19, 0.14);
+  transform: translateY(-1px);
+}
+.glass-chip:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Selected pill — smoked dark glass in the brand accent, still translucent. */
+.glass-chip-active {
+  position: relative;
+  isolation: isolate;
+  color: #fff;
+  background: rgba(29, 29, 31, 0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0.5px rgba(255, 255, 255, 0.35),
+    0 1px 2px -1px rgba(17, 17, 19, 0.18);
+  transition:
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.glass-chip-active::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px auto 1px;
+  height: 50%;
+  border-radius: inherit;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0)
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+.glass-chip-active:hover {
+  background: rgba(0, 0, 0, 0.95);
+  transform: translateY(-1px);
+}
+.glass-chip-active:active {
+  transform: translateY(0) scale(0.98);
+}
+
 /* NOTE: layout and component-specific styles should use Tailwind utility classes inline. */
 
 /* ensure hyperlinks in rich content are highlighted blue and underlined */

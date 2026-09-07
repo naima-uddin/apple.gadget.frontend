@@ -534,7 +534,8 @@ export default function TagPageClient({ slug }) {
                     product={p}
                     showDiscount={true}
                     maxTags={2}
-                    imageHeight={isMobileView ? 160 : 200}
+                    imageWidth={400}
+                    imageHeight={isMobileView ? 190 : 250}
                   />
                 ))}
               </div>

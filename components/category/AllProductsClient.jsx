@@ -276,17 +276,15 @@ export default function AllProductsClient() {
           {/* Main categories row — chips filter the listing in-place so the
               full row stays visible with the selected category highlighted. */}
           {mainCategories.length > 0 && (
-            <div className="mb-6 flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+            <div className="glass-chip-bar mb-6 flex gap-2 overflow-x-auto scrollbar-none">
               <button
                 type="button"
                 onClick={() => {
                   setActiveCategoryId(null);
                   setCurrentPage(1);
                 }}
-                className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
-                  !activeCategoryId
-                    ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
-                    : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full text-sm font-medium ${
+                  !activeCategoryId ? "glass-chip-active" : "glass-chip"
                 }`}
               >
                 All
@@ -301,10 +299,8 @@ export default function AllProductsClient() {
                       setActiveCategoryId(cat._id);
                       setCurrentPage(1);
                     }}
-                    className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full border text-sm font-medium shadow-sm transition-colors ${
-                      isActive
-                        ? "bg-[#1D1D1F] text-white border-[#1D1D1F]"
-                        : "border-gray-200 bg-white text-[#1F2937] hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                    className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full text-sm font-medium ${
+                      isActive ? "glass-chip-active" : "glass-chip"
                     }`}
                   >
                     {cat.name}
@@ -469,7 +465,8 @@ export default function AllProductsClient() {
                         product={p}
                         showDiscount={true}
                         maxTags={2}
-                        imageHeight={isMobileView ? 160 : 200}
+                        imageWidth={400}
+                        imageHeight={isMobileView ? 190 : 250}
                       />
                     ))}
                   </div>

@@ -27,8 +27,8 @@ import { flyToCart } from "@/lib/flyToCart";
 
 export default function ProductCard({
   product,
-  imageWidth = 350,
-  imageHeight = 200,
+  imageWidth = 400,
+  imageHeight = 250,
   imageQuality = 100,
   showActionsOnHover = true,
   showDiscount = true,
@@ -290,7 +290,7 @@ export default function ProductCard({
         </div>
 
         <div className="p-3 pt-2.5 flex flex-col grow">
-          <h3 className="text-[13px] font-semibold text-[#1F2937] leading-snug line-clamp-2 mb-0.5">
+          <h3 className="text-[13px] font-semibold text-[#1F2937] leading-snug truncate">
             {product.title || product.slug}
           </h3>
           {product.description && (
@@ -300,7 +300,7 @@ export default function ProductCard({
           )}
 
           {/* Price + swatches on one tight row */}
-          <div className="flex items-center justify-between gap-2 mt-0.5">
+          <div className="flex items-center justify-between gap-2">
             <div className="flex items-baseline gap-1.5 min-w-0">
               <span className="text-[17px] font-bold text-[#1D1D1F] tracking-tight whitespace-nowrap">
                 ৳{price?.toLocaleString()}
