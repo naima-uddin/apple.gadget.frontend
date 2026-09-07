@@ -31,14 +31,6 @@ function heroImage(product) {
   return encodeURI(imgs[1] || imgs[0] || "/assets/placeholder.svg");
 }
 
-// Blurred background image for the dark curved panel: prefer the admin-uploaded
-// panel image, otherwise fall back to a blurred copy of the active product's
-// hero image.
-function panelBg(showcase, product) {
-  if (showcase?.panelImage) return encodeURI(showcase.panelImage);
-  return heroImage(product);
-}
-
 export default function FeaturedShowcase() {
   const { addToCart } = useCart();
   const router = useRouter();
@@ -204,30 +196,30 @@ export default function FeaturedShowcase() {
   const orderBlock = active && (
     <>
       <div className="flex items-baseline gap-2">
-        <span className="text-4xl sm:text-5xl font-bold tracking-tight">
+        <span className="text-4xl sm:text-5xl font-bold tracking-tighter bg-linear-to-b from-[#1D1D1F] to-[#1D1D1F]/70 bg-clip-text text-transparent">
           ৳{price?.toLocaleString()}
         </span>
         {compareAtPrice && compareAtPrice > price && (
-          <span className="text-base text-white/50 line-through">
+          <span className="text-base text-[#1D1D1F]/40 line-through">
             ৳{compareAtPrice.toLocaleString()}
           </span>
         )}
       </div>
 
       {(active.badges?.includes("best_seller") || activeTab?.type === "top") && (
-        <p className="mt-3 text-sm font-semibold text-white/90">Bestseller</p>
+        <p className="mt-3 text-sm font-semibold text-[#1D1D1F]/80">Bestseller</p>
       )}
-      <div className="mt-1.5 flex text-yellow-400">
+      <div className="mt-1.5 flex">
         {[0, 1, 2, 3, 4].map((i) => (
           <FaStar
             key={i}
-            className={`w-4 h-4 ${i < (rating || 5) ? "text-yellow-400" : "text-white/25"}`}
+            className={`w-4 h-4 ${i < (rating || 5) ? "text-[#f5a623]" : "text-[#1D1D1F]/20"}`}
           />
         ))}
       </div>
 
       {active.freeShipping && (
-        <p className="mt-4 text-xs text-white/70">✓ Free shipping included</p>
+        <p className="mt-4 text-xs text-[#1D1D1F]/65">✓ Free shipping included</p>
       )}
 
       <div className="mt-6 flex flex-col gap-2.5">
@@ -237,22 +229,22 @@ export default function FeaturedShowcase() {
             addToCart(active, active.showcaseQty || 1, { silent: true });
             router.push("/checkout");
           }}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-white text-[#1D1D1F] px-6 py-3 text-sm font-bold hover:bg-white/90 active:scale-[0.98] transition-all"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#1D1D1F] text-white px-6 py-3 text-sm font-bold shadow-[0_10px_30px_-8px_rgba(29,29,31,0.5)] hover:bg-black active:scale-[0.98] transition-all"
         >
-          <FaBolt className="w-4 h-4" />
+          <FaBolt className="w-4 h-4 text-white" />
           Buy Now
         </button>
         {/* Add to Cart — adds the admin-defined quantity */}
         <button
           onClick={() => addToCart(active, active.showcaseQty || 1)}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-white/10 border border-white/25 text-white px-6 py-3 text-sm font-bold hover:bg-white/20 active:scale-[0.98] transition-all"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 border border-[#1D1D1F]/15 text-[#1D1D1F] px-6 py-3 text-sm font-bold hover:bg-white/80 active:scale-[0.98] transition-all"
         >
           <FaShoppingCart className="w-4 h-4" />
           Add to Cart
         </button>
         <Link
           href={`/product/${active._id}/`}
-          className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition-all"
+          className="inline-flex items-center justify-center rounded-full border border-[#1D1D1F]/25 text-[#1D1D1F] px-6 py-3 text-sm font-semibold hover:bg-[#1D1D1F]/5 transition-all"
         >
           View Details
         </Link>
@@ -325,46 +317,28 @@ export default function FeaturedShowcase() {
           >
             <defs>
               <linearGradient id="fsPanel" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#2a2a2d" />
-                <stop offset="55%" stopColor="#1D1D1F" />
-                <stop offset="100%" stopColor="#131315" />
+                <stop offset="0%" stopColor="#CFDAE2" />
+                <stop offset="55%" stopColor="#BAC8D3" />
+                <stop offset="100%" stopColor="#A6B8C5" />
               </linearGradient>
             </defs>
             <path d={CURVE_D} fill="url(#fsPanel)" />
           </svg>
 
-          {/* Blurred background (admin-uploaded panel image, else the active
-              product image), clipped to the same curve via a CSS mask, with a
-              dark tint over it for legibility. */}
-          {active && (
-            <div
-              className="absolute inset-0 z-[1]"
-              style={{
-                maskImage: CURVE_MASK,
-                WebkitMaskImage: CURVE_MASK,
-                maskSize: "100% 100%",
-                WebkitMaskSize: "100% 100%",
-                maskRepeat: "no-repeat",
-                WebkitMaskRepeat: "no-repeat",
-              }}
-            >
-              {/* The uploaded image is treated as a soft, premium background
-                  texture: heavily blurred and dimmed so the product and text
-                  read cleanly on top. */}
-              <Image
-                key={`bg-${showcase.panelImage || active._id}`}
-                src={panelBg(showcase, active)}
-                alt=""
-                fill
-                aria-hidden="true"
-                sizes="40vw"
-                className="object-cover scale-110 blur-2xl opacity-50"
-              />
-              {/* Gradient tint for depth + a faint top sheen for a premium feel */}
-              <div className="absolute inset-0 bg-linear-to-b from-[#1D1D1F]/55 via-[#1D1D1F]/68 to-[#101012]/85" />
-              <div className="absolute inset-0 bg-linear-to-b from-white/[0.07] to-transparent to-40%" />
-            </div>
-          )}
+          {/* Faint top sheen on the panel (clipped to the curve) for depth. */}
+          <div
+            className="absolute inset-0 z-[1]"
+            style={{
+              maskImage: CURVE_MASK,
+              WebkitMaskImage: CURVE_MASK,
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+            }}
+          >
+            <div className="absolute inset-0 bg-linear-to-b from-white/30 to-transparent to-45%" />
+          </div>
 
           {/* Left — product info + thumbnail selector (white side) */}
           <div className="absolute inset-y-0 left-0 w-[42%] p-8 xl:p-10 flex flex-col z-20">
@@ -392,8 +366,8 @@ export default function FeaturedShowcase() {
           {/* Right — order panel over the dark curve. A gradient scrim behind
               just this column keeps the white text/price legible while the rest
               of the uploaded image stays clearly visible. */}
-          <div className="absolute inset-y-0 right-0 w-[34%] z-15 bg-linear-to-l from-[#1D1D1F]/95 via-[#1D1D1F]/75 to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-[26%] p-8 xl:p-10 flex flex-col justify-center text-white z-20">
+          <div className="absolute inset-y-0 right-0 w-[34%] z-15 bg-linear-to-l from-[#BAC8D3]/95 via-[#BAC8D3]/70 to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-[26%] p-8 xl:p-10 flex flex-col justify-center text-[#1D1D1F] z-20">
             {orderBlock}
           </div>
         </div>
@@ -408,7 +382,7 @@ export default function FeaturedShowcase() {
               preserveAspectRatio="none"
               aria-hidden="true"
             >
-              <path d="M0,0 L100,0 L100,74 C72,93 28,93 0,74 Z" fill="#1D1D1F" />
+              <path d="M0,0 L100,0 L100,74 C72,93 28,93 0,74 Z" fill="#BAC8D3" />
             </svg>
             {active && (
               <div className="absolute inset-0 flex items-center justify-center px-6 pt-2">
@@ -432,19 +406,9 @@ export default function FeaturedShowcase() {
             )}
           </div>
 
-          {/* Order — blurred background (admin panel image, else product) */}
+          {/* Order — solid light panel */}
           {active && (
-            <div className="relative overflow-hidden bg-[#1D1D1F] text-white rounded-b-[32px]">
-              <Image
-                key={`bg-m-${showcase.panelImage || active._id}`}
-                src={panelBg(showcase, active)}
-                alt=""
-                fill
-                aria-hidden="true"
-                sizes="100vw"
-                className="object-cover blur-2xl opacity-50"
-              />
-              <div className="absolute inset-0 bg-[#1D1D1F]/65" />
+            <div className="relative overflow-hidden bg-linear-to-b from-[#CFDAE2] to-[#A6B8C5] text-[#1D1D1F] rounded-b-[32px]">
               <div className="relative p-6">{orderBlock}</div>
             </div>
           )}

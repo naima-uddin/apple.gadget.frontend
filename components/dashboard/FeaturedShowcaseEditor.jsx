@@ -10,7 +10,6 @@ const DEFAULTS = {
   enabled: true,
   title: "Featured Products",
   subtitle: "Handpicked gadgets, refreshed for you.",
-  panelImage: { url: "", public_id: "" },
   tabs: [
     { label: "Latest", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
     { label: "Top Seller", type: "manual", productIds: [], imageMap: {}, qtyMap: {}, enabled: true },
@@ -46,10 +45,6 @@ export default function FeaturedShowcaseEditor() {
           setCfg({
             ...DEFAULTS,
             ...c,
-            panelImage: {
-              url: c.panelImage?.url || "",
-              public_id: c.panelImage?.public_id || "",
-            },
             tabs: c.tabs.map((t) => ({
               label: t.label || "",
               type: t.type || "latest",
@@ -205,12 +200,6 @@ export default function FeaturedShowcaseEditor() {
         </div>
       </div>
 
-      {/* Dark-panel background image */}
-      <PanelImageUploader
-        panelImage={cfg.panelImage || { url: "" }}
-        onChange={(panelImage) => set({ panelImage })}
-      />
-
       {/* Tabs */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
@@ -263,80 +252,6 @@ export default function FeaturedShowcaseEditor() {
       >
         {saving ? "Saving…" : "Save Showcase"}
       </button>
-    </div>
-  );
-}
-
-// Upload the background image shown (blurred) inside the dark curved panel on
-// the right of the showcase. Optional — when empty the storefront blurs the
-// active product's own image instead.
-function PanelImageUploader({ panelImage, onChange }) {
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState("");
-  const fileRef = useRef(null);
-  const url = panelImage?.url || "";
-
-  const handleFile = async (e) => {
-    const file = e.target.files?.[0];
-    e.target.value = "";
-    if (!file) return;
-    setError("");
-    setUploading(true);
-    try {
-      const { asset } = await uploadAdminImage(file, "applebd/featured-showcase");
-      onChange({ url: asset.url, public_id: asset.public_id || "" });
-    } catch (err) {
-      setError(err.message || "Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  return (
-    <div className="rounded-xl border border-gray-200 bg-gray-50/60 p-4">
-      <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-1">
-        Dark panel background
-      </h3>
-      <p className="text-xs text-gray-500 mb-3">
-        Optional image shown <strong>blurred</strong> behind the price / buttons
-        on the dark right side. Leave empty to blur the product image instead.
-      </p>
-      <div className="flex items-center gap-3">
-        <div className="relative h-16 w-24 shrink-0 rounded-lg overflow-hidden bg-[#1D1D1F] border border-gray-300">
-          {url && (
-            <Image
-              src={encodeURI(url)}
-              alt=""
-              fill
-              sizes="96px"
-              className="object-cover blur-[2px] opacity-70"
-            />
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              disabled={uploading}
-              className="text-xs px-3 py-1.5 bg-[#1D1D1F] text-white rounded-lg font-semibold hover:bg-black disabled:opacity-50"
-            >
-              {uploading ? "Uploading…" : url ? "Replace image" : "⬆ Upload image"}
-            </button>
-            {url && (
-              <button
-                type="button"
-                onClick={() => onChange({ url: "", public_id: "" })}
-                className="text-xs px-3 py-1.5 border border-red-200 text-red-500 rounded-lg font-semibold hover:bg-red-50"
-              >
-                Remove
-              </button>
-            )}
-          </div>
-          {error && <p className="text-xs text-red-600">{error}</p>}
-        </div>
-        <input ref={fileRef} type="file" accept="image/*" onChange={handleFile} className="hidden" />
-      </div>
     </div>
   );
 }

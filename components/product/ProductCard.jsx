@@ -137,8 +137,10 @@ export default function ProductCard({
       : ["/assets/placeholder.svg"];
 
   const currentImage = () => {
-    // On hover, show next image if available, otherwise stay on current
-    if (hovered && images[currentImageIndex + 1]) {
+    // When a color is selected, lock the image to that color's mapped image —
+    // don't swap to the next image on hover. Hover-swap only applies when no
+    // color is selected.
+    if (!selectedColor && hovered && images[currentImageIndex + 1]) {
       return images[currentImageIndex + 1];
     }
     return images[currentImageIndex];
