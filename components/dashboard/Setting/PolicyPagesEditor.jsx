@@ -500,6 +500,7 @@ function FooterEditor({
   socialLinks,
   footerLinks,
   footerColumns,
+  footerBrand,
   footerLogo,
   logoUploading,
   logoStatus,
@@ -510,6 +511,14 @@ function FooterEditor({
 }) {
   const setInfo = (key, val) =>
     onChange({ footerInfo: { ...footerInfo, [key]: val } });
+
+  const brand = footerBrand || {};
+  const setBrand = (key, val) =>
+    onChange({ footerBrand: { ...brand, [key]: val } });
+
+  const bottomLinks = Array.isArray(brand.bottomLinks) ? brand.bottomLinks : [];
+  const setBottomLinks = (next) =>
+    onChange({ footerBrand: { ...brand, bottomLinks: next } });
 
   const setSocial = (platform, field, val) =>
     onChange({
@@ -542,6 +551,172 @@ function FooterEditor({
 
   return (
     <div className="space-y-6">
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Footer Brand Block (centered)</p>
+        <p className="text-[11px] text-gray-400 mb-3">
+          The centered headline, tagline and call-to-action buttons. Leave a field
+          empty to use the site's built-in default; empty a button label to hide it.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Field label="Headline">
+            <input
+              value={brand.headline || ""}
+              onChange={(e) => setBrand("headline", e.target.value)}
+              className={INPUT}
+              placeholder="Premium Apple Products"
+            />
+          </Field>
+          <Field label="Tagline">
+            <input
+              value={brand.tagline || ""}
+              onChange={(e) => setBrand("tagline", e.target.value)}
+              className={INPUT}
+              placeholder="Short description under the headline"
+            />
+          </Field>
+          <Field label="Primary button — label">
+            <input
+              value={brand.primaryCtaLabel || ""}
+              onChange={(e) => setBrand("primaryCtaLabel", e.target.value)}
+              className={INPUT}
+              placeholder="Shop Now"
+            />
+          </Field>
+          <Field label="Primary button — link">
+            <input
+              value={brand.primaryCtaLink || ""}
+              onChange={(e) => setBrand("primaryCtaLink", e.target.value)}
+              className={INPUT}
+              placeholder="/products"
+            />
+          </Field>
+          <Field label="Account button — label (logged-in users)">
+            <input
+              value={brand.accountCtaLabel || ""}
+              onChange={(e) => setBrand("accountCtaLabel", e.target.value)}
+              className={INPUT}
+              placeholder="My Account"
+            />
+          </Field>
+          <Field label="Account button — link">
+            <input
+              value={brand.accountCtaLink || ""}
+              onChange={(e) => setBrand("accountCtaLink", e.target.value)}
+              className={INPUT}
+              placeholder="/user/profile"
+            />
+          </Field>
+          <Field label="Login button — label (logged-out users)">
+            <input
+              value={brand.loginCtaLabel || ""}
+              onChange={(e) => setBrand("loginCtaLabel", e.target.value)}
+              className={INPUT}
+              placeholder="Login / Register"
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Section Headings</p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <Field label="Contact column title">
+            <input
+              value={brand.contactTitle || ""}
+              onChange={(e) => setBrand("contactTitle", e.target.value)}
+              className={INPUT}
+              placeholder="Contact"
+            />
+          </Field>
+          <Field label="Quick-links column title">
+            <input
+              value={brand.quickLinksTitle || ""}
+              onChange={(e) => setBrand("quickLinksTitle", e.target.value)}
+              className={INPUT}
+              placeholder="Quick Links"
+            />
+          </Field>
+          <Field label="Social links label">
+            <input
+              value={brand.followUsLabel || ""}
+              onChange={(e) => setBrand("followUsLabel", e.target.value)}
+              className={INPUT}
+              placeholder="Follow Us"
+            />
+          </Field>
+        </div>
+      </div>
+
+      <div>
+        <p className="text-sm font-semibold text-gray-700 mb-2">Bottom Bar</p>
+        <Field label="Copyright text — use {year} for the current year">
+          <input
+            value={brand.copyright || ""}
+            onChange={(e) => setBrand("copyright", e.target.value)}
+            className={INPUT}
+            placeholder="© {year} AppleBD. All rights reserved."
+          />
+        </Field>
+        <div className="mt-3">
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-xs font-medium text-gray-600">Bottom legal links</p>
+            <button
+              type="button"
+              onClick={() => setBottomLinks([...bottomLinks, { label: "", href: "" }])}
+              className="flex items-center gap-1 text-xs px-2.5 py-1 bg-gray-900 text-white rounded-lg hover:bg-gray-800"
+            >
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add link
+            </button>
+          </div>
+          <p className="text-[11px] text-gray-400 mb-2">
+            If empty, the site shows the default Privacy Policy and Terms links.
+          </p>
+          <div className="space-y-1.5">
+            {bottomLinks.map((item, i) => (
+              <div key={i} className="flex items-center gap-1.5">
+                <input
+                  value={item.label || ""}
+                  onChange={(e) =>
+                    setBottomLinks(
+                      bottomLinks.map((l, j) => (j === i ? { ...l, label: e.target.value } : l)),
+                    )
+                  }
+                  placeholder="Label"
+                  className="w-32 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
+                />
+                <input
+                  value={item.href || ""}
+                  onChange={(e) =>
+                    setBottomLinks(
+                      bottomLinks.map((l, j) => (j === i ? { ...l, href: e.target.value } : l)),
+                    )
+                  }
+                  placeholder="/privacy"
+                  className="flex-1 border border-gray-200 px-2 py-1.5 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-gray-100 bg-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => setBottomLinks(bottomLinks.filter((_, j) => j !== i))}
+                  className="p-1.5 text-red-400 hover:text-red-600 border border-red-100 rounded-lg hover:bg-red-50 bg-white"
+                  title="Delete link"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4h6v2" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div>
         <p className="text-sm font-semibold text-gray-700 mb-2">Footer Logo</p>
         <ImageAssetField
@@ -923,6 +1098,7 @@ export default function PolicyPagesEditor() {
   const [socialLinks, setSocialLinks] = useState({});
   const [footerLinks, setFooterLinks] = useState(EMPTY_FOOTER_LINKS);
   const [footerColumns, setFooterColumns] = useState([]);
+  const [footerBrand, setFooterBrand] = useState({});
   const [footerLogo, setFooterLogo] = useState(EMPTY_FOOTER_LOGO);
   const [aboutContent, setAboutContent] = useState(EMPTY_ABOUT);
 
@@ -952,6 +1128,7 @@ export default function PolicyPagesEditor() {
         setSocialLinks(s.socialLinks || {});
         setFooterLinks(s.footerLinks || EMPTY_FOOTER_LINKS);
         setFooterColumns(Array.isArray(s.footerColumns) ? s.footerColumns : []);
+        setFooterBrand(s.footerBrand || {});
         setFooterLogo(s.footerLogo || EMPTY_FOOTER_LOGO);
         setAboutContent(s.aboutContent || EMPTY_ABOUT);
       })
@@ -1035,7 +1212,7 @@ export default function PolicyPagesEditor() {
 
   const handleSave = () => {
     if (activeTab === "footer") {
-      return putPolicy({ footerInfo, socialLinks, footerLinks, footerColumns, footerLogo });
+      return putPolicy({ footerInfo, socialLinks, footerLinks, footerColumns, footerBrand, footerLogo });
     }
     if (activeTab === "contact") {
       return putPolicy({ contactInfo });
@@ -1202,6 +1379,7 @@ export default function PolicyPagesEditor() {
               socialLinks={socialLinks}
               footerLinks={footerLinks}
               footerColumns={footerColumns}
+              footerBrand={footerBrand}
               footerLogo={footerLogo}
               logoUploading={logoUploading}
               logoStatus={logoStatus}
@@ -1213,6 +1391,7 @@ export default function PolicyPagesEditor() {
                 if (patch.socialLinks) setSocialLinks(patch.socialLinks);
                 if (patch.footerLinks) setFooterLinks(patch.footerLinks);
                 if (patch.footerColumns) setFooterColumns(patch.footerColumns);
+                if (patch.footerBrand) setFooterBrand(patch.footerBrand);
               }}
             />
           )}

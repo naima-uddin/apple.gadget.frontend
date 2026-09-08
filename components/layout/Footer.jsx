@@ -48,10 +48,35 @@ export default function Footer() {
     socialLinks,
     footerLinks,
     footerColumns,
+    footerBrand,
   } = useStoreSettings();
   const topIcon = faviconUrl || footerLogoUrl || logoUrl;
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Admin-controlled brand block + bottom bar, each with a translated fallback.
+  const brand = footerBrand || {};
+  const headline = brand.headline || "Premium Apple Products";
+  const tagline = brand.tagline || t("footer.store_desc");
+  const contactTitle = brand.contactTitle || t("footer.contact_title");
+  const quickLinksTitle = brand.quickLinksTitle || t("footer.quick_links");
+  const followUsLabel = brand.followUsLabel || t("footer.follow_us");
+  const primaryCtaLabel = brand.primaryCtaLabel || t("footer.shop");
+  const primaryCtaLink = normalizeHref(brand.primaryCtaLink || "/products");
+  const accountCtaLabel = brand.accountCtaLabel || t("footer.my_account");
+  const accountCtaLink = normalizeHref(brand.accountCtaLink || "/user/profile");
+  const loginCtaLabel = brand.loginCtaLabel || t("footer.login_register");
+  const copyright = (brand.copyright || "")
+    .replace(/\{year\}/g, String(new Date().getFullYear()))
+    .trim();
+  const bottomLinks = (Array.isArray(brand.bottomLinks) ? brand.bottomLinks : [])
+    .filter((l) => l && l.label);
+  const legalLinks = bottomLinks.length
+    ? bottomLinks
+    : [
+        { label: t("footer.privacy"), href: "/privacy" },
+        { label: t("footer.terms"), href: "/terms" },
+      ];
 
   const quickLinks = footerLinks?.customerService?.length
     ? footerLinks.customerService
@@ -140,7 +165,7 @@ export default function Footer() {
               {/* Contact */}
               <div className="order-2 lg:order-1">
                 <h3 className="text-lg font-semibold">
-                  {t("footer.contact_title")}
+                  {contactTitle}
                 </h3>
                 <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-6">
                   {/* Contact details */}
@@ -172,7 +197,7 @@ export default function Footer() {
                   {socials.length > 0 && (
                     <div>
                       <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
-                        {t("footer.follow_us")}
+                        {followUsLabel}
                       </p>
                       <ul className="space-y-2 text-sm text-white/70">
                         {socials.map((s) => (
@@ -200,39 +225,47 @@ export default function Footer() {
                 <div className="flex items-center justify-center gap-3 sm:gap-4">
                   <span className="h-[3px] w-8 sm:w-12 rounded-full bg-gradient-to-l from-red-600 to-transparent" />
                   <h2 className="text-base sm:text-xl font-semibold uppercase tracking-[0.18em] sm:tracking-[0.28em] text-white">
-                    Premium Apple Products
+                    {headline}
                   </h2>
                   <span className="h-[3px] w-8 sm:w-12 rounded-full bg-gradient-to-r from-red-600 to-transparent" />
                 </div>
-                <p className="mt-2 max-w-sm text-sm sm:text-base italic text-white/60">
-                  {t("footer.store_desc")}
-                </p>
+                {tagline && (
+                  <p className="mt-2 max-w-sm text-sm sm:text-base italic text-white/60">
+                    {tagline}
+                  </p>
+                )}
 
                 {/* CTA pills */}
-                <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-                  <Link
-                    href="/products"
-                    className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#161616] transition-colors hover:bg-white/85"
-                  >
-                    {t("footer.shop")}
-                    <ArrowUpRight />
-                  </Link>
-                  {user ? (
+                <div className="mt-4 flex flex-nowrap items-center justify-center gap-2 sm:gap-3">
+                  {primaryCtaLabel && (
                     <Link
-                      href="/user/profile"
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                      href={primaryCtaLink}
+                      className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-white px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-[#161616] transition-colors hover:bg-white/85"
                     >
-                      {t("footer.my_account")}
+                      {primaryCtaLabel}
                       <ArrowUpRight />
                     </Link>
+                  )}
+                  {user ? (
+                    accountCtaLabel && (
+                      <Link
+                        href={accountCtaLink}
+                        className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/25 px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                      >
+                        {accountCtaLabel}
+                        <ArrowUpRight />
+                      </Link>
+                    )
                   ) : (
-                    <button
-                      onClick={() => setShowAuthModal(true)}
-                      className="group inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
-                    >
-                      {t("footer.login_register")}
-                      <ArrowUpRight />
-                    </button>
+                    loginCtaLabel && (
+                      <button
+                        onClick={() => setShowAuthModal(true)}
+                        className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/25 px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                      >
+                        {loginCtaLabel}
+                        <ArrowUpRight />
+                      </button>
+                    )
                   )}
                 </div>
               </div>
@@ -240,7 +273,7 @@ export default function Footer() {
               {/* Quick links */}
               <div className="order-3 lg:justify-self-end">
                 <h3 className="text-lg font-semibold">
-                  {t("footer.quick_links")}
+                  {quickLinksTitle}
                 </h3>
                 {useDynamicColumns ? (
                   <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-6">
@@ -291,16 +324,23 @@ export default function Footer() {
           {/* Bottom bar */}
           <div className="relative mx-auto flex max-w-360 flex-col gap-3 border-t border-white/10 px-6 py-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-14">
             <span>
-              © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
-              {t("footer.rights")}
+              {copyright || (
+                <>
+                  © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
+                  {t("footer.rights")}
+                </>
+              )}
             </span>
             <span className="flex flex-wrap items-center gap-x-5 gap-y-1">
-              <Link href="/privacy" className="hover:text-white transition-colors">
-                {t("footer.privacy")}
-              </Link>
-              <Link href="/terms" className="hover:text-white transition-colors">
-                {t("footer.terms")}
-              </Link>
+              {legalLinks.map((item, i) => (
+                <Link
+                  key={i}
+                  href={normalizeHref(item.href)}
+                  className="hover:text-white transition-colors"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </span>
           </div>
         </div>

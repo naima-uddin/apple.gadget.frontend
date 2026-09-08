@@ -26,6 +26,7 @@ const StoreSettingsContext = createContext({
   policyContent: EMPTY_POLICY,
   footerLinks: EMPTY_FOOTER_LINKS,
   footerColumns: [],
+  footerBrand: {},
   aboutContent: EMPTY_ABOUT,
 });
 
@@ -41,6 +42,7 @@ export function StoreSettingsProvider({ children }) {
     policyContent: EMPTY_POLICY,
     footerLinks: EMPTY_FOOTER_LINKS,
     footerColumns: [],
+    footerBrand: {},
     aboutContent: EMPTY_ABOUT,
   });
 
@@ -59,6 +61,7 @@ export function StoreSettingsProvider({ children }) {
           policyContent: d.policyContent || EMPTY_POLICY,
           footerLinks: d.footerLinks || EMPTY_FOOTER_LINKS,
           footerColumns: Array.isArray(d.footerColumns) ? d.footerColumns : [],
+          footerBrand: d.footerBrand || {},
           aboutContent: d.aboutContent || EMPTY_ABOUT,
         }),
       )
