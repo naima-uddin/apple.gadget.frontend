@@ -125,9 +125,9 @@ export default function Footer() {
             }}
           />
 
-          <div className="relative px-6 py-12 sm:px-10 lg:px-14 lg:py-16">
+          <div className="relative px-6 py-6 sm:px-10 lg:px-14 lg:py-7">
             {/* ── Contact (left) · Brand (center) · Quick links (right) ── */}
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-10">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-10">
               {/* Contact */}
               <div className="order-2 lg:order-1">
                 <h3 className="text-lg font-semibold">
@@ -183,7 +183,7 @@ export default function Footer() {
                   <img
                     src={brandMark}
                     alt={storeName || "Store"}
-                    className="h-28 w-28 sm:h-36 sm:w-36 object-contain"
+                    className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
                   />
                 )}
                 <p className="mt-1 max-w-sm text-sm sm:text-base italic text-white/60">
@@ -191,7 +191,7 @@ export default function Footer() {
                 </p>
 
                 {/* CTA pills */}
-                <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+                <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
                   <Link
                     href="/products"
                     className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#161616] transition-colors hover:bg-white/85"
