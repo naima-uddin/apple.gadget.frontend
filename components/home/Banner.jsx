@@ -97,7 +97,7 @@ const Banner = () => {
 
   return (
     <section
-      className="relative h-120 w-full overflow-hidden -mt-12 sm:h-150 md:-mt-14 lg:h-165"
+      className="relative h-[26rem] w-full overflow-hidden -mt-12 sm:h-[34rem] md:-mt-14 md:h-[38rem] lg:h-165"
       onMouseEnter={() => clearInterval(autoRef.current)}
       onMouseLeave={startAuto}
     >
@@ -122,7 +122,7 @@ const Banner = () => {
 
       {/* ── Left image — pulled inward from the edge and sized down via the
              vertical padding so it never crowds the navbar or the centre text ── */}
-      <div className="pointer-events-none absolute inset-y-0 left-[3%] w-[32%] sm:left-[6%] sm:w-[29%] lg:left-[12%] lg:w-[27%]">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[26%] sm:left-[6%] sm:w-[29%] lg:left-[12%] lg:w-[27%]">
         {slides.map((s, i) => (
           <div
             key={`l-${s._id || i}`}
@@ -146,7 +146,7 @@ const Banner = () => {
       </div>
 
       {/* ── Right image (each slide's own rightImage, falls back to its left) ── */}
-      <div className="pointer-events-none absolute inset-y-0 right-[3%] w-[32%] sm:right-[6%] sm:w-[29%] lg:right-[12%] lg:w-[27%]">
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[26%] sm:right-[6%] sm:w-[29%] lg:right-[12%] lg:w-[27%]">
         {slides.map((s, i) => (
           <div
             key={`r-${s._id || i}`}
@@ -170,7 +170,7 @@ const Banner = () => {
       </div>
 
       {/* ── Centre content (top padding clears the transparent navbar) ── */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-2 pt-12 text-center md:pt-14">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-5 pt-12 text-center sm:px-2 md:pt-14">
         {slide.badge && (
           <span className="mb-4 inline-block rounded-full border border-black/10 bg-white/60 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#1D1D1F] backdrop-blur-md sm:text-[11px]">
             {slide.badge}
@@ -180,7 +180,7 @@ const Banner = () => {
         {slide.title && (
           <h1
             onClick={goToLink}
-            className={`${playfair.className} max-w-[62%] cursor-pointer text-3xl font-bold uppercase leading-[1.02] tracking-tight text-[#1D1D1F] text-balance sm:max-w-md sm:text-5xl lg:text-6xl`}
+            className={`${playfair.className} max-w-[62%] cursor-pointer text-2xl font-bold uppercase leading-[1.05] tracking-tight text-[#1D1D1F] text-balance min-[420px]:text-3xl sm:max-w-md sm:text-5xl lg:text-6xl`}
           >
             {renderHighlight(slide.title)}
           </h1>
@@ -201,7 +201,7 @@ const Banner = () => {
               boxShadow:
                 "inset 0 2px 2px rgba(255,255,255,0.85), inset 0 -3px 6px rgba(255,255,255,0.45), inset 0 0 0 1px rgba(255,255,255,0.4), inset 6px 0 12px -6px rgba(255,255,255,0.6), inset -6px 0 12px -6px rgba(255,255,255,0.6), 0 20px 35px -12px rgba(30,40,60,0.4)",
             }}
-            className="group relative mt-7 inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/50 px-10 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#1D1D1F] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 sm:text-sm"
+            className="group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/50 px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#1D1D1F] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 sm:mt-7 sm:px-10 sm:py-4 sm:text-sm"
           >
             {/* bright glossy specular sweep across the top half */}
             <span
