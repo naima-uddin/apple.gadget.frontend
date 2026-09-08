@@ -166,7 +166,7 @@ export default function Footer() {
       {/* Full-width footer — no max-width container */}
       <footer
         role="contentinfo"
-        className="relative mt-16 rounded-t-[2.5rem] bg-linear-to-b from-[#EDEEF0] via-[#E3E5E8] to-[#D6D9DD] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] ring-1 ring-black/5"
+        className="relative mt-16 rounded-t-[2.5rem] bg-[#EDEEF0] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] ring-1 ring-black/5 border border-white"
       >
         {/* Favicon poking out over the top-center edge */}
         {topIcon && (
