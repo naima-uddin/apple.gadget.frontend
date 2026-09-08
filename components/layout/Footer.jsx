@@ -113,7 +113,7 @@ export default function Footer() {
   return (
     <>
       {/* Full-width dark footer — no max-width container */}
-      <footer role="contentinfo" className="relative rounded-t-[2.5rem] bg-[#161616]">
+      <footer role="contentinfo" className="relative mt-16 rounded-t-[2.5rem] bg-[#161616]">
         {/* Favicon poking out over the top-center edge */}
         {topIcon && (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -134,7 +134,7 @@ export default function Footer() {
             }}
           />
 
-          <div className="relative px-6 pt-12 pb-6 sm:px-10 lg:px-14 lg:pt-14 lg:pb-7">
+          <div className="relative mx-auto max-w-360 px-6 pt-12 pb-6 sm:px-10 lg:px-14 lg:pt-14 lg:pb-7">
             {/* ── Contact (left) · Brand (center) · Quick links (right) ── */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-10">
               {/* Contact */}
@@ -142,47 +142,56 @@ export default function Footer() {
                 <h3 className="text-lg font-semibold">
                   {t("footer.contact_title")}
                 </h3>
-                <ul className="mt-4 space-y-2 text-sm text-white/60">
-                  {footerInfo?.address && <li>{footerInfo.address}</li>}
-                  {footerInfo?.phone && (
-                    <li>
-                      <a
-                        href={`tel:${footerInfo.phone}`}
-                        className="hover:text-white transition-colors"
-                      >
-                        {footerInfo.phone}
-                      </a>
-                    </li>
-                  )}
-                  {footerInfo?.email && (
-                    <li>
-                      <a
-                        href={`mailto:${footerInfo.email}`}
-                        className="underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white transition-colors"
-                      >
-                        {footerInfo.email}
-                      </a>
-                    </li>
-                  )}
-                </ul>
-
-                {socials.length > 0 && (
-                  <ul className="mt-5 space-y-2 text-sm text-white/70">
-                    {socials.map((s) => (
-                      <li key={s.key}>
+                <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-6">
+                  {/* Contact details */}
+                  <ul className="space-y-2 text-sm text-white/60">
+                    {footerInfo?.address && <li>{footerInfo.address}</li>}
+                    {footerInfo?.phone && (
+                      <li>
                         <a
-                          href={s.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                          href={`tel:${footerInfo.phone}`}
+                          className="hover:text-white transition-colors"
                         >
-                          {s.label}
-                          <ArrowUpRight />
+                          {footerInfo.phone}
                         </a>
                       </li>
-                    ))}
+                    )}
+                    {footerInfo?.email && (
+                      <li>
+                        <a
+                          href={`mailto:${footerInfo.email}`}
+                          className="underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white transition-colors"
+                        >
+                          {footerInfo.email}
+                        </a>
+                      </li>
+                    )}
                   </ul>
-                )}
+
+                  {/* Social links as a separate sub-column */}
+                  {socials.length > 0 && (
+                    <div>
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
+                        {t("footer.follow_us")}
+                      </p>
+                      <ul className="space-y-2 text-sm text-white/70">
+                        {socials.map((s) => (
+                          <li key={s.key}>
+                            <a
+                              href={s.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                              {s.label}
+                              <ArrowUpRight />
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* ── Centered brand hero ── */}
@@ -280,7 +289,7 @@ export default function Footer() {
           </div>
 
           {/* Bottom bar */}
-          <div className="relative flex flex-col gap-3 border-t border-white/10 px-6 py-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-14">
+          <div className="relative mx-auto flex max-w-360 flex-col gap-3 border-t border-white/10 px-6 py-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-14">
             <span>
               © {new Date().getFullYear()} {storeName || "Our Store"}.{" "}
               {t("footer.rights")}
