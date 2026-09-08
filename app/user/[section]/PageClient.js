@@ -632,7 +632,7 @@ function OrdersSection({ API }) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-bold text-gray-900">
-                    {shortId(order._id)}
+                    {order.orderNumber || shortId(order._id)}
                   </span>
                   <span
                     className={`text-xs px-2 py-0.5 rounded-full font-semibold capitalize ${STATUS_COLORS[order.status] || "bg-gray-100 text-gray-600"}`}

@@ -137,6 +137,7 @@ function PaymentPageInner() {
   const cfg = CONFIG[method] || CONFIG.bkash;
   const Logo = LOGOS[method] || LOGOS.bkash;
 
+  const [orderNumber, setOrderNumber] = useState("");
   const [step, setStep] = useState(STEP.NUMBER);
   const [senderNumber, setSenderNumber] = useState("");
   const [txId, setTxId] = useState("");
@@ -145,6 +146,14 @@ function PaymentPageInner() {
   const [showCancelConfirm, setShowCancelConfirm] = useState(false);
   const [switching, setSwitching] = useState(false);
   const submitted = useRef(false);
+
+  useEffect(() => {
+    if (!orderId) return;
+    fetch(`${API}/api/orders/${orderId}`, { credentials: "include" })
+      .then((r) => r.json())
+      .then((d) => d?.order?.orderNumber && setOrderNumber(d.order.orderNumber))
+      .catch(() => {});
+  }, [orderId]);
 
   const handleSwitchToCOD = async () => {
     setSwitching(true);
@@ -289,7 +298,7 @@ function PaymentPageInner() {
               </div>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-white/80 text-xs">
-                  Order #{orderId.slice(-8).toUpperCase()}
+                  Order {orderNumber || `#${orderId.slice(-8).toUpperCase()}`}
                 </span>
                 <span className="text-white font-bold text-lg">
                   ৳{amount.toLocaleString("en-BD")}

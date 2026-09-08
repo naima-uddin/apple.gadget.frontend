@@ -423,7 +423,7 @@ function StatusUpdateModal({ order, onClose, onUpdated }) {
         <div>
           <h3 className="text-base font-bold text-gray-900">Update status</h3>
           <p className="text-xs text-gray-400 font-mono mt-0.5">
-            {formatOrderId(order._id)} · {order.billingDetails?.name || ""}
+            {formatOrderId(order)} · {order.billingDetails?.name || ""}
           </p>
         </div>
         <div>
@@ -553,7 +553,7 @@ function OrdersTable({
                 <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                   <input
                     type="checkbox"
-                    aria-label={`Select order ${formatOrderId(order._id)}`}
+                    aria-label={`Select order ${formatOrderId(order)}`}
                     checked={checked}
                     onChange={() => onToggleSelect(oid)}
                     className="cursor-pointer align-middle"
@@ -567,7 +567,7 @@ function OrdersTable({
                   rel="noopener noreferrer"
                   className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:bg-gray-50 hover:underline"
                 >
-                  {formatOrderId(order._id)}
+                  {formatOrderId(order)}
                 </Link>
               </td>
               <td
@@ -764,7 +764,7 @@ function CancelledOrdersTable({
                     href={`/dashboard/orders/${order._id}`}
                     className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                   >
-                    {formatOrderId(order._id)}
+                    {formatOrderId(order)}
                   </Link>
                 </td>
 
@@ -1035,7 +1035,7 @@ function ReturnActionModal({ modal, onClose, onSave }) {
             <div className="bg-gray-50 rounded-xl px-4 py-3 text-sm">
               <span className="text-gray-500">Order:</span>{" "}
               <span className="font-mono font-semibold text-gray-800">
-                {formatOrderId(modal.order._id)}
+                {formatOrderId(modal.order)}
               </span>
               <span className="ml-3 text-gray-500">
                 {modal.order.billingDetails?.name}
@@ -1229,7 +1229,7 @@ function AddReturnModal({ onClose, onSave }) {
                       >
                         <div className="flex items-center gap-3">
                           <span className="font-mono text-xs text-gray-800 bg-gray-50 px-1.5 py-0.5 rounded-lg">
-                            {formatOrderId(o._id)}
+                            {formatOrderId(o)}
                           </span>
                           <span className="text-sm font-medium text-gray-800 flex-1">
                             {o.billingDetails?.name}
@@ -1256,7 +1256,7 @@ function AddReturnModal({ onClose, onSave }) {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="font-mono text-xs text-gray-800 bg-white border border-gray-300 px-1.5 py-0.5 rounded-lg">
-                      {formatOrderId(selected._id)}
+                      {formatOrderId(selected)}
                     </span>
                     <span className="text-sm font-medium text-gray-800">
                       {selected.billingDetails?.name}
@@ -1733,7 +1733,7 @@ function ReturnsRefundsSection() {
                         href={`/dashboard/orders/${order._id}`}
                         className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                       >
-                        {formatOrderId(order._id)}
+                        {formatOrderId(order)}
                       </Link>
                     </td>
                     <td className="px-4 py-3">
@@ -2343,7 +2343,7 @@ function FilteredOrdersSection({
                           href={`/dashboard/orders/${order._id}`}
                           className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                         >
-                          {formatOrderId(order._id)}
+                          {formatOrderId(order)}
                         </Link>
                       </td>
                       <td
@@ -2551,7 +2551,7 @@ function CustomerNoteModal({ order, onClose }) {
                 rel="noreferrer"
                 className="text-xs text-gray-800 hover:underline font-mono"
               >
-                #{String(order._id).slice(-8).toUpperCase()} →
+                {formatOrderId(order)} →
               </a>
               <span
                 className={`text-xs px-2 py-0.5 rounded-full font-medium ${ORDER_STATUS_COLOR[order.status] || "bg-gray-100 text-gray-500"}`}
@@ -2604,7 +2604,7 @@ function CustomerNoteModal({ order, onClose }) {
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-xs font-mono text-gray-500 shrink-0">
-                        #{String(o._id).slice(-8).toUpperCase()}
+                        {formatOrderId(o)}
                       </span>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${ORDER_STATUS_COLOR[o.status] || "bg-gray-100 text-gray-500"}`}
@@ -2748,7 +2748,7 @@ function CustomerNotesSection() {
                         href={`/dashboard/orders/${order._id}`}
                         className="font-mono text-xs bg-gray-100 rounded-lg px-1.5 py-0.5 text-gray-800 hover:underline"
                       >
-                        {formatOrderId(order._id)}
+                        {formatOrderId(order)}
                       </Link>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${STATUS_STYLE[order.status] || ""}`}
@@ -2988,7 +2988,7 @@ function OrderTimelineSection() {
                     href={`/dashboard/orders/${order.orderId}`}
                     className="font-mono text-xs text-gray-800 hover:underline bg-gray-50 px-1.5 py-0.5 rounded-lg"
                   >
-                    #{order.orderIdShort}
+                    {order.orderIdShort}
                   </Link>
                 </span>
                 <span
@@ -3274,7 +3274,7 @@ function AbandonedCartModal({ user, onClose }) {
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-xs font-mono text-gray-500 shrink-0">
-                        #{String(o._id).slice(-8).toUpperCase()}
+                        {formatOrderId(o)}
                       </span>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${ORDER_STATUS_COLOR[o.status] || "bg-gray-100 text-gray-500"}`}
@@ -3787,7 +3787,7 @@ function OrderCustomerModal({ name, phone, email, userId, onClose }) {
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-xs font-mono text-gray-500 shrink-0">
-                        #{String(o._id).slice(-8).toUpperCase()}
+                        {formatOrderId(o)}
                       </span>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${ORDER_STATUS_COLOR[o.status] || "bg-gray-100 text-gray-500"}`}
@@ -4021,7 +4021,7 @@ function CheckoutSessionModal({ session, onClose }) {
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-xs font-mono text-gray-500 shrink-0">
-                        #{String(o._id).slice(-8).toUpperCase()}
+                        {formatOrderId(o)}
                       </span>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${
@@ -4553,7 +4553,7 @@ function WishlistCustomerModal({ customer, productId, onClose }) {
                   >
                     <div className="flex items-center gap-2 min-w-0">
                       <span className="text-xs font-mono text-gray-500 shrink-0">
-                        #{String(o._id).slice(-8).toUpperCase()}
+                        {formatOrderId(o)}
                       </span>
                       <span
                         className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${ORDER_STATUS_COLOR[o.status] || "bg-gray-100 text-gray-500"}`}

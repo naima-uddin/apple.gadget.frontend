@@ -527,7 +527,9 @@ function SuccessContent() {
               <p className="text-gray-400 text-xs mb-1">
                 {t("success.order_id")}
               </p>
-              <p className="font-semibold text-[#1F2937]">{shortId(orderId)}</p>
+              <p className="font-semibold text-[#1F2937]">
+                {order?.orderNumber || shortId(orderId)}
+              </p>
             </div>
             <div className="text-right">
               <p className="text-gray-400 text-xs mb-1">

@@ -175,11 +175,11 @@ export default function OrderPickManager() {
                             className="text-gray-800 hover:underline font-semibold"
                             onClick={(e) => e.stopPropagation()}
                           >
-                            {formatOrderId(order._id)}
+                            {formatOrderId(order)}
                           </Link>
                         ) : (
                           <span className="text-gray-500">
-                            {formatOrderId(order._id)}
+                            {formatOrderId(order)}
                           </span>
                         )}
                       </td>

@@ -399,7 +399,7 @@ export default function OrderDetails({ orderId }) {
           </Link>
           <div className="flex flex-wrap items-center gap-2 mt-2">
             <h1 className="text-2xl font-bold tracking-tight text-[#1F2937] work-sans">
-              {formatOrderId(order._id)}
+              {formatOrderId(order)}
             </h1>
             <span className="text-xs font-medium px-2 py-1 rounded-full bg-gray-100 text-[#1D1D1F]">
               Online Store

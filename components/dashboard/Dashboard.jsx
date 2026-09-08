@@ -511,7 +511,7 @@ export default function Dashboard() {
                       <tr key={order._id} className="border-b last:border-0">
                         <td className="py-2 pr-3">
                           <div className="font-mono text-xs text-gray-700">
-                            #{shortId(order._id)}
+                            {order.orderNumber || `#${shortId(order._id)}`}
                           </div>
                           <div className="text-xs text-gray-400">
                             {order.items?.length || 0} items

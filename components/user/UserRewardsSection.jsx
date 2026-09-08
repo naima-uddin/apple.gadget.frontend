@@ -125,7 +125,7 @@ export default function UserRewardsSection() {
                 >
                   <div>
                     <p className="font-mono text-sm font-semibold text-gray-800">
-                      {formatOrderId(order._id)}
+                      {formatOrderId(order)}
                     </p>
                     <p className="text-xs text-gray-500 mt-0.5">
                       {fmt(order.createdAt)} ·{" "}

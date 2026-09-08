@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -12,6 +12,15 @@ function FailContent() {
   const reason = params.get("reason");
   const [retrying, setRetrying] = useState(false);
   const [retryError, setRetryError] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+
+  useEffect(() => {
+    if (!orderId) return;
+    fetch(`${API}/api/orders/${orderId}`, { credentials: "include" })
+      .then((r) => r.json())
+      .then((d) => d?.order?.orderNumber && setOrderNumber(d.order.orderNumber))
+      .catch(() => {});
+  }, [orderId]);
 
   const handleRetry = async () => {
     if (!orderId) return;
@@ -72,7 +81,7 @@ function FailContent() {
           <p className="text-sm text-gray-500 mt-3 mb-2">
             Reference:{" "}
             <span className="font-mono font-semibold text-gray-800">
-              {orderId.slice(-6).toUpperCase()}
+              {orderNumber || orderId.slice(-6).toUpperCase()}
             </span>
           </p>
         )}

@@ -37,6 +37,32 @@ function ArrowUpRight() {
   );
 }
 
+/* Premium footer link — subtle color shift + animated underline that grows in. */
+function FooterLink({ href, external, children }) {
+  const cls =
+    "group/link relative inline-flex w-fit items-center text-[#1D1D1F]/70 transition-colors duration-200 hover:text-black";
+  const underline = (
+    <span
+      aria-hidden="true"
+      className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-black transition-transform duration-300 ease-out group-hover/link:scale-x-100"
+    />
+  );
+  if (external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
+        {children}
+        {underline}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={cls}>
+      {children}
+      {underline}
+    </Link>
+  );
+}
+
 export default function Footer() {
   const { user } = useUser();
   const {
@@ -137,22 +163,25 @@ export default function Footer() {
 
   return (
     <>
-      {/* Full-width dark footer — no max-width container */}
-      <footer role="contentinfo" className="relative mt-16 rounded-t-[2.5rem] bg-[#161616]">
+      {/* Full-width footer — no max-width container */}
+      <footer
+        role="contentinfo"
+        className="relative mt-16 rounded-t-[2.5rem] bg-linear-to-b from-[#EDEEF0] via-[#E3E5E8] to-[#D6D9DD] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] ring-1 ring-black/5"
+      >
         {/* Favicon poking out over the top-center edge */}
         {topIcon && (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
             src={topIcon}
             alt={storeName || "Store"}
-            className="absolute left-1/2 top-0 z-10 h-20 w-20 sm:h-24 sm:w-24 -translate-x-1/2 -translate-y-1/2 object-contain"
+            className="absolute left-1/2 top-0 z-10 h-20 w-20 sm:h-24 sm:w-24 -translate-x-1/2 -translate-y-1/2 object-contain drop-shadow-md"
           />
         )}
-        <div className="relative w-full text-white">
+        <div className="relative w-full text-[#1D1D1F]">
           {/* Subtle flowing-line texture, matching the reference backdrop */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.06]"
+            className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.10]"
             style={{
               backgroundImage:
                 "radial-gradient(120% 120% at 15% 0%, #ffffff 0, transparent 45%), radial-gradient(120% 120% at 85% 100%, #ffffff 0, transparent 45%)",
@@ -169,13 +198,13 @@ export default function Footer() {
                 </h3>
                 <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-6">
                   {/* Contact details */}
-                  <ul className="space-y-2 text-sm text-white/60">
+                  <ul className="space-y-2 text-sm text-[#1D1D1F]/70">
                     {footerInfo?.address && <li>{footerInfo.address}</li>}
                     {footerInfo?.phone && (
                       <li>
                         <a
                           href={`tel:${footerInfo.phone}`}
-                          className="hover:text-white transition-colors"
+                          className="hover:text-black transition-colors"
                         >
                           {footerInfo.phone}
                         </a>
@@ -185,7 +214,7 @@ export default function Footer() {
                       <li>
                         <a
                           href={`mailto:${footerInfo.email}`}
-                          className="underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white transition-colors"
+                          className="underline decoration-black/30 underline-offset-4 hover:text-black hover:decoration-black transition-colors"
                         >
                           {footerInfo.email}
                         </a>
@@ -196,21 +225,18 @@ export default function Footer() {
                   {/* Social links as a separate sub-column */}
                   {socials.length > 0 && (
                     <div>
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]/50">
                         {followUsLabel}
                       </p>
-                      <ul className="space-y-2 text-sm text-white/70">
+                      <ul className="space-y-2.5 text-sm">
                         {socials.map((s) => (
                           <li key={s.key}>
-                            <a
-                              href={s.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group inline-flex items-center gap-1.5 hover:text-white transition-colors"
-                            >
-                              {s.label}
-                              <ArrowUpRight />
-                            </a>
+                            <FooterLink href={s.url} external>
+                              <span className="group inline-flex items-center gap-1.5">
+                                {s.label}
+                                <ArrowUpRight />
+                              </span>
+                            </FooterLink>
                           </li>
                         ))}
                       </ul>
@@ -224,13 +250,13 @@ export default function Footer() {
                 {/* Premium banner headline with red flanking rules */}
                 <div className="flex items-center justify-center gap-3 sm:gap-4">
                   <span className="h-[3px] w-8 sm:w-12 rounded-full bg-gradient-to-l from-red-600 to-transparent" />
-                  <h2 className="text-base sm:text-xl font-semibold uppercase tracking-[0.18em] sm:tracking-[0.28em] text-white">
+                  <h2 className="text-base sm:text-xl font-semibold uppercase tracking-[0.18em] sm:tracking-[0.28em] text-[#1D1D1F]">
                     {headline}
                   </h2>
                   <span className="h-[3px] w-8 sm:w-12 rounded-full bg-gradient-to-r from-red-600 to-transparent" />
                 </div>
                 {tagline && (
-                  <p className="mt-2 max-w-sm text-sm sm:text-base italic text-white/60">
+                  <p className="mt-2 max-w-sm text-sm sm:text-base italic text-[#1D1D1F]/70">
                     {tagline}
                   </p>
                 )}
@@ -240,7 +266,7 @@ export default function Footer() {
                   {primaryCtaLabel && (
                     <Link
                       href={primaryCtaLink}
-                      className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-white px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-[#161616] transition-colors hover:bg-white/85"
+                      className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full bg-[#1D1D1F] px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-white shadow-lg shadow-black/10 transition-all duration-200 hover:-translate-y-0.5 hover:bg-black hover:shadow-xl hover:shadow-black/20"
                     >
                       {primaryCtaLabel}
                       <ArrowUpRight />
@@ -250,7 +276,7 @@ export default function Footer() {
                     accountCtaLabel && (
                       <Link
                         href={accountCtaLink}
-                        className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/25 px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                        className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#1D1D1F]/25 bg-white/40 px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-[#1D1D1F] backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1D1D1F]/50 hover:bg-white/70 hover:shadow-md"
                       >
                         {accountCtaLabel}
                         <ArrowUpRight />
@@ -260,7 +286,7 @@ export default function Footer() {
                     loginCtaLabel && (
                       <button
                         onClick={() => setShowAuthModal(true)}
-                        className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/25 px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                        className="group inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#1D1D1F]/25 bg-white/40 px-4 py-2 text-xs sm:px-6 sm:py-3 sm:text-sm font-semibold text-[#1D1D1F] backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-[#1D1D1F]/50 hover:bg-white/70 hover:shadow-md"
                       >
                         {loginCtaLabel}
                         <ArrowUpRight />
@@ -280,19 +306,16 @@ export default function Footer() {
                     {navColumns.map((col, ci) => (
                       <div key={ci}>
                         {col.title && (
-                          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-white/40">
+                          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]/50">
                             {col.title}
                           </p>
                         )}
-                        <ul className="space-y-2 text-sm text-white/60">
+                        <ul className="space-y-2.5 text-sm">
                           {col.links.map((item, i) => (
                             <li key={i}>
-                              <Link
-                                href={normalizeHref(item.href)}
-                                className="hover:text-white transition-colors"
-                              >
+                              <FooterLink href={normalizeHref(item.href)}>
                                 {item.label}
-                              </Link>
+                              </FooterLink>
                             </li>
                           ))}
                         </ul>
@@ -302,15 +325,12 @@ export default function Footer() {
                 ) : (
                   <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-2">
                     {quickCols.map((col, ci) => (
-                      <ul key={ci} className="space-y-2 text-sm text-white/60">
+                      <ul key={ci} className="space-y-2.5 text-sm">
                         {col.map((item, i) => (
                           <li key={i}>
-                            <Link
-                              href={normalizeHref(item.href)}
-                              className="hover:text-white transition-colors"
-                            >
+                            <FooterLink href={normalizeHref(item.href)}>
                               {item.label}
-                            </Link>
+                            </FooterLink>
                           </li>
                         ))}
                       </ul>
@@ -322,7 +342,7 @@ export default function Footer() {
           </div>
 
           {/* Bottom bar */}
-          <div className="relative mx-auto flex max-w-360 flex-col gap-3 border-t border-white/10 px-6 py-5 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-14">
+          <div className="relative mx-auto flex max-w-360 flex-col gap-3 border-t border-[#1D1D1F]/15 px-6 py-5 text-xs text-[#1D1D1F]/60 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-14">
             <span>
               {copyright || (
                 <>
@@ -333,13 +353,9 @@ export default function Footer() {
             </span>
             <span className="flex flex-wrap items-center gap-x-5 gap-y-1">
               {legalLinks.map((item, i) => (
-                <Link
-                  key={i}
-                  href={normalizeHref(item.href)}
-                  className="hover:text-white transition-colors"
-                >
+                <FooterLink key={i} href={normalizeHref(item.href)}>
                   {item.label}
-                </Link>
+                </FooterLink>
               ))}
             </span>
           </div>
