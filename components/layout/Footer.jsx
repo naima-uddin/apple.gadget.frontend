@@ -49,8 +49,7 @@ export default function Footer() {
     footerLinks,
     footerColumns,
   } = useStoreSettings();
-  const brandMark = footerLogoUrl || logoUrl;
-  const topIcon = faviconUrl;
+  const topIcon = faviconUrl || footerLogoUrl || logoUrl;
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -114,7 +113,7 @@ export default function Footer() {
   return (
     <>
       {/* Full-width dark footer — no max-width container */}
-      <footer role="contentinfo" className="relative bg-[#161616]">
+      <footer role="contentinfo" className="relative rounded-t-[2.5rem] bg-[#161616]">
         {/* Favicon poking out over the top-center edge */}
         {topIcon && (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -188,15 +187,15 @@ export default function Footer() {
 
               {/* ── Centered brand hero ── */}
               <div className="order-1 flex flex-col items-center text-center lg:order-2 lg:px-6">
-                {brandMark && (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={brandMark}
-                    alt={storeName || "Store"}
-                    className="h-16 w-16 sm:h-20 sm:w-20 object-contain"
-                  />
-                )}
-                <p className="mt-1 max-w-sm text-sm sm:text-base italic text-white/60">
+                {/* Premium banner headline with red flanking rules */}
+                <div className="flex items-center justify-center gap-3 sm:gap-4">
+                  <span className="h-[3px] w-8 sm:w-12 rounded-full bg-gradient-to-l from-red-600 to-transparent" />
+                  <h2 className="text-base sm:text-xl font-semibold uppercase tracking-[0.18em] sm:tracking-[0.28em] text-white">
+                    Premium Apple Products
+                  </h2>
+                  <span className="h-[3px] w-8 sm:w-12 rounded-full bg-gradient-to-r from-red-600 to-transparent" />
+                </div>
+                <p className="mt-2 max-w-sm text-sm sm:text-base italic text-white/60">
                   {t("footer.store_desc")}
                 </p>
 
