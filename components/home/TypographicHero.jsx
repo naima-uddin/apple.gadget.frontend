@@ -118,7 +118,7 @@ function SubscribeForm() {
           }}
           placeholder="Enter your email"
           aria-label="Email address"
-          className="flex-1 rounded-full bg-white border border-black/10 px-5 py-2.5 text-sm text-[#1F2937] placeholder-[#9CA3AF] outline-none focus:border-[#1D1D1F] transition shadow-sm"
+          className="flex-1 rounded-full bg-white border border-black/10 px-5 py-1.5 sm:py-2.5 text-sm text-[#1F2937] placeholder-[#9CA3AF] outline-none focus:border-[#1D1D1F] transition shadow-sm"
         />
         <button
           type="submit"

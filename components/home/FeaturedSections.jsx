@@ -128,7 +128,7 @@ export function FeaturedSlider({ products }) {
                 maxTags={2}
                 showActionsOnHover={true}
                 imageHeight={imageHeight}
-                imageFit="contain"
+                imageFit="cover"
               />
             </div>
           ))}
