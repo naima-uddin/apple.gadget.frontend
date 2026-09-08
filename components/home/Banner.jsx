@@ -97,7 +97,7 @@ const Banner = () => {
 
   return (
     <section
-      className="relative h-[26rem] w-full overflow-hidden -mt-12 sm:h-[34rem] md:-mt-14 md:h-[38rem] lg:h-165"
+      className="relative h-68 w-full overflow-hidden -mt-12 min-[420px]:h-76 sm:h-112 md:-mt-14 md:h-136 lg:h-165"
       onMouseEnter={() => clearInterval(autoRef.current)}
       onMouseLeave={startAuto}
     >
@@ -122,11 +122,11 @@ const Banner = () => {
 
       {/* ── Left image — pulled inward from the edge and sized down via the
              vertical padding so it never crowds the navbar or the centre text ── */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-[26%] sm:left-[6%] sm:w-[29%] lg:left-[12%] lg:w-[27%]">
+      <div className="pointer-events-none absolute inset-y-0 left-[-2%] w-[31%] sm:left-[2%] sm:w-[24%] md:left-[4%] md:w-[23%] lg:left-[12%] lg:w-[27%]">
         {slides.map((s, i) => (
           <div
             key={`l-${s._id || i}`}
-            className={`absolute inset-x-2 inset-y-10 transition-all duration-700 ease-out sm:inset-y-12 lg:inset-y-14 ${
+            className={`absolute inset-x-1 inset-y-5 transition-all duration-700 ease-out sm:inset-x-2 sm:inset-y-12 md:inset-y-16 lg:inset-y-14 ${
               i === current
                 ? "translate-x-0 opacity-100"
                 : "-translate-x-6 opacity-0"
@@ -146,11 +146,11 @@ const Banner = () => {
       </div>
 
       {/* ── Right image (each slide's own rightImage, falls back to its left) ── */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-[26%] sm:right-[6%] sm:w-[29%] lg:right-[12%] lg:w-[27%]">
+      <div className="pointer-events-none absolute inset-y-0 right-[-2%] w-[31%] sm:right-[2%] sm:w-[24%] md:right-[4%] md:w-[23%] lg:right-[12%] lg:w-[27%]">
         {slides.map((s, i) => (
           <div
             key={`r-${s._id || i}`}
-            className={`absolute inset-x-2 inset-y-10 transition-all duration-700 ease-out sm:inset-y-12 lg:inset-y-14 ${
+            className={`absolute inset-x-1 inset-y-5 transition-all duration-700 ease-out sm:inset-x-2 sm:inset-y-12 md:inset-y-16 lg:inset-y-14 ${
               i === current
                 ? "translate-x-0 opacity-100"
                 : "translate-x-6 opacity-0"
@@ -172,7 +172,7 @@ const Banner = () => {
       {/* ── Centre content (top padding clears the transparent navbar) ── */}
       <div className="absolute inset-0 flex flex-col items-center justify-center px-5 pt-12 text-center sm:px-2 md:pt-14">
         {slide.badge && (
-          <span className="mb-4 inline-block rounded-full border border-black/10 bg-white/60 px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#1D1D1F] backdrop-blur-md sm:text-[11px]">
+          <span className="mb-2 inline-block rounded-full border border-black/10 bg-white/60 px-2.5 py-0.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-[#1D1D1F] backdrop-blur-md sm:mb-4 sm:px-4 sm:py-1.5 sm:tracking-[0.22em] sm:text-[11px]">
             {slide.badge}
           </span>
         )}
@@ -180,14 +180,14 @@ const Banner = () => {
         {slide.title && (
           <h1
             onClick={goToLink}
-            className={`${playfair.className} max-w-[62%] cursor-pointer text-2xl font-bold uppercase leading-[1.05] tracking-tight text-[#1D1D1F] text-balance min-[420px]:text-3xl sm:max-w-md sm:text-5xl lg:text-6xl`}
+            className={`${playfair.className} max-w-[40%] cursor-pointer text-xl font-bold uppercase leading-[1.05] tracking-tight text-[#1D1D1F] text-balance min-[420px]:text-2xl sm:max-w-[46%] sm:text-4xl md:max-w-[46%] md:text-5xl lg:max-w-md lg:text-6xl`}
           >
             {renderHighlight(slide.title)}
           </h1>
         )}
 
         {slide.subtitle && (
-          <p className="mt-4 hidden max-w-xs text-sm font-light leading-relaxed text-[#6B7280] sm:block sm:max-w-sm">
+          <p className="mt-4 hidden max-w-[42%] text-sm font-light leading-relaxed text-[#6B7280] md:block lg:max-w-[30%] xl:max-w-sm">
             {slide.subtitle}
           </p>
         )}
@@ -201,7 +201,7 @@ const Banner = () => {
               boxShadow:
                 "inset 0 2px 2px rgba(255,255,255,0.85), inset 0 -3px 6px rgba(255,255,255,0.45), inset 0 0 0 1px rgba(255,255,255,0.4), inset 6px 0 12px -6px rgba(255,255,255,0.6), inset -6px 0 12px -6px rgba(255,255,255,0.6), 0 20px 35px -12px rgba(30,40,60,0.4)",
             }}
-            className="group relative mt-6 inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/50 px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#1D1D1F] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 sm:mt-7 sm:px-10 sm:py-4 sm:text-sm"
+            className="group relative mt-4 inline-flex items-center gap-1.5 overflow-hidden rounded-full border border-white/50 px-4 py-2 text-[8px] font-semibold uppercase tracking-[0.12em] text-[#1D1D1F] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 min-[420px]:px-6 min-[420px]:py-3 min-[420px]:text-[10px] sm:mt-7 sm:gap-2 sm:px-10 sm:py-4 sm:tracking-[0.18em] sm:text-sm"
           >
             {/* bright glossy specular sweep across the top half */}
             <span
@@ -221,7 +221,7 @@ const Banner = () => {
             <span className="relative z-10 inline-flex items-center gap-2">
               {slide.buttonText}
               <svg
-                className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                className="h-3 w-3 transition-transform group-hover:translate-x-0.5 sm:h-4 sm:w-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
