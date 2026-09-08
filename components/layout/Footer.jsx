@@ -49,7 +49,8 @@ export default function Footer() {
     footerLinks,
     footerColumns,
   } = useStoreSettings();
-  const brandMark = faviconUrl || footerLogoUrl || logoUrl;
+  const brandMark = footerLogoUrl || logoUrl;
+  const topIcon = faviconUrl;
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -113,19 +114,28 @@ export default function Footer() {
   return (
     <>
       {/* Full-width dark footer — no max-width container */}
-      <footer role="contentinfo" className="bg-[#161616]">
-        <div className="relative w-full overflow-hidden text-white">
+      <footer role="contentinfo" className="relative bg-[#161616]">
+        {/* Favicon poking out over the top-center edge */}
+        {topIcon && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={topIcon}
+            alt={storeName || "Store"}
+            className="absolute left-1/2 top-0 z-10 h-20 w-20 sm:h-24 sm:w-24 -translate-x-1/2 -translate-y-1/2 object-contain"
+          />
+        )}
+        <div className="relative w-full text-white">
           {/* Subtle flowing-line texture, matching the reference backdrop */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 opacity-[0.06]"
+            className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.06]"
             style={{
               backgroundImage:
                 "radial-gradient(120% 120% at 15% 0%, #ffffff 0, transparent 45%), radial-gradient(120% 120% at 85% 100%, #ffffff 0, transparent 45%)",
             }}
           />
 
-          <div className="relative px-6 py-6 sm:px-10 lg:px-14 lg:py-7">
+          <div className="relative px-6 pt-12 pb-6 sm:px-10 lg:px-14 lg:pt-14 lg:pb-7">
             {/* ── Contact (left) · Brand (center) · Quick links (right) ── */}
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_auto_1fr] lg:items-start lg:gap-10">
               {/* Contact */}
