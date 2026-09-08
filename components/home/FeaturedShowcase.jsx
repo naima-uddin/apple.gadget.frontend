@@ -119,11 +119,11 @@ export default function FeaturedShowcase() {
           {tabLabel}
         </span>
       </div>
-      <h3 className="text-2xl sm:text-3xl font-bold leading-tight text-[#1D1D1F] font-georgia">
+      <h3 className="text-lg sm:text-3xl font-bold leading-tight text-[#1D1D1F] font-georgia">
         {active.title || active.slug}
       </h3>
       {active.description && (
-        <p className="mt-2 text-sm text-[#6B7280] line-clamp-2 max-w-md">
+        <p className="mt-2 text-xs sm:text-sm text-[#6B7280] line-clamp-2 max-w-md">
           {active.description}
         </p>
       )}
@@ -271,14 +271,14 @@ export default function FeaturedShowcase() {
 
   return (
     <section
-      className="max-w-7xl mx-auto px-4 sm:px-6 mt-8 sm:mt-10 mb-12"
+      className="max-w-7xl mx-auto px-4 sm:px-6 mt-4 sm:mt-10 mb-6 sm:mb-12"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
       {/* Heading + tab buttons */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-5">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2.5 sm:gap-4 mb-3 sm:mb-5">
         <div>
           <h2 className="text-2xl sm:text-[28px] font-bold tracking-tight text-[#1D1D1F] font-georgia">
             {showcase.title || "Featured Products"}
@@ -287,12 +287,12 @@ export default function FeaturedShowcase() {
             <p className="text-sm text-[#6B7280] mt-1">{showcase.subtitle}</p>
           )}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-nowrap gap-1.5 sm:gap-2 overflow-x-auto -mx-1 px-1">
           {tabs.map((tab, i) => (
             <button
               key={i}
               onClick={() => selectTab(i)}
-              className={`px-4 py-2 rounded-full text-[13px] font-semibold backdrop-blur-md transition-all duration-300 active:scale-[0.97] ${
+              className={`shrink-0 whitespace-nowrap px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-[13px] font-semibold backdrop-blur-md transition-all duration-300 active:scale-[0.97] ${
                 i === activeTabIndex
                   ? "bg-linear-to-b from-[#2b2b2e] to-[#1D1D1F] text-white border border-white/10 shadow-[0_6px_16px_-4px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.2)]"
                   : "bg-white/40 text-[#1D1D1F] border border-white/70 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70"
@@ -372,45 +372,126 @@ export default function FeaturedShowcase() {
           </div>
         </div>
 
-        {/* ───────── MOBILE / TABLET: stacked ───────── */}
+        {/* ───────── MOBILE / TABLET (< lg): full-bleed image (badges on top), thumbs, price/actions, then description ───────── */}
         <div className="lg:hidden">
-          {/* Image over a curved dark top */}
-          <div className="relative h-[300px] sm:h-[360px]">
-            <svg
-              className="absolute inset-0 h-full w-full"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              <path d="M0,0 L100,0 L100,74 C72,93 28,93 0,74 Z" fill="#BAC8D3" />
-            </svg>
-            {active && (
-              <div className="absolute inset-0 flex items-center justify-center px-6 pt-2">
-                <div className="relative w-[60%] max-w-[260px] aspect-square -translate-y-3">
-                  <div className="absolute inset-[-16%] bg-[radial-gradient(closest-side,rgba(255,255,255,0.9),rgba(255,255,255,0)_78%)] blur-lg" />
-                  {heroImg}
+          {active ? (
+            <>
+              {/* Full-bleed hero image — no surrounding padding; discount + tab
+                  label overlaid at the top. */}
+              <div className="relative w-full aspect-5/4 bg-linear-to-b from-[#CFDAE2] via-[#BAC8D3] to-[#A6B8C5] overflow-hidden">
+                <div className="absolute inset-[12%] bg-[radial-gradient(closest-side,rgba(255,255,255,0.6),rgba(255,255,255,0)_75%)] blur-lg" />
+                <div className="relative h-full w-full">{heroImg}</div>
+                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 z-10">
+                  {discountPct ? (
+                    <span className="inline-flex items-center rounded-full bg-[#1D1D1F] text-white text-[8px] font-extrabold tracking-wide px-1.5 py-0.5 shadow-sm">
+                      −{discountPct}% OFF
+                    </span>
+                  ) : null}
+                  {tabLabel && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/85 backdrop-blur-sm ring-1 ring-black/5 text-[8px] font-semibold uppercase tracking-wider text-[#1D1D1F] px-1.5 py-0.5 shadow-sm">
+                      <span className="h-1 w-1 rounded-full bg-[#1D1D1F]" />
+                      {tabLabel}
+                    </span>
+                  )}
                 </div>
               </div>
-            )}
-          </div>
 
-          {/* Info */}
-          <div className="p-6 flex flex-col gap-6">
-            {active ? (
-              <>
-                <div className="flex flex-col">{infoBlock}</div>
-                {thumbs}
-              </>
-            ) : (
-              emptyState
-            )}
-          </div>
+              <div className="px-4 py-2.5">
+                {/* Thumbnails */}
+                {products.length > 1 && (
+                  <div className="flex gap-1.5 overflow-x-auto pb-1">
+                    {products.map((p, i) => (
+                      <button
+                        key={p._id || i}
+                        onClick={() => setActiveIndex(i)}
+                        title={p.title || p.slug}
+                        className={`relative shrink-0 h-8 w-8 rounded-lg border overflow-hidden transition-all ${
+                          i === activeIndex
+                            ? "border-[#1D1D1F] ring-1 ring-[#1D1D1F]/20 bg-white"
+                            : "border-gray-200 opacity-60 hover:opacity-100 bg-white/70"
+                        }`}
+                      >
+                        <Image
+                          src={heroImage(p)}
+                          alt={p.title || p.slug}
+                          fill
+                          sizes="32px"
+                          className="object-contain p-0.5"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-          {/* Order — solid light panel */}
-          {active && (
-            <div className="relative overflow-hidden bg-linear-to-b from-[#CFDAE2] to-[#A6B8C5] text-[#1D1D1F] rounded-b-[32px]">
-              <div className="relative p-6">{orderBlock}</div>
-            </div>
+                {/* Rating */}
+                <div className="mt-1.5 flex items-center gap-1.5">
+                  <div className="flex">
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <FaStar
+                        key={i}
+                        className={`w-3 h-3 ${i < rating ? "text-[#1D1D1F]" : "text-gray-300"}`}
+                      />
+                    ))}
+                  </div>
+                  {active.reviewCount > 0 && (
+                    <span className="text-[10px] text-[#6B7280]">
+                      ({active.reviewCount})
+                    </span>
+                  )}
+                </div>
+
+                {/* Price */}
+                <div className="mt-1 flex items-baseline gap-1.5">
+                  <span className="text-xl font-bold tracking-tight text-[#1D1D1F]">
+                    ৳{price?.toLocaleString()}
+                  </span>
+                  {compareAtPrice && compareAtPrice > price && (
+                    <span className="text-xs text-[#1D1D1F]/40 line-through">
+                      ৳{compareAtPrice.toLocaleString()}
+                    </span>
+                  )}
+                </div>
+
+                {/* Actions — Buy Now full width, then Add to Cart / View Details */}
+                <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+                  <button
+                    onClick={() => {
+                      addToCart(active, active.showcaseQty || 1, { silent: true });
+                      router.push("/checkout");
+                    }}
+                    className="col-span-2 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#1D1D1F] text-white py-1.5 text-[11px] font-bold shadow-sm hover:bg-black active:scale-[0.98] transition-all"
+                  >
+                    <FaBolt className="w-3 h-3" /> Buy Now
+                  </button>
+                  <button
+                    onClick={() => addToCart(active, active.showcaseQty || 1)}
+                    className="inline-flex items-center justify-center gap-1 rounded-full bg-white border border-[#1D1D1F]/15 text-[#1D1D1F] py-1.5 text-[10px] font-bold whitespace-nowrap hover:bg-[#1D1D1F]/5 active:scale-[0.98] transition-all"
+                  >
+                    <FaShoppingCart className="w-2.5 h-2.5" /> Add to Cart
+                  </button>
+                  <Link
+                    href={`/product/${active._id}/`}
+                    className="inline-flex items-center justify-center rounded-full border border-[#1D1D1F]/25 text-[#1D1D1F] py-1.5 text-[10px] font-semibold whitespace-nowrap hover:bg-[#1D1D1F]/5 transition-all"
+                  >
+                    View Details
+                  </Link>
+                </div>
+
+                {/* Title + description */}
+                <div className="mt-2">
+                  <h3 className="text-sm font-bold leading-tight text-[#1D1D1F] font-georgia">
+                    {active.title || active.slug}
+                  </h3>
+                  {active.description && (
+                    <p className="mt-1 text-[11px] leading-snug text-[#6B7280] line-clamp-3">
+                      {active.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </>
+          ) : (
+            emptyState
           )}
         </div>
       </div>

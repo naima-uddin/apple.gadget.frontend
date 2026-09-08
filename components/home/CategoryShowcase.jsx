@@ -13,9 +13,7 @@ function Tile({ tile, big = false, className = "", delay = 0 }) {
     <Link
       href={tile.link || "/"}
       style={{ animationDelay: `${delay}ms` }}
-      className={`showcase-tile group relative bg-[#F5F6F7] overflow-hidden ring-1 ring-black/5 shadow-[0_10px_28px_rgba(15,23,42,0.10)] hover:shadow-[0_22px_48px_rgba(29,29,31,0.22)] hover:-translate-y-1.5 transition-all duration-500 ${
-        big ? "max-md:min-h-74" : "max-md:h-46"
-      } ${className}`}
+      className={`showcase-tile group relative bg-[#F5F6F7] overflow-hidden ring-1 ring-black/5 shadow-[0_10px_28px_rgba(15,23,42,0.10)] hover:shadow-[0_22px_48px_rgba(29,29,31,0.22)] hover:-translate-y-1.5 transition-all duration-500 ${className}`}
     >
       {/* image fills the whole tile */}
       <Image
@@ -23,7 +21,7 @@ function Tile({ tile, big = false, className = "", delay = 0 }) {
         alt={tile.label || "Category"}
         fill
         sizes={big ? "(max-width: 768px) 100vw, 30vw" : "25vw"}
-        className="object-contain transition-transform duration-700 ease-out group-hover:scale-110"
+        className="object-cover md:object-contain transition-transform duration-700 ease-out group-hover:scale-110"
       />
       {/* soft sheen sweeping across on hover */}
       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 ease-out pointer-events-none" />
@@ -48,19 +46,45 @@ function ShowcasePage({ page, isActive }) {
   return (
     <div className="w-full shrink-0 px-0.5">
       {page.title && <SectionHeader title={page.title} />}
+
+      {/* Mobile (< md): a horizontal swipe slider that reads the same order as
+          the desktop bento — big → 2 stacked mediums → 2 stacked mediums → big.
+          Every slide is the SAME height; each medium is exactly half a big
+          (0.5 + 0.5). Slides are narrower than the viewport so the next one
+          peeks, hinting the row is swipeable. */}
+      <div
+        key={isActive ? "m-active" : "m-idle"}
+        className="showcase-scroll md:hidden flex gap-2 overflow-x-auto snap-x snap-mandatory pb-1 h-72"
+      >
+        <div className="shrink-0 basis-[68%] snap-start h-full">
+          <Tile tile={leftBig} delay={0} className="block h-full" />
+        </div>
+        <div className="shrink-0 basis-[46%] snap-start h-full flex flex-col gap-2">
+          <Tile tile={s1} delay={120} className="flex-1 min-h-0" />
+          <Tile tile={s3} delay={280} className="flex-1 min-h-0" />
+        </div>
+        <div className="shrink-0 basis-[46%] snap-start h-full flex flex-col gap-2">
+          <Tile tile={s2} delay={200} className="flex-1 min-h-0" />
+          <Tile tile={s4} delay={360} className="flex-1 min-h-0" />
+        </div>
+        <div className="shrink-0 basis-[68%] snap-start h-full">
+          <Tile tile={rightBig} delay={440} className="block h-full" />
+        </div>
+      </div>
+
       {/* md+: 6 columns — each big tile spans 2 (= the two middle smalls
           combined), two fixed rows so smalls are exactly half a big tile.
           key flips when this page becomes active → tiles replay their
           staggered entrance animation */}
       <div
         key={isActive ? "active" : "idle"}
-        className="grid grid-cols-2 md:grid-cols-6 gap-2 md:gap-3 md:auto-rows-55 lg:auto-rows-62.5"
+        className="hidden md:grid grid-cols-6 gap-3 auto-rows-55 lg:auto-rows-62.5"
       >
         <Tile
           tile={leftBig}
           big
           delay={0}
-          className="col-span-2 md:row-span-2"
+          className="col-span-2 row-span-2"
         />
         <Tile tile={s1} delay={120} />
         <Tile tile={s2} delay={200} />
@@ -68,7 +92,7 @@ function ShowcasePage({ page, isActive }) {
           tile={rightBig}
           big
           delay={440}
-          className="col-span-2 md:row-span-2 md:col-start-5 md:row-start-1 order-last md:order-0"
+          className="col-span-2 row-span-2 col-start-5 row-start-1"
         />
         <Tile tile={s3} delay={280} />
         <Tile tile={s4} delay={360} />
@@ -153,6 +177,13 @@ export default function CategoryShowcase() {
       </div>
 
       <style jsx global>{`
+        .showcase-scroll {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .showcase-scroll::-webkit-scrollbar {
+          display: none;
+        }
         .showcase-tile {
           animation: showcaseTileIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
         }

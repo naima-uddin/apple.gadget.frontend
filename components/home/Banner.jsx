@@ -122,7 +122,7 @@ const Banner = () => {
 
       {/* ── Left image — pulled inward from the edge and sized down via the
              vertical padding so it never crowds the navbar or the centre text ── */}
-      <div className="pointer-events-none absolute inset-y-0 left-[-2%] w-[31%] sm:left-[2%] sm:w-[24%] md:left-[4%] md:w-[23%] lg:left-[12%] lg:w-[27%]">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-[30%] sm:left-[2%] sm:w-[24%] md:left-[4%] md:w-[23%] lg:left-[12%] lg:w-[27%]">
         {slides.map((s, i) => (
           <div
             key={`l-${s._id || i}`}
@@ -146,7 +146,7 @@ const Banner = () => {
       </div>
 
       {/* ── Right image (each slide's own rightImage, falls back to its left) ── */}
-      <div className="pointer-events-none absolute inset-y-0 right-[-2%] w-[31%] sm:right-[2%] sm:w-[24%] md:right-[4%] md:w-[23%] lg:right-[12%] lg:w-[27%]">
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-[30%] sm:right-[2%] sm:w-[24%] md:right-[4%] md:w-[23%] lg:right-[12%] lg:w-[27%]">
         {slides.map((s, i) => (
           <div
             key={`r-${s._id || i}`}

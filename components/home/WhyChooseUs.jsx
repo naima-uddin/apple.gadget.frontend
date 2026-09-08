@@ -37,13 +37,13 @@ const DEFAULT_FAQS = [
 // Only the outer corner of each tile is rounded so the inner seams meet clean.
 const TILES = [
   // 1 — top-left, very large
-  "col-start-1 col-span-4 row-start-1 row-span-4 rounded-tl-[4rem]",
+  "col-start-1 col-span-4 row-start-1 row-span-4 rounded-tl-[2.5rem] md:rounded-tl-[4rem]",
   // 2 — top-right, small
-  "col-start-5 col-span-2 row-start-1 row-span-2 rounded-tr-[4rem]",
+  "col-start-5 col-span-2 row-start-1 row-span-2 rounded-tr-[2.5rem] md:rounded-tr-[4rem]",
   // 3 — bottom-left, small
-  "col-start-1 col-span-4 row-start-5 row-span-2 rounded-bl-[4rem]",
+  "col-start-1 col-span-4 row-start-5 row-span-2 rounded-bl-[2.5rem] md:rounded-bl-[4rem]",
   // 4 — bottom-right, a bit large
-  "col-start-5 col-span-2 row-start-3 row-span-4 rounded-br-[4rem]",
+  "col-start-5 col-span-2 row-start-3 row-span-4 rounded-br-[2.5rem] md:rounded-br-[4rem]",
 ];
 
 // Accent used for the top corner mark (reference uses a green arc). Kept local
@@ -56,7 +56,7 @@ function TrustedBadge() {
   return (
     <svg
       viewBox="0 0 120 140"
-      className="w-16 h-20 md:w-20 md:h-24 drop-shadow-lg"
+      className="w-12 h-16 sm:w-16 sm:h-20 md:w-20 md:h-24 drop-shadow-lg"
       role="img"
       aria-label="100% Trusted"
     >
@@ -204,7 +204,7 @@ export default function WhyChooseUs() {
   const hasConfigured = configuredPics.length > 0 || legacyPic.length > 0;
 
   return (
-    <section className="w-full py-6 md:py-12">
+    <section className="w-full py-4 md:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section title with the About/CTA pill on the right of the heading */}
         <SectionHeader
@@ -215,13 +215,13 @@ export default function WhyChooseUs() {
 
         {/* White card: image left, content right */}
         <div
-          className={`rounded-3xl grid grid-cols-1 gap-4 md:gap-6 items-stretch ${
+          className={`rounded-3xl grid grid-cols-1 gap-2 md:gap-6 items-stretch ${
             hasImage ? "md:grid-cols-[1fr_1.25fr]" : ""
           }`}
         >
           {/* Image collage — two flush columns, no center gap, center badge */}
           {hasImage && (
-            <div className="relative p-3 min-h-80 md:min-h-104">
+            <div className="relative p-2 sm:p-3 min-h-56 sm:min-h-80 md:min-h-104">
               <div className="relative grid grid-cols-6 grid-rows-6 h-full overflow-hidden rounded-3xl">
                 {collage.map((src, i) => (
                   <CollageTile
@@ -239,7 +239,7 @@ export default function WhyChooseUs() {
 
                 {/* Green corner mark — top only, sitting on the first image */}
                 <span
-                  className="pointer-events-none absolute top-0 left-0 w-20 h-20 md:w-24 md:h-24 rounded-tl-[4rem] border-t-[6px] border-l-[6px] z-10"
+                  className="pointer-events-none absolute top-0 left-0 w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-tl-[2.5rem] sm:rounded-tl-[4rem] border-t-4 border-l-4 sm:border-t-[6px] sm:border-l-[6px] z-10"
                   style={{ borderColor: MARK_GREEN }}
                 />
               </div>
@@ -252,8 +252,8 @@ export default function WhyChooseUs() {
           )}
 
           {/* Text + accordion */}
-          <div className=" p-2 md:p-4 mr-2">
-            <p className="text-sm text-[#6B7280] leading-relaxed mb-5">
+          <div className="p-2 md:p-4 md:mr-2">
+            <p className="text-sm text-[#6B7280] leading-relaxed mb-3 md:mb-5">
               {description}
             </p>
 
@@ -272,7 +272,7 @@ export default function WhyChooseUs() {
                     <button
                       type="button"
                       onClick={() => setOpenIndex(open ? -1 : i)}
-                      className="w-full flex items-center justify-between gap-4 py-4 text-left"
+                      className="w-full flex items-center justify-between gap-4 py-3 md:py-4 text-left"
                       aria-expanded={open}
                     >
                       <span

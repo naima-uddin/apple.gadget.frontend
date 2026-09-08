@@ -181,19 +181,19 @@ export default function DealsOfDay() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-2 md:px-4 lg:px-6 py-8">
+    <div className="w-full max-w-7xl mx-auto px-2 md:px-4 lg:px-6 py-5 md:py-8">
       {/* Header */}
       <SectionHeader title={t("home.deal_of_day")} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
         {/* Main Product Section - Left Side */}
         <div className="lg:col-span-9">
           <div className="border border-gray-100 rounded-2xl p-2 md:p-4 bg-linear-to-br from-[#fefeff] to-[#F3F4F6] h-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
               {/* Product Image Section */}
               <div>
                 {/* Main Product Image */}
-                <div className="relative bg-white rounded-lg mb-2 md:mb-4  h-64 sm:h-86 flex items-center justify-center">
+                <div className="relative bg-white rounded-lg mb-2 md:mb-4  h-44 sm:h-86 flex items-center justify-center">
                   <Image
                     src={encodeURI(
                       productImages[selectedImage] || "/assets/placeholder.svg",
@@ -212,12 +212,12 @@ export default function DealsOfDay() {
                 </div>
 
                 {/* Thumbnail Gallery */}
-                <div className="grid grid-cols-6 gap-2 -mt-2">
+                <div className="grid grid-cols-6 gap-2 mt-1 md:-mt-2">
                   {productImages.map((img, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`border-2 rounded-lg p-1 hover:border-[#1D1D1F] transition ${
+                      className={`border-2 rounded-lg p-0.5 md:p-1 hover:border-[#1D1D1F] transition ${
                         selectedImage === index
                           ? "border-[#1D1D1F]"
                           : "border-gray-300"
@@ -234,7 +234,7 @@ export default function DealsOfDay() {
                           e.currentTarget.onerror = null;
                           e.currentTarget.src = "/assets/placeholder.svg";
                         }}
-                        className="w-full h-12 md:h-14 object-contain"
+                        className="w-full h-6 md:h-14 object-contain"
                       />
                     </button>
                   ))}
@@ -244,32 +244,32 @@ export default function DealsOfDay() {
               {/* Product Details Section */}
               <div>
                 {/* Rating and Reviews */}
-                <div className="flex items-center gap-2 mb-2 md:mb-3">
+                <div className="flex items-center gap-2 mb-1 md:mb-3">
                   {renderStars(mainProduct?.averageRating || 0)}
-                  <span className="text-gray-600 text-sm">
+                  <span className="text-gray-600 text-xs md:text-sm">
                     ({mainProduct?.reviewCount || 0}) Review
                   </span>
                 </div>
 
                 {/* Product Title */}
-                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1F2937] mb-2 md:mb-4 font-georgia">
+                <h2 className="text-sm md:text-2xl font-bold tracking-tight text-[#1F2937] mb-1 md:mb-4 font-georgia">
                   {mainProduct?.title || "Deal Product"}
                 </h2>
 
                 {/* Price */}
-                <div className="flex items-center gap-3 mb-2 md:mb-4">
-                  <span className="text-2xl md:text-3xl font-bold text-[#1D1D1F]">
+                <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-4">
+                  <span className="text-base md:text-3xl font-bold text-[#1D1D1F]">
                     {mainProduct?.price ? `৳${mainProduct.price}` : "-"}
                   </span>
                   {mainProduct?.compareAtPrice && (
-                    <span className="text-lg md:text-xl text-gray-500 line-through">
+                    <span className="text-xs md:text-xl text-gray-500 line-through">
                       ৳{mainProduct.compareAtPrice}
                     </span>
                   )}
                 </div>
 
                 {/* Availability and Units Sold */}
-                <div className="flex items-center gap-8 mb-2 md:mb-6">
+                <div className="flex items-center gap-6 md:gap-8 mb-1.5 md:mb-6 text-[11px] md:text-base">
                   <div>
                     <span className="text-gray-600">Available: </span>
                     <span className="font-bold text-gray-900">
@@ -285,55 +285,55 @@ export default function DealsOfDay() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full bg-gray-200 rounded-full h-2 mb-3 md:mb-6">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 md:h-2 mb-2 md:mb-6">
                   <div
-                    className="bg-[#1D1D1F] h-2 rounded-full"
+                    className="bg-[#1D1D1F] h-1.5 md:h-2 rounded-full"
                     style={{ width: "30%" }}
                   ></div>
                 </div>
 
                 {/* Countdown Timer */}
-                <div className="flex gap-3 md:gap-4 mb-3 md:mb-6">
+                <div className="flex gap-2 md:gap-4 mb-2 md:mb-6">
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-3 py-2 font-bold text-lg">
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
                       {timeLeft.days}
                     </div>
-                    <div className="text-xs text-gray-600 mt-1">Days</div>
+                    <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Days</div>
                   </div>
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-3 py-2 font-bold text-lg">
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
                       {timeLeft.hours}
                     </div>
-                    <div className="text-xs text-gray-600 mt-1">Hrs</div>
+                    <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Hrs</div>
                   </div>
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-3 py-2 font-bold text-lg">
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
                       {timeLeft.minutes}
                     </div>
-                    <div className="text-xs text-gray-600 mt-1">Mins</div>
+                    <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Mins</div>
                   </div>
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-3 py-2 font-bold text-lg">
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
                       {timeLeft.seconds}
                     </div>
-                    <div className="text-xs text-gray-600 mt-1">Secs</div>
+                    <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Secs</div>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-3 mb-4">
+                <div className="flex gap-2 md:gap-3 mb-0 md:mb-4">
                   {mainProduct?.availability === "out_of_stock" ||
                   mainProduct?.inventory === 0 ? (
                     <>
                       <button
                         disabled
-                        className="flex-none bg-gray-200 text-red-500 py-3 px-4 rounded-lg text-sm font-medium cursor-not-allowed whitespace-nowrap"
+                        className="flex-none bg-gray-200 text-red-500 py-2 md:py-3 px-3 md:px-4 rounded-lg text-xs md:text-sm font-medium cursor-not-allowed whitespace-nowrap"
                       >
                         {t("home.out_of_stock")}
                       </button>
                       <button
                         onClick={() => setWaitlistProduct(mainProduct)}
-                        className="flex-1 flex items-center justify-center gap-2 border-2 border-teal-500 text-teal-700 py-3 rounded-lg font-semibold hover:bg-teal-50 transition"
+                        className="flex-1 flex items-center justify-center gap-2 border-2 border-teal-500 text-teal-700 py-2 md:py-3 rounded-lg text-xs md:text-base font-semibold hover:bg-teal-50 transition"
                       >
                         <FaBell className="w-4 h-4" /> Join Waitlist
                       </button>
@@ -346,7 +346,7 @@ export default function DealsOfDay() {
                           router.push("/checkout");
                         }
                       }}
-                      className="flex-1 bg-[#c8c8c9] text-black py-3 rounded-lg font-semibold hover:bg-black hover:text-white transition"
+                      className="flex-1 bg-[#c8c8c9] text-black py-2 md:py-3 rounded-lg text-xs md:text-base font-semibold hover:bg-black hover:text-white transition"
                     >
                       {t("product.buy_now")}
                     </button>
@@ -360,7 +360,7 @@ export default function DealsOfDay() {
                         addToWishlist(mainProduct);
                       }
                     }}
-                    className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition"
+                    className="w-9 h-9 md:w-12 md:h-12 text-sm md:text-base shrink-0 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition"
                   >
                     <FaHeart />
                   </button>
@@ -368,7 +368,7 @@ export default function DealsOfDay() {
                     onClick={() => {
                       if (mainProduct) addToCart(mainProduct, 1);
                     }}
-                    className="w-12 h-12 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition"
+                    className="w-9 h-9 md:w-12 md:h-12 text-sm md:text-base shrink-0 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition"
                   >
                     <FaCartShopping />
                   </button>
@@ -419,13 +419,15 @@ export default function DealsOfDay() {
                     className="w-20 h-20 object-contain bg-gray-50 rounded"
                   />
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-900 mb-1 text-sm line-clamp-2">
+                    <h4 className="font-semibold text-gray-900 mb-0.5 text-xs line-clamp-2">
                       {product.name}
                     </h4>
-                    <div className="flex items-center gap-1  text-sm">
+                    <div className="flex items-center gap-1 text-xs">
                       {renderStars(product.rating)}
                     </div>
-                    <p className="text-[#1D1D1F] font-bold">৳{product.price}</p>
+                    <p className="text-[#1D1D1F] font-bold text-sm">
+                      ৳{product.price}
+                    </p>
                   </div>
                 </div>
               ))}

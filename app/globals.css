@@ -19,8 +19,14 @@
 }
 
 html {
-  /* clip horizontal overflow without creating a scroll container (preserves sticky) */
+  /* Prevent sideways scrolling on mobile.
+     `hidden` is the fallback for browsers that don't support `clip`
+     (older Android WebViews + the Facebook/Instagram in-app browsers a lot of
+     our mobile traffic comes through). Browsers that DO support `clip` use it
+     (last declaration wins) so sticky headers keep working. */
+  overflow-x: hidden;
   overflow-x: clip;
+  max-width: 100%;
   /* Firefox */
   scrollbar-width: none;
   /* IE 10+ */
@@ -44,6 +50,26 @@ html {
 
 html::-webkit-scrollbar {
   display: none;
+}
+
+/* Safety net: never let a full-bleed/absolutely-positioned child (e.g. the
+   homepage hero art) create a horizontal scroll on small devices.
+   Same hidden→clip fallback as <html> for older/in-app mobile browsers. */
+body {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* Content region guard: navbar + footer are siblings of <main>, so clipping
+   here contains any page section that overflows sideways without touching them.
+   `clip` (not hidden) so in-page sticky bars — e.g. category filter `top-16` —
+   keep working; older browsers fall back to the root hidden rule above. */
+main {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* Fade+lift used by the homepage FeaturedShowcase hero image on swap */

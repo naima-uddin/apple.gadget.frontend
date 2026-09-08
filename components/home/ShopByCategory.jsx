@@ -47,10 +47,10 @@ export default function ShopByCategory() {
           {t("home.no_categories")}
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-7">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-5 md:gap-7">
           {visible.map((cat) => (
             <Link key={cat._id} href={cat.link} className="group block">
-              <div className="relative rounded-[28px] overflow-hidden h-44 sm:h-52 md:h-60 border border-[#ececf0] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)] transition-all duration-500 ease-out group-hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.22)] group-hover:-translate-y-1.5 group-hover:border-[#d8d8de]">
+              <div className="relative rounded-2xl sm:rounded-[28px] overflow-hidden h-40 sm:h-52 md:h-60 border border-[#ececf0] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)] transition-all duration-500 ease-out group-hover:shadow-[0_18px_40px_-12px_rgba(0,0,0,0.22)] group-hover:-translate-y-1.5 group-hover:border-[#d8d8de]">
                 {/* soft ambient backdrop */}
                 <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_0%,#ffffff_0%,#f6f6f8_45%,#ececf0_100%)]" />
                 {/* subtle top sheen */}
@@ -60,16 +60,16 @@ export default function ShopByCategory() {
                   src={encodeURI(cat.image)}
                   alt={cat.name}
                   fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="relative object-contain p-6 drop-shadow-[0_10px_18px_rgba(0,0,0,0.10)] transition-transform duration-[600ms] ease-out group-hover:scale-[1.08]"
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                  className="relative object-contain p-4 sm:p-5 md:p-6 drop-shadow-[0_10px_18px_rgba(0,0,0,0.10)] transition-transform duration-[600ms] ease-out group-hover:scale-[1.08]"
                 />
 
                 {/* glass label bar inside the card */}
-                <div className="absolute inset-x-3 bottom-3 flex items-center justify-between rounded-2xl border border-white/60 bg-white/70 px-4 py-2.5 backdrop-blur-md shadow-sm transition-colors duration-500 group-hover:bg-white/90">
-                  <span className="text-sm md:text-[15px] font-semibold text-[#1D1D1F] truncate font-georgia">
+                <div className="absolute inset-x-2 sm:inset-x-3 bottom-2 sm:bottom-3 flex items-center justify-between rounded-xl sm:rounded-2xl border border-white/60 bg-white/70 px-2.5 sm:px-4 py-2 sm:py-2.5 backdrop-blur-md shadow-sm transition-colors duration-500 group-hover:bg-white/90">
+                  <span className="text-[13px] sm:text-sm md:text-[15px] font-semibold text-[#1D1D1F] truncate font-georgia">
                     {cat.name}
                   </span>
-                  <span className="ml-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#1D1D1F] text-white transition-transform duration-500 ease-out group-hover:translate-x-0.5 group-hover:bg-black">
+                  <span className="ml-2 flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-[#1D1D1F] text-white transition-transform duration-500 ease-out group-hover:translate-x-0.5 group-hover:bg-black">
                     <svg
                       viewBox="0 0 24 24"
                       className="h-3.5 w-3.5"

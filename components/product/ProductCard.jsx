@@ -34,6 +34,7 @@ export default function ProductCard({
   showDiscount = true,
   maxTags = 3,
   loading = false,
+  imageFit = "cover",
 }) {
   const router = useRouter();
   const { addToCart, addToWishlist } = useCart();
@@ -188,7 +189,7 @@ export default function ProductCard({
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/assets/placeholder.svg";
               }}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer"
+              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-1" : "object-cover"} group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
             />
           </div>
 
@@ -289,8 +290,8 @@ export default function ProductCard({
           </div>
         </div>
 
-        <div className="p-3 pt-2.5 flex flex-col grow">
-          <h3 className="text-[13px] font-semibold text-[#1F2937] leading-snug truncate">
+        <div className="p-2 pt-2 sm:p-3 sm:pt-2.5 flex flex-col grow">
+          <h3 className="text-xs sm:text-[13px] font-semibold text-[#1F2937] leading-snug truncate">
             {product.title || product.slug}
           </h3>
           {product.description && (
@@ -302,7 +303,7 @@ export default function ProductCard({
           {/* Price + swatches on one tight row */}
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-[17px] font-bold text-[#1D1D1F] tracking-tight whitespace-nowrap">
+              <span className="text-[15px] sm:text-[17px] font-bold text-[#1D1D1F] tracking-tight whitespace-nowrap">
                 ৳{price?.toLocaleString()}
               </span>
               {compareAt && compareAt > price && (
@@ -397,7 +398,7 @@ export default function ProductCard({
               </button>
             </div>
           ) : (
-            <div className="relative z-2 mt-auto pt-1 flex gap-1.5">
+            <div className="relative z-2 mt-auto pt-1.5 flex gap-1.5">
               {/* Buy Now — light gray, straight to checkout */}
               <button
                 onClick={(e) => {
@@ -406,7 +407,7 @@ export default function ProductCard({
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
-                className="flex-1 bg-[#F5F5F7] border border-gray-200/80 text-[#1D1D1F] py-1.5 rounded-full text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
+                className="flex-1 bg-[#F5F5F7] border border-gray-200/80 text-[#1D1D1F] py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
               >
                 {t("product.buy_now")}
               </button>
@@ -417,7 +418,7 @@ export default function ProductCard({
                   flyToCart(imageRef.current, mainImage);
                   addToCart(product, 1);
                 }}
-                className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-3 py-1.5 rounded-full hover:bg-black active:scale-95 shadow-sm transition-all cursor-pointer"
+                className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full hover:bg-black active:scale-95 shadow-sm transition-all cursor-pointer"
                 title={t("home.add_to_cart")}
                 aria-label={t("home.add_to_cart")}
               >

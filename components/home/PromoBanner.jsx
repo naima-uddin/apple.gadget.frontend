@@ -103,10 +103,16 @@ export default function PromoBanner({ className = "" }) {
   if (!banner) return null; // loading (undefined) or nothing configured (null)
 
   const height = Number(banner.height) || 64;
+  // On phones the same wide strip would crop too aggressively at full desktop
+  // height, so scale it down (admin `mobileHeight` wins when provided).
+  const mobileHeight = Number(banner.mobileHeight) || Math.max(40, Math.round(height * 0.7));
   const hasMobile = !!banner.mobileImage?.url;
 
   const imageBox = (
-    <div className="relative w-full overflow-hidden" style={{ height }}>
+    <div
+      className="relative w-full overflow-hidden h-[var(--promo-h-m)] sm:h-[var(--promo-h)]"
+      style={{ "--promo-h": `${height}px`, "--promo-h-m": `${mobileHeight}px` }}
+    >
       {/* Desktop / default image */}
       <Image
         src={banner.image.url}

@@ -78,21 +78,21 @@ function TestimonialCard({ item, featured }) {
     <div
       className={`relative h-full flex flex-col bg-white rounded-3xl border overflow-hidden transition-shadow duration-300 ${
         featured
-          ? "border-[#1D1D1F]/15 shadow-xl px-5 py-7 sm:px-7 sm:py-8 md:px-8 md:py-10"
+          ? "border-[#1D1D1F]/15 shadow-xl px-4 py-4 sm:px-7 sm:py-8 md:px-8 md:py-10"
           : "border-gray-100 shadow-sm p-6 md:p-7 opacity-70"
       }`}
     >
       <span
         aria-hidden="true"
-        className="work-sans font-bold text-8xl text-[#F5F6F7] absolute -top-5 right-4 select-none leading-none pointer-events-none"
+        className="work-sans font-bold text-6xl md:text-8xl text-[#F5F6F7] absolute -top-3 md:-top-5 right-4 select-none leading-none pointer-events-none"
       >
         &rdquo;
       </span>
 
-      <div className="relative flex items-center gap-3.5 md:gap-4">
+      <div className="relative flex items-center gap-3 md:gap-4">
         <div
           className={`relative shrink-0 ${
-            featured ? "w-20 h-20 md:w-24 md:h-24" : "w-14 h-14"
+            featured ? "w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24" : "w-14 h-14"
           }`}
         >
           <div
@@ -111,7 +111,7 @@ function TestimonialCard({ item, featured }) {
             ) : (
               <div
                 className={`work-sans font-bold w-full h-full flex items-center justify-center text-white ${
-                  featured ? "text-2xl" : "text-xl"
+                  featured ? "text-lg sm:text-2xl" : "text-xl"
                 }`}
                 style={{ backgroundColor: avatarColor(item.name) }}
               >
@@ -124,15 +124,15 @@ function TestimonialCard({ item, featured }) {
         <div className="min-w-0">
           <p
             className={`work-sans font-semibold text-[#1F2937] truncate ${
-              featured ? "text-xl md:text-2xl" : "text-base"
+              featured ? "text-sm sm:text-xl md:text-2xl" : "text-base"
             }`}
           >
             {item.name}
           </p>
           {item.address && (
             <p
-              className={`text-[#6B7280] truncate mt-0.5 mb-1.5 ${
-                featured ? "text-sm md:text-base" : "text-xs"
+              className={`text-[#6B7280] truncate mt-0.5 mb-1 sm:mb-1.5 ${
+                featured ? "text-[11px] sm:text-sm md:text-base" : "text-xs"
               }`}
             >
               {item.address}
@@ -145,8 +145,8 @@ function TestimonialCard({ item, featured }) {
       </div>
 
       <p
-        className={`relative text-[#374151] leading-relaxed mt-5 md:mt-7 flex-1 ${
-          featured ? "text-base md:text-[17px]" : "text-sm"
+        className={`relative text-[#374151] leading-snug sm:leading-relaxed mt-3 sm:mt-5 md:mt-7 flex-1 ${
+          featured ? "text-[13px] sm:text-base md:text-[17px]" : "text-sm"
         }`}
       >
         {item.message}
@@ -211,7 +211,7 @@ export default function Testimonials() {
               type="button"
               onClick={() => go(-1)}
               aria-label="Previous"
-              className="absolute -left-1 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur border border-gray-100 shadow-lg rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
+              className="hidden sm:flex absolute -left-1 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur border border-gray-100 shadow-lg rounded-full items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path
@@ -285,7 +285,7 @@ export default function Testimonials() {
               type="button"
               onClick={() => go(1)}
               aria-label="Next"
-              className="absolute -right-1 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur border border-gray-100 shadow-lg rounded-full flex items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
+              className="hidden sm:flex absolute -right-1 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 bg-white/90 backdrop-blur border border-gray-100 shadow-lg rounded-full items-center justify-center text-[#6B7280] hover:bg-[#1D1D1F] hover:text-white transition-all hover:scale-110 active:scale-95"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path
@@ -300,7 +300,7 @@ export default function Testimonials() {
           )}
 
           {n > 1 && (
-            <div className="flex justify-center gap-1.5 mt-7">
+            <div className="flex justify-center gap-1.5 mt-4 md:mt-7">
               {items.map((item, i) => (
                 <button
                   key={item._id}
