@@ -458,11 +458,11 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
       {/* ── Listing area ── */}
       <div className="bg-[#F0F9FF] w-full">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8 py-3 sm:py-8">
           {/* Subcategories row — in-page filter chips; the row stays visible
               with the active chip highlighted (clicking never navigates). */}
           {chipCategories.length > 0 && (
-            <div className="glass-chip-bar mb-6 flex gap-2 overflow-x-auto scrollbar-none">
+            <div className="glass-chip-bar mb-3 sm:mb-6 flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none">
               <button
                 type="button"
                 onClick={() => {
@@ -485,7 +485,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
                       setActiveSubId(sub._id);
                       setCurrentPage(1);
                     }}
-                    className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full text-sm font-medium ${
+                    className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
                       isActive ? "glass-chip-active" : "glass-chip"
                     }`}
                   >
@@ -497,7 +497,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           )}
 
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#EDF2F7]/95 backdrop-blur border-b border-gray-100">
+          <div className="lg:hidden sticky top-16 z-30 -mx-1.5 px-1.5 py-1.5 mb-2 sm:mb-4 bg-[#EDF2F7]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
               <button
                 type="button"
@@ -631,7 +631,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
               {!productsLoadedOnce && loadingProducts ? (
                 <div
-                  className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-3 md:gap-4`}
+                  className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-2 md:gap-4`}
                 >
                   {Array(10)
                     .fill(0)
@@ -642,7 +642,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
               ) : products.length > 0 ? (
                 <>
                   <div
-                    className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-3 md:gap-4`}
+                    className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-2 md:gap-4`}
                   >
                     {products.map((p) => (
                       <ProductCard

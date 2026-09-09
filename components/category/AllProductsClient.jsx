@@ -272,18 +272,18 @@ export default function AllProductsClient() {
 
       {/* ── Listing area ── */}
       <div className="bg-[#F0F9FF] w-full">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8 py-3 sm:py-8">
           {/* Main categories row — chips filter the listing in-place so the
               full row stays visible with the selected category highlighted. */}
           {mainCategories.length > 0 && (
-            <div className="glass-chip-bar mb-6 flex gap-2 overflow-x-auto scrollbar-none">
+            <div className="glass-chip-bar mb-3 sm:mb-6 flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none">
               <button
                 type="button"
                 onClick={() => {
                   setActiveCategoryId(null);
                   setCurrentPage(1);
                 }}
-                className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full text-sm font-medium ${
+                className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
                   !activeCategoryId ? "glass-chip-active" : "glass-chip"
                 }`}
               >
@@ -299,7 +299,7 @@ export default function AllProductsClient() {
                       setActiveCategoryId(cat._id);
                       setCurrentPage(1);
                     }}
-                    className={`shrink-0 h-9 px-4 inline-flex items-center rounded-full text-sm font-medium ${
+                    className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
                       isActive ? "glass-chip-active" : "glass-chip"
                     }`}
                   >
@@ -311,7 +311,7 @@ export default function AllProductsClient() {
           )}
 
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#EDF2F7]/95 backdrop-blur border-b border-gray-100">
+          <div className="lg:hidden sticky top-16 z-30 -mx-1.5 px-1.5 py-1.5 mb-2 sm:mb-4 bg-[#EDF2F7]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
               <button
                 type="button"
@@ -446,7 +446,7 @@ export default function AllProductsClient() {
 
               {!productsLoadedOnce && loadingProducts ? (
                 <div
-                  className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-3 md:gap-4`}
+                  className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-2 md:gap-4`}
                 >
                   {Array(10)
                     .fill(0)
@@ -457,7 +457,7 @@ export default function AllProductsClient() {
               ) : products.length > 0 ? (
                 <>
                   <div
-                    className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-3 md:gap-4`}
+                    className={`grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 ${showDesktopFilters ? "lg:grid-cols-4" : "lg:grid-cols-5"} gap-2 md:gap-4`}
                   >
                     {products.map((p) => (
                       <ProductCard

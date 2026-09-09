@@ -30,14 +30,14 @@ export default function CartFloating() {
   const label = `${t("cart.open_label_prefix")} ${count} ${t("cart.items_label")}, ${t("cart.open_label_total")}${total}`;
 
   return (
-    // Same floating icon on every screen size — mobile and desktop.
-    <span className="fixed z-50" style={{ bottom: 104, right: 16 }}>
+    // Mobile: sits just above the scroll-to-top button. Desktop: higher up.
+    <span className="fixed z-50 bottom-16 sm:bottom-26" style={{ right: 16 }}>
       {/* ping ring — always active like a map marker */}
       <span className="absolute inset-0 rounded-full bg-[#1D1D1F] opacity-30 animate-ping" />
       <button
         onClick={toggleSidebar}
         aria-label={label}
-        className={`relative flex items-center justify-center bg-[#1D1D1F] text-white rounded-full shadow-lg shadow-gray-300 w-10 h-10 sm:w-12 sm:h-12 hover:bg-black active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
+        className={`relative flex items-center justify-center bg-[#1D1D1F] text-white rounded-full shadow-lg shadow-gray-300 w-9 h-9 sm:w-12 sm:h-12 hover:bg-black active:scale-95 transition-transform ${bump ? "scale-110" : "scale-100"}`}
       >
         <span className="relative">
           <FiShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
