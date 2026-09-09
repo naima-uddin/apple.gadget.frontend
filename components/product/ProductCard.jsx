@@ -158,7 +158,7 @@ export default function ProductCard({
   return (
     <>
       <div
-        className="relative bg-white border border-gray-200 ring-1 ring-black/[0.02] rounded-[20px] shadow-premium group hover:shadow-premium-hover hover:-translate-y-1.5 hover:border-gray-300 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col cursor-pointer h-full overflow-hidden"
+        className="relative bg-white border border-gray-200 ring-1 ring-black/[0.02] rounded-sm shadow-premium group hover:shadow-premium-hover hover:-translate-y-1.5 hover:border-gray-300 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] flex flex-col cursor-pointer h-full overflow-hidden"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -172,7 +172,7 @@ export default function ProductCard({
           <span className="sr-only">{product.title || product.slug}</span>
         </Link>
         <div
-          className="relative surface-product rounded-t-2xl overflow-hidden border-b border-gray-100"
+          className="relative surface-product rounded-t-sm overflow-hidden border-b border-gray-100"
           style={{ height: imageHeight }}
         >
           <div className="absolute inset-0  flex items-center justify-center overflow-hidden">
@@ -290,7 +290,7 @@ export default function ProductCard({
           </div>
         </div>
 
-        <div className="p-2 pt-2 sm:p-3 sm:pt-2.5 flex flex-col grow">
+        <div className="px-2 py-1.5 sm:px-3 sm:py-1.5 flex flex-col grow">
           <h3 className="text-xs sm:text-[13px] font-semibold text-[#1F2937] leading-snug truncate">
             {product.title || product.slug}
           </h3>
@@ -364,22 +364,16 @@ export default function ProductCard({
               );
             })()}
           </div>
-          <div className="flex items-center gap-2">
-            {product.freeShipping && (
+          {product.freeShipping && (
+            <div className="flex items-center gap-2">
               <p className="text-[11px] font-semibold text-[#1D1D1F]">
                 {t("home.free_shipping")}
               </p>
-            )}
-            {Number(product.rewardPoints) > 0 && (
-              <span className="inline-flex items-center gap-1 bg-[#1D1D1F]/5 text-[#1D1D1F] ring-1 ring-black/10 text-[8px] font-bold px-1.5 py-0.5 rounded-full">
-                <FaStar className="w-2 h-2 text-[#1D1D1F]" />
-                {product.rewardPoints} points
-              </span>
-            )}
-          </div>
+            </div>
+          )}
 
           {isOutOfStock ? (
-            <div className="relative z-2 mt-auto pt-2.5 flex gap-1.5">
+            <div className="relative z-2 mt-1.5 flex gap-1.5">
               <button
                 disabled
                 className="bg-gray-100 text-gray-500 py-2 px-2 rounded-full text-[10px] font-medium cursor-not-allowed whitespace-nowrap"
@@ -398,7 +392,7 @@ export default function ProductCard({
               </button>
             </div>
           ) : (
-            <div className="relative z-2 mt-auto pt-1.5 flex gap-1.5">
+            <div className="relative z-2 mt-1.5 flex gap-1.5">
               {/* Buy Now — light gray, straight to checkout */}
               <button
                 onClick={(e) => {
