@@ -654,9 +654,9 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
         {/* ── RIGHT: sticky buy box ── */}
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-24 flex flex-col gap-4">
+          <div className="lg:sticky lg:top-24 flex flex-col gap-2.5 sm:gap-4">
             {/* Title */}
-            <h1 className="text-xl md:text-2xl text-[#1F2937] leading-tight font-georgia">
+            <h1 className="text-lg md:text-2xl text-[#1F2937] leading-tight font-georgia">
               {title}
             </h1>
 
@@ -675,7 +675,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             {/* Price */}
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="text-2xl md:text-3xl font-bold text-[#1D1D1F]">
+                <span className="text-xl md:text-3xl font-bold text-[#1D1D1F]">
                   ৳{price?.toLocaleString()}
                 </span>
                 {compareAtPrice && compareAtPrice > price && (
@@ -742,7 +742,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     </span>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {productColors.map((col, idx) => {
                     const isSelected = selectedColor?.name === col.name;
                     const color = resolveColor(col);
@@ -758,7 +758,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                         className="flex flex-col items-center gap-1.5 transition-all group"
                       >
                         <span
-                          className={`w-12 h-12 rounded-full block transition-all relative ${
+                          className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full block transition-all relative ${
                             isSelected
                               ? "scale-110 ring-2 ring-offset-2 ring-[#1D1D1F]"
                               : "hover:scale-105"
@@ -774,7 +774,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                           {isSelected && (
                             <span className="absolute inset-0 flex items-center justify-center">
                               <svg
-                                className="w-5 h-5 text-white drop-shadow-md"
+                                className="w-4 h-4 sm:w-5 sm:h-5 text-white drop-shadow-md"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -964,7 +964,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
       </div>
 
       {/* product info tabs */}
-      <div id="reviews-tab" className="mt-10">
+      <div id="reviews-tab" className="mt-5 sm:mt-10">
         <ProductInfoTabs product={tabProduct} />
       </div>
 
