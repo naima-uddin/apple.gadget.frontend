@@ -14,7 +14,6 @@ import AdSlot from "@/components/ui/AdSlot";
 import OffersToSayYes from "./OffersToSayYes";
 import ShoppableVideoSection from "./ShoppableVideoSection";
 import PromoBanner from "./PromoBanner";
-import CategoryBanner from "./CategoryBanner";
 import FeaturedShowcase from "./FeaturedShowcase";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -27,7 +26,6 @@ const FALLBACK_ORDER = [
   "banner",
   "storeHero",
   "shopByCategory",
-  "categoryBanner",
   "featuredSections",
   "adSlot",
   "categoryShowcase",
@@ -71,7 +69,6 @@ export default function Home() {
       <PromoBanner className="max-w-7xl mx-auto px-4 sm:px-6 mt-2 sm:mt-3 mb-1" />
     ),
     shopByCategory: <ShopByCategory />,
-    categoryBanner: <CategoryBanner />,
     adSlot: (
       <AdSlot page="homepage" className="max-w-7xl mx-auto px-2 py-3" />
     ),

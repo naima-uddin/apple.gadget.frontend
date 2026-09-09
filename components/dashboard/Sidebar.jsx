@@ -318,7 +318,6 @@ const SECTIONS = [
       "/dashboard/banners",
       "/dashboard/promo-banner",
       "/dashboard/typographic-hero",
-      "/dashboard/category-banner",
       "/dashboard/promo-panels",
       "/dashboard/testimonials",
       "/dashboard/category-showcase",
@@ -355,13 +354,6 @@ const SECTIONS = [
         label: "Typographic Hero",
         href: "/dashboard/typographic-hero",
         icon: "M4 7h16 M9 7v12 M15 7v12",
-        permissionKey: "content.banners",
-      },
-      {
-        key: "category-banner",
-        label: "Category Banner",
-        href: "/dashboard/category-banner",
-        icon: "M4 5h16v10H4z M8 18h8",
         permissionKey: "content.banners",
       },
       {
