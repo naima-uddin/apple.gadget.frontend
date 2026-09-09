@@ -89,7 +89,7 @@ const Banner = () => {
       );
 
   const slide = slides[current] || slides[0];
-  if (!slide) return <section className="h-120 bg-[#EEF2F6]" />;
+  if (!slide) return <section className="h-120 bg-[#F0F9FF]" />;
 
   const goToLink = () => {
     if (slide?.buttonLink) router.push(slide.buttonLink);
@@ -106,7 +106,7 @@ const Banner = () => {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 20%, #FFFFFF 0%, #EEF2F6 45%, #DDE5EC 100%)",
+            "radial-gradient(120% 90% at 50% 20%, #FFFFFF 0%, #F0F9FF 70%, #EFF8FE 100%)",
         }}
       />
 
@@ -114,7 +114,7 @@ const Banner = () => {
       {slide.title && (
         <span
           aria-hidden="true"
-          className={`${playfair.className} pointer-events-none absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-center text-[22vw] font-bold uppercase leading-none tracking-tighter text-white/50 sm:text-[18vw]`}
+          className={`${playfair.className} pointer-events-none absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-center text-[22vw] font-bold uppercase leading-none tracking-tighter text-white sm:text-[18vw]`}
         >
           {String(slide.title).replace(/\*/g, "").split(" ")[0]}
         </span>

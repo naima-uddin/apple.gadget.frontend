@@ -243,7 +243,7 @@ export default function TypographicHero() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(160deg,#F4F5F7 0%,#EAECEF 42%,#E1E4E9 70%,#EEF0F3 100%)",
+            "linear-gradient(160deg,#F0F9FF 0%,#E6F3FC 42%,#DCEEFB 70%,#F0F9FF 100%)",
         }}
       />
       <div

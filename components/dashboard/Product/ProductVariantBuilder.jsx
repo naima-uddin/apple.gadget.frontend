@@ -70,8 +70,14 @@ const inferVariationCatalog = (variants) => {
 
   (variants || []).forEach((variant) => {
     const attrs = { ...(variant.attributes || {}) };
-    if (variant.color?.name) attrs.Color = variant.color.name;
-    if (variant.size) attrs.Size = variant.size;
+    // Only fall back to the denormalized color/size scalars for legacy rows
+    // that carry no attributes of their own. Deriving them unconditionally
+    // resurrects a ghost "Color"/"Size" group after the admin renames or
+    // deletes that variation type — `attributes` is the source of truth now.
+    if (!Object.keys(attrs).length) {
+      if (variant.color?.name) attrs.Color = variant.color.name;
+      if (variant.size) attrs.Size = variant.size;
+    }
 
     Object.entries(attrs).forEach(([name, value]) => {
       if (!name || !value || typeof value !== "string") return;
@@ -369,6 +375,42 @@ export default function ProductVariantBuilder({
     setEditingGroup(null);
   };
 
+  const removeVariation = (groupName) => {
+    setCatalog((current) => current.filter((group) => group.name !== groupName));
+    setSelectedNames((current) => current.filter((name) => name !== groupName));
+    setOptionDrafts((current) => {
+      const next = { ...current };
+      delete next[groupName];
+      return next;
+    });
+    if (editingGroup === groupName) setEditingGroup(null);
+    setProduct((prev) => {
+      const variants = (prev.variants || []).map((v) => {
+        const attrs = { ...(v.attributes || {}) };
+        delete attrs[groupName];
+        const updated = { ...v, attributes: attrs };
+        // Clear the denormalized scalar so the storefront (which reads
+        // color/size directly) stops showing the removed axis.
+        if (groupName.toLowerCase() === "color")
+          updated.color = { name: "", hex: "#000000" };
+        if (groupName.toLowerCase() === "size") updated.size = "";
+        return updated;
+      });
+      // Drop rows that no longer describe any variation and de-duplicate the
+      // identical combinations that collapse once an axis is removed.
+      const seen = new Set();
+      const cleaned = variants.filter((v) => {
+        const hasAttrs = Object.keys(v.attributes || {}).length > 0;
+        if (!hasAttrs && !v.color?.name && !v.size) return false;
+        const key = comboKey(v.attributes || {});
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return { ...prev, variants: cleaned };
+    });
+  };
+
   const renameOption = (groupName, optionId, newValue) => {
     const trimmed = newValue.trim();
     const group = catalog.find((g) => g.name === groupName);
@@ -554,10 +596,41 @@ export default function ProductVariantBuilder({
                       </span>
                     )}
                   </span>
-                  <span className="text-xs text-gray-500 shrink-0">
-                    {group.options.filter((option) => option.selected).length}{" "}
-                    selected
-                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="text-xs text-gray-500">
+                      {
+                        group.options.filter((option) => option.selected)
+                          .length
+                      }{" "}
+                      selected
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (
+                          window.confirm(
+                            `Delete the "${group.name}" variation and remove it from all rows?`,
+                          )
+                        )
+                          removeVariation(group.name);
+                      }}
+                      className="rounded-md border border-red-200 p-1 text-red-500 transition-colors hover:bg-red-50"
+                      title="Delete this variation type"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-3.5 w-3.5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
 
                 {selected && (
