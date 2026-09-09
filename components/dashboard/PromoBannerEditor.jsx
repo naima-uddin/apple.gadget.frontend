@@ -201,23 +201,66 @@ export default function PromoBannerEditor() {
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-3">
           Live Preview
         </h3>
-        {cfg.image?.url ? (
-          <div
-            className="w-full overflow-hidden ring-1 ring-black/5"
-            style={{ height: Number(cfg.height) || 64 }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={cfg.image.url}
-              alt=""
-              className="w-full h-full object-cover object-center"
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Desktop: thin fixed-height strip (object-cover) */}
+          <div className="sm:col-span-2">
+            <p className="text-xs font-semibold text-gray-500 mb-1.5">
+              Desktop
+            </p>
+            {cfg.image?.url ? (
+              <div
+                className="w-full overflow-hidden ring-1 ring-black/5"
+                style={{ height: Number(cfg.height) || 64 }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cfg.image.url}
+                  alt=""
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            ) : (
+              <div className="w-full h-24 rounded-xl border-2 border-dashed border-gray-200 flex items-center justify-center text-sm text-gray-400">
+                Upload a banner image to see the preview
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="w-full h-24 rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-center text-sm text-gray-400">
-            Upload a banner image to see the preview
+
+          {/* Mobile: dedicated image shown in full (natural aspect ratio) */}
+          <div>
+            <p className="text-xs font-semibold text-gray-500 mb-1.5">
+              Mobile
+            </p>
+            <div className="mx-auto w-55 max-w-full rounded-[1.75rem] border-4 border-gray-800 bg-gray-800 overflow-hidden">
+              <div className="rounded-[1.4rem] overflow-hidden bg-white">
+                {cfg.mobileImage?.url ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={cfg.mobileImage.url}
+                    alt=""
+                    className="block w-full h-auto"
+                  />
+                ) : cfg.image?.url ? (
+                  <div style={{ height: Math.max(40, Math.round((Number(cfg.height) || 64) * 0.7)) }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={cfg.image.url}
+                      alt=""
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-24 flex items-center justify-center text-xs text-gray-400 text-center px-2">
+                    No mobile image
+                  </div>
+                )}
+              </div>
+            </div>
+            <p className="text-[11px] text-gray-400 mt-2 text-center">
+              Mobile image shows in full (no crop).
+            </p>
           </div>
-        )}
+        </div>
       </div>
 
       {message && (

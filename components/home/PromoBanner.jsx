@@ -108,30 +108,46 @@ export default function PromoBanner({ className = "" }) {
   const mobileHeight = Number(banner.mobileHeight) || Math.max(40, Math.round(height * 0.7));
   const hasMobile = !!banner.mobileImage?.url;
 
-  const imageBox = (
+  const imageBox = hasMobile ? (
+    <>
+      {/* Mobile: dedicated banner shown in full at its natural aspect ratio
+          (no cropping) so a purpose-made mobile creative displays completely. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={banner.mobileImage.url}
+        alt="Promotion"
+        className="block w-full h-auto border border-white sm:hidden"
+        loading="lazy"
+      />
+      {/* Desktop: thin fixed-height strip. */}
+      <div
+        className="relative hidden w-full overflow-hidden sm:block h-[var(--promo-h)]"
+        style={{ "--promo-h": `${height}px` }}
+      >
+        <Image
+          src={banner.image.url}
+          alt="Promotion"
+          fill
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          priority={false}
+          className="object-cover object-center"
+        />
+      </div>
+    </>
+  ) : (
+    // No dedicated mobile image: one wide strip, scaled shorter on phones.
     <div
       className="relative w-full overflow-hidden h-[var(--promo-h-m)] sm:h-[var(--promo-h)]"
       style={{ "--promo-h": `${height}px`, "--promo-h-m": `${mobileHeight}px` }}
     >
-      {/* Desktop / default image */}
       <Image
         src={banner.image.url}
         alt="Promotion"
         fill
         sizes="(max-width: 1280px) 100vw, 1280px"
         priority={false}
-        className={`object-cover object-center ${hasMobile ? "hidden sm:block" : ""}`}
+        className="object-cover object-center"
       />
-      {/* Optional mobile-specific image */}
-      {hasMobile && (
-        <Image
-          src={banner.mobileImage.url}
-          alt="Promotion"
-          fill
-          sizes="100vw"
-          className="object-cover object-center sm:hidden"
-        />
-      )}
     </div>
   );
 
