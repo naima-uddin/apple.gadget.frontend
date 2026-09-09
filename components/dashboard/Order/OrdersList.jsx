@@ -3522,9 +3522,15 @@ function AbandonedCartSection() {
                           onClick={() =>
                             setCreateFor({
                               billingDetails: {
-                                name: u.name || "",
-                                phone: u.mobile || "",
-                                email: u.email || "",
+                                name:
+                                  u.name || u.addresses?.[0]?.fullName || "",
+                                phone:
+                                  u.mobile || u.addresses?.[0]?.phone || "",
+                                email:
+                                  u.email || u.addresses?.[0]?.email || "",
+                                city: u.addresses?.[0]?.city || "",
+                                zone: u.addresses?.[0]?.zone || "",
+                                address: u.addresses?.[0]?.address || "",
                               },
                               items: (u.savedCart?.items || []).map((it) => ({
                                 productId: it.productId,

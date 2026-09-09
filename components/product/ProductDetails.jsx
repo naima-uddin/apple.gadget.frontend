@@ -715,7 +715,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     aria-expanded={descOpen}
                     className="mt-0.5 inline-flex items-center gap-1 text-xs font-semibold text-[#1D1D1F] hover:text-black transition-colors"
                   >
-                    {descOpen ? "Less" : "More"}
+                    {descOpen ? "See less" : "See more"}
                     <FaChevronDown
                       className={`w-2.5 h-2.5 transition-transform ${
                         descOpen ? "rotate-180" : ""

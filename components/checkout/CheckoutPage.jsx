@@ -121,13 +121,16 @@ export default function CheckoutPage() {
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
-        items: cartItems.map((item) => ({
-          productId: item.product?._id || item.product?.id || "",
-          title: item.product?.title || "",
-          price: getItemPrice(item),
-          quantity: item.quantity,
-          image: item.product?.images?.[0] || null,
-        })),
+        items: cartItems.map((item) => {
+          const img = item.product?.images?.[0];
+          return {
+            productId: item.product?._id || item.product?.id || "",
+            title: item.product?.title || "",
+            price: getItemPrice(item),
+            quantity: item.quantity,
+            image: (typeof img === "string" ? img : img?.url) || null,
+          };
+        }),
         total: 0,
       }),
     })
