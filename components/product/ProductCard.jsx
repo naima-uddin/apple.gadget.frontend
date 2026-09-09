@@ -391,7 +391,7 @@ export default function ProductCard({
                   e.stopPropagation();
                   setWaitlistProduct(product);
                 }}
-                className="flex-1 flex items-center justify-center border border-gray-300 text-[#1D1D1F] gap-0.5 py-2 rounded-full text-[8px] md:text-[8px] font-semibold hover:bg-[#F5F5F7] hover:border-gray-400 transition"
+                className="flex-1 flex items-center justify-center border border-gray-300 text-[#1D1D1F] gap-0.5 py-2 rounded-full text-[8px] md:text-[8px] font-semibold hover:bg-[#E5F3FF] hover:border-gray-400 transition"
               >
                 <FaBell className="w-2 h-2 hidden md:block -mr-0.5" /> Join
                 Waitlist
@@ -407,7 +407,7 @@ export default function ProductCard({
                   addToCart(product, 1, { silent: true });
                   router.push("/checkout");
                 }}
-                className="flex-1 bg-[#F5F5F7] border border-gray-200/80 text-[#1D1D1F] py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
+                className="flex-1 bg-[#E5F3FF] border border-gray-200/80 text-[#1D1D1F] py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
               >
                 {t("product.buy_now")}
               </button>

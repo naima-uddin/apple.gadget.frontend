@@ -308,7 +308,7 @@ export default function StoreHeroEditor() {
         <h3 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-3">
           Live Preview
         </h3>
-        <div className="bg-[#F5F5F7] border border-gray-200 rounded-2xl p-6">
+        <div className="bg-[#E5F3FF] border border-gray-200 rounded-2xl p-6">
           {(heading || subheading) && (
             <h1 className="text-xl md:text-2xl font-semibold tracking-tight leading-tight max-w-2xl">
               <span className="text-[#1D1D1F]">{heading} </span>

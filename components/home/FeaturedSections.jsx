@@ -192,7 +192,7 @@ export default function FeaturedSections() {
     // shows through the space between bands
     <section className="w-full py-2 sm:py-4 space-y-3 sm:space-y-6 md:space-y-8 bg-white">
       {sections.map((sec) => (
-        <div key={sec._id} className="w-full bg-[#f7f5ff] py-3 sm:py-6 md:py-8">
+        <div key={sec._id} className="w-full bg-[#F0F9FF] py-3 sm:py-6 md:py-8">
           <div className="max-w-7xl mx-auto px-1.5 sm:px-4">
             {/* Section header */}
             <SectionHeader

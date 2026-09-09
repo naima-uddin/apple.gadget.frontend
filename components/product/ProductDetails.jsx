@@ -690,7 +690,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 )}
               </div>
               {product.freeShipping && (
-                <p className="inline-flex items-center gap-1.5 w-fit text-sm font-semibold text-[#1D1D1F] bg-[#F5F5F7] border border-gray-200 rounded-full px-3 py-1 mt-2.5">
+                <p className="inline-flex items-center gap-1.5 w-fit text-sm font-semibold text-[#1D1D1F] bg-[#E5F3FF] border border-gray-200 rounded-full px-3 py-1 mt-2.5">
                   <FaTruck className="w-3.5 h-3.5" /> Free Shipping
                 </p>
               )}

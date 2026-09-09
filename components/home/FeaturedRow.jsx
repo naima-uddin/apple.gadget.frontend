@@ -24,7 +24,7 @@ export default function FeaturedRow({ sectionId }) {
   if (!loaded || !section || !section.products?.length) return null;
 
   return (
-    <div className="w-full bg-[#f7f5ff] py-3 sm:py-6 md:py-8">
+    <div className="w-full bg-[#F0F9FF] py-3 sm:py-6 md:py-8">
       <div className="max-w-7xl mx-auto px-1.5 sm:px-2">
         <SectionHeader
           title={lang === "bn" ? section.titleBn || section.title : section.title}

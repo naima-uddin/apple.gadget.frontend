@@ -457,7 +457,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
       </div>
 
       {/* ── Listing area ── */}
-      <div className="bg-[#f7f5ff] w-full">
+      <div className="bg-[#F0F9FF] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
           {/* Subcategories row — in-page filter chips; the row stays visible
               with the active chip highlighted (clicking never navigates). */}
@@ -497,7 +497,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
           )}
 
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#f7f5ff]/95 backdrop-blur border-b border-gray-100">
+          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#EDF2F7]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr] gap-2 items-center">
               <button
                 type="button"

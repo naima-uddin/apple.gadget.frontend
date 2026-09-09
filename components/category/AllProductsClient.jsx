@@ -271,7 +271,7 @@ export default function AllProductsClient() {
       </div>
 
       {/* ── Listing area ── */}
-      <div className="bg-[#f7f5ff] w-full">
+      <div className="bg-[#F0F9FF] w-full">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-8">
           {/* Main categories row — chips filter the listing in-place so the
               full row stays visible with the selected category highlighted. */}
@@ -311,7 +311,7 @@ export default function AllProductsClient() {
           )}
 
           {/* Mobile sticky filter/sort bar */}
-          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#f7f5ff]/95 backdrop-blur border-b border-gray-100">
+          <div className="lg:hidden sticky top-16 z-30 -mx-3 px-3 py-2 mb-4 bg-[#EDF2F7]/95 backdrop-blur border-b border-gray-100">
             <div className="grid grid-cols-[auto_1fr_auto] gap-2 items-center">
               <button
                 type="button"

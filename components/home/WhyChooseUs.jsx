@@ -265,7 +265,7 @@ export default function WhyChooseUs() {
                     key={i}
                     className={`rounded-2xl transition-all duration-200 ${
                       open
-                        ? "bg-[#F5F5F7] shadow-sm ring-1 ring-gray-200 px-4"
+                        ? "bg-[#E5F3FF] shadow-sm ring-1 ring-gray-200 px-4"
                         : "border-b border-gray-200 px-1"
                     }`}
                   >

@@ -118,7 +118,7 @@ export default function AddToCartSection({
     <div className="flex flex-col gap-4">
       {isPreorder ? (
         <>
-          <div className="flex items-center gap-2 bg-[#F5F5F7] border border-gray-200 text-[#1D1D1F] px-4 py-2.5 rounded-xl text-sm font-medium w-fit">
+          <div className="flex items-center gap-2 bg-[#E5F3FF] border border-gray-200 text-[#1D1D1F] px-4 py-2.5 rounded-xl text-sm font-medium w-fit">
             <FaClock className="w-3.5 h-3.5" />
             Pre-order now — ships as soon as stock arrives
           </div>
@@ -151,7 +151,7 @@ export default function AddToCartSection({
           </div>
 
           {/* Inline waitlist notification block */}
-          <div className="rounded-2xl bg-[#F5F5F7] border border-gray-200 px-5 py-3 mt-1 max-w-sm">
+          <div className="rounded-2xl bg-[#E5F3FF] border border-gray-200 px-5 py-3 mt-1 max-w-sm">
             {notifySuccess ? (
               <div className="text-center py-2">
                 <div className="text-3xl mb-2">🎉</div>
@@ -249,7 +249,7 @@ export default function AddToCartSection({
           </div>
           <button
             onClick={handleBuyNow}
-            className="w-full bg-[#F5F5F7] border border-gray-200 text-[#1D1D1F] py-2.5 rounded-xl font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors"
+            className="w-full bg-[#E5F3FF] border border-gray-200 text-[#1D1D1F] py-2.5 rounded-xl font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors"
           >
             Buy Now
           </button>
