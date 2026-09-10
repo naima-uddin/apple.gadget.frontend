@@ -86,7 +86,7 @@ export default async function AboutPage() {
   const stats = aboutContent?.stats?.length ? aboutContent.stats : STATS;
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10 sm:py-16">
+    <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">
       <PolicyTabs />
 
       <div className="space-y-6">
@@ -145,6 +145,6 @@ export default async function AboutPage() {
           ))}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

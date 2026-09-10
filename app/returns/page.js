@@ -16,11 +16,11 @@ export async function generateMetadata() {
 
 export default function ReturnsPage() {
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10 sm:py-16">
+    <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">
       <PolicyTabs />
       <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8">
         <ReturnAccordion />
       </div>
-    </main>
+    </div>
   );
 }

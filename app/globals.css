@@ -67,9 +67,11 @@ body {
    here contains any page section that overflows sideways without touching them.
    `clip` (not hidden) so in-page sticky bars — e.g. category filter `top-16` —
    keep working; older browsers fall back to the root hidden rule above. */
-main {
-  overflow-x: clip;
-  max-width: 100%;
+@layer base {
+  main {
+    overflow-x: clip;
+    max-width: 100%;
+  }
 }
 
 /* Fade+lift used by the homepage FeaturedShowcase hero image on swap */

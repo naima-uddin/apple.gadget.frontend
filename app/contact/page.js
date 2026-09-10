@@ -21,9 +21,9 @@ export async function generateMetadata() {
 
 export default function ContactPage() {
   return (
-    <main className="max-w-6xl mx-auto px-4 py-10 sm:py-16">
+    <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">
       <PolicyTabs />
       <ContactContent />
-    </main>
+    </div>
   );
 }

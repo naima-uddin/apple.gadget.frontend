@@ -35,9 +35,6 @@ import {
 } from "@/components/cart/VariantEditModal";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductCard from "@/components/product/ProductCard";
-import RecentlyViewed, {
-  saveRecentlyViewed,
-} from "@/components/product/RecentlyViewed";
 import AdSlot from "@/components/ui/AdSlot";
 import { getDisplayPrice } from "@/lib/pricing";
 
@@ -244,10 +241,6 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
     window.addEventListener("resize", updateViewport);
     return () => window.removeEventListener("resize", updateViewport);
   }, []);
-
-  useEffect(() => {
-    if (product) saveRecentlyViewed(product);
-  }, [product]);
 
   // Jump the gallery to the image the admin mapped to a color (if any).
   // Matches the variant's image URL against the product's uploaded images.
@@ -976,14 +969,6 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
       {/* NOTE: detailed description now renders inside the "Description" tab
           (ProductInfoTabs), so it is no longer repeated here. */}
-
-      {/* recently viewed — always at the very bottom */}
-      <RecentlyViewed
-        currentProductId={product?._id}
-        mobilePerRow={3}
-        desktopPerRow={6}
-        rows={1}
-      />
 
       {/* ── Image Zoom Modal ── */}
       {zoomOpen && (

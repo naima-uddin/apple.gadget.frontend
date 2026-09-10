@@ -6,14 +6,31 @@ import { useUser } from "@/components/context/UserContext";
 import { useStoreSettings } from "@/components/context/StoreSettingsContext";
 import { useLanguage } from "@/components/context/LanguageContext";
 
+// Hosts that are really "us" — an absolute link to any of these should route
+// in-app (client-side) instead of triggering a full-page jump to production.
+// This also fixes local dev, where the DB stores footer links as absolute
+// https://applebd.com/... URLs: without this, clicking one would leave the
+// local build and load the live site.
+const INTERNAL_HOSTS = ["applebd.com", "www.applebd.com"];
+
 function normalizeHref(href) {
   if (!href) return "/";
-  if (
-    href.startsWith("http://") ||
-    href.startsWith("https://") ||
-    href.startsWith("/")
-  )
+  if (href.startsWith("http://") || href.startsWith("https://")) {
+    try {
+      const url = new URL(href);
+      let siteHost = "";
+      try {
+        siteHost = new URL(process.env.NEXT_PUBLIC_SITE_URL || "").host;
+      } catch {}
+      if (url.host === siteHost || INTERNAL_HOSTS.includes(url.host)) {
+        // Same-site absolute URL → collapse to a relative path for SPA routing.
+        return `${url.pathname}${url.search}${url.hash}` || "/";
+      }
+    } catch {}
+    // Genuinely external (social links, etc.) — leave untouched.
     return href;
+  }
+  if (href.startsWith("/")) return href;
   return `/${href}`;
 }
 

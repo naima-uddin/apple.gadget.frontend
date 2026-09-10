@@ -44,7 +44,7 @@ export default async function FaqPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <main className="max-w-5xl mx-auto px-4 py-10 sm:py-16">
+      <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">
         <PolicyTabs />
         <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8">
           <PolicyHeader
@@ -58,7 +58,7 @@ export default async function FaqPage() {
             <p className="text-sm text-gray-400">No information available.</p>
           )}
         </div>
-      </main>
+      </div>
     </>
   );
 }

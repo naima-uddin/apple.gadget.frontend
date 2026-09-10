@@ -24,7 +24,7 @@ export default async function TermsPage() {
   const sections = policyContent?.terms || [];
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10 sm:py-16">
+    <div className="max-w-7xl mx-auto px-4 py-10 sm:py-16">
       <PolicyTabs />
       <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8">
         <PolicyHeader
@@ -51,6 +51,6 @@ export default async function TermsPage() {
           <p className="text-sm text-gray-400">No information available.</p>
         )}
       </div>
-    </main>
+    </div>
   );
 }
