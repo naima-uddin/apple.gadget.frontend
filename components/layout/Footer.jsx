@@ -68,25 +68,28 @@ function NavColumn({ title, links }) {
         </p>
       )}
       <ul className="space-y-2.5 text-sm">
-        {visible.map((item, i) => (
-          <li key={i}>
-            <FooterLink href={normalizeHref(item.href)}>
-              {item.label}
-            </FooterLink>
-          </li>
-        ))}
+        {visible.map((item, i) => {
+          const isLast = i === visible.length - 1;
+          return (
+            <li key={i} className="flex items-center gap-2">
+              <FooterLink href={normalizeHref(item.href)}>
+                {item.label}
+              </FooterLink>
+              {hasMore && isLast && (
+                <button
+                  type="button"
+                  onClick={() => setExpanded((v) => !v)}
+                  aria-expanded={expanded}
+                  aria-label={expanded ? "Show fewer links" : "Show all links"}
+                  className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-green-600 text-[10px] text-green-600 leading-none transition-all duration-200 hover:border-green-700 hover:text-white hover:bg-green-600"
+                >
+                  <span className="-mt-px">{expanded ? "−" : "+"}</span>
+                </button>
+              )}
+            </li>
+          );
+        })}
       </ul>
-      {hasMore && (
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-          aria-label={expanded ? "Show fewer links" : "Show all links"}
-          className="mt-3 inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#1D1D1F]/25 text-[#1D1D1F]/70 leading-none transition-all duration-200 hover:border-[#1D1D1F]/50 hover:text-black hover:bg-white/60"
-        >
-          <span className="-mt-px text-base">{expanded ? "−" : "+"}</span>
-        </button>
-      )}
     </div>
   );
 }
