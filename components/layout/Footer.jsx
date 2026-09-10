@@ -54,6 +54,43 @@ function ArrowUpRight() {
   );
 }
 
+/* A Quick-links navigation column, capped at 4 rows with a +/- expander. */
+function NavColumn({ title, links }) {
+  const LIMIT = 4;
+  const [expanded, setExpanded] = useState(false);
+  const hasMore = links.length > LIMIT;
+  const visible = expanded || !hasMore ? links : links.slice(0, LIMIT);
+  return (
+    <div>
+      {title && (
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]/50">
+          {title}
+        </p>
+      )}
+      <ul className="space-y-2.5 text-sm">
+        {visible.map((item, i) => (
+          <li key={i}>
+            <FooterLink href={normalizeHref(item.href)}>
+              {item.label}
+            </FooterLink>
+          </li>
+        ))}
+      </ul>
+      {hasMore && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          aria-label={expanded ? "Show fewer links" : "Show all links"}
+          className="mt-3 inline-flex h-6 w-6 items-center justify-center rounded-full border border-[#1D1D1F]/25 text-[#1D1D1F]/70 leading-none transition-all duration-200 hover:border-[#1D1D1F]/50 hover:text-black hover:bg-white/60"
+        >
+          <span className="-mt-px text-base">{expanded ? "−" : "+"}</span>
+        </button>
+      )}
+    </div>
+  );
+}
+
 /* Premium footer link — subtle color shift + animated underline that grows in. */
 function FooterLink({ href, external, children }) {
   const cls =
@@ -183,7 +220,7 @@ export default function Footer() {
       {/* Full-width footer — no max-width container */}
       <footer
         role="contentinfo"
-        className="relative mt-16 rounded-t-[2.5rem] bg-[#F0F9FF] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] ring-1 ring-black/5 border border-white"
+        className="relative rounded-t-[2.5rem] bg-[#F0F9FF] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] ring-1 ring-black/5 border border-white"
       >
         {/* Favicon poking out over the top-center edge */}
         {topIcon && (
@@ -321,22 +358,7 @@ export default function Footer() {
                 {useDynamicColumns ? (
                   <div className="mt-4 grid grid-cols-2 gap-x-10 gap-y-6">
                     {navColumns.map((col, ci) => (
-                      <div key={ci}>
-                        {col.title && (
-                          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]/50">
-                            {col.title}
-                          </p>
-                        )}
-                        <ul className="space-y-2.5 text-sm">
-                          {col.links.map((item, i) => (
-                            <li key={i}>
-                              <FooterLink href={normalizeHref(item.href)}>
-                                {item.label}
-                              </FooterLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                      <NavColumn key={ci} title={col.title} links={col.links} />
                     ))}
                   </div>
                 ) : (

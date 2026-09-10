@@ -101,7 +101,7 @@ function SubscribeForm() {
   };
 
   return (
-    <div className="mt-3 sm:mt-4 text-center">
+    <div className="mt-2 sm:mt-3 text-center mb-3">
       <p className="text-[13px] sm:text-sm text-[#6B7280] tracking-tight">
         Subscribe for new arrivals, exclusive deals and gadget drops.
       </p>
