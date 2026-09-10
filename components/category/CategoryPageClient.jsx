@@ -458,7 +458,7 @@ export default function CategoryPageClient({ slug, parentSlug = null }) {
 
       {/* ── Listing area ── */}
       <div className="bg-[#F0F9FF] w-full">
-        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8 py-3 sm:py-8">
+        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8 py-3 sm:py-8 mb-3">
           {/* Subcategories row — in-page filter chips; the row stays visible
               with the active chip highlighted (clicking never navigates). */}
           {chipCategories.length > 0 && (

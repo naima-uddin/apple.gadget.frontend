@@ -272,7 +272,7 @@ export default function AllProductsClient() {
 
       {/* ── Listing area ── */}
       <div className="bg-[#F0F9FF] w-full">
-        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8 py-3 sm:py-8">
+        <div className="max-w-7xl mx-auto px-1.5 sm:px-4 lg:px-8 py-3 sm:py-8 mb-3">
           {/* Main categories row — chips filter the listing in-place so the
               full row stays visible with the selected category highlighted. */}
           {mainCategories.length > 0 && (

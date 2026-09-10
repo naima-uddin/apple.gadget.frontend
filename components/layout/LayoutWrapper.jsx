@@ -8,6 +8,7 @@ import MegaMenuNavbar from "@/components/layout/MegaMenuNavbar";
 import Footer from "@/components/layout/Footer";
 import TypographicHero from "@/components/home/TypographicHero";
 import { StoreSettingsProvider } from "@/components/context/StoreSettingsContext";
+import FaviconManager from "@/components/layout/FaviconManager";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -230,6 +231,7 @@ export default function LayoutWrapper({ children }) {
 
   return (
     <StoreSettingsProvider>
+      <FaviconManager />
       <div className="min-h-screen flex flex-col">
         {/* Tracking pixels — only on storefront, not dashboard */}
         {!hideNav && <TrackingScripts />}
