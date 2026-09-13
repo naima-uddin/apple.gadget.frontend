@@ -359,7 +359,7 @@ export default function ProductInfoTabs({ product }) {
         </div>
 
         {/* ── Content ── */}
-        <div className="pb-8">
+        <div className="pb-2">
           {activeTab === "description" && (
             <div className="animate-fadeIn">
               {/* Detailed description only. The short description already appears
