@@ -495,7 +495,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
   return (
     <div
       key={product?._id || product?.id}
-      className="max-w-7xl mx-auto py-6 px-3 sm:px-4 lg:px-8"
+      className="max-w-7xl mx-auto py-6 px-3 sm:px-4 lg:px-8 mb-4 md:mb-8"
     >
       {/* Breadcrumb row */}
       <nav className="flex items-center flex-wrap gap-1.5 text-sm text-[#6B7280] mb-5">
