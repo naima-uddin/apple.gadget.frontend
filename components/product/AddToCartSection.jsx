@@ -232,24 +232,24 @@ export default function AddToCartSection({
         </>
       ) : (
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center gap-3">
             <WishlistButton product={product} />
             <QuantitySelector quantity={qty} onChange={setQty} />
             <button
               onClick={handleAdd}
-              className="bg-[#1D1D1F] text-white px-6 py-3 rounded-xl font-medium hover:bg-black transition shadow-sm"
+              className="flex-1 bg-[#1D1D1F] text-white px-6 py-2 md:py-3 rounded-xl font-medium hover:bg-black transition shadow-sm whitespace-nowrap"
             >
               Add to cart
             </button>
-            {qty > 1 && (
-              <span className="text-sm text-gray-700">
-                ৳{(effectivePrice * qty).toFixed(2)}
-              </span>
-            )}
           </div>
+          {qty > 1 && (
+            <span className="text-sm text-gray-700">
+              ৳{(effectivePrice * qty).toFixed(2)}
+            </span>
+          )}
           <button
             onClick={handleBuyNow}
-            className="w-full bg-[#E5F3FF] border border-gray-200 text-[#1D1D1F] py-2.5 rounded-xl font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors"
+            className="w-full bg-[#E5F3FF] border border-gray-200 text-[#1D1D1F] py-2 md:py-2.5 rounded-xl font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 transition-colors"
           >
             Buy Now
           </button>
