@@ -52,7 +52,10 @@ function Countdown({ endsAt }) {
   if (!remaining) return null;
 
   return (
-    <div className="mb-1.5 flex items-center justify-end gap-1">
+    // Wrap-safe + centered on phones (right-aligned from sm up) so the row can
+    // never overflow past the viewport edge and get clipped by the page's
+    // overflow-x:hidden — which previously hid the timer on small screens.
+    <div className="mb-1.5 flex flex-wrap items-center justify-center gap-1 sm:justify-end">
       <svg
         className="mr-0.5 h-3 w-3 text-[#9CA3AF]"
         viewBox="0 0 24 24"
