@@ -1509,7 +1509,7 @@ export default function UserSectionPage() {
           {t("common.back")}
         </button>
       </div>
-      <div className="max-w-7xl mx-auto py-6 md:py-8 px-3 md:px-4">
+      <div className="max-w-7xl mx-auto py-6 md:py-8 ">
         <div className="lg:hidden mb-3">
           <button
             type="button"
@@ -1762,7 +1762,7 @@ export default function UserSectionPage() {
                         My Wishlist
                       </h2>
                     </div>
-                    <div className="p-3 md:p-6">
+                    <div className="p-1 md:p-6">
                       <WishlistPage embedded={true} />
                     </div>
                   </div>
@@ -1775,14 +1775,14 @@ export default function UserSectionPage() {
                         {t("profile.cart")}
                       </h2>
                     </div>
-                    <div className="p-3 md:p-6">
+                    <div className="p-1 md:p-6">
                       <CartPage embedded={true} />
                     </div>
                   </div>
                 )}
 
                 {section === "address" && (
-                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 md:p-6">
+                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-1 md:p-6">
                     <AddressManager />
                   </div>
                 )}
