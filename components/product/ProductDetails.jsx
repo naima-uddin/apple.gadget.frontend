@@ -575,7 +575,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 {images.length > 1 && (
                   <button
                     onClick={prevImage}
-                    className="absolute left-1 md:left-2 z-20 p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#1D1D1F] hover:text-white text-gray-600 transition-colors"
+                    className="absolute -left-0.5 md:left-2 z-20 p-1 md:p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#1D1D1F] hover:text-white text-gray-600 transition-colors"
                   >
                     <FaChevronLeft className="w-3 h-3" />
                   </button>
@@ -608,7 +608,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 {images.length > 1 && (
                   <button
                     onClick={nextImage}
-                    className="absolute right-1 md:right-2 z-20 p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#1D1D1F] hover:text-white text-gray-600 transition-colors"
+                    className="absolute -right-0.5 md:right-2 z-20 p-1 md:p-2 bg-white border border-gray-200 rounded-full shadow-sm hover:bg-[#1D1D1F] hover:text-white text-gray-600 transition-colors"
                   >
                     <FaChevronRight className="w-3 h-3" />
                   </button>

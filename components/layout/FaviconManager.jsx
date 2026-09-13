@@ -24,17 +24,26 @@ export default function FaviconManager() {
   useEffect(() => {
     if (!faviconUrl) return;
 
-    // Remove any existing icon links (build-time and prior runtime ones).
-    document
-      .querySelectorAll('link[rel~="icon"]')
-      .forEach((el) => el.parentNode?.removeChild(el));
-
-    const link = document.createElement("link");
-    link.rel = "icon";
+    // IMPORTANT: never removeChild() the build-time <link rel="icon"> that
+    // generateMetadata() emitted. In React 19 / App Router that node is adopted
+    // as a React-managed hoistable, and Next reconciles <head> on every client
+    // navigation. Pulling it out with raw DOM leaves React holding a detached
+    // node, so the next reconcile runs `parentNode.removeChild()` on a node
+    // whose parent is now null → "Cannot read properties of null (reading
+    // 'removeChild')" in commitDeletionEffectsOnFiber on every route change.
+    //
+    // Instead we manage a single link we own (tagged data-favicon-manager) and
+    // append it LAST so the browser prefers it over the build-time icon.
+    let link = document.querySelector("link[data-favicon-manager]");
+    if (!link) {
+      link = document.createElement("link");
+      link.setAttribute("data-favicon-manager", "");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
     const type = iconTypeFromUrl(faviconUrl);
     if (type) link.type = type;
     link.href = faviconUrl;
-    document.head.appendChild(link);
   }, [faviconUrl]);
 
   return null;
