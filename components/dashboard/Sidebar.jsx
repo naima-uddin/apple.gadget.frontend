@@ -38,7 +38,6 @@ const SECTIONS = [
       "/dashboard/products",
       "/dashboard/product-variants",
       "/dashboard/categories",
-      "/dashboard/discounts",
       "/dashboard/tags",
       "/dashboard/barcodes",
       "/dashboard/reviews",
@@ -78,13 +77,6 @@ const SECTIONS = [
         href: "/dashboard/categories",
         icon: "M3 6h18M3 12h18M3 18h18",
         permissionKey: "products.categories",
-      },
-      {
-        key: "discounts",
-        label: "Coupons & Deals",
-        href: "/dashboard/discounts",
-        icon: "M12 2l4 4-8 8-4-4 8-8z",
-        permissionKey: "products.discounts",
       },
       {
         key: "delivery-charge",
@@ -319,6 +311,7 @@ const SECTIONS = [
       "/dashboard/promo-banner",
       "/dashboard/typographic-hero",
       "/dashboard/promo-panels",
+      "/dashboard/discounts",
       "/dashboard/testimonials",
       "/dashboard/category-showcase",
       "/dashboard/why-choose-us",
@@ -369,6 +362,13 @@ const SECTIONS = [
         href: "/dashboard/promo-panels",
         icon: "M3 3h8v8H3z M13 3h8v4h-8V3z M13 10h8v4h-8v-4z M3 14h8v7H3v-7z",
         permissionKey: "content.promo",
+      },
+      {
+        key: "discounts",
+        label: "Coupons & Deals",
+        href: "/dashboard/discounts",
+        icon: "M12 2l4 4-8 8-4-4 8-8z",
+        permissionKey: "products.discounts",
       },
       {
         key: "testimonials",
