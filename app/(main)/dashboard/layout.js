@@ -102,7 +102,13 @@ export default function DashboardLayout({ children }) {
 
   // ── Dashboard ─────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-50">
+    // translate="no" stops Chrome/Google Translate from wrapping the admin UI's
+    // text nodes in <font> tags and reparenting them. That reparenting is what
+    // desyncs React's host bookkeeping and throws "Cannot read properties of
+    // null (reading 'removeChild')" in commitDeletionEffectsOnFiber on every
+    // dashboard route change. Scoped to the dashboard so storefront shoppers can
+    // still machine-translate the public site. See RemoveChildDebugger.jsx.
+    <div className="min-h-screen bg-gray-50" translate="no">
       <div
         className={`w-full md:grid gap-6 transition-all duration-300 ${
           collapsed

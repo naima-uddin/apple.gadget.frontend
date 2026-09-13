@@ -54,6 +54,9 @@ export default function BookWithCourierModal({
 
   const selected = options.find((o) => o.slug === form.courier);
 
+  const items = Array.isArray(order?.items) ? order.items : [];
+  const totalQty = items.reduce((s, it) => s + (Number(it?.quantity) || 0), 0);
+
   const submit = async () => {
     if (!form.courier) return alert("Select a courier");
     setSubmitting(true);
@@ -228,6 +231,55 @@ export default function BookWithCourierModal({
                 rows={2}
                 className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2"
               />
+            </div>
+
+            <div className="rounded-lg border border-gray-200 overflow-hidden">
+              <div className="flex items-center justify-between bg-gray-50 px-3 py-2 text-xs font-semibold text-gray-700">
+                <span>
+                  Products{" "}
+                  {order?.orderNumber ? (
+                    <span className="font-normal text-gray-400">
+                      · Order {order.orderNumber}
+                    </span>
+                  ) : null}
+                </span>
+                <span className="font-normal text-gray-400">
+                  {items.length} item{items.length === 1 ? "" : "s"} · {totalQty}{" "}
+                  pcs
+                </span>
+              </div>
+              {items.length === 0 ? (
+                <p className="px-3 py-2 text-xs text-gray-400">
+                  No products found on this order.
+                </p>
+              ) : (
+                <ul className="divide-y divide-gray-100">
+                  {items.map((it, i) => {
+                    const variant = [it?.color, it?.size]
+                      .filter(Boolean)
+                      .join(" / ");
+                    return (
+                      <li
+                        key={i}
+                        className="flex items-start justify-between gap-3 px-3 py-2 text-xs"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-gray-800 truncate">
+                            {it?.title || "Item"}
+                          </p>
+                          {variant ? (
+                            <p className="text-gray-400">{variant}</p>
+                          ) : null}
+                        </div>
+                        <div className="whitespace-nowrap text-right text-gray-600">
+                          {Number(it?.quantity) || 1} × ৳
+                          {Math.round(Number(it?.price) || 0)}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
 
             <div className="text-xs text-gray-500 bg-gray-50 rounded-lg p-3 space-y-1">

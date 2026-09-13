@@ -337,6 +337,12 @@ export default function ProductCard({
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
+                          if (isSelected) {
+                            // Toggle off — deselect the color and revert image
+                            setSelectedColor(null);
+                            setCurrentImageIndex(0);
+                            return;
+                          }
                           setSelectedColor(key);
                           if (mappedUrl) {
                             const idx = images.findIndex(

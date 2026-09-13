@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 const CACHE_KEY = "custom_code_cfg";
@@ -63,7 +64,13 @@ function injectAll(data) {
 }
 
 export default function TrackingCodeInjector() {
+  const pathname = usePathname() || "";
+
   useEffect(() => {
+    // Never run admin/marketing custom code inside the dashboard. Those snippets
+    // (chat widgets, pixels, GTM) inject and reparent nodes under <body>, which
+    // desyncs React and crashes admin route changes with the removeChild error.
+    if (pathname.startsWith("/dashboard")) return;
     if (injected) return;
     injected = true;
 
@@ -80,7 +87,7 @@ export default function TrackingCodeInjector() {
         injectAll(data);
       })
       .catch(() => {});
-  }, []);
+  }, [pathname]);
 
   return null;
 }

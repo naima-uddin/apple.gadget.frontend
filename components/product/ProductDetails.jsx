@@ -647,7 +647,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
 
         {/* ── RIGHT: sticky buy box ── */}
         <div className="lg:col-span-5">
-          <div className="lg:sticky lg:top-24 flex flex-col gap-2.5 sm:gap-4">
+          <div className="lg:sticky lg:top-24 flex flex-col gap-2 sm:gap-2.5">
             {/* Title */}
             <h1 className="text-lg md:text-2xl text-[#1F2937] leading-tight font-georgia">
               {title}
@@ -683,7 +683,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                 )}
               </div>
               {product.freeShipping && (
-                <p className="inline-flex items-center gap-1.5 w-fit text-sm font-semibold text-[#1D1D1F] bg-[#E5F3FF] border border-gray-200 rounded-full px-3 py-1 mt-2.5">
+                <p className="inline-flex items-center gap-1.5 w-fit text-sm font-semibold text-[#1D1D1F] bg-[#E5F3FF] border border-gray-200 rounded-full px-3 py-1 mt-2">
                   <FaTruck className="w-3.5 h-3.5" /> Free Shipping
                 </p>
               )}
@@ -735,7 +735,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     </span>
                   )}
                 </div>
-                <div className="flex flex-wrap gap-2 sm:gap-3">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {productColors.map((col, idx) => {
                     const isSelected = selectedColor?.name === col.name;
                     const color = resolveColor(col);
@@ -751,7 +751,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                         className="flex flex-col items-center gap-1.5 transition-all group"
                       >
                         <span
-                          className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full block transition-all relative ${
+                          className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full block transition-all relative ${
                             isSelected
                               ? "scale-110 ring-2 ring-offset-2 ring-[#1D1D1F]"
                               : "hover:scale-105"
@@ -767,7 +767,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                           {isSelected && (
                             <span className="absolute inset-0 flex items-center justify-center">
                               <svg
-                                className="w-4 h-4 sm:w-5 sm:h-5 text-white drop-shadow-md"
+                                className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white drop-shadow-md"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                               >
@@ -799,7 +799,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             {/* Size selector — box style */}
             {productSizes.length > 0 && (
               <div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center gap-2 mb-2">
                   <span className="text-sm font-semibold text-gray-800">
                     Size:
                   </span>
@@ -839,7 +839,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             <hr className="border-gray-100" />
 
             {/* Trust & offers strip — flat, monochrome, no cards-within-cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3">
               <div className="flex items-start gap-2.5">
                 <FaGift className="text-[#1D1D1F] w-4 h-4 mt-0.5 shrink-0" />
                 <div>
