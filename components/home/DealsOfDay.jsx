@@ -295,26 +295,26 @@ export default function DealsOfDay() {
                 {/* Countdown Timer */}
                 <div className="flex gap-2 md:gap-4 mb-2 md:mb-6">
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
-                      {timeLeft.days}
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg tabular-nums leading-none flex items-center justify-center h-7 md:h-10 min-w-[2rem] md:min-w-[2.75rem]">
+                      {String(timeLeft.days).padStart(2, "0")}
                     </div>
                     <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Days</div>
                   </div>
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
-                      {timeLeft.hours}
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg tabular-nums leading-none flex items-center justify-center h-7 md:h-10 min-w-[2rem] md:min-w-[2.75rem]">
+                      {String(timeLeft.hours).padStart(2, "0")}
                     </div>
                     <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Hrs</div>
                   </div>
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
-                      {timeLeft.minutes}
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg tabular-nums leading-none flex items-center justify-center h-7 md:h-10 min-w-[2rem] md:min-w-[2.75rem]">
+                      {String(timeLeft.minutes).padStart(2, "0")}
                     </div>
                     <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Mins</div>
                   </div>
                   <div className="text-center">
-                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg">
-                      {timeLeft.seconds}
+                    <div className="bg-gray-900 text-white rounded px-2 py-1 md:px-3 md:py-2 font-bold text-xs md:text-lg tabular-nums leading-none flex items-center justify-center h-7 md:h-10 min-w-[2rem] md:min-w-[2.75rem]">
+                      {String(timeLeft.seconds).padStart(2, "0")}
                     </div>
                     <div className="text-[10px] md:text-xs text-gray-600 mt-0.5 md:mt-1">Secs</div>
                   </div>
