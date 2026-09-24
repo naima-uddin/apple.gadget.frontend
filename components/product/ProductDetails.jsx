@@ -31,7 +31,7 @@ import AddToCartSection from "@/components/product/AddToCartSection";
 import {
   getVariantColors,
   getVariantSizes,
-  getColorImageMap,
+  getVariantImage,
 } from "@/components/cart/VariantEditModal";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductCard from "@/components/product/ProductCard";
@@ -242,11 +242,11 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
     return () => window.removeEventListener("resize", updateViewport);
   }, []);
 
-  // Jump the gallery to the image the admin mapped to a color (if any).
-  // Matches the variant's image URL against the product's uploaded images.
-  const showColorImage = (col) => {
-    const colorMap = getColorImageMap(product);
-    const url = col?.name ? colorMap[col.name.trim().toLowerCase()] : null;
+  // Jump the gallery to the image the admin mapped to the selected variant
+  // (any attribute — color or size — can carry an image). `prefer` is the
+  // attribute the user just clicked, so it wins when no exact combo matches.
+  const showVariantImage = (colorName, size, prefer) => {
+    const url = getVariantImage(product, { color: colorName, size, prefer });
     if (!url) return;
     const idx = images.findIndex((img) => img === url);
     if (idx >= 0) setCurrentIndex(idx);
@@ -745,7 +745,11 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                         onClick={() => {
                           const next = isSelected ? null : col;
                           setSelectedColor(next);
-                          if (next) showColorImage(next);
+                          showVariantImage(
+                            next?.name ?? null,
+                            selectedSize,
+                            "color",
+                          );
                         }}
                         title={col.name}
                         className="flex flex-col items-center gap-1.5 transition-all group"
@@ -813,9 +817,15 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                   {productSizes.map((size, idx) => (
                     <button
                       key={idx}
-                      onClick={() =>
-                        setSelectedSize(selectedSize === size ? null : size)
-                      }
+                      onClick={() => {
+                        const next = selectedSize === size ? null : size;
+                        setSelectedSize(next);
+                        showVariantImage(
+                          selectedColor?.name ?? null,
+                          next,
+                          "size",
+                        );
+                      }}
                       className={`min-w-[48px] h-11 px-4 text-sm font-semibold rounded-xl border-2 transition-all ${
                         selectedSize === size
                           ? "bg-[#1D1D1F] text-white border-[#1D1D1F] shadow-md scale-105"

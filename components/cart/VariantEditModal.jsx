@@ -19,6 +19,47 @@ export function getColorImageMap(product) {
   return map;
 }
 
+// Resolve the best image for a variant selection, regardless of which
+// attribute (color OR size) carries the image. Any variant row can have an
+// image assigned in the dashboard, so selecting a size — not just a color —
+// switches the gallery when that row has an image.
+// Resolution order:
+//   1. exact match on both color AND size (when both are selected)
+//   2. the just-clicked attribute (`prefer`: "color" | "size")
+//   3. fall back to the other selected attribute
+// Returns an image URL string, or null when nothing is mapped.
+export function getVariantImage(product, { color, size, prefer } = {}) {
+  if (!product?.variants?.length) return null;
+  const c = color?.trim?.().toLowerCase() || null;
+  const s = size?.trim?.().toLowerCase() || null;
+  if (!c && !s) return null;
+
+  const rows = product.variants
+    .map((v) => ({
+      url: typeof v?.image === "string" ? v.image.trim() : "",
+      c: v?.color?.name?.trim?.().toLowerCase() || null,
+      s: v?.size?.trim?.().toLowerCase() || null,
+    }))
+    .filter((v) => v.url);
+  if (!rows.length) return null;
+
+  const byColor = () => rows.find((v) => c && v.c === c)?.url || null;
+  const bySize = () => rows.find((v) => s && v.s === s)?.url || null;
+
+  // 1) exact color + size combo
+  if (c && s) {
+    const both = rows.find((v) => v.c === c && v.s === s);
+    if (both) return both.url;
+  }
+  // 2) the attribute the user just clicked, then 3) the other one
+  const order = prefer === "size" ? [bySize, byColor] : [byColor, bySize];
+  for (const lookup of order) {
+    const url = lookup();
+    if (url) return url;
+  }
+  return null;
+}
+
 // Extract unique colors from variants (optionally filtered by size)
 // filterBySize can be a string like "L" or "16 inch"
 export function getVariantColors(product, filterBySize = null) {
