@@ -60,7 +60,7 @@ export default function PromoBannerEditor() {
     setSaving(true);
     setMessage(null);
     try {
-      const resp = await fetch(`${API}/api/admin/settings`, {
+      const resp = await fetch(`${API}/api/admin/settings/storefront`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

@@ -80,7 +80,7 @@ export default function TypographicHeroEditor() {
     setMessage(null);
     try {
       const cleanImages = images.filter((im) => im.url);
-      const resp = await fetch(`${API}/api/admin/settings`, {
+      const resp = await fetch(`${API}/api/admin/settings/storefront`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

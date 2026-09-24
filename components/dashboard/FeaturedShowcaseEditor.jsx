@@ -127,7 +127,7 @@ export default function FeaturedShowcaseEditor() {
           };
         }),
       };
-      const resp = await fetch(`${API}/api/admin/settings`, {
+      const resp = await fetch(`${API}/api/admin/settings/storefront`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

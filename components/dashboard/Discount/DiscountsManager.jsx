@@ -245,7 +245,7 @@ export default function DiscountsManager() {
   const saveSectionTitle = async () => {
     setSectionTitleSaving(true);
     try {
-      const r = await fetch(`${API}/api/admin/settings`, {
+      const r = await fetch(`${API}/api/admin/settings/storefront`, {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

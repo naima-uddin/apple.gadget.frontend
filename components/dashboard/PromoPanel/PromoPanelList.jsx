@@ -59,7 +59,7 @@ function DealOfDayPicker({ API }) {
     setResults([]);
     setQuery("");
     try {
-      const resp = await fetch(`${API}/api/admin/settings`, {
+      const resp = await fetch(`${API}/api/admin/settings/storefront`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -77,7 +77,7 @@ function DealOfDayPicker({ API }) {
   const handleClear = async () => {
     setSaving(true);
     try {
-      const resp = await fetch(`${API}/api/admin/settings`, {
+      const resp = await fetch(`${API}/api/admin/settings/storefront`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
