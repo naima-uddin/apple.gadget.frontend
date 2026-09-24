@@ -183,7 +183,7 @@ function SuccessContent() {
   const [searchLoading, setSearchLoading] = useState(false);
 
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
-  const PHONE = process.env.NEXT_PUBLIC_STORE_PHONE || "+8801643007383";
+  const PHONE = process.env.NEXT_PUBLIC_STORE_PHONE;
   const { clearCart } = useCart();
 
   // Clear the cart on successful payment (covers the online payment same-window flow).
