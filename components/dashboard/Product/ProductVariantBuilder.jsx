@@ -24,18 +24,6 @@ const comboKey = (attributes) =>
     .map(([key, value]) => `${key}:${value}`)
     .join("|");
 
-const cartesian = (groups) =>
-  groups.reduce(
-    (acc, group) =>
-      acc.flatMap((item) =>
-        group.options.map((option) => ({
-          ...item,
-          [group.name]: option.value,
-        })),
-      ),
-    [{}],
-  );
-
 const titleFromAttributes = (attributes) =>
   Object.values(attributes || {})
     .filter(Boolean)
@@ -230,7 +218,6 @@ export default function ProductVariantBuilder({
       return;
     }
 
-    const combinations = cartesian(selectedGroups);
     const existingByKey = new Map(
       (product.variants || []).map((variant) => [
         comboKey(variant.attributes || {}),
@@ -238,27 +225,40 @@ export default function ProductVariantBuilder({
       ]),
     );
 
-    const variants = combinations.map((attributes) => {
-      const previous = existingByKey.get(comboKey(attributes)) || {};
-      const colorValue = attributes.Color || attributes.color;
-      const sizeValue = attributes.Size || attributes.size;
+    // Independent (non-combined) variants: each selected option becomes its own
+    // row carrying a SINGLE attribute (e.g. {Color: Black} or {Size: Large}),
+    // instead of the cartesian product of every axis. So Color[Black, White] +
+    // Size[L, XL] yields 4 separate rows — Black, White, L, XL — not the 4
+    // combined Black/L, Black/XL, White/L, White/XL rows. The storefront reads
+    // colors and sizes back out independently, so they render as separate
+    // pickers on the product details page.
+    const variants = [];
+    selectedGroups.forEach((group) => {
+      const isColor = group.name.toLowerCase() === "color";
+      const isSize = group.name.toLowerCase() === "size";
+      group.options.forEach((option) => {
+        const attributes = { [group.name]: option.value };
+        const previous = existingByKey.get(comboKey(attributes)) || {};
+        const colorValue = isColor ? option.value : undefined;
+        const sizeValue = isSize ? option.value : undefined;
 
-      return {
-        ...previous,
-        name: previous.name || titleFromAttributes(attributes),
-        color: colorValue
-          ? {
-              name: colorValue,
-              hex: previous.color?.hex || colorHex(colorValue),
-            }
-          : previous.color || { name: "", hex: "#000000" },
-        size: sizeValue || previous.size || "",
-        buyingPrice: previous.buyingPrice ?? product.buyingPrice,
-        price: previous.price ?? product.price ?? undefined,
-        compareAtPrice: previous.compareAtPrice ?? product.compareAtPrice,
-        inventory: previous.inventory ?? product.inventory ?? undefined,
-        attributes,
-      };
+        variants.push({
+          ...previous,
+          name: previous.name || titleFromAttributes(attributes),
+          color: colorValue
+            ? {
+                name: colorValue,
+                hex: previous.color?.hex || colorHex(colorValue),
+              }
+            : previous.color || { name: "", hex: "#000000" },
+          size: sizeValue || previous.size || "",
+          buyingPrice: previous.buyingPrice ?? product.buyingPrice,
+          price: previous.price ?? product.price ?? undefined,
+          compareAtPrice: previous.compareAtPrice ?? product.compareAtPrice,
+          inventory: previous.inventory ?? product.inventory ?? undefined,
+          attributes,
+        });
+      });
     });
 
     setProduct((prev) => ({ ...prev, variants }));

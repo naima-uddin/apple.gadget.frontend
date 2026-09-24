@@ -303,7 +303,10 @@ const SECTIONS = [
     key: "content",
     label: "Storefront Design",
     icon: SECTION_ICONS.content,
-    permissionKey: "content",
+    // Whole section unlocks with the single "content" (Storefront Design) grant;
+    // also visible to moderators who only have the Discounts (products) grant,
+    // for whom just the Discounts item below shows.
+    permissionKeys: ["content", "products.discounts"],
     matchPrefixes: [
       "/dashboard/featured",
       "/dashboard/featured-showcase",
@@ -368,7 +371,7 @@ const SECTIONS = [
         label: "Coupons & Deals",
         href: "/dashboard/discounts",
         icon: "M12 2l4 4-8 8-4-4 8-8z",
-        permissionKey: "products.discounts",
+        permissionKeys: ["content", "products.discounts"],
       },
       {
         key: "testimonials",
@@ -633,18 +636,22 @@ export default function Sidebar({
     }));
   };
 
+  // A section/item is permitted when the user has its single permissionKey, OR
+  // (for entries reachable from more than one section) ANY of permissionKeys.
+  const hasAccess = (entry) => {
+    if (Array.isArray(entry.permissionKeys))
+      return entry.permissionKeys.some((k) => hasPermission(user, k));
+    if (entry.permissionKey) return hasPermission(user, entry.permissionKey);
+    return true;
+  };
+
   const canSee = (item) =>
-    (!item.adminOnly || user?.role === "admin") &&
-    (!item.permissionKey || hasPermission(user, item.permissionKey));
+    (!item.adminOnly || user?.role === "admin") && hasAccess(item);
 
   const q = query.trim().toLowerCase();
   const searchResults = q
     ? SECTIONS.flatMap((section) => {
-        if (
-          section.permissionKey &&
-          !hasPermission(user, section.permissionKey)
-        )
-          return [];
+        if (!hasAccess(section)) return [];
         const items = (section.items || []).filter(
           (item) => canSee(item) && item.label.toLowerCase().includes(q),
         );
@@ -718,7 +725,7 @@ export default function Sidebar({
   };
 
   const renderSection = (section) => {
-    if (section.permissionKey && !hasPermission(user, section.permissionKey)) {
+    if (!hasAccess(section)) {
       return null;
     }
 

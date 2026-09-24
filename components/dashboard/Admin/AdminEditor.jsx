@@ -98,13 +98,13 @@ const PERMISSION_GROUPS = [
   },
   {
     groupKey: "content",
-    label: "Online Store & Content",
+    label: "Storefront Design",
     permissions: [
-      { key: "content.banners",  label: "Banners & popups" },
-      { key: "content.promo",    label: "Promo strip, occasions & panels" },
-      { key: "content.featured", label: "Featured sections" },
-      { key: "content.blog",     label: "Blog / content" },
-      { key: "content.media",    label: "Media library" },
+      {
+        key: "content",
+        label:
+          "Full access to all Storefront Design pages (hero & promo banners, featured, popups, testimonials, deal of the day, category showcase, blog, media, coupons & deals, etc.)",
+      },
     ],
   },
   {
@@ -137,6 +137,28 @@ const PERMISSION_GROUPS = [
 ];
 
 const ALL_KEYS = PERMISSION_GROUPS.flatMap((g) => g.permissions.map((p) => p.key));
+
+// Storefront Design used to be five granular content.* permissions; it is now a
+// single "content" toggle. Fold any legacy granular keys into "content" when
+// loading an existing account so the checkbox reflects real access and
+// unchecking it actually revokes (backend still honours both at runtime).
+const LEGACY_CONTENT_KEYS = [
+  "content.banners",
+  "content.promo",
+  "content.featured",
+  "content.blog",
+  "content.media",
+];
+function normalizePermissions(perms) {
+  if (!Array.isArray(perms)) return [];
+  const hasContent = perms.some(
+    (k) => k === "content" || LEGACY_CONTENT_KEYS.includes(k),
+  );
+  const rest = perms.filter(
+    (k) => k !== "content" && !LEGACY_CONTENT_KEYS.includes(k),
+  );
+  return hasContent ? [...rest, "content"] : rest;
+}
 
 function GroupCheckbox({ allChecked, someChecked, onChange }) {
   const ref = useRef(null);
@@ -181,7 +203,11 @@ export default function AdminEditor({ adminId }) {
     fetch(`${API}/api/admin/admins/${adminId}`, { credentials: "include" })
       .then((r) => r.json())
       .then((b) => {
-        if (b.admin) setAdmin({ permissions: [], ...b.admin });
+        if (b.admin)
+          setAdmin({
+            ...b.admin,
+            permissions: normalizePermissions(b.admin.permissions),
+          });
       })
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
