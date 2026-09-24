@@ -110,9 +110,15 @@ function fmtDate(date) {
   });
 }
 
+function variantLabel(item) {
+  if (!item) return "";
+  const parts = [item.color, item.size].filter(Boolean);
+  return parts.length ? ` (${parts.join(", ")})` : "";
+}
+
 function itemSummary(items) {
   if (!items?.length) return "—";
-  const first = items[0].title || "Item";
+  const first = (items[0].title || "Item") + variantLabel(items[0]);
   return items.length === 1 ? first : `${first} +${items.length - 1} more`;
 }
 
@@ -3483,6 +3489,7 @@ function AbandonedCartSection() {
                             )}
                             <span className="truncate">
                               {item.title || "Product"}
+                              {variantLabel(item)}
                             </span>
                             {item.quantity > 1 && (
                               <span className="text-gray-400 shrink-0">
@@ -3960,6 +3967,16 @@ function CheckoutSessionModal({ session, onClose }) {
                     <p className="text-sm font-medium text-gray-800 truncate group-hover:text-[#1D1D1F]">
                       {item.title || "—"}
                     </p>
+                    {(item.color || item.size) && (
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {[
+                          item.color && `Color: ${item.color}`,
+                          item.size && `Size: ${item.size}`,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
+                    )}
                     <p className="text-xs text-gray-400 mt-0.5">
                       ৳{Number(item.price || 0).toLocaleString("en-BD")} ×{" "}
                       {item.quantity}
@@ -4246,6 +4263,7 @@ function AbandonCheckoutSection() {
                             )}
                             <span className="truncate">
                               {item.title || "Product"}
+                              {variantLabel(item)}
                             </span>
                             {item.quantity > 1 && (
                               <span className="text-gray-400 shrink-0">
@@ -4311,6 +4329,8 @@ function AbandonCheckoutSection() {
                                 image: it.image,
                                 price: it.price,
                                 quantity: it.quantity,
+                                color: it.color,
+                                size: it.size,
                               })),
                               sourceCheckoutId: s._id,
                             })

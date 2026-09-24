@@ -129,6 +129,8 @@ export default function CheckoutPage() {
             price: getItemPrice(item),
             quantity: item.quantity,
             image: (typeof img === "string" ? img : img?.url) || null,
+            color: item.selectedColor || null,
+            size: item.selectedSize || null,
           };
         }),
         total: 0,
