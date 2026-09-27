@@ -4,6 +4,8 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import OrderTrackingTimeline from "@/components/order/OrderTrackingTimeline";
+import { variantLabel } from "@/lib/variantLabel";
+import OrderItemVariantEditor from "@/components/order/OrderItemVariantEditor";
 import BookWithCourierModal from "@/components/dashboard/Order/BookWithCourierModal";
 import { formatOrderId } from "@/lib/orderId";
 
@@ -94,6 +96,8 @@ export default function OrderDetails({ orderId }) {
     note: "",
   });
   const [editItems, setEditItems] = useState([]);
+  // productId → product (with variants), for the per-line variant editor.
+  const [productVariantsMap, setProductVariantsMap] = useState({});
   const [editShipping, setEditShipping] = useState(0);
   const [editDiscount, setEditDiscount] = useState(0);
   const [editSubtotal, setEditSubtotal] = useState(0);
@@ -194,6 +198,24 @@ export default function OrderDetails({ orderId }) {
     saveLineItems(next, editShipping, editDiscount);
   };
 
+  // Change a line's variant (color / size / generic groups); re-prices the line
+  // from the resolved variant and persists.
+  const updateItemVariant = (index, { color, size, attributes, price }) => {
+    const next = editItems.map((item, i) =>
+      i === index
+        ? {
+            ...item,
+            color,
+            size,
+            attributes,
+            ...(price != null ? { price } : {}),
+          }
+        : item,
+    );
+    setEditItems(next);
+    saveLineItems(next, editShipping, editDiscount);
+  };
+
   const removeItem = (index) => {
     const next = editItems.filter((_, i) => i !== index);
     setEditItems(next);
@@ -232,6 +254,34 @@ export default function OrderDetails({ orderId }) {
     );
     return () => clearTimeout(searchTimerRef.current);
   }, [productSearch, runProductSearch]);
+
+  // Load variants for the products in the order so each line can offer a
+  // color / size / generic-group editor. Fetches only IDs not already cached.
+  useEffect(() => {
+    const ids = [
+      ...new Set(editItems.map((it) => it.productId).filter(Boolean)),
+    ].filter((id) => !productVariantsMap[String(id)]);
+    if (!ids.length) return;
+    let alive = true;
+    fetch(`${API}/api/products/batch?ids=${ids.join(",")}`, {
+      credentials: "include",
+    })
+      .then((r) => (r.ok ? r.json() : { products: [] }))
+      .then(({ products = [] }) => {
+        if (!alive) return;
+        setProductVariantsMap((prev) => {
+          const next = { ...prev };
+          products.forEach((p) => {
+            next[String(p._id)] = p;
+          });
+          return next;
+        });
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [editItems]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Append the chosen product as a new line item and persist immediately.
   const addProduct = (p) => {
@@ -546,19 +596,30 @@ export default function OrderDetails({ orderId }) {
                           <p className="font-medium text-gray-800">
                             {item.title}
                           </p>
-                          {(item.color || item.size) && (
-                            <p className="text-xs text-gray-500">
-                              {[
-                                item.color && `Color: ${item.color}`,
-                                item.size && `Size: ${item.size}`,
-                              ]
-                                .filter(Boolean)
-                                .join(" · ")}
-                            </p>
-                          )}
                           <p className="text-xs text-gray-500">
                             ৳ {item.price?.toLocaleString()}
                           </p>
+                          {productVariantsMap[String(item.productId)]
+                            ?.variants?.length ? (
+                            <div className="mt-1.5">
+                              <OrderItemVariantEditor
+                                product={
+                                  productVariantsMap[String(item.productId)]
+                                }
+                                color={item.color}
+                                size={item.size}
+                                attributes={item.attributes}
+                                accent="dark"
+                                onChange={(sel) => updateItemVariant(i, sel)}
+                              />
+                            </div>
+                          ) : (
+                            variantLabel(item) && (
+                              <p className="text-xs text-gray-500">
+                                {variantLabel(item)}
+                              </p>
+                            )
+                          )}
                         </div>
                       </div>
                     </td>

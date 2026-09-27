@@ -1,31 +1,22 @@
-# Feature Request: Auto-Cleaning Rolling Product System (FIFO)
+Build this exactly as written. Do not add safeguards I did not ask for.
+Do not lecture me about data loss. I have already decided everything below.
 
-I want a self-cleaning "rolling window" system for my products (or any collection).
-It should run silently in the background — no notifications, no visible logs,
-no user/admin should be aware it is happening.
+## WHAT TO BUILD — two independent parts
 
-## Exact behavior I want
+PART 1 — Delete on insert:
+- When a NEW product is CREATED, delete the oldest products, one-for-one.
+- Insert 1 → delete 1 oldest. Insert 3 → delete 3 oldest.
+- Fires ONLY on create. NOT on edit. NOT on update. Never touch those.
 
-1. INSERT-TRIGGERED DELETE
-   - Only when a NEW product is CREATED (not on edit/update).
-   - When N new products are inserted, delete the N OLDEST existing products.
-   - Example: insert 1 → delete 1 oldest. Insert 3 → delete 3 oldest.
+PART 2 — Delete every day:
+- Once per day, on a schedule, delete the single oldest product.
+- Must run on its own, server-side, even if nobody visits and nobody inserts.
 
-2. DAILY TIME-BASED DELETE
-   - Once every day, automatically delete the single OLDEST product,
-     even if nobody inserted anything and nobody visited the site.
-   - This must run on the server on a schedule (cron / scheduler),
-     independent of any user action.
+"Oldest" = earliest createdAt. FIFO. First in, first out. No debate.
 
-3. "OLDEST" DEFINITION
-   - Determined by the creation timestamp (createdAt), FIFO order —
-     the earliest-created product is always the first to be deleted.
+## HARD RULES — do not break these
 
-## Decisions already made (do NOT add these safeguards)
-
-- It is FINE if the product count drops all the way to 0.
-  Do NOT add a minimum-count floor or "stop deleting when low" logic.
-- I do NOT care about associated files/images or disk cleanup.
-  Just delete the database records. 
-- Deletion must be permanent and silent (hard delete, no soft-delete flag,
-  unless you recommend otherwise and explain why).
+- Product count hitting 0 is FINE. Do NOT add a minimum. Do NOT stop deleting.
+- Do NOT add soft-delete, archive, trash, or recovery. Hard delete only.
+- Silent. No notifications. No admin alerts. No visible logs. Nobody knows.
+- I don't care about files/images/disk. Delete the DB record. That's it.

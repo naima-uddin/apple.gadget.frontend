@@ -8,7 +8,9 @@ import { useCart } from "@/components/context/CartContext";
 import {
   resolveVariant,
   resolveVariantPrice,
+  resolveVariantByAttrs,
 } from "@/components/cart/VariantEditModal";
+import { variantLabel } from "@/lib/variantLabel";
 import { FaShoppingCart, FaUsers } from "react-icons/fa";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
@@ -49,10 +51,20 @@ export default function SharedCartView({ token }) {
   const handleAddAll = () => {
     setAdding(true);
     items.forEach((i) => {
-      const variant = resolveVariant(i.product, i.color, i.size);
+      const attrs =
+        i.attributes && Object.keys(i.attributes).length ? i.attributes : null;
+      const variant =
+        (attrs &&
+          resolveVariantByAttrs(i.product, {
+            ...(i.color ? { Color: i.color } : {}),
+            ...(i.size ? { Size: i.size } : {}),
+            ...attrs,
+          })) ||
+        resolveVariant(i.product, i.color, i.size);
       addToCart(i.product, i.quantity, {
         selectedColor: i.color || null,
         selectedSize: i.size || null,
+        selectedAttributes: attrs,
         selectedVariant: variant,
         silent: true,
       });
@@ -122,8 +134,7 @@ export default function SharedCartView({ token }) {
                   </p>
                   <div className="text-xs text-gray-500 mt-0.5">
                     Qty: {item.quantity}
-                    {item.color ? ` · ${item.color}` : ""}
-                    {item.size ? ` · ${item.size}` : ""}
+                    {variantLabel(item) ? ` · ${variantLabel(item)}` : ""}
                   </div>
                 </div>
                 <div className="text-right font-semibold text-gray-800">

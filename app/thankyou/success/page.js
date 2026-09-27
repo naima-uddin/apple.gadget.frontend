@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useCart } from "@/components/context/CartContext";
 import { useLanguage } from "@/components/context/LanguageContext";
 import LocationSelect from "@/components/ui/LocationSelect";
+import { variantLabel } from "@/lib/variantLabel";
+import OrderItemVariantEditor from "@/components/order/OrderItemVariantEditor";
 
 // Social icon components
 const WhatsApp = () => (
@@ -37,40 +39,15 @@ const Twitter = () => (
 
 function ProductAddCardSuccess({ product, onAdd }) {
   const { t } = useLanguage();
-  const [selectedColor, setSelectedColor] = useState("");
-  const [selectedSize, setSelectedSize] = useState("");
+  const [sel, setSel] = useState({
+    color: null,
+    size: null,
+    attributes: null,
+    price: null,
+  });
   const [qty, setQty] = useState(1);
 
-  const colors = [
-    ...new Set(
-      (product.variants || [])
-        .map((v) => v.color?.name || v.attributes?.color)
-        .filter(Boolean),
-    ),
-  ];
-  const sizes = [
-    ...new Set(
-      (product.variants || [])
-        .map((v) => v.size || v.attributes?.size)
-        .filter(Boolean)
-        .flatMap((s) => s.split(",").map((x) => x.trim()))
-        .filter(Boolean),
-    ),
-  ];
-
-  const getPrice = () => {
-    if (!product.variants?.length || (!selectedColor && !selectedSize))
-      return product.price || 0;
-    const v = (product.variants || []).find((v) => {
-      const vc = (v.color?.name || v.attributes?.color || "").toLowerCase();
-      const vs = (v.size || v.attributes?.size || "").toLowerCase();
-      return (
-        (!selectedColor || vc === selectedColor.toLowerCase()) &&
-        (!selectedSize || vs === selectedSize.toLowerCase())
-      );
-    });
-    return v?.price || product.price || 0;
-  };
+  const getPrice = () => (sel.price != null ? sel.price : product.price || 0);
 
   return (
     <div className="rounded-xl border border-gray-100 bg-gray-50 p-2.5 space-y-2">
@@ -110,39 +87,21 @@ function ProductAddCardSuccess({ product, onAdd }) {
           </button>
         </div>
       </div>
-      {colors.length > 0 && (
-        <div className="flex flex-wrap items-center gap-1">
-          <span className="text-xs text-gray-400">Color:</span>
-          {colors.map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setSelectedColor((p) => (p === c ? "" : c))}
-              className={`px-2 py-0.5 rounded-full text-xs border transition ${selectedColor === c ? "bg-[#1D1D1F] text-white border-[#1D1D1F]" : "border-gray-300 text-gray-600 hover:border-gray-400"}`}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-      )}
-      {sizes.length > 0 && (
-        <div className="flex flex-wrap items-center gap-1">
-          <span className="text-xs text-gray-400">Size:</span>
-          {sizes.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => setSelectedSize((p) => (p === s ? "" : s))}
-              className={`px-2 py-0.5 rounded-full text-xs border font-mono transition ${selectedSize === s ? "bg-gray-800 text-white border-gray-800" : "border-gray-300 text-gray-600 hover:border-gray-500"}`}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-      )}
+      <OrderItemVariantEditor
+        product={product}
+        color={sel.color}
+        size={sel.size}
+        attributes={sel.attributes}
+        accent="dark"
+        onChange={({ color, size, attributes, price }) =>
+          setSel({ color, size, attributes, price })
+        }
+      />
       <button
         type="button"
-        onClick={() => onAdd(selectedColor, selectedSize, qty, getPrice())}
+        onClick={() =>
+          onAdd(sel.color, sel.size, qty, getPrice(), sel.attributes)
+        }
         className="w-full py-1.5 bg-[#1D1D1F] text-white rounded-lg text-xs font-semibold hover:bg-black transition"
       >
         {t("orders.add_to_order")}
@@ -308,12 +267,14 @@ function SuccessContent() {
             quantity: it.quantity,
             color: it.color ?? null,
             size: it.size ?? null,
+            attributes: it.attributes || undefined,
           })),
           addItems: pendingNewItems.map((ni) => ({
             productId: ni.product._id,
             quantity: ni.qty,
             color: ni.color || null,
             size: ni.size || null,
+            attributes: ni.attributes || undefined,
           })),
         }),
       });
@@ -344,45 +305,6 @@ function SuccessContent() {
     );
   };
 
-  const getItemColors = (productId) => {
-    const prod = productVariantsMap[String(productId)];
-    if (!prod?.variants?.length) return [];
-    return [
-      ...new Set(
-        prod.variants
-          .map((v) => v.color?.name || v.attributes?.color)
-          .filter(Boolean),
-      ),
-    ];
-  };
-
-  const getItemSizes = (productId) => {
-    const prod = productVariantsMap[String(productId)];
-    if (!prod?.variants?.length) return [];
-    const raw = prod.variants
-      .map((v) => v.size || v.attributes?.size)
-      .filter(Boolean);
-    return [
-      ...new Set(
-        raw.flatMap((s) => s.split(",").map((x) => x.trim())).filter(Boolean),
-      ),
-    ];
-  };
-
-  const getVariantPrice = (productId, color, size) => {
-    const prod = productVariantsMap[String(productId)];
-    if (!prod) return null;
-    if (!prod.variants?.length || (!color && !size)) return prod.price ?? null;
-    const v = prod.variants.find((v) => {
-      const vc = (v.color?.name || v.attributes?.color || "").toLowerCase();
-      const vs = (v.size || v.attributes?.size || "").toLowerCase();
-      return (
-        (!color || vc === color.toLowerCase()) &&
-        (!size || vs === size.toLowerCase())
-      );
-    });
-    return v?.price ?? prod.price ?? null;
-  };
 
   const searchProducts = async (q) => {
     const trimmed = q.trim();
@@ -593,9 +515,9 @@ function SuccessContent() {
                       <p className="text-sm font-medium text-[#1F2937] truncate">
                         {item.title}
                       </p>
-                      {(item.color || item.size) && (
+                      {variantLabel(item) && (
                         <p className="text-xs text-gray-400">
-                          {[item.color, item.size].filter(Boolean).join(" / ")}
+                          {variantLabel(item)}
                         </p>
                       )}
                       <p className="text-xs text-gray-400">
@@ -724,6 +646,7 @@ function SuccessContent() {
                           city={editBilling.city}
                           zone={editBilling.zone}
                           area={editBilling.area}
+                          gridClassName="grid grid-cols-1 gap-2"
                           onChange={({ city, zone, area }) =>
                             setEditBilling((prev) => ({
                               ...prev,
@@ -768,8 +691,6 @@ function SuccessContent() {
                           {t("orders.edit_items")}
                         </p>
                         {editItems.map((item, i) => {
-                          const colors = getItemColors(item.productId);
-                          const sizes = getItemSizes(item.productId);
                           return (
                             <div
                               key={i}
@@ -826,79 +747,28 @@ function SuccessContent() {
                                   </button>
                                 </div>
                               </div>
-                              {colors.length > 0 && (
-                                <div className="flex flex-wrap items-center gap-1">
-                                  <span className="text-xs text-gray-400">
-                                    Color:
-                                  </span>
-                                  {colors.map((c) => (
-                                    <button
-                                      key={c}
-                                      type="button"
-                                      onClick={() =>
-                                        setEditItems((prev) =>
-                                          prev.map((it, idx) => {
-                                            if (idx !== i) return it;
-                                            const nc =
-                                              it.color === c ? null : c;
-                                            const np = getVariantPrice(
-                                              it.productId,
-                                              nc,
-                                              it.size,
-                                            );
-                                            return {
-                                              ...it,
-                                              color: nc,
-                                              ...(np != null
-                                                ? { price: np }
-                                                : {}),
-                                            };
-                                          }),
-                                        )
-                                      }
-                                      className={`px-1.5 py-0.5 rounded-full text-xs border transition ${item.color === c ? "bg-[#1D1D1F] text-white border-[#1D1D1F]" : "border-gray-300 text-gray-600 hover:border-gray-400"}`}
-                                    >
-                                      {c}
-                                    </button>
-                                  ))}
-                                </div>
-                              )}
-                              {sizes.length > 0 && (
-                                <div className="flex flex-wrap items-center gap-1">
-                                  <span className="text-xs text-gray-400">
-                                    Size:
-                                  </span>
-                                  {sizes.map((s) => (
-                                    <button
-                                      key={s}
-                                      type="button"
-                                      onClick={() =>
-                                        setEditItems((prev) =>
-                                          prev.map((it, idx) => {
-                                            if (idx !== i) return it;
-                                            const ns = it.size === s ? null : s;
-                                            const np = getVariantPrice(
-                                              it.productId,
-                                              it.color,
-                                              ns,
-                                            );
-                                            return {
-                                              ...it,
-                                              size: ns,
-                                              ...(np != null
-                                                ? { price: np }
-                                                : {}),
-                                            };
-                                          }),
-                                        )
-                                      }
-                                      className={`px-1.5 py-0.5 rounded-full text-xs border font-mono transition ${item.size === s ? "bg-gray-800 text-white border-gray-800" : "border-gray-300 text-gray-600 hover:border-gray-500"}`}
-                                    >
-                                      {s}
-                                    </button>
-                                  ))}
-                                </div>
-                              )}
+                              <OrderItemVariantEditor
+                                product={productVariantsMap[String(item.productId)]}
+                                color={item.color}
+                                size={item.size}
+                                attributes={item.attributes}
+                                accent="dark"
+                                onChange={({ color, size, attributes, price }) =>
+                                  setEditItems((prev) =>
+                                    prev.map((it, idx) =>
+                                      idx === i
+                                        ? {
+                                            ...it,
+                                            color,
+                                            size,
+                                            attributes,
+                                            ...(price != null ? { price } : {}),
+                                          }
+                                        : it,
+                                    ),
+                                  )
+                                }
+                              />
                             </div>
                           );
                         })}
@@ -989,10 +859,17 @@ function SuccessContent() {
                               <ProductAddCardSuccess
                                 key={product._id}
                                 product={product}
-                                onAdd={(color, size, qty, price) => {
+                                onAdd={(color, size, qty, price, attributes) => {
                                   setPendingNewItems((prev) => [
                                     ...prev,
-                                    { product, color, size, qty, price },
+                                    {
+                                      product,
+                                      color,
+                                      size,
+                                      qty,
+                                      price,
+                                      attributes,
+                                    },
                                   ]);
                                   setSearchResults([]);
                                   setProductSearch("");

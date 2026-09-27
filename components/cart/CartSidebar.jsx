@@ -159,8 +159,19 @@ export default function CartSidebar() {
           )}
 
           {cartItems.map((item) => {
-            const { product, quantity, cartKey, selectedColor, selectedSize } =
-              item;
+            const {
+              product,
+              quantity,
+              cartKey,
+              selectedColor,
+              selectedSize,
+              selectedAttributes,
+            } = item;
+            const attrEntries = selectedAttributes
+              ? Object.entries(selectedAttributes).filter(
+                  ([, v]) => v != null && String(v).trim(),
+                )
+              : [];
             const price = getItemPrice(item);
             const mrp = getItemCompareAtPrice(item);
             const itemSaved = mrp > price ? (mrp - price) * quantity : 0;
@@ -220,7 +231,7 @@ export default function CartSidebar() {
                       </button>
                     </div>
 
-                    {selectedColor || selectedSize ? (
+                    {selectedColor || selectedSize || attrEntries.length ? (
                       <div className="flex items-center gap-1 mt-1.5 flex-wrap">
                         {selectedColor && (
                           <span className="inline-flex items-center gap-1 text-[11px] bg-gray-100 text-[#1D1D1F] font-medium px-1.5 py-0.5 rounded-full">
@@ -238,6 +249,14 @@ export default function CartSidebar() {
                             {selectedSize}
                           </span>
                         )}
+                        {attrEntries.map(([g, v]) => (
+                          <span
+                            key={g}
+                            className="text-[11px] bg-gray-100 text-[#1D1D1F] font-medium px-1.5 py-0.5 rounded-full"
+                          >
+                            {v}
+                          </span>
+                        ))}
                         {hasVariants && (
                           <button
                             onClick={() => {
@@ -392,8 +411,8 @@ export default function CartSidebar() {
             setEditItem(null);
             setEditMode("edit");
           }}
-          onSave={(c, s, v, q) => {
-            updateCartVariant(editItem.cartKey, c, s, v, q);
+          onSave={(c, s, v, q, attrs) => {
+            updateCartVariant(editItem.cartKey, c, s, v, q, attrs);
             setEditItem(null);
             setEditMode("edit");
           }}

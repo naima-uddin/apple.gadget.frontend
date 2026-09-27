@@ -124,6 +124,17 @@ function statusBadgeText(order) {
 function variantLabel(item) {
   if (!item) return "";
   const parts = [item.color, item.size].filter(Boolean);
+  const attrs =
+    item.attributes && typeof item.attributes === "object"
+      ? Object.entries(item.attributes).filter(
+          ([, v]) => v != null && String(v).trim(),
+        )
+      : [];
+  if (attrs.length) {
+    attrs.forEach(([g, v]) => parts.push(`${g}: ${v}`));
+  } else if (item.attrGroup && item.attrValue) {
+    parts.push(`${item.attrGroup}: ${item.attrValue}`);
+  }
   return parts.length ? ` (${parts.join(", ")})` : "";
 }
 
@@ -3978,11 +3989,23 @@ function CheckoutSessionModal({ session, onClose }) {
                     <p className="text-sm font-medium text-gray-800 truncate group-hover:text-[#1D1D1F]">
                       {item.title || "—"}
                     </p>
-                    {(item.color || item.size) && (
+                    {(item.color ||
+                      item.size ||
+                      (item.attributes &&
+                        Object.keys(item.attributes).length) ||
+                      (item.attrGroup && item.attrValue)) && (
                       <p className="text-xs text-gray-500 mt-0.5">
                         {[
                           item.color && `Color: ${item.color}`,
                           item.size && `Size: ${item.size}`,
+                          ...(item.attributes &&
+                          typeof item.attributes === "object"
+                            ? Object.entries(item.attributes)
+                                .filter(([, v]) => v != null && String(v).trim())
+                                .map(([g, v]) => `${g}: ${v}`)
+                            : item.attrGroup && item.attrValue
+                              ? [`${item.attrGroup}: ${item.attrValue}`]
+                              : []),
                         ]
                           .filter(Boolean)
                           .join(" · ")}

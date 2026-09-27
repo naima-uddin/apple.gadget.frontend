@@ -221,7 +221,13 @@ export default function CartPage({ embedded = false }) {
                 cartKey,
                 selectedColor,
                 selectedSize,
+                selectedAttributes,
               } = item;
+              const attrEntries = selectedAttributes
+                ? Object.entries(selectedAttributes).filter(
+                    ([, v]) => v != null && String(v).trim(),
+                  )
+                : [];
               const price = getItemPrice(item);
               const compareAt = getItemCompareAtPrice(item) || price;
               const itemSaved = Math.max(0, (compareAt - price) * quantity);
@@ -287,7 +293,7 @@ export default function CartPage({ embedded = false }) {
                       </div>
 
                       {/* Variant chips */}
-                      {selectedColor || selectedSize ? (
+                      {selectedColor || selectedSize || attrEntries.length ? (
                         <div className="flex items-center gap-1.5 mt-2 flex-wrap">
                           {selectedColor && (
                             <span className="inline-flex items-center gap-1.5 text-xs bg-gray-100 border border-gray-100 text-[#1D1D1F] font-medium px-2 py-1 rounded-full">
@@ -305,6 +311,14 @@ export default function CartPage({ embedded = false }) {
                               {selectedSize}
                             </span>
                           )}
+                          {attrEntries.map(([g, v]) => (
+                            <span
+                              key={g}
+                              className="inline-flex items-center text-xs bg-gray-100 border border-gray-100 text-[#1D1D1F] font-medium px-2 py-1 rounded-full"
+                            >
+                              {v}
+                            </span>
+                          ))}
                           {hasVariants && (
                             <button
                               onClick={() => {
@@ -569,8 +583,8 @@ export default function CartPage({ embedded = false }) {
             setEditItem(null);
             setEditMode("edit");
           }}
-          onSave={(c, s, v, q) => {
-            updateCartVariant(editItem.cartKey, c, s, v, q);
+          onSave={(c, s, v, q, attrs) => {
+            updateCartVariant(editItem.cartKey, c, s, v, q, attrs);
             setEditItem(null);
             setEditMode("edit");
           }}

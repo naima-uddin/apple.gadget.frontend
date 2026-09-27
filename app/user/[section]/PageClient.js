@@ -11,6 +11,7 @@ import WishlistPage from "@/components/cart/WishlistPage";
 import CartPage from "@/components/cart/CartPage";
 import AddressManager from "@/components/user/AddressManager";
 import LocationSelect from "@/components/ui/LocationSelect";
+import { variantLabel } from "@/lib/variantLabel";
 import AccountSidebar from "@/components/user/AccountSidebar";
 import UserRewardsSection from "@/components/user/UserRewardsSection";
 import UserLoyaltySection from "@/components/user/UserLoyaltySection";
@@ -718,11 +719,9 @@ function OrdersSection({ API }) {
                         >
                           {item.title}
                         </Link>
-                        {(item.color || item.size) && (
+                        {variantLabel(item) && (
                           <p className="text-xs text-gray-400">
-                            {[item.color, item.size]
-                              .filter(Boolean)
-                              .join(" / ")}
+                            {variantLabel(item)}
                           </p>
                         )}
                         <p className="text-xs text-gray-500">
@@ -889,6 +888,7 @@ function OrdersSection({ API }) {
                           city={editBilling.city}
                           zone={editBilling.zone}
                           area={editBilling.area}
+                          gridClassName="grid grid-cols-1 sm:grid-cols-2 gap-2"
                           onChange={({ city, zone, area }) =>
                             setEditBilling((prev) => ({
                               ...prev,
@@ -1096,11 +1096,9 @@ function OrdersSection({ API }) {
                               )}
                               {colors.length === 0 &&
                                 sizes.length === 0 &&
-                                (item.color || item.size) && (
+                                variantLabel(item) && (
                                   <p className="text-xs text-gray-400">
-                                    {[item.color, item.size]
-                                      .filter(Boolean)
-                                      .join(" / ")}
+                                    {variantLabel(item)}
                                   </p>
                                 )}
                             </div>

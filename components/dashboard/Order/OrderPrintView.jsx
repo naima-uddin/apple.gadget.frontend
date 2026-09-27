@@ -5,6 +5,7 @@ import Link from "next/link";
 import JsBarcode from "jsbarcode";
 import QRCode from "qrcode";
 import { formatOrderId } from "@/lib/orderId";
+import { variantLabel } from "@/lib/variantLabel";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -399,7 +400,7 @@ export default function OrderPrintView({
                         >
                           {item.title}
                         </p>
-                        {(item.color || item.size) && (
+                        {variantLabel(item) && (
                           <p
                             style={{
                               fontSize: "9px",
@@ -407,9 +408,7 @@ export default function OrderPrintView({
                               margin: "0 0 4px",
                             }}
                           >
-                            {[item.color, item.size]
-                              .filter(Boolean)
-                              .join(" · ")}
+                            {variantLabel(item)}
                           </p>
                         )}
                         <p
@@ -871,7 +870,7 @@ export default function OrderPrintView({
                           >
                             {item.title}
                           </p>
-                          {(item.color || item.size) && (
+                          {variantLabel(item) && (
                             <p
                               style={{
                                 margin: "2px 0 0",
@@ -879,12 +878,7 @@ export default function OrderPrintView({
                                 color: "#9ca3af",
                               }}
                             >
-                              {[
-                                item.color && `Color: ${item.color}`,
-                                item.size && `Size: ${item.size}`,
-                              ]
-                                .filter(Boolean)
-                                .join("  ·  ")}
+                              {variantLabel(item)}
                             </p>
                           )}
                           {item.barcode && (

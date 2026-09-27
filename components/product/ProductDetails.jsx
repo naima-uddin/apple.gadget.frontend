@@ -256,6 +256,14 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
     if (idx >= 0) setCurrentIndex(idx);
   };
 
+  // Switch the gallery to a specific image URL (used when a generic variant
+  // option — e.g. a Type — carries its own mapped image).
+  const showImageByUrl = (url) => {
+    if (!url) return;
+    const idx = images.findIndex((img) => img === url);
+    if (idx >= 0) setCurrentIndex(idx);
+  };
+
   useEffect(() => {
     if (product?._id) {
       fetch(`${API}/api/analytics/view/${product._id}`, {
@@ -890,7 +898,12 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                         <button
                           key={idx}
                           disabled={disabled}
-                          onClick={() => pickAttr(group.name, opt.value)}
+                          onClick={() => {
+                            const wasSelected = isSelected;
+                            pickAttr(group.name, opt.value);
+                            if (!wasSelected && opt.image)
+                              showImageByUrl(opt.image);
+                          }}
                           className={`min-w-[48px] h-11 px-4 text-sm font-semibold rounded-xl border-2 transition-all ${
                             isSelected
                               ? "bg-[#1D1D1F] text-white border-[#1D1D1F] shadow-md scale-105"

@@ -342,6 +342,10 @@ export default function VariantEditModal({
   const [selSize, setSelSize] = useState(
     mode === "add" ? null : item.selectedSize || null,
   );
+  // Combined generic-variant selection, e.g. { Type: "8 Pin" }.
+  const [selExtras, setSelExtras] = useState(() =>
+    mode === "add" ? {} : { ...(item.selectedAttributes || {}) },
+  );
   const [qty, setQty] = useState(mode === "add" ? 1 : quantity);
 
   useEffect(() => {
@@ -378,22 +382,60 @@ export default function VariantEditModal({
     [product, selColor, allSizes],
   );
 
-  const price = resolveVariantPrice(product, selColor, selSize);
+  const extraGroups = useMemo(
+    () => getVariantExtraGroups(product),
+    [product],
+  );
+  const fullSelection = {
+    ...(selColor ? { Color: selColor } : {}),
+    ...(selSize ? { Size: selSize } : {}),
+    ...selExtras,
+  };
+  const cleanExtras = () =>
+    Object.fromEntries(
+      Object.entries(selExtras).filter(([, v]) => v != null && String(v).trim()),
+    );
+  const pickAttr = (groupName, value) =>
+    setSelExtras((prev) => {
+      const next = { ...prev };
+      if (next[groupName] === value) delete next[groupName];
+      else next[groupName] = value;
+      return next;
+    });
+
+  const price = resolvePriceForSelection(product, selColor, selSize, selExtras);
   const hasColors = allColors.length > 0; // Use allColors to check if product has any colors
   const hasSizes = allSizes.length > 0; // Use allSizes to check if product has any sizes
   const image = product.images?.[0]?.url;
-  const variantStr = [selColor, selSize].filter(Boolean).join(" / ");
+  const variantStr = [selColor, selSize, ...Object.values(cleanExtras())]
+    .filter(Boolean)
+    .join(" / ");
+
+  // Resolve the variant matching the whole combo, falling back to color/size.
+  const resolveSelectedVariant = () =>
+    resolveVariantByAttrs(product, fullSelection) ||
+    resolveVariantByAttrs(product, cleanExtras()) ||
+    resolveVariant(product, selColor, selSize);
 
   const handleSave = () => {
-    const variant = resolveVariant(product, selColor, selSize);
-    onSave(selColor, selSize, variant, qty);
+    const variant = resolveSelectedVariant();
+    const extras = cleanExtras();
+    onSave(
+      selColor,
+      selSize,
+      variant,
+      qty,
+      Object.keys(extras).length ? extras : null,
+    );
   };
 
   const handleAddMore = () => {
-    const variant = resolveVariant(product, selColor, selSize);
+    const variant = resolveSelectedVariant();
+    const extras = cleanExtras();
     addToCart(product, qty, {
       selectedColor: selColor,
       selectedSize: selSize,
+      selectedAttributes: Object.keys(extras).length ? extras : null,
       selectedVariant: variant,
       silent: true, // Don't show FBT modal when adding more variants
     });
@@ -563,6 +605,53 @@ export default function VariantEditModal({
               </div>
             </div>
           )}
+
+          {/* Generic variant groups (e.g. Type) — combinable with color/size */}
+          {extraGroups.map((group) => {
+            const available = getAvailableValues(
+              product,
+              group.name,
+              fullSelection,
+            );
+            return (
+              <div key={group.name}>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-sm font-semibold text-gray-800">
+                    {group.name}:
+                  </span>
+                  {selExtras[group.name] && (
+                    <span className="text-sm text-gray-600 font-medium px-2 py-0.5 bg-gray-100 rounded">
+                      {selExtras[group.name]}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {group.options.map((opt, i) => {
+                    const isSelected = selExtras[group.name] === opt.value;
+                    const disabled =
+                      available.size > 0 &&
+                      !available.has(opt.value.toLowerCase());
+                    return (
+                      <button
+                        key={i}
+                        disabled={disabled}
+                        onClick={() => pickAttr(group.name, opt.value)}
+                        className={`min-w-[44px] h-10 px-3 text-sm font-semibold rounded-lg border-2 transition-all ${
+                          isSelected
+                            ? "bg-gray-900 text-white border-gray-900 shadow-md scale-105"
+                            : disabled
+                              ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
+                              : "bg-white text-gray-700 border-gray-200 hover:border-gray-900 hover:bg-gray-50"
+                        }`}
+                      >
+                        {opt.value}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Footer */}
