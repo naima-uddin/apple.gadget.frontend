@@ -373,11 +373,11 @@ export default function OrderDetails({ orderId }) {
     );
   }
 
+  // COD / pending orders are unpaid until the payment is actually recorded, so
+  // they must show Paid = 0, Due = total. Only an explicit paidAmount or a
+  // "paid" status (e.g. after Mark as Paid) counts as paid.
   const paidAmount =
-    order.paidAmount ??
-    (order.paymentStatus === "paid" || order.paymentStatus === "cod"
-      ? order.total
-      : 0);
+    order.paidAmount ?? (order.paymentStatus === "paid" ? order.total : 0);
   const dueAmount = Math.max(0, (order.total || 0) - (paidAmount || 0));
   const billing = order.billingDetails || {};
   const address = [billing.address, billing.area, billing.zone, billing.city]

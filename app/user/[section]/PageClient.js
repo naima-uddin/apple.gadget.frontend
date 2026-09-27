@@ -10,6 +10,7 @@ import { useLanguage } from "@/components/context/LanguageContext";
 import WishlistPage from "@/components/cart/WishlistPage";
 import CartPage from "@/components/cart/CartPage";
 import AddressManager from "@/components/user/AddressManager";
+import LocationSelect from "@/components/ui/LocationSelect";
 import AccountSidebar from "@/components/user/AccountSidebar";
 import UserRewardsSection from "@/components/user/UserRewardsSection";
 import UserLoyaltySection from "@/components/user/UserLoyaltySection";
@@ -570,12 +571,11 @@ function OrdersSection({ API }) {
 
       {orders.map((order) => {
         const billing = order.billingDetails || {};
-        const now = Date.now();
+        // COD orders stay pending until an authorized person confirms them, so
+        // edit/cancel is available for the whole pending window (no timer).
         const canAct =
           order.status === "pending" &&
-          order.paymentMethod === "cash-on-delivery" &&
-          order.confirmAfter &&
-          new Date(order.confirmAfter).getTime() > now;
+          order.paymentMethod === "cash-on-delivery";
         const canPayOnline =
           order.status === "pending" &&
           order.paymentStatus === "unpaid" &&
@@ -649,7 +649,7 @@ function OrdersSection({ API }) {
                       {t("pay.unpaid")}
                     </span>
                   )}
-                  {canAct && (
+                  {canAct && order.confirmAfter && (
                     <OrderCountdown
                       confirmAfter={order.confirmAfter}
                       onExpire={fetchOrders}
@@ -868,9 +868,6 @@ function OrdersSection({ API }) {
                             { key: "name", placeholder: t("orders.name_ph") },
                             { key: "phone", placeholder: t("orders.phone_ph") },
                             { key: "email", placeholder: t("orders.email_ph") },
-                            { key: "city", placeholder: t("orders.city_ph") },
-                            { key: "zone", placeholder: t("orders.zone_ph") },
-                            { key: "area", placeholder: t("orders.area_ph") },
                           ].map(({ key, placeholder }) => (
                             <input
                               key={key}
@@ -886,6 +883,26 @@ function OrdersSection({ API }) {
                             />
                           ))}
                         </div>
+                        {/* Cascading city → zone → area picker; changing the
+                            address recomputes the delivery charge server-side. */}
+                        <LocationSelect
+                          city={editBilling.city}
+                          zone={editBilling.zone}
+                          area={editBilling.area}
+                          onChange={({ city, zone, area }) =>
+                            setEditBilling((prev) => ({
+                              ...prev,
+                              city,
+                              zone,
+                              area,
+                            }))
+                          }
+                          labels={{
+                            city: t("orders.city_ph"),
+                            zone: t("orders.zone_ph"),
+                            area: t("orders.area_ph"),
+                          }}
+                        />
                         <textarea
                           className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-gray-400 outline-none resize-none"
                           rows={2}

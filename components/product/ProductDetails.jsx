@@ -32,6 +32,8 @@ import {
   getVariantColors,
   getVariantSizes,
   getVariantImage,
+  getVariantExtraGroups,
+  getAvailableValues,
 } from "@/components/cart/VariantEditModal";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import ProductCard from "@/components/product/ProductCard";
@@ -199,6 +201,8 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
   const [copied, setCopied] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
+  // Combined generic-variant selection, e.g. { Type: "8 Pin" }. Optional.
+  const [selectedAttributes, setSelectedAttributes] = useState({});
   const [zoomOpen, setZoomOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [descOpen, setDescOpen] = useState(false); // expand truncated description
@@ -416,6 +420,23 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
   const productSizes = selectedColor
     ? getVariantSizes(product, selectedColor)
     : allSizes;
+
+  // Generic (non color/size) variant groups the customer can combine, e.g. Type.
+  const extraGroups = getVariantExtraGroups(product);
+  // Full selection map (Color + Size + generic groups) used to disable options
+  // that can't be combined with the current picks.
+  const fullSelection = {
+    ...(selectedColor?.name ? { Color: selectedColor.name } : {}),
+    ...(selectedSize ? { Size: selectedSize } : {}),
+    ...selectedAttributes,
+  };
+  const pickAttr = (groupName, value) =>
+    setSelectedAttributes((prev) => {
+      const next = { ...prev };
+      if (next[groupName] === value) delete next[groupName];
+      else next[groupName] = value;
+      return next;
+    });
   const selectedVariant =
     Array.isArray(product.variants) && product.variants.length
       ? product.variants.find((variant) => {
@@ -839,11 +860,60 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               </div>
             )}
 
+            {/* Generic variant groups (e.g. Type) — combinable with color/size */}
+            {extraGroups.map((group) => {
+              const available = getAvailableValues(
+                product,
+                group.name,
+                fullSelection,
+              );
+              return (
+                <div key={group.name}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-sm font-semibold text-gray-800">
+                      {group.name}:
+                    </span>
+                    {selectedAttributes[group.name] && (
+                      <span className="text-sm text-gray-600 font-medium px-2 py-0.5 bg-gray-100 rounded">
+                        {selectedAttributes[group.name]}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {group.options.map((opt, idx) => {
+                      const isSelected =
+                        selectedAttributes[group.name] === opt.value;
+                      const disabled =
+                        available.size > 0 &&
+                        !available.has(opt.value.toLowerCase());
+                      return (
+                        <button
+                          key={idx}
+                          disabled={disabled}
+                          onClick={() => pickAttr(group.name, opt.value)}
+                          className={`min-w-[48px] h-11 px-4 text-sm font-semibold rounded-xl border-2 transition-all ${
+                            isSelected
+                              ? "bg-[#1D1D1F] text-white border-[#1D1D1F] shadow-md scale-105"
+                              : disabled
+                                ? "bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed"
+                                : "bg-white text-gray-700 border-gray-200 hover:border-[#1D1D1F] hover:bg-gray-50"
+                          }`}
+                        >
+                          {opt.value}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+
             {/* Add cart */}
             <AddToCartSection
               product={product}
               selectedColor={selectedColor?.name ?? null}
               selectedSize={selectedSize ?? null}
+              selectedAttributes={selectedAttributes}
             />
 
             <hr className="border-gray-100" />

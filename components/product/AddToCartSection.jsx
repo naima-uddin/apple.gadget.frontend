@@ -9,6 +9,8 @@ import {
   resolveVariant,
   getVariantColors,
   getVariantSizes,
+  resolveVariantByAttrs,
+  resolvePriceForSelection,
 } from "@/components/cart/VariantEditModal";
 import { FaBell, FaClock } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -20,7 +22,11 @@ export default function AddToCartSection({
   product,
   selectedColor = null,
   selectedSize = null,
+  selectedAttributes = null,
 }) {
+  const hasSelectedAttrs = !!(
+    selectedAttributes && Object.keys(selectedAttributes).length
+  );
   const [qty, setQty] = useState(1);
   const { addToCart } = useCart();
   const router = useRouter();
@@ -79,12 +85,26 @@ export default function AddToCartSection({
     allColors.length > 0 || allSizes.length > 0 || product.variants?.length > 0;
 
   const effectivePrice = hasVariants
-    ? resolveVariantPrice(product, selectedColor, selectedSize)
+    ? resolvePriceForSelection(
+        product,
+        selectedColor,
+        selectedSize,
+        selectedAttributes,
+      )
     : product.price || 0;
 
-  // Use the shared resolveVariant function for consistent matching logic
+  // Resolve the variant matching the full combined selection when generic
+  // attributes are chosen, else fall back to the color/size match.
   const selectedVariant = hasVariants
-    ? resolveVariant(product, selectedColor, selectedSize)
+    ? (hasSelectedAttrs
+        ? resolveVariantByAttrs(product, {
+            ...(selectedColor ? { Color: selectedColor } : {}),
+            ...(selectedSize ? { Size: selectedSize } : {}),
+            ...selectedAttributes,
+          }) ||
+          resolveVariantByAttrs(product, selectedAttributes) ||
+          resolveVariant(product, selectedColor, selectedSize)
+        : resolveVariant(product, selectedColor, selectedSize))
     : null;
 
   const flyProductImage = () => {
@@ -99,6 +119,7 @@ export default function AddToCartSection({
     addToCart(product, qty, {
       selectedColor: selectedColor || null,
       selectedSize: selectedSize || null,
+      selectedAttributes: hasSelectedAttrs ? selectedAttributes : null,
       selectedVariant,
     });
   };
@@ -108,6 +129,7 @@ export default function AddToCartSection({
     addToCart(product, qty, {
       selectedColor: selectedColor || null,
       selectedSize: selectedSize || null,
+      selectedAttributes: hasSelectedAttrs ? selectedAttributes : null,
       selectedVariant,
       silent: true,
     });

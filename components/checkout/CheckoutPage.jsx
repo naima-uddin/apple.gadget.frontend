@@ -131,6 +131,7 @@ export default function CheckoutPage() {
             image: (typeof img === "string" ? img : img?.url) || null,
             color: item.selectedColor || null,
             size: item.selectedSize || null,
+            attributes: item.selectedAttributes || undefined,
           };
         }),
         total: 0,
@@ -218,6 +219,7 @@ export default function CheckoutPage() {
             quantity: item.quantity,
             color: item.selectedColor || null,
             size: item.selectedSize || null,
+            attributes: item.selectedAttributes || undefined,
           })),
           couponCodes: couponCodes?.length ? couponCodes : null,
           city,
@@ -487,6 +489,7 @@ export default function CheckoutPage() {
             quantity: item.quantity,
             color: item.selectedColor || null,
             size: item.selectedSize || null,
+            attributes: item.selectedAttributes || undefined,
           })),
           couponCodes: newCoupons,
           city: currentCityRef.current || null,
@@ -549,6 +552,7 @@ export default function CheckoutPage() {
             quantity: item.quantity,
             color: item.selectedColor || null,
             size: item.selectedSize || null,
+            attributes: item.selectedAttributes || undefined,
           })),
           couponCodes: newCoupons.length ? newCoupons : null,
           city: currentCityRef.current || null,
@@ -586,6 +590,7 @@ export default function CheckoutPage() {
             quantity: item.quantity,
             color: item.selectedColor || null,
             size: item.selectedSize || null,
+            attributes: item.selectedAttributes || undefined,
           })),
           couponCodes: null,
           city: currentCityRef.current || null,
@@ -663,6 +668,7 @@ export default function CheckoutPage() {
         quantity: item.quantity,
         color: item.selectedColor || null,
         size: item.selectedSize || null,
+        attributes: item.selectedAttributes || undefined,
       })),
       billingDetails: {
         name: formData.name,
@@ -743,11 +749,12 @@ export default function CheckoutPage() {
   // Exception: SSL popup is pending (online payment in progress) — keep the page alive.
   if (orderPlaced.current) return null;
 
-  // Build a Map of server-verified unit prices keyed by productId+color+size
+  // Build a Map of server-verified unit prices keyed by productId+color+size+attrs
   const quoteItemMap = {};
   (quote.items || []).forEach((qi) => {
-    quoteItemMap[makeCartKey(qi.productId?.toString(), qi.color, qi.size)] =
-      qi.price;
+    quoteItemMap[
+      makeCartKey(qi.productId?.toString(), qi.color, qi.size, qi.attributes)
+    ] = qi.price;
   });
   const displayShipping = hasResolvedCity ? (quote.shipping ?? 0) : 0;
   const displayBaseShipping = hasResolvedCity ? (quote.baseShipping ?? 0) : 0;
@@ -1019,15 +1026,25 @@ export default function CheckoutPage() {
                   className="space-y-2.5 sm:space-y-3 overflow-y-auto no-scrollbar pr-2 max-h-20 md:max-h-25"
                 >
                   {cartItems.map((item) => {
-                    const { product, quantity, selectedColor, selectedSize } =
-                      item;
+                    const {
+                      product,
+                      quantity,
+                      selectedColor,
+                      selectedSize,
+                      selectedAttributes,
+                    } = item;
                     const id = product._id || product.id;
                     const image =
                       product.images?.[0]?.url || "/assets/placeholder.svg";
                     const title = product.title || product.name;
                     const price =
                       quoteItemMap[
-                        makeCartKey(id, selectedColor, selectedSize)
+                        makeCartKey(
+                          id,
+                          selectedColor,
+                          selectedSize,
+                          selectedAttributes,
+                        )
                       ] ?? 0;
                     return (
                       <div key={id} className="flex items-center gap-3">
@@ -1167,12 +1184,22 @@ export default function CheckoutPage() {
                 {(() => {
                   // Use shared cart utilities — same logic as CartSidebar
                   const mrpSavings = cartItems.reduce((sum, item) => {
-                    const { quantity, selectedColor, selectedSize, product } =
-                      item;
+                    const {
+                      quantity,
+                      selectedColor,
+                      selectedSize,
+                      selectedAttributes,
+                      product,
+                    } = item;
                     const id = product._id || product.id;
                     const selling =
                       quoteItemMap[
-                        makeCartKey(id, selectedColor, selectedSize)
+                        makeCartKey(
+                          id,
+                          selectedColor,
+                          selectedSize,
+                          selectedAttributes,
+                        )
                       ] ?? getItemPrice(item);
                     const mrp = getItemCompareAtPrice(item);
                     return (

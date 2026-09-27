@@ -193,6 +193,140 @@ export function resolveVariantComparePrice(product, color, size) {
     : (product.compareAtPrice ?? null);
 }
 
+// ── Multi-dimensional (combinable) variant helpers ────────────────────────────
+// A product's variants each carry Color/Size plus a free-form `attributes` map
+// (e.g. { Type: "8 Pin" }). These helpers let a shopper pick one option per
+// group and resolve the single variant matching the WHOLE combo, instead of the
+// older "color/size only" behaviour. Color is cosmetic; when there is no exact
+// combined variant the generic-group price wins (see resolveVariantByAttrs use).
+const COLOR_KEY_RE = /^colou?rs?$/i;
+const SIZE_KEY_RE = /^sizes?$/i;
+
+export function variantColorName(v) {
+  return (v?.color?.name || v?.attributes?.color || "").trim();
+}
+export function variantSizeValue(v) {
+  return (v?.size || v?.attributes?.size || "").trim();
+}
+
+// Normalised attribute map for a variant: explicit `attributes` plus Color/Size
+// synthesised from the denormalised color.name / size fields when omitted.
+export function variantAttrMap(v) {
+  const map = {};
+  Object.entries(v?.attributes || {}).forEach(([k, val]) => {
+    // color/size live in dedicated fields; skip the legacy attribute aliases so
+    // they don't shadow the synthesised Color/Size keys below.
+    if (COLOR_KEY_RE.test(k) || SIZE_KEY_RE.test(k)) return;
+    const s = val == null ? "" : String(val).trim();
+    if (s) map[k] = s;
+  });
+  const colorName = variantColorName(v);
+  if (colorName && !Object.keys(map).some((k) => COLOR_KEY_RE.test(k))) {
+    map.Color = colorName;
+  }
+  const sizeVal = variantSizeValue(v);
+  if (sizeVal && !Object.keys(map).some((k) => SIZE_KEY_RE.test(k))) {
+    map.Size = sizeVal;
+  }
+  return map;
+}
+
+// Generic (non-color/size) selectable groups across a product's variants, in
+// first-seen order. Each option carries its linked image when set.
+export function getVariantExtraGroups(product) {
+  if (!product?.variants?.length) return [];
+  const order = [];
+  const byName = new Map();
+  for (const v of product.variants) {
+    Object.entries(v.attributes || {}).forEach(([key, value]) => {
+      if (!value || COLOR_KEY_RE.test(key) || SIZE_KEY_RE.test(key)) return;
+      if (!byName.has(key)) {
+        byName.set(key, { options: [], seen: new Set() });
+        order.push(key);
+      }
+      const group = byName.get(key);
+      const val = String(value).trim();
+      const lower = val.toLowerCase();
+      if (val && !group.seen.has(lower)) {
+        group.seen.add(lower);
+        group.options.push({ value: val, image: v.image || null });
+      }
+    });
+  }
+  return order.map((name) => ({ name, options: byName.get(name).options }));
+}
+
+// True when at least one variant combines 2+ groups (e.g. Color + Type).
+export function isComboVariantProduct(product) {
+  return (product?.variants || []).some(
+    (v) => Object.keys(variantAttrMap(v)).length >= 2,
+  );
+}
+
+// Find the single variant matching ALL selected attributes (case-insensitive).
+// `selected` is a plain map { groupName: value }; blank values are ignored.
+export function resolveVariantByAttrs(product, selected) {
+  if (!product?.variants?.length) return null;
+  const entries = Object.entries(selected || {}).filter(
+    ([, val]) => val != null && String(val).trim(),
+  );
+  if (!entries.length) return null;
+  return (
+    product.variants.find((v) => {
+      const map = variantAttrMap(v);
+      const keys = Object.keys(map);
+      return entries.every(([g, val]) => {
+        const k = keys.find((x) => x.toLowerCase() === g.toLowerCase());
+        return k && map[k].toLowerCase() === String(val).trim().toLowerCase();
+      });
+    }) || null
+  );
+}
+
+// Lower-cased set of values still available for `groupName` given the current
+// picks in the OTHER groups — used to disable impossible combinations.
+export function getAvailableValues(product, groupName, selected) {
+  const others = Object.entries(selected || {}).filter(
+    ([g, val]) =>
+      g.toLowerCase() !== groupName.toLowerCase() &&
+      val != null &&
+      String(val).trim(),
+  );
+  const available = new Set();
+  for (const v of product?.variants || []) {
+    const map = variantAttrMap(v);
+    const keys = Object.keys(map);
+    const okOthers = others.every(([g, val]) => {
+      const k = keys.find((x) => x.toLowerCase() === g.toLowerCase());
+      return k && map[k].toLowerCase() === String(val).trim().toLowerCase();
+    });
+    if (!okOthers) continue;
+    const k = keys.find((x) => x.toLowerCase() === groupName.toLowerCase());
+    if (k) available.add(map[k].toLowerCase());
+  }
+  return available;
+}
+
+// Price for a color + size + combined generic-attributes selection, mirroring
+// the backend priceForSelection: full combo → extras-only → color/size-only.
+export function resolvePriceForSelection(product, color, size, attributes) {
+  const extra = Object.entries(attributes || {}).filter(
+    ([, v]) => v != null && String(v).trim(),
+  );
+  if (product?.variants?.length && extra.length) {
+    const cs = {
+      ...(color ? { Color: color } : {}),
+      ...(size ? { Size: size } : {}),
+    };
+    const extraMap = Object.fromEntries(extra);
+    let v = resolveVariantByAttrs(product, { ...cs, ...extraMap });
+    if (!v) v = resolveVariantByAttrs(product, extraMap);
+    if (!v && (color || size)) v = resolveVariantByAttrs(product, cs);
+    if (v && v.price != null && v.price > 0) return v.price;
+  }
+  return resolveVariantPrice(product, color, size);
+}
+
 export default function VariantEditModal({
   item,
   onSave,

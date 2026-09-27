@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import Image from "next/image";
 import { useCart } from "@/components/context/CartContext";
 import { useLanguage } from "@/components/context/LanguageContext";
+import LocationSelect from "@/components/ui/LocationSelect";
 
 // Social icon components
 const WhatsApp = () => (
@@ -414,10 +415,11 @@ function SuccessContent() {
   const addr = [billing.address, billing.zone, billing.city]
     .filter(Boolean)
     .join(", ");
+  // COD orders stay pending until an authorized person confirms them, so the
+  // edit/cancel affordance is available for the whole pending window (no timer).
   const canCancel =
     order?.status === "pending" &&
-    order?.paymentMethod === "cash-on-delivery" &&
-    timeLeft > 0;
+    order?.paymentMethod === "cash-on-delivery";
   const fmtTime = (s) =>
     `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
@@ -659,7 +661,9 @@ function SuccessContent() {
             <div className="py-4">
               <div className="bg-gray-100/60 border border-gray-100 rounded-lg p-3 text-sm">
                 <p className="text-[#1D1D1F] font-medium mb-1">
-                  {t("success.edit_cancel_time")} {fmtTime(timeLeft)}
+                  {timeLeft != null
+                    ? `${t("success.edit_cancel_time")} ${fmtTime(timeLeft)}`
+                    : t("success.edit_cancel_pending")}
                 </p>
 
                 {isEditing ? (
@@ -698,9 +702,6 @@ function SuccessContent() {
                           {[
                             { key: "name", ph: t("orders.name_ph") },
                             { key: "phone", ph: t("orders.phone_ph") },
-                            { key: "city", ph: t("orders.city_ph") },
-                            { key: "zone", ph: t("orders.zone_ph") },
-                            { key: "area", ph: t("orders.area_ph") },
                             { key: "email", ph: t("orders.email_ph") },
                           ].map(({ key, ph }) => (
                             <input
@@ -717,6 +718,26 @@ function SuccessContent() {
                             />
                           ))}
                         </div>
+                        {/* Cascading city → zone → area picker; changing the
+                            address recomputes the delivery charge server-side. */}
+                        <LocationSelect
+                          city={editBilling.city}
+                          zone={editBilling.zone}
+                          area={editBilling.area}
+                          onChange={({ city, zone, area }) =>
+                            setEditBilling((prev) => ({
+                              ...prev,
+                              city,
+                              zone,
+                              area,
+                            }))
+                          }
+                          labels={{
+                            city: t("orders.city_ph"),
+                            zone: t("orders.zone_ph"),
+                            area: t("orders.area_ph"),
+                          }}
+                        />
                         <input
                           value={editBilling.address}
                           onChange={(e) =>

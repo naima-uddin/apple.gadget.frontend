@@ -36,9 +36,21 @@ const setStorageItem = (key, value) => {
   } catch {}
 };
 
-// Unique cart key: productId + selected color + selected size
-export const makeCartKey = (productId, color, size) =>
-  `${productId}__${color || ""}__${size || ""}`;
+// Serialise a selected-attributes map into a stable string for the cart key,
+// so the same combined selection always dedupes and a different one is a new
+// line. Blank values are ignored; keys are sorted for order-independence.
+const serializeAttrs = (attributes) =>
+  attributes && typeof attributes === "object"
+    ? Object.entries(attributes)
+        .filter(([, v]) => v != null && String(v).trim())
+        .map(([k, v]) => `${k}:${v}`)
+        .sort()
+        .join(",")
+    : "";
+
+// Unique cart key: productId + selected color + size + combined attributes
+export const makeCartKey = (productId, color, size, attributes) =>
+  `${productId}__${color || ""}__${size || ""}__${serializeAttrs(attributes)}`;
 
 // Item shape stored in localStorage — includes the product object so cart
 // survives page reload without needing a batch API call.
@@ -48,6 +60,7 @@ const toSlimItem = (item) => ({
   quantity: item.quantity,
   selectedColor: item.selectedColor || null,
   selectedSize: item.selectedSize || null,
+  selectedAttributes: item.selectedAttributes || null,
   selectedVariant: item.selectedVariant || null,
   variantId:
     item.selectedVariant?._id ||
@@ -58,15 +71,23 @@ const toSlimItem = (item) => ({
 });
 
 // Effective unit price: variant price overrides product base price
+const hasAnySelection = (item) =>
+  !!(
+    item.selectedColor ||
+    item.selectedSize ||
+    (item.selectedAttributes &&
+      Object.keys(item.selectedAttributes).length > 0)
+  );
+
 export const getItemPrice = (item) => {
-  const hasSelectedOption = !!(item.selectedColor || item.selectedSize);
+  const hasSelectedOption = hasAnySelection(item);
   const variantPrice = hasSelectedOption ? item.selectedVariant?.price : null;
   const basePrice = item.product?.price ?? 0;
   return variantPrice != null && variantPrice > 0 ? variantPrice : basePrice;
 };
 
 export const getItemCompareAtPrice = (item) => {
-  const hasSelectedOption = !!(item.selectedColor || item.selectedSize);
+  const hasSelectedOption = hasAnySelection(item);
   const variantCompareAt = hasSelectedOption
     ? item.selectedVariant?.compareAtPrice
     : null;
@@ -115,11 +136,13 @@ export const CartProvider = ({ children }) => {
           ...item,
           selectedColor: item.selectedColor || null,
           selectedSize: item.selectedSize || null,
+          selectedAttributes: item.selectedAttributes || null,
           selectedVariant: item.selectedVariant || null,
           cartKey: makeCartKey(
             id,
             item.selectedColor || null,
             item.selectedSize || null,
+            item.selectedAttributes || null,
           ),
         };
       });
@@ -151,6 +174,7 @@ export const CartProvider = ({ children }) => {
               quantity: slim.quantity,
               selectedColor: slim.selectedColor,
               selectedSize: slim.selectedSize,
+              selectedAttributes: slim.selectedAttributes || null,
               selectedVariant,
               cartKey:
                 slim.cartKey ||
@@ -158,6 +182,7 @@ export const CartProvider = ({ children }) => {
                   slim.productId,
                   slim.selectedColor,
                   slim.selectedSize,
+                  slim.selectedAttributes || null,
                 ),
             };
           })
@@ -235,11 +260,17 @@ export const CartProvider = ({ children }) => {
       const {
         selectedColor = null,
         selectedSize = null,
+        selectedAttributes = null,
         selectedVariant = null,
         silent = false,
       } = opts;
       const id = getId(product);
-      const cartKey = makeCartKey(id, selectedColor, selectedSize);
+      const cartKey = makeCartKey(
+        id,
+        selectedColor,
+        selectedSize,
+        selectedAttributes,
+      );
       setCartItems((prev) => {
         const existing = prev.find((i) => i.cartKey === cartKey);
         if (existing) {
@@ -254,6 +285,7 @@ export const CartProvider = ({ children }) => {
             quantity: qty,
             selectedColor,
             selectedSize,
+            selectedAttributes,
             selectedVariant,
             cartKey,
           },
@@ -284,15 +316,20 @@ export const CartProvider = ({ children }) => {
   }, []);
 
   const updateCartVariant = useCallback(
-    (oldCartKey, newColor, newSize, newVariant, newQty = null) => {
+    (oldCartKey, newColor, newSize, newVariant, newQty = null, newAttrs = null) => {
       setCartItems((prev) => {
         const existing = prev.find((i) => i.cartKey === oldCartKey);
         if (!existing) return prev;
         const updatedQty = newQty ?? existing.quantity;
+        const resolvedAttrs =
+          typeof newAttrs !== "undefined" && newAttrs !== null
+            ? newAttrs
+            : existing.selectedAttributes || null;
         const newCartKey = makeCartKey(
           getId(existing.product),
           newColor,
           newSize,
+          resolvedAttrs,
         );
         if (newCartKey === oldCartKey) {
           return prev.map((i) =>
@@ -301,6 +338,7 @@ export const CartProvider = ({ children }) => {
                   ...i,
                   selectedColor: newColor,
                   selectedSize: newSize,
+                  selectedAttributes: resolvedAttrs,
                   selectedVariant: newVariant,
                   quantity: updatedQty,
                 }
@@ -319,6 +357,7 @@ export const CartProvider = ({ children }) => {
                 ...i,
                 selectedColor: newColor,
                 selectedSize: newSize,
+                selectedAttributes: resolvedAttrs,
                 selectedVariant: newVariant,
                 cartKey: newCartKey,
                 quantity: updatedQty,
