@@ -6,8 +6,6 @@ import { formatOrderId } from "@/lib/orderId";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
-const PICKED_STATUSES = ["accepted", "picked", "approved"];
-
 const STATUS_STYLE = {
   pending: "bg-yellow-100 text-yellow-800",
   accepted: "bg-emerald-100 text-emerald-800",
@@ -149,9 +147,11 @@ export default function OrderPickManager() {
               </thead>
               <tbody className="divide-y">
                 {orders.map((order) => {
-                  const isPicked =
-                    PICKED_STATUSES.includes(order.status) ||
-                    Boolean(order.pickedBy?.name);
+                  // Pick state is driven solely by whether a picker is assigned.
+                  // Picking no longer changes the order status, so status must
+                  // not be used to infer "picked" (it would keep the toggle on
+                  // for manually-set accepted/approved orders).
+                  const isPicked = Boolean(order.pickedBy?.name);
                   return (
                     <tr
                       key={order._id}

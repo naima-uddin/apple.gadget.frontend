@@ -110,6 +110,17 @@ function fmtDate(date) {
   });
 }
 
+// Text shown on the order-status badge. Prefers the courier's latest live
+// tracking status (display-only, e.g. "Out for Delivery", "At Delivery Hub"),
+// falling back to the internal order status when no courier update exists.
+// The badge COLOR keys off the internal status (see STATUS_STYLE) so the
+// pending/confirmed/delivered category stays visually recognisable.
+function statusBadgeText(order) {
+  const courier = order?.shipment?.courierStatus;
+  if (courier && String(courier).trim()) return String(courier).trim();
+  return order?.status || "—";
+}
+
 function variantLabel(item) {
   if (!item) return "";
   const parts = [item.color, item.size].filter(Boolean);
@@ -625,18 +636,18 @@ function OrdersTable({
               <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                 {trashMode ? (
                   <span
-                    className={`inline-block text-xs font-medium px-2 py-1 rounded-full capitalize ${STATUS_STYLE[order.status] || ""}`}
+                    className={`inline-block text-xs font-medium px-2 py-1 rounded-full capitalize whitespace-nowrap ${STATUS_STYLE[order.status] || ""}`}
                   >
-                    {order.status}
+                    {statusBadgeText(order)}
                   </span>
                 ) : (
                   <button
                     type="button"
                     title="Update status"
                     onClick={() => setStatusOrder(order)}
-                    className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full capitalize transition-opacity hover:opacity-80 ${STATUS_STYLE[order.status] || ""}`}
+                    className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full capitalize whitespace-nowrap transition-opacity hover:opacity-80 ${STATUS_STYLE[order.status] || ""}`}
                   >
-                    {order.status}
+                    {statusBadgeText(order)}
                     <svg
                       className="h-3 w-3 shrink-0 opacity-60"
                       viewBox="0 0 24 24"
