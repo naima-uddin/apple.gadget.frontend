@@ -4126,9 +4126,22 @@ function AbandonCheckoutSection() {
   const [q, setQ] = useState("");
   const [selectedSession, setSelectedSession] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
   const [createFor, setCreateFor] = useState(null); // prefill for CreateOrderModal
   const searchRef = useRef(null);
   const PAGE_SIZE = 20;
+
+  const toggleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  };
+
+  const allSelected = rows.length > 0 && selectedIds.length === rows.length;
+  const toggleSelectAll = () => {
+    setSelectedIds(allSelected ? [] : rows.map((s) => s._id));
+  };
 
   const deleteSession = async (id) => {
     if (!confirm("Delete this record?")) return;
@@ -4139,15 +4152,41 @@ function AbandonCheckoutSection() {
         credentials: "include",
       });
       setRows((prev) => prev.filter((s) => s._id !== id));
+      setSelectedIds((prev) => prev.filter((x) => x !== id));
       setTotal((prev) => Math.max(0, prev - 1));
     } finally {
       setDeletingId(null);
     }
   };
 
+  const bulkDelete = async () => {
+    if (!selectedIds.length) return;
+    if (!confirm(`Delete ${selectedIds.length} selected record(s)?`)) return;
+    setBulkDeleting(true);
+    try {
+      const r = await fetch(
+        `${API}/api/admin/abandoned-checkouts/bulk-delete`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids: selectedIds }),
+        },
+      );
+      const data = r.ok ? await r.json() : {};
+      const deleted = data.deleted ?? selectedIds.length;
+      setRows((prev) => prev.filter((s) => !selectedIds.includes(s._id)));
+      setTotal((prev) => Math.max(0, prev - deleted));
+      setSelectedIds([]);
+    } finally {
+      setBulkDeleting(false);
+    }
+  };
+
   const load = useCallback(async (pg, query) => {
     setLoading(true);
     try {
+      setSelectedIds([]);
       const params = new URLSearchParams({ page: pg, limit: PAGE_SIZE });
       if (query) params.set("q", query);
       const r = await fetch(`${API}/api/admin/abandoned-checkouts?${params}`, {
@@ -4200,12 +4239,25 @@ function AbandonCheckoutSection() {
             {total} customers started checkout but didn't place an order
           </p>
         </div>
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Search by name, email or phone…"
-          className="text-sm border border-gray-200 rounded-lg px-3 py-2 w-64"
-        />
+        <div className="flex items-center gap-2">
+          {user?.role === "admin" && selectedIds.length > 0 && (
+            <button
+              onClick={bulkDelete}
+              disabled={bulkDeleting}
+              className="text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg px-3 py-2 disabled:opacity-50 whitespace-nowrap"
+            >
+              {bulkDeleting
+                ? "Deleting…"
+                : `Delete ${selectedIds.length} selected`}
+            </button>
+          )}
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search by name, email or phone…"
+            className="text-sm border border-gray-200 rounded-lg px-3 py-2 w-64"
+          />
+        </div>
       </div>
 
       {/* Info note */}
@@ -4230,6 +4282,16 @@ function AbandonCheckoutSection() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50/60 text-xs font-semibold uppercase tracking-wider text-[#1D1D1F]">
               <tr>
+                {user?.role === "admin" && (
+                  <th className="px-4 py-3 text-left w-10">
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={toggleSelectAll}
+                      className="w-4 h-4 rounded border-gray-300 cursor-pointer accent-gray-800"
+                    />
+                  </th>
+                )}
                 <th className="px-4 py-3 text-left">#</th>
                 <th className="px-4 py-3 text-left">Customer</th>
                 <th className="px-4 py-3 text-left">Contact</th>
@@ -4246,7 +4308,23 @@ function AbandonCheckoutSection() {
                   0,
                 );
                 return (
-                  <tr key={s._id} className="hover:bg-gray-50/50">
+                  <tr
+                    key={s._id}
+                    className={`hover:bg-gray-50/50 ${
+                      selectedIds.includes(s._id) ? "bg-gray-50" : ""
+                    }`}
+                  >
+                    {/* Select checkbox */}
+                    {user?.role === "admin" && (
+                      <td className="px-4 py-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedIds.includes(s._id)}
+                          onChange={() => toggleSelect(s._id)}
+                          className="w-4 h-4 rounded border-gray-300 cursor-pointer accent-gray-800"
+                        />
+                      </td>
+                    )}
                     {/* Row number */}
                     <td className="px-4 py-3 text-gray-400 text-xs">
                       {(page - 1) * PAGE_SIZE + idx + 1}
@@ -4397,7 +4475,7 @@ function AbandonCheckoutSection() {
               {!rows.length && !loading && (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={user?.role === "admin" ? 8 : 7}
                     className="px-4 py-14 text-center text-gray-400"
                   >
                     No abandoned checkouts
