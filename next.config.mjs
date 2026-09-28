@@ -35,6 +35,8 @@ const nextConfig = {
     remotePatterns: [
       // New uploads are served from our own backend's /uploads folder.
       { protocol: "https", hostname: "api.applebd.com" },
+      // Local development backend.
+      { protocol: "http", hostname: "localhost" },
       // Legacy assets still served from Cloudinary.
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "download.logo.wine" },
