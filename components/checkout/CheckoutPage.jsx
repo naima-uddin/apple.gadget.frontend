@@ -619,13 +619,13 @@ export default function CheckoutPage() {
     const finalZone = formData.zone === "other" ? customZone : formData.zone;
     const finalArea = formData.area === "other" ? customArea : formData.area;
 
-    // Validate required fields — show a field-specific message for the first one missing
+    // Validate required fields — show a field-specific message for the first one missing.
+    // Detailed address is optional (city/zone are enough to route the order).
     const requiredFields = [
       { value: formData.name, message: t("checkout.please_fill_name") },
       { value: formData.phone, message: t("checkout.please_fill_phone") },
       { value: finalCity, message: t("checkout.please_fill_city") },
       { value: finalZone, message: t("checkout.please_fill_zone") },
-      { value: formData.address, message: t("checkout.please_fill_address") },
     ];
 
     const firstMissing = requiredFields.find(
@@ -960,7 +960,8 @@ export default function CheckoutPage() {
 
               <div className="mb-4 sm:mb-5">
                 <label className="block text-xs font-medium text-gray-500 mb-1.5">
-                  {t("checkout.address")}
+                  {t("checkout.address")}{" "}
+                  <span className="text-gray-400 font-normal">(optional)</span>
                 </label>
                 <textarea
                   name="address"
@@ -969,7 +970,6 @@ export default function CheckoutPage() {
                   placeholder={t("checkout.address_ph")}
                   rows={2}
                   className="w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition resize-none"
-                  required
                 />
               </div>
 
