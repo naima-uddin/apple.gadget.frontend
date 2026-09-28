@@ -34,7 +34,7 @@ export default function ProductCard({
   showDiscount = true,
   maxTags = 3,
   loading = false,
-  imageFit = "cover",
+  imageFit = "contain",
 }) {
   const router = useRouter();
   const { addToCart, addToWishlist } = useCart();
@@ -183,13 +183,14 @@ export default function ProductCard({
               width={imageWidth}
               height={imageHeight}
               quality={imageQuality}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
               loading="lazy"
               decoding="async"
               onError={(e) => {
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/assets/placeholder.svg";
               }}
-              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-1" : "object-cover"} group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
+              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-2" : "object-cover"} group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
             />
           </div>
 

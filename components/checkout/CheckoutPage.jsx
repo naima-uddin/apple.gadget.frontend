@@ -24,11 +24,12 @@ import PaymentSelector from "@/components/checkout/PaymentSelector";
 import SearchableSelect from "@/components/ui/SearchableSelect";
 import { toast } from "react-hot-toast";
 import { useLanguage } from "@/components/context/LanguageContext";
+import OrderItemVariantEditor from "@/components/order/OrderItemVariantEditor";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { t } = useLanguage();
-  const { cartItems, clearCart, cartHydrated } = useCart();
+  const { cartItems, clearCart, cartHydrated, updateCartVariant } = useCart();
   const { user } = useUser();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRewardsModal, setShowRewardsModal] = useState(false);
@@ -995,7 +996,7 @@ export default function CheckoutPage() {
                 <h2 className="text-base font-semibold text-[#1F2937]">
                   {t("checkout.order_summary")}
                 </h2>
-                {progressItems.length > 0 && (
+                {progressItems.some((p) => p.couponCode) && (
                   <button
                     type="button"
                     onClick={handleViewRewards}
@@ -1066,12 +1067,34 @@ export default function CheckoutPage() {
                           <p className="text-xs font-medium text-[#1F2937] truncate">
                             {title}
                           </p>
-                          {(selectedColor || selectedSize) && (
-                            <p className="text-[11px] text-gray-400 truncate">
-                              {[selectedColor, selectedSize]
-                                .filter(Boolean)
-                                .join(" · ")}
-                            </p>
+                          {product?.variants?.length ? (
+                            <div className="mt-1">
+                              <OrderItemVariantEditor
+                                product={product}
+                                color={selectedColor}
+                                size={selectedSize}
+                                attributes={selectedAttributes}
+                                layout="dropdown"
+                                onChange={({ color, size, attributes, variant }) =>
+                                  updateCartVariant(
+                                    item.cartKey,
+                                    color,
+                                    size,
+                                    variant,
+                                    null,
+                                    attributes,
+                                  )
+                                }
+                              />
+                            </div>
+                          ) : (
+                            (selectedColor || selectedSize) && (
+                              <p className="text-[11px] text-gray-400 truncate">
+                                {[selectedColor, selectedSize]
+                                  .filter(Boolean)
+                                  .join(" · ")}
+                              </p>
+                            )
                           )}
                         </div>
                         <p className="text-xs font-medium text-gray-600 shrink-0">

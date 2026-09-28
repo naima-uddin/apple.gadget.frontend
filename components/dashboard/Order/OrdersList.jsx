@@ -3569,6 +3569,7 @@ function AbandonedCartSection() {
                                 quantity: it.quantity,
                                 color: it.color,
                                 size: it.size,
+                                attributes: it.attributes || null,
                               })),
                               sourceCartUserId: u._id,
                             })
@@ -4365,6 +4366,7 @@ function AbandonCheckoutSection() {
                                 quantity: it.quantity,
                                 color: it.color,
                                 size: it.size,
+                                attributes: it.attributes || null,
                               })),
                               sourceCheckoutId: s._id,
                             })

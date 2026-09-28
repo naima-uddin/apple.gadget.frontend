@@ -31,7 +31,7 @@ const nextConfig = {
   //   return [{ source: '/(.*)', headers: securityHeaders }];
   // },
   images: {
-    unoptimized: true,
+    unoptimized: false,
     remotePatterns: [
       // New uploads are served from our own backend's /uploads folder.
       { protocol: "https", hostname: "api.applebd.com" },

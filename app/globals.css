@@ -236,7 +236,7 @@ h6 {
 /* subtle neutral pedestal for product/gadget imagery so shots read as premium */
 .surface-product {
   background:
-    radial-gradient(120% 90% at 50% 18%, #ffffff 0%, #f6f6f8 78%, #efeff1 100%);
+    radial-gradient(120% 90% at 50% 20%, #ffffff 0%, #fdfdfe 72%, #fafafb 100%);
 }
 
 /* ── Glass chip buttons ───────────────────────────────────────────────────────

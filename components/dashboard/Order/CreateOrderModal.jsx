@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import { createPortal } from "react-dom";
 import SearchableSelect from "@/components/ui/SearchableSelect";
+import OrderItemVariantEditor from "@/components/order/OrderItemVariantEditor";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -57,7 +58,8 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   const [customZone, setCustomZone] = useState("");
   const [customArea, setCustomArea] = useState("");
 
-  // line item shape: { productId, title, image, price, quantity, color, size }
+  // line item shape: { productId, title, image, price, quantity, color, size,
+  // attributes, product }
   const [items, setItems] = useState(() =>
     (prefill.items || []).map((it) => ({
       productId: String(it.productId || ""),
@@ -67,6 +69,8 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
       quantity: Math.max(1, Number(it.quantity) || 1),
       color: it.color || "",
       size: it.size || "",
+      attributes: it.attributes || null,
+      product: it.product || null,
     })),
   );
   const [paymentMethod, setPaymentMethod] = useState("cash-on-delivery");
@@ -78,6 +82,8 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   const [manualDiscount, setManualDiscount] = useState("");
 
   const [locationData, setLocationData] = useState({});
+  // productId → product (with variants) for the per-line variant editor.
+  const [productVariantsMap, setProductVariantsMap] = useState({});
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -158,6 +164,34 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
     return () => clearTimeout(searchRef.current);
   }, [search, runSearch]);
 
+  // Load variants for the line-item products so each line can offer a
+  // color / size / generic-group dropdown. Fetches only uncached IDs.
+  useEffect(() => {
+    const ids = [
+      ...new Set(items.map((it) => it.productId).filter(Boolean)),
+    ].filter((id) => !productVariantsMap[String(id)]);
+    if (!ids.length) return;
+    let alive = true;
+    fetch(`${API}/api/products/batch?ids=${ids.join(",")}`, {
+      credentials: "include",
+    })
+      .then((r) => (r.ok ? r.json() : { products: [] }))
+      .then(({ products = [] }) => {
+        if (!alive) return;
+        setProductVariantsMap((prev) => {
+          const next = { ...prev };
+          products.forEach((p) => {
+            next[String(p._id)] = p;
+          });
+          return next;
+        });
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [items]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const addProduct = (p) => {
     setItems((prev) => [
       ...prev,
@@ -169,6 +203,9 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
         quantity: 1,
         color: "",
         size: "",
+        attributes: null,
+        // Keep the full product so the variant editor can offer color/size/groups.
+        product: p,
       },
     ]);
     setSearch("");
@@ -186,7 +223,13 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
   // Keyed on product/qty/variant + address only (NOT edited prices), so editing a
   // price never triggers a refetch.
   const itemsKey = JSON.stringify(
-    items.map((it) => [it.productId, it.quantity, it.color, it.size]),
+    items.map((it) => [
+      it.productId,
+      it.quantity,
+      it.color,
+      it.size,
+      it.attributes,
+    ]),
   );
   useEffect(() => {
     clearTimeout(quoteRef.current);
@@ -211,6 +254,7 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                 quantity: it.quantity,
                 color: it.color || undefined,
                 size: it.size || undefined,
+                attributes: it.attributes || undefined,
               })),
               couponCodes,
               city: resolvedCity || null,
@@ -305,6 +349,7 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
             price: Number(it.price) || 0,
             color: it.color || undefined,
             size: it.size || undefined,
+            attributes: it.attributes || undefined,
           })),
           paymentMethod,
           status,
@@ -546,22 +591,50 @@ export default function CreateOrderModal({ onClose, onCreated, prefill = {} }) {
                       <p className="flex-1 min-w-[8rem] text-sm font-medium text-gray-900 truncate">
                         {it.title}
                       </p>
-                      <input
-                        value={it.color}
-                        onChange={(e) =>
-                          updateItem(idx, { color: e.target.value })
+                      {(() => {
+                        const prod =
+                          productVariantsMap[String(it.productId)] || it.product;
+                        if (prod?.variants?.length) {
+                          return (
+                            <OrderItemVariantEditor
+                              product={prod}
+                              color={it.color || null}
+                              size={it.size || null}
+                              attributes={it.attributes}
+                              accent="dark"
+                              layout="dropdown"
+                              onChange={({ color, size, attributes, price }) =>
+                                updateItem(idx, {
+                                  color: color || "",
+                                  size: size || "",
+                                  attributes: attributes || null,
+                                  ...(price != null ? { price } : {}),
+                                })
+                              }
+                            />
+                          );
                         }
-                        placeholder="Color"
-                        className="w-20 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
-                      />
-                      <input
-                        value={it.size}
-                        onChange={(e) =>
-                          updateItem(idx, { size: e.target.value })
-                        }
-                        placeholder="Size"
-                        className="w-16 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
-                      />
+                        return (
+                          <>
+                            <input
+                              value={it.color}
+                              onChange={(e) =>
+                                updateItem(idx, { color: e.target.value })
+                              }
+                              placeholder="Color"
+                              className="w-20 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
+                            />
+                            <input
+                              value={it.size}
+                              onChange={(e) =>
+                                updateItem(idx, { size: e.target.value })
+                              }
+                              placeholder="Size"
+                              className="w-16 text-xs text-gray-900 border border-gray-300 rounded-lg px-2 py-1.5"
+                            />
+                          </>
+                        );
+                      })()}
                       {/* Editable unit price */}
                       <div className="flex items-center gap-1">
                         <span className="text-xs text-gray-400">৳</span>

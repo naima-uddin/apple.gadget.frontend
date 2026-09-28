@@ -23,6 +23,7 @@ export default function OrderItemVariantEditor({
   attributes = null,
   onChange,
   accent = "dark", // "dark" | "orange"
+  layout = "pills", // "pills" | "dropdown"
 }) {
   if (!product?.variants?.length) return null;
 
@@ -87,6 +88,82 @@ export default function OrderItemVariantEditor({
     ...(size ? { Size: size } : {}),
     ...attrs,
   };
+
+  // ── Dropdown layout (compact — manual order create, checkout, dashboard) ──
+  if (layout === "dropdown") {
+    const setColor = (v) => emit(v || null, size, attrs);
+    const setSize = (v) => emit(color, v || null, attrs);
+    const setAttr = (group, v) => {
+      const next = { ...attrs };
+      if (!v) delete next[group];
+      else next[group] = v;
+      emit(color, size, next);
+    };
+    const selectCls =
+      "text-xs border border-gray-200 rounded-lg px-2 py-1 outline-none focus:border-gray-500 bg-white max-w-full";
+
+    return (
+      <div className="flex flex-wrap items-center gap-1.5">
+        {colors.length > 0 && (
+          <select
+            value={color || ""}
+            onChange={(e) => setColor(e.target.value)}
+            className={selectCls}
+          >
+            <option value="">Color</option>
+            {colors.map((c) => (
+              <option key={c.name} value={c.name}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        )}
+        {sizes.length > 0 && (
+          <select
+            value={size || ""}
+            onChange={(e) => setSize(e.target.value)}
+            className={selectCls}
+          >
+            <option value="">Size</option>
+            {sizes.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        )}
+        {extraGroups.map((group) => {
+          const available = getAvailableValues(
+            product,
+            group.name,
+            fullSelection,
+          );
+          return (
+            <select
+              key={group.name}
+              value={attrs[group.name] || ""}
+              onChange={(e) => setAttr(group.name, e.target.value)}
+              className={selectCls}
+            >
+              <option value="">{group.name}</option>
+              {group.options.map((opt) => (
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  disabled={
+                    available.size > 0 &&
+                    !available.has(opt.value.toLowerCase())
+                  }
+                >
+                  {opt.value}
+                </option>
+              ))}
+            </select>
+          );
+        })}
+      </div>
+    );
+  }
 
   const pill = "px-1.5 py-0.5 rounded-full text-xs border transition";
 

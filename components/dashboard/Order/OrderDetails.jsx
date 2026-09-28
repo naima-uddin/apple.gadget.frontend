@@ -610,6 +610,7 @@ export default function OrderDetails({ orderId }) {
                                 size={item.size}
                                 attributes={item.attributes}
                                 accent="dark"
+                                layout="dropdown"
                                 onChange={(sel) => updateItemVariant(i, sel)}
                               />
                             </div>
