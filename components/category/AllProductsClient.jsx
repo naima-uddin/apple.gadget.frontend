@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import ProductCard from "@/components/product/ProductCard";
 import ProductFilters from "@/components/product/ProductFilters";
@@ -31,6 +31,10 @@ export default function AllProductsClient() {
   const [isMobileView, setIsMobileView] = useState(false);
   // In-page category chip filter — null means "All"
   const [activeCategoryId, setActiveCategoryId] = useState(null);
+  // Horizontal category-chip scroller — track whether more chips are hidden on
+  // either side so we can show/hide the scroll arrows accordingly.
+  const chipBarRef = useRef(null);
+  const [chipScroll, setChipScroll] = useState({ left: false, right: false });
   const [sortOption, setSortOption] = useState("position");
   const [activeFilters, setActiveFilters] = useState({
     priceRange: [0, 0],
@@ -49,6 +53,24 @@ export default function AllProductsClient() {
     window.addEventListener("resize", updateResponsiveState);
     return () => window.removeEventListener("resize", updateResponsiveState);
   }, []);
+
+  // Recompute whether the category-chip row can scroll further left/right so the
+  // arrows only appear when there are hidden chips in that direction.
+  const updateChipScroll = useCallback(() => {
+    const el = chipBarRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setChipScroll({
+      left: scrollLeft > 1,
+      right: scrollLeft + clientWidth < scrollWidth - 1,
+    });
+  }, []);
+
+  const scrollChips = (dir) => {
+    const el = chipBarRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.7, behavior: "smooth" });
+  };
 
   // Build a flat top-level-category list (with depth) and an id -> descendant-ids
   // map for the filter sidebar, mirroring CategoryPageClient's logic but rooted
@@ -176,6 +198,14 @@ export default function AllProductsClient() {
 
   const mainCategories = getMainCategories();
 
+  // Re-evaluate the chip-scroll arrows whenever the category list changes or the
+  // window resizes (chip row width shifts between breakpoints).
+  useEffect(() => {
+    updateChipScroll();
+    window.addEventListener("resize", updateChipScroll);
+    return () => window.removeEventListener("resize", updateChipScroll);
+  }, [mainCategories.length, updateChipScroll]);
+
   const paginationControls =
     !loadingProducts && totalPages > 1 ? (
       <div className="flex items-center gap-1.5 flex-wrap justify-center">
@@ -276,37 +306,88 @@ export default function AllProductsClient() {
           {/* Main categories row — chips filter the listing in-place so the
               full row stays visible with the selected category highlighted. */}
           {mainCategories.length > 0 && (
-            <div className="glass-chip-bar mb-3 sm:mb-6 flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveCategoryId(null);
-                  setCurrentPage(1);
-                }}
-                className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
-                  !activeCategoryId ? "glass-chip-active" : "glass-chip"
-                }`}
-              >
-                All
-              </button>
-              {mainCategories.map((cat) => {
-                const isActive = String(cat._id) === String(activeCategoryId);
-                return (
-                  <button
-                    key={cat._id}
-                    type="button"
-                    onClick={() => {
-                      setActiveCategoryId(cat._id);
-                      setCurrentPage(1);
-                    }}
-                    className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
-                      isActive ? "glass-chip-active" : "glass-chip"
-                    }`}
+            <div className="relative mb-3 sm:mb-6">
+              {/* Left arrow — only when there are chips hidden to the left */}
+              {chipScroll.left && (
+                <button
+                  type="button"
+                  onClick={() => scrollChips(-1)}
+                  aria-label="Scroll categories left"
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-7 w-7 sm:h-9 sm:w-9 flex items-center justify-center rounded-full bg-white shadow-md border border-gray-200 text-[#1D1D1F] hover:bg-gray-50"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    {cat.name}
-                  </button>
-                );
-              })}
+                    <polyline points="15 18 9 12 15 6" />
+                  </svg>
+                </button>
+              )}
+              <div
+                ref={chipBarRef}
+                onScroll={updateChipScroll}
+                className="glass-chip-bar flex gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none"
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveCategoryId(null);
+                    setCurrentPage(1);
+                  }}
+                  className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
+                    !activeCategoryId ? "glass-chip-active" : "glass-chip"
+                  }`}
+                >
+                  All
+                </button>
+                {mainCategories.map((cat) => {
+                  const isActive =
+                    String(cat._id) === String(activeCategoryId);
+                  return (
+                    <button
+                      key={cat._id}
+                      type="button"
+                      onClick={() => {
+                        setActiveCategoryId(cat._id);
+                        setCurrentPage(1);
+                      }}
+                      className={`shrink-0 h-7 sm:h-9 px-2.5 sm:px-4 inline-flex items-center rounded-full text-xs sm:text-sm font-medium ${
+                        isActive ? "glass-chip-active" : "glass-chip"
+                      }`}
+                    >
+                      {cat.name}
+                    </button>
+                  );
+                })}
+              </div>
+              {/* Right arrow — only when there are chips hidden to the right */}
+              {chipScroll.right && (
+                <button
+                  type="button"
+                  onClick={() => scrollChips(1)}
+                  aria-label="Scroll categories right"
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-7 w-7 sm:h-9 sm:w-9 flex items-center justify-center rounded-full bg-white shadow-md border border-gray-200 text-[#1D1D1F] hover:bg-gray-50"
+                >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </button>
+              )}
             </div>
           )}
 

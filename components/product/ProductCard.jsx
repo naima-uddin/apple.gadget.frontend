@@ -190,7 +190,7 @@ export default function ProductCard({
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/assets/placeholder.svg";
               }}
-              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-2" : "object-cover"} group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
+              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-1" : "object-cover"} group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
             />
           </div>
 
