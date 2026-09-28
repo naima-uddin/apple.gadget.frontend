@@ -42,6 +42,8 @@ export default function ProductCard({
   const { addToCompare, removeFromCompare, isInCompare } = useCompare();
   const { t } = useLanguage();
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  // Holds the selected color *name* (e.g. "White") so it can be carried into the
+  // cart on Add-to-Cart / Buy-Now, matching what the product detail page sends.
   const [selectedColor, setSelectedColor] = React.useState(null);
   const [hovered, setHovered] = React.useState(false);
   const [showAuthModal, setShowAuthModal] = React.useState(false);
@@ -329,7 +331,8 @@ export default function ProductCard({
                       : "#cccccc";
                     const key = c.name?.trim()?.toLowerCase();
                     const mappedUrl = key ? colorImageMap[key] : null;
-                    const isSelected = selectedColor === key;
+                    const isSelected =
+                      selectedColor?.trim()?.toLowerCase() === key;
                     return (
                       <button
                         key={i}
@@ -344,7 +347,7 @@ export default function ProductCard({
                             setCurrentImageIndex(0);
                             return;
                           }
-                          setSelectedColor(key);
+                          setSelectedColor(c.name);
                           if (mappedUrl) {
                             const idx = images.findIndex(
                               (img) => img === mappedUrl,
@@ -405,7 +408,7 @@ export default function ProductCard({
                 onClick={(e) => {
                   e.stopPropagation();
                   flyToCart(imageRef.current, mainImage);
-                  addToCart(product, 1, { silent: true });
+                  addToCart(product, 1, { selectedColor, silent: true });
                   router.push("/checkout");
                 }}
                 className="flex-1 bg-[#E5F3FF] border border-gray-200/80 text-[#1D1D1F] py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
@@ -417,7 +420,7 @@ export default function ProductCard({
                 onClick={(e) => {
                   e.stopPropagation();
                   flyToCart(imageRef.current, mainImage);
-                  addToCart(product, 1);
+                  addToCart(product, 1, { selectedColor });
                 }}
                 className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full hover:bg-black active:scale-95 shadow-sm transition-all cursor-pointer"
                 title={t("home.add_to_cart")}
