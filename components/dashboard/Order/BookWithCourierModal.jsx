@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { variantLabel } from "@/lib/variantLabel";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
@@ -255,9 +256,7 @@ export default function BookWithCourierModal({
               ) : (
                 <ul className="divide-y divide-gray-100">
                   {items.map((it, i) => {
-                    const variant = [it?.color, it?.size]
-                      .filter(Boolean)
-                      .join(" / ");
+                    const variant = variantLabel(it);
                     return (
                       <li
                         key={i}
