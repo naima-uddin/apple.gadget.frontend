@@ -84,10 +84,14 @@ export default function AddToCartSection({
   const hasVariants =
     allColors.length > 0 || allSizes.length > 0 || product.variants?.length > 0;
 
+  // When the product has colors but the shopper never picked one, default to
+  // the first color. Products with no colors keep an empty selection as before.
+  const effectiveColor = selectedColor || allColors[0]?.name || null;
+
   const effectivePrice = hasVariants
     ? resolvePriceForSelection(
         product,
-        selectedColor,
+        effectiveColor,
         selectedSize,
         selectedAttributes,
       )
@@ -98,13 +102,13 @@ export default function AddToCartSection({
   const selectedVariant = hasVariants
     ? (hasSelectedAttrs
         ? resolveVariantByAttrs(product, {
-            ...(selectedColor ? { Color: selectedColor } : {}),
+            ...(effectiveColor ? { Color: effectiveColor } : {}),
             ...(selectedSize ? { Size: selectedSize } : {}),
             ...selectedAttributes,
           }) ||
           resolveVariantByAttrs(product, selectedAttributes) ||
-          resolveVariant(product, selectedColor, selectedSize)
-        : resolveVariant(product, selectedColor, selectedSize))
+          resolveVariant(product, effectiveColor, selectedSize)
+        : resolveVariant(product, effectiveColor, selectedSize))
     : null;
 
   const flyProductImage = () => {
@@ -117,7 +121,7 @@ export default function AddToCartSection({
   const handleAdd = () => {
     flyProductImage();
     addToCart(product, qty, {
-      selectedColor: selectedColor || null,
+      selectedColor: effectiveColor,
       selectedSize: selectedSize || null,
       selectedAttributes: hasSelectedAttrs ? selectedAttributes : null,
       selectedVariant,
@@ -127,7 +131,7 @@ export default function AddToCartSection({
   const handleBuyNow = () => {
     flyProductImage();
     addToCart(product, qty, {
-      selectedColor: selectedColor || null,
+      selectedColor: effectiveColor,
       selectedSize: selectedSize || null,
       selectedAttributes: hasSelectedAttrs ? selectedAttributes : null,
       selectedVariant,

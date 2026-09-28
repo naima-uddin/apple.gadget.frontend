@@ -18,6 +18,7 @@ import WaitlistModal from "@/components/cart/WaitlistModal";
 import {
   getVariantColors,
   getColorImageMap,
+  resolveVariant,
 } from "@/components/cart/VariantEditModal";
 import { getDisplayPrice } from "@/lib/pricing";
 import { useCompare } from "@/components/context/CompareContext";
@@ -156,6 +157,18 @@ export default function ProductCard({
   const isOutOfStock =
     product.availability === "out_of_stock" || product.inventory === 0;
   const href = `/product/${id}/`;
+
+  // When the product has color variants but the shopper adds to cart without
+  // picking one, default to the first color (matching the swatch order). If the
+  // product has no colors at all, leave the selection empty as before.
+  const firstColorName = getVariantColors(product)[0]?.name || null;
+  const resolveAddSelection = () => {
+    const color = selectedColor || firstColorName;
+    return {
+      selectedColor: color,
+      selectedVariant: color ? resolveVariant(product, color, null) : null,
+    };
+  };
 
   return (
     <>
@@ -408,7 +421,10 @@ export default function ProductCard({
                 onClick={(e) => {
                   e.stopPropagation();
                   flyToCart(imageRef.current, mainImage);
-                  addToCart(product, 1, { selectedColor, silent: true });
+                  addToCart(product, 1, {
+                    ...resolveAddSelection(),
+                    silent: true,
+                  });
                   router.push("/checkout");
                 }}
                 className="flex-1 bg-[#E5F3FF] border border-gray-200/80 text-[#1D1D1F] py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-semibold hover:bg-[#E8E8ED] hover:border-gray-300 active:scale-[0.98] transition-all cursor-pointer"
@@ -420,7 +436,7 @@ export default function ProductCard({
                 onClick={(e) => {
                   e.stopPropagation();
                   flyToCart(imageRef.current, mainImage);
-                  addToCart(product, 1, { selectedColor });
+                  addToCart(product, 1, resolveAddSelection());
                 }}
                 className="shrink-0 flex items-center justify-center bg-[#1D1D1F] text-white px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full hover:bg-black active:scale-95 shadow-sm transition-all cursor-pointer"
                 title={t("home.add_to_cart")}
