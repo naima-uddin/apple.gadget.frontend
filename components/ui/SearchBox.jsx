@@ -123,7 +123,7 @@ export default function SearchBox({
       <form onSubmit={handleSubmit} role="search" aria-label="Search form">
         <div className="relative">
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-purple-600 pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-600 pointer-events-none"
             width="16"
             height="16"
             viewBox="0 0 24 24"
