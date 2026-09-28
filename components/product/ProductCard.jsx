@@ -187,7 +187,7 @@ export default function ProductCard({
           <span className="sr-only">{product.title || product.slug}</span>
         </Link>
         <div
-          className="relative surface-product rounded-t-sm overflow-hidden border-b border-gray-100"
+          className="relative rounded-t-sm overflow-hidden border-b border-gray-100 bg-linear-to-b from-white to-[#F5F5F7]"
           style={{ height: imageHeight }}
         >
           <div className="absolute inset-0  flex items-center justify-center overflow-hidden">
@@ -205,7 +205,11 @@ export default function ProductCard({
                 e.currentTarget.onerror = null;
                 e.currentTarget.src = "/assets/placeholder.svg";
               }}
-              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-1" : "object-cover"} group-hover:scale-105 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
+              // translateZ(0) + backface-hidden keep the raster crisp during the
+              // hover zoom (GPU compositing avoids the soft/blurry sub-pixel
+              // interpolation you get scaling an <img> on the CPU).
+              style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
+              className={`w-full h-full ${imageFit === "contain" ? "object-contain p-2" : "object-cover"} will-change-transform group-hover:scale-[1.06] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer`}
             />
           </div>
 
