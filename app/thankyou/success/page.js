@@ -37,6 +37,21 @@ const Twitter = () => (
   </svg>
 );
 
+// Customers may self-edit/cancel a COD order for 1 hour after placing it.
+const EDIT_CANCEL_WINDOW_MS = 60 * 60 * 1000;
+
+// Deadline (ms epoch) after which edit/cancel locks. Prefer the server-set
+// confirmAfter when present; otherwise derive it from createdAt so the window
+// also works for orders placed before that field existed. Returns null when
+// there's no reference timestamp.
+function editCancelDeadline(order) {
+  if (!order) return null;
+  if (order.confirmAfter) return new Date(order.confirmAfter).getTime();
+  if (order.createdAt)
+    return new Date(order.createdAt).getTime() + EDIT_CANCEL_WINDOW_MS;
+  return null;
+}
+
 function ProductAddCardSuccess({ product, onAdd }) {
   const { t } = useLanguage();
   const [sel, setSel] = useState({
@@ -179,10 +194,12 @@ function SuccessContent() {
       .finally(() => setLoading(false));
   }, [orderId, API]);
 
-  // Countdown timer for 3-hour cancel window (COD only)
+  // Countdown timer for the 1-hour edit/cancel window (COD only)
   useEffect(() => {
-    if (!order?.confirmAfter || order.status !== "pending") return;
-    const deadline = new Date(order.confirmAfter).getTime();
+    if (!order || order.status !== "pending") return;
+    if (order.paymentMethod !== "cash-on-delivery") return;
+    const deadline = editCancelDeadline(order);
+    if (!deadline) return;
     const tick = () => {
       const diff = Math.max(0, Math.floor((deadline - Date.now()) / 1000));
       setTimeLeft(diff);
@@ -337,11 +354,17 @@ function SuccessContent() {
   const addr = [billing.address, billing.zone, billing.city]
     .filter(Boolean)
     .join(", ");
-  // COD orders stay pending until an authorized person confirms them, so the
-  // edit/cancel affordance is available for the whole pending window (no timer).
+  // COD orders can be self-edited/cancelled for 1 hour after placement
+  // (order.confirmAfter). After the window the buttons lock, but the order's
+  // status is unaffected — it simply can no longer be edited/cancelled here.
   const canCancel =
     order?.status === "pending" &&
     order?.paymentMethod === "cash-on-delivery";
+  const deadline = editCancelDeadline(order);
+  const expired =
+    canCancel &&
+    deadline != null &&
+    (timeLeft != null ? timeLeft <= 0 : Date.now() > deadline);
   const fmtTime = (s) =>
     `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
 
@@ -578,17 +601,23 @@ function SuccessContent() {
             </div>
           )}
 
-          {/* 3-hour cancel window — edit + cancel */}
+          {/* 1-hour edit/cancel window — edit + cancel */}
           {canCancel && !cancelled && (
             <div className="py-4">
               <div className="bg-gray-100/60 border border-gray-100 rounded-lg p-3 text-sm">
-                <p className="text-[#1D1D1F] font-medium mb-1">
-                  {timeLeft != null
-                    ? `${t("success.edit_cancel_time")} ${fmtTime(timeLeft)}`
-                    : t("success.edit_cancel_pending")}
+                <p
+                  className={`font-medium mb-1 ${
+                    expired ? "text-gray-500" : "text-[#1D1D1F]"
+                  }`}
+                >
+                  {expired
+                    ? t("success.edit_cancel_expired")
+                    : timeLeft != null
+                      ? `${t("success.edit_cancel_time")} ${fmtTime(timeLeft)}`
+                      : t("success.edit_cancel_pending")}
                 </p>
 
-                {isEditing ? (
+                {expired ? null : isEditing ? (
                   <div className="mt-2 border border-gray-100 rounded-xl overflow-hidden">
                     {/* Sticky header */}
                     <div className="sticky top-0 z-10 bg-gray-100 border-b border-gray-100 px-3 py-2 flex items-center justify-between">

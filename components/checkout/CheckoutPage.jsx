@@ -710,7 +710,11 @@ export default function CheckoutPage() {
         // Cash on Delivery — set flag BEFORE clearing cart to suppress redirect
         orderPlaced.current = true;
         clearCart();
-        router.push(`/thankyou/success?orderId=${result.orderId}&method=cod`);
+        // Prefer the clean, human-friendly order number (e.g. apl0023) in the
+        // confirmation URL; fall back to the raw id if it's ever missing.
+        router.push(
+          `/thankyou/success?orderId=${result.orderNumber || result.orderId}&method=cod`,
+        );
       } else if (["bkash", "nagad", "rocket"].includes(result.method)) {
         // Mobile banking — redirect to payment page with merchant info
         orderPlaced.current = true;
