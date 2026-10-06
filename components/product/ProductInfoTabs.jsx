@@ -324,8 +324,8 @@ export default function ProductInfoTabs({ product }) {
     <section className="w-full bg-white mt-5 sm:mt-10 mb-6">
       <div className="max-w-7xl mx-auto px-1 lg:px-8">
         {/* ── Tab bar — segmented pill control, sticky under the header ── */}
-        <div className="sticky top-16 z-20 -mx-2 lg:mx-0 mb-4 sm:mb-8 bg-white/85 backdrop-blur-md">
-          <div className="flex gap-1 overflow-x-auto whitespace-nowrap p-1.5 bg-gray-100 rounded-2xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div className="sm:sticky sm:top-16 z-20 -mx-2 lg:mx-0 mb-4 sm:mb-8 bg-white/85 backdrop-blur-md">
+          <div className="flex gap-1 overflow-x-auto whitespace-nowrap p-1.5 bg-gray-100 rounded-2xl [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] sm:scrollbar-none">
             {[
               { key: "description", label: "Description" },
               { key: "specification", label: "Specification" },
