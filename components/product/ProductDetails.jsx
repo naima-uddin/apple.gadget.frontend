@@ -563,7 +563,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
       {/* ── Main product section ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         {/* ── LEFT: image gallery (wider, sticky) ── */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-6">
           <div className="lg:sticky lg:top-24 flex flex-col-reverse sm:flex-row gap-3">
             {/* Vertical thumbnail rail (horizontal on mobile) */}
             {images.length > 1 && (
@@ -592,7 +592,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             )}
 
             {/* Main image + magnifier panel wrapper */}
-            <div className="relative flex-1 min-w-0">
+            <div className="relative flex-1 min-w-0 lg:max-w-[540px] lg:mx-auto">
               <div
                 ref={imgBoxRef}
                 id="pdp-main-image"
@@ -675,7 +675,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
         </div>
 
         {/* ── RIGHT: sticky buy box ── */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-6">
           <div className="lg:sticky lg:top-24 flex flex-col gap-2 sm:gap-2.5">
             {/* Title */}
             <h1 className="text-lg md:text-2xl text-[#1F2937] leading-tight font-georgia">
@@ -725,7 +725,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
               <div>
                 <p
                   className={`text-[#6B7280] text-sm leading-relaxed whitespace-pre-line ${
-                    descOpen ? "" : "line-clamp-4"
+                    descOpen ? "" : "line-clamp-3"
                   }`}
                 >
                   {toPlainText(description)}
@@ -932,7 +932,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
             <hr className="border-gray-100" />
 
             {/* Trust & offers strip — flat, monochrome, no cards-within-cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2.5 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-2.5">
               <div className="flex items-start gap-2.5">
                 <FaGift className="text-[#1D1D1F] w-4 h-4 mt-0.5 shrink-0" />
                 <div>
