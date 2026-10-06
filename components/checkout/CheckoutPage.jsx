@@ -1042,17 +1042,17 @@ export default function CheckoutPage() {
                     const image =
                       product.images?.[0]?.url || "/assets/placeholder.svg";
                     const title = product.title || product.name;
-                    const price =
-                      quoteItemMap[
-                        makeCartKey(
-                          id,
-                          selectedColor,
-                          selectedSize,
-                          selectedAttributes,
-                        )
-                      ] ?? 0;
+                    const cartKey =
+                      item.cartKey ||
+                      makeCartKey(
+                        id,
+                        selectedColor,
+                        selectedSize,
+                        selectedAttributes,
+                      );
+                    const price = quoteItemMap[cartKey] ?? 0;
                     return (
-                      <div key={id} className="flex items-center gap-3">
+                      <div key={cartKey} className="flex items-center gap-3">
                         <div className="relative shrink-0">
                           <div className="w-11 h-11 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
                             <Image
