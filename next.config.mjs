@@ -9,6 +9,12 @@ const nextConfig = {
   // output: "export",
   trailingSlash: true,
 
+  // Disable React StrictMode's dev-only double mount/effect invocation. It made
+  // the /user/* pages visibly flash a few times on entry (every provider/effect
+  // ran twice in dev). This does NOT change production behavior — real users
+  // never had StrictMode's double-invoke. Re-enable if debugging effect/DOM bugs.
+  reactStrictMode: false,
+
   async redirects() {
     return [
       // Order-success page moved from /checkout/success to /thankyou/success.

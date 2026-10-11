@@ -239,7 +239,12 @@ function OrdersSection({ API }) {
     }
   };
 
+  // Guard so StrictMode's double mount-effect (dev) doesn't fetch twice and
+  // flicker the spinner on entry.
+  const didInit = React.useRef(false);
   useEffect(() => {
+    if (didInit.current) return;
+    didInit.current = true;
     fetchOrders();
   }, []);
 
@@ -575,11 +580,18 @@ function OrdersSection({ API }) {
 
       {orders.map((order) => {
         const billing = order.billingDetails || {};
-        // COD orders stay pending until an authorized person confirms them, so
-        // edit/cancel is available for the whole pending window (no timer).
+        // Customers may edit/cancel a pending COD order only within the 1-hour
+        // window after placing it (matches the backend deadline enforced on
+        // /cancel and /edit). After it elapses the order stays pending but the
+        // edit/cancel actions lock. Fall back to createdAt+1h when confirmAfter
+        // is missing on older orders.
+        const editCancelDeadline = order.confirmAfter
+          ? new Date(order.confirmAfter).getTime()
+          : new Date(order.createdAt).getTime() + 60 * 60 * 1000;
         const canAct =
           order.status === "pending" &&
-          order.paymentMethod === "cash-on-delivery";
+          order.paymentMethod === "cash-on-delivery" &&
+          Date.now() < editCancelDeadline;
         const canPayOnline =
           order.status === "pending" &&
           order.paymentStatus === "unpaid" &&
@@ -653,12 +665,14 @@ function OrdersSection({ API }) {
                       {t("pay.unpaid")}
                     </span>
                   )}
-                  {canAct && order.confirmAfter && (
-                    <OrderCountdown
-                      confirmAfter={order.confirmAfter}
-                      onExpire={fetchOrders}
-                    />
-                  )}
+                  {canAct &&
+                    order.confirmAfter &&
+                    new Date(order.confirmAfter).getTime() > Date.now() && (
+                      <OrderCountdown
+                        confirmAfter={order.confirmAfter}
+                        onExpire={fetchOrders}
+                      />
+                    )}
                 </div>
                 <p className="text-xs text-gray-500 mt-0.5">
                   {fmtDate(order.createdAt)} · {order.items?.length || 0} item
@@ -1566,8 +1580,26 @@ export default function UserSectionPage() {
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
             {loading && !user ? (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 flex items-center justify-center">
-                <span className="h-6 w-6 rounded-full border-2 border-gray-200 border-t-[#1D1D1F] animate-spin" />
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 flex justify-center">
+                <svg
+                  className="animate-spin w-8 h-8 text-[#1D1D1F]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8H4z"
+                  />
+                </svg>
               </div>
             ) : !user ? (
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
