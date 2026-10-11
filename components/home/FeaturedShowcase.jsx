@@ -294,8 +294,8 @@ export default function FeaturedShowcase() {
               onClick={() => selectTab(i)}
               className={`shrink-0 whitespace-nowrap px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-[13px] font-semibold backdrop-blur-md transition-all duration-300 active:scale-[0.97] ${
                 i === activeTabIndex
-                  ? "bg-linear-to-b from-[#2b2b2e] to-[#1D1D1F] text-white border border-white/10 shadow-[0_6px_16px_-4px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.2)]"
-                  : "bg-white/40 text-[#1D1D1F] border border-white/70 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.9)] hover:bg-white/70"
+                  ? "bg-linear-to-b from-[#2b2b2e] to-[#1D1D1F] text-white border border-white/10 shadow-[0_6px_16px_-6px_rgba(29,29,31,0.5)] "
+                  : "bg-[#F2F2F4] text-[#52525B] border border-[#E2E2E6] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] hover:bg-[#E8E8EC] hover:text-[#1D1D1F]"
               }`}
             >
               {tab.label}
