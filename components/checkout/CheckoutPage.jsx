@@ -19,7 +19,7 @@ import {
   FaTicketAlt,
   FaGift,
 } from "react-icons/fa";
-import { FiArrowLeft } from "react-icons/fi";
+import { FiArrowLeft, FiMinus, FiPlus } from "react-icons/fi";
 import PaymentSelector from "@/components/checkout/PaymentSelector";
 import SearchableSelect from "@/components/ui/SearchableSelect";
 import { toast } from "react-hot-toast";
@@ -29,7 +29,8 @@ import OrderItemVariantEditor from "@/components/order/OrderItemVariantEditor";
 export default function CheckoutPage() {
   const router = useRouter();
   const { t } = useLanguage();
-  const { cartItems, clearCart, cartHydrated, updateCartVariant } = useCart();
+  const { cartItems, clearCart, cartHydrated, updateCartVariant, updateQty } =
+    useCart();
   const { user } = useUser();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showRewardsModal, setShowRewardsModal] = useState(false);
@@ -1063,9 +1064,6 @@ export default function CheckoutPage() {
                               className="object-contain w-full h-full p-1"
                             />
                           </div>
-                          <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-gray-500 text-white text-[9px] font-bold flex items-center justify-center">
-                            {quantity}
-                          </span>
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-xs font-medium text-[#1F2937] truncate">
@@ -1101,9 +1099,35 @@ export default function CheckoutPage() {
                             )
                           )}
                         </div>
-                        <p className="text-xs font-medium text-gray-600 shrink-0">
-                          ৳{(price * quantity).toFixed(0)}
-                        </p>
+                        <div className="flex flex-col items-end gap-1 shrink-0">
+                          <p className="text-xs font-medium text-gray-600">
+                            ৳{(price * quantity).toFixed(0)}
+                          </p>
+                          <div className="inline-flex items-center bg-gray-50 border border-gray-200 rounded-full overflow-hidden">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                updateQty(cartKey, Math.max(1, quantity - 1))
+                              }
+                              disabled={quantity <= 1}
+                              aria-label="Decrease quantity"
+                              className="w-5.5 h-5.5 flex items-center justify-center text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition disabled:opacity-40 disabled:hover:bg-transparent"
+                            >
+                              <FiMinus className="w-2.5 h-2.5" />
+                            </button>
+                            <span className="w-5 text-center text-[11px] font-bold text-[#1F2937]">
+                              {quantity}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => updateQty(cartKey, quantity + 1)}
+                              aria-label="Increase quantity"
+                              className="w-5.5 h-5.5 flex items-center justify-center text-[#6B7280] hover:text-[#1D1D1F] hover:bg-gray-100 transition"
+                            >
+                              <FiPlus className="w-2.5 h-2.5" />
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     );
                   })}

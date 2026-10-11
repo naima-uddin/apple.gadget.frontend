@@ -619,7 +619,7 @@ export default function ProductDetails({ product, relatedProducts = [] }) {
                     alt={title}
                     width={700}
                     height={700}
-                    className="w-full h-full object-contain p-2 md:p-6"
+                    className="w-full h-full object-contain p-2 md:p-4"
                   />
                 </button>
                 {/* In-place zoom — magnifies inside the image box itself on
