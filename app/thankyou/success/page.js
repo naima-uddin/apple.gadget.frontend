@@ -675,6 +675,7 @@ function SuccessContent() {
                           city={editBilling.city}
                           zone={editBilling.zone}
                           area={editBilling.area}
+                          compact
                           gridClassName="grid grid-cols-2 gap-2"
                           onChange={({ city, zone, area }) =>
                             setEditBilling((prev) => ({

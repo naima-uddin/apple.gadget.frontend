@@ -12,6 +12,9 @@ export default function SearchableSelect({
   required = false,
   className = "",
   name = "",
+  // Compact variant — matches the small text-xs inputs used in the order-edit
+  // panels (thank-you / My Orders) so the dropdowns don't tower over the form.
+  compact = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -75,14 +78,16 @@ export default function SearchableSelect({
         type="button"
         onClick={toggleDropdown}
         disabled={disabled}
-        className={`w-full px-4 py-3 border border-gray-300 rounded-xl text-left focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none bg-white flex items-center justify-between ${
+        className={`w-full border border-gray-300 text-left focus:ring-2 focus:ring-gray-500 focus:border-transparent outline-none bg-white flex items-center justify-between ${
+          compact ? 'px-2.5 py-1.5 rounded-lg text-xs' : 'px-4 py-3 rounded-xl'
+        } ${
           disabled ? 'bg-gray-100 cursor-not-allowed text-gray-400' : 'cursor-pointer hover:border-gray-300'
         }`}
       >
-        <span className={displayValue ? 'text-gray-900' : 'text-gray-400'}>
+        <span className={`truncate ${displayValue ? 'text-gray-900' : 'text-gray-400'}`}>
           {displayValue || placeholder}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0 pl-1.5">
           {displayValue && !disabled && (
             <FaTimes
               className="text-gray-400 hover:text-gray-600 w-3 h-3"
@@ -90,7 +95,7 @@ export default function SearchableSelect({
             />
           )}
           <FaChevronDown
-            className={`text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`text-gray-400 transition-transform ${compact ? 'w-2.5 h-2.5' : ''} ${isOpen ? 'rotate-180' : ''}`}
           />
         </div>
       </button>

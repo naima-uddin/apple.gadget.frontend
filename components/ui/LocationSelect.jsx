@@ -25,6 +25,9 @@ export default function LocationSelect({
   // desktop, where viewport breakpoints stay multi-column and overflow) pass a
   // single-column layout; the default is the wide checkout-style responsive grid.
   gridClassName = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4",
+  // Compact sizing for the narrow order-edit panels (thank-you / My Orders), so
+  // the dropdowns match the surrounding text-xs inputs instead of towering.
+  compact = false,
 }) {
   const [locationData, setLocationData] = useState({});
   const [sel, setSel] = useState({ city: "", zone: "", area: "" });
@@ -136,13 +139,18 @@ export default function LocationSelect({
     emit(sel, nextCustom);
   };
 
-  const inputCls =
-    "w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition mt-2";
+  const inputCls = compact
+    ? "w-full px-2.5 py-1.5 border border-gray-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition mt-1.5"
+    : "w-full px-3.5 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-gray-500 focus:border-gray-500 transition mt-2";
+
+  const labelCls = compact
+    ? "block text-[11px] font-medium text-gray-500 mb-1"
+    : "block text-xs font-medium text-gray-500 mb-1.5";
 
   return (
     <div className={`${gridClassName} ${className}`}>
       <div>
-        <label className="block text-xs font-medium text-gray-500 mb-1.5">
+        <label className={labelCls}>
           {labels.city || "City"}
         </label>
         <SearchableSelect
@@ -151,6 +159,7 @@ export default function LocationSelect({
           onChange={pickCity}
           options={cities}
           placeholder={labels.cityPh || "Select city"}
+          compact={compact}
           required
         />
         {sel.city === "other" && (
@@ -166,7 +175,7 @@ export default function LocationSelect({
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-500 mb-1.5">
+        <label className={labelCls}>
           {labels.zone || "Zone"}
         </label>
         <SearchableSelect
@@ -175,6 +184,7 @@ export default function LocationSelect({
           onChange={pickZone}
           options={zones}
           placeholder={labels.zonePh || "Select zone"}
+          compact={compact}
           required
           disabled={!sel.city || sel.city === "other"}
         />
@@ -191,7 +201,7 @@ export default function LocationSelect({
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-500 mb-1.5">
+        <label className={labelCls}>
           {labels.area || "Area"}
         </label>
         <SearchableSelect
@@ -200,6 +210,7 @@ export default function LocationSelect({
           onChange={pickArea}
           options={areas}
           placeholder={labels.areaPh || "Select area"}
+          compact={compact}
           disabled={!sel.zone || sel.zone === "other" || sel.city === "other"}
         />
         {(sel.area === "other" ||

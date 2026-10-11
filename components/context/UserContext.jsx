@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const UserContext = createContext({
   user: null,
@@ -14,7 +20,11 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const API = process.env.NEXT_PUBLIC_API_URL || "https://api.applebd.com";
 
-  const refreshUser = async () => {
+  // Stable identity: several components depend on `refreshUser` in their effect
+  // deps (e.g. `[user, refreshUser]`). If it were recreated every render those
+  // effects would re-fire on every render and hammer /api/auth/me into a 429
+  // loop (spinner flicker). useCallback keeps the reference constant.
+  const refreshUser = useCallback(async () => {
     try {
       setLoading(true);
       const r = await fetch(`${API}/api/auth/me`, { credentials: "include" });
@@ -27,11 +37,11 @@ export const UserProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [API]);
 
   useEffect(() => {
     refreshUser();
-  }, []);
+  }, [refreshUser]);
 
   return (
     <UserContext.Provider value={{ user, setUser, refreshUser, loading }}>

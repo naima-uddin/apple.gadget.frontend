@@ -223,8 +223,11 @@ function OrdersSection({ API }) {
   const [searchResults, setSearchResults] = React.useState([]);
   const [searchLoading, setSearchLoading] = React.useState(false);
 
-  const fetchOrders = async () => {
-    setLoading(true);
+  // `silent` refetches (window focus / tab revisit) update the list in the
+  // background WITHOUT flipping `loading` — otherwise the whole list blanks to a
+  // spinner and flickers every time the window regains focus.
+  const fetchOrders = async ({ silent = false } = {}) => {
+    if (!silent) setLoading(true);
     try {
       const r = await fetch(`${API}/api/orders/my`, { credentials: "include" });
       const d = await r.json();
@@ -232,7 +235,7 @@ function OrdersSection({ API }) {
     } catch {
       /* ignore */
     } finally {
-      setLoading(false);
+      if (!silent) setLoading(false);
     }
   };
 
@@ -241,9 +244,9 @@ function OrdersSection({ API }) {
   }, []);
 
   useEffect(() => {
-    const handleFocus = () => fetchOrders();
+    const handleFocus = () => fetchOrders({ silent: true });
     const handleVisibility = () => {
-      if (document.visibilityState === "visible") fetchOrders();
+      if (document.visibilityState === "visible") fetchOrders({ silent: true });
     };
 
     window.addEventListener("focus", handleFocus);
@@ -1390,7 +1393,7 @@ function MyReviewsSection({ API }) {
 }
 
 export default function UserSectionPage() {
-  const { user, setUser, refreshUser } = useUser();
+  const { user, setUser, refreshUser, loading } = useUser();
   const { t } = useLanguage();
   const params = useParams();
   const router = useRouter();
@@ -1411,10 +1414,12 @@ export default function UserSectionPage() {
   const section = params.section || "profile";
 
   useEffect(() => {
-    if (!user) {
+    // Only prompt sign-in once the auth check has resolved — otherwise the modal
+    // and the "please sign in" state flash on every entry while /auth/me loads.
+    if (!loading && !user) {
       setTimeout(() => setShowAuthModal(true), 0);
     }
-  }, [user]);
+  }, [user, loading]);
 
   // compute gravatar when user email changes
   useEffect(() => {
@@ -1560,7 +1565,11 @@ export default function UserSectionPage() {
 
           {/* Main Content Area */}
           <div className="flex-1 min-w-0">
-            {!user ? (
+            {loading && !user ? (
+              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 flex items-center justify-center">
+                <span className="h-6 w-6 rounded-full border-2 border-gray-200 border-t-[#1D1D1F] animate-spin" />
+              </div>
+            ) : !user ? (
               <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-10 text-center">
                 <p className="text-gray-500">
                   Please sign in to view your account.
