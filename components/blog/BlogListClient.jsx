@@ -518,7 +518,7 @@ export default function BlogListClient() {
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                                           />
                                         </svg>
-                                        {formatDate(featured.createdAt)}
+                                        {formatDate(featured.publishDate || featured.createdAt)}
                                       </span>
                                       <span className="bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full">
                                         {storeName || "Store"} Author
@@ -741,7 +741,7 @@ export default function BlogListClient() {
                               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                             />
                           </svg>
-                          {formatDate(blog.createdAt || blog.publishedAt)}
+                          {formatDate(blog.publishDate || blog.createdAt)}
                         </span>
 
                         <p className="text-[#1D1D1F] font-medium text-xs hover:text-[black] transition-colors">
