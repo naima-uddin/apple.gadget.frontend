@@ -681,9 +681,6 @@ export default function OrderPrintView({
                       {storeEmail}
                     </p>
                   )}
-                  <p style={{ margin: 0, color: "#4b5563", fontSize: "10px" }}>
-                    Bangladesh
-                  </p>
                 </div>
                 {/* Billed To */}
                 <div
