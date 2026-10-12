@@ -65,9 +65,14 @@ export default function SearchResultsClient() {
   // live filtered list — reacts instantly to any filter change
   const filtered = useMemo(() => {
     const { priceRange, expandedSubIds, brands, minRating } = activeFilters;
+    // priceRange defaults to [0, 0] until the filter sidebar initializes its
+    // bounds from the products. Treat a zero max as "no price filter set" so we
+    // don't filter every product out before the sidebar reports real bounds.
+    const hasPriceFilter = priceRange[1] > 0;
     return allProducts.filter((p) => {
       const price = getDisplayPrice(p).price;
-      if (price < priceRange[0] || price > priceRange[1]) return false;
+      if (hasPriceFilter && (price < priceRange[0] || price > priceRange[1]))
+        return false;
       if (expandedSubIds.size > 0 && !expandedSubIds.has(String(p.categoryId)))
         return false;
       if (brands.size > 0 && (!p.department || !brands.has(p.department)))
