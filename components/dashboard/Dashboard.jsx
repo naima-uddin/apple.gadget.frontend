@@ -184,11 +184,6 @@ export default function Dashboard() {
       accent: "text-[#1D1D1F]",
     },
     {
-      label: "Estimated Profit",
-      value: money(overview.totalProfit),
-      accent: "text-green-700",
-    },
-    {
       label: "Pending Orders",
       value: (overview.pendingOrders ?? 0).toLocaleString("en-BD"),
       accent: "text-yellow-700",
