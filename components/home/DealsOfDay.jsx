@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import {
   FaHeart,
+  FaRegHeart,
   FaCartShopping,
   FaChevronUp,
   FaChevronDown,
@@ -35,7 +36,8 @@ export default function DealsOfDay() {
   const [bestsellerProducts, setBestsellerProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { addToCart, addToWishlist } = useCart();
+  const { addToCart, addToWishlist, removeFromWishlist, wishlistItems } =
+    useCart();
   const { user } = useUser();
   const { t } = useLanguage();
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -167,6 +169,9 @@ export default function DealsOfDay() {
     sidebarScroll,
     sidebarScroll + 4,
   );
+
+  const isWishlisted =
+    !!mainProduct && wishlistItems.includes(mainProduct._id);
 
   if (loading) {
     return (
@@ -357,12 +362,21 @@ export default function DealsOfDay() {
                         setPendingWishlist(mainProduct);
                         setShowAuthModal(true);
                       } else if (mainProduct) {
-                        addToWishlist(mainProduct);
+                        if (isWishlisted) removeFromWishlist(mainProduct._id);
+                        else addToWishlist(mainProduct);
                       }
                     }}
-                    className="w-9 h-9 md:w-12 md:h-12 text-sm md:text-base shrink-0 border-2 border-gray-300 rounded-lg flex items-center justify-center hover:border-[#1D1D1F] hover:text-[#1D1D1F] transition"
+                    aria-pressed={isWishlisted}
+                    title={
+                      isWishlisted ? "Remove from wishlist" : "Add to wishlist"
+                    }
+                    className={`w-9 h-9 md:w-12 md:h-12 text-sm md:text-base shrink-0 border-2 rounded-lg flex items-center justify-center transition ${
+                      isWishlisted
+                        ? "border-rose-500 text-rose-500"
+                        : "border-gray-300 hover:border-[#1D1D1F] hover:text-[#1D1D1F]"
+                    }`}
                   >
-                    <FaHeart />
+                    {isWishlisted ? <FaHeart /> : <FaRegHeart />}
                   </button>
                   <button
                     onClick={() => {
