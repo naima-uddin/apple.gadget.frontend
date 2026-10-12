@@ -1996,7 +1996,7 @@ function AllOrdersSection() {
           { label: "Pending", val: stats.pending, color: "text-yellow-600" },
           { label: "Delivered", val: stats.delivered, color: "text-green-600" },
           {
-            label: "Revenue",
+            label: "Total",
             val:
               stats.revenue != null
                 ? `৳${stats.revenue.toLocaleString()}`
